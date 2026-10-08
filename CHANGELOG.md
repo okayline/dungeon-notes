@@ -3,6 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.55 - Oct 8 2026, 04:14 HST
+
+![v0.55](screenshots/v0.55.png)
+
+- **Popups never close on a stray click:** the log, about page, codex, board and bag close only via their button ([C]LOSE / [ESC] CLOSE, a real `[data-close]`) or key; the confirm box ignores stray clicks; `#found` closes only on its [ OK ]. About links (codex/pass/board) close the page and open their target.
+- **Victory screen:** shows only the "falls" line (no "party strikes", no "Something is pulling at you"); the last words no longer carry the enemy name (`"quote"` only).
+- **Player name:** stored upper-case (`setName`); "POSTED AS" upper-cases too. A name that fails the rules shows a warning line with the reasons; the name popup's sine wave animates.
+- **End screen post row:** `[P]OST YOUR HIGH SCORE AS NAME` (P or Enter posts), `[B]OARD` on the next line.
+
 ## v0.54 - Oct 8 2026, 04:01 HST
 
 ![v0.54](screenshots/v0.54.png)
