@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.50 - Oct 8 2026, 01:31 HST
+
+![v0.50](screenshots/v0.50.png)
+
+- **Fixtures (rooms no longer pay out on entry):** den, bay, relay, vault and forge rooms hide a `"fixture"` at the front of one wall's pile (`w.fixtureDir`; it takes the normal 5 to 10 points, so about 3 to 8 searches). `FIXTURE[kind]` is the find line ("... It can be used."). Once found, a SEARCH of that wall uses it (`useFixture`), once per day per room (`RS.fixtureDay`): den raises the room's heat to 60% of max; bay heals a third (`heal(st, 1/3)`); relay shows the other door's clue (the relay no longer gives it on entry); vault gives 40 to 110 silver times the floor; forge clears taint and TRIP. The old half-strength return rule is gone. The altar terminal and the bonus room's program encounter still happen as before. Entry still shows a flavor line (`st.tell`).
+- **Party entry lines (`partyEnter`):** every room entry (new or revisit) draws a line from a living party member (never the same speaker twice in a row). ELF, PIXIE and CU SITH have 2 lines per kind (`ENTER_BY_KIND`: den, bay, relay, vault, forge, altar, archive, hall, dead, plain). Recruits and programs use their family's lines (`PARTY_ENTER`) only if none of the three is alive. It replaces the room's own `tell`; KURA alone keeps the tell. A heat tell can still take line 3 first.
+- **Minimap:** the locked door KURA faces is drawn flat white (`.door.focus`, `#ffffff`, no glow) at the cell next to `@` on her facing side. Normal `#` stays `#8f8f8a`.
+- **Turn text:** facing an open door now uses `SEE.arch` (4 lines); locked, painted and sealed doors keep `SEE.door`. Turn buttons are `[ < ]` and `[ > ]` (col 16, the pair stays centered).
+- **Bottom stat row:** `NAME` padded to 11, then `TURN 0000`, then `DAY 01`; no gaps vary with the name (10-character names used to shift the others one column).
+- **Demon talk:** `e.left = R(2, 3)` (was R(1, 2)), so a demon asks at least 2 questions before the gift roll (data 10%, hardware 30%, hybrid 40%, folklore 45%, scaled by personality). A guard ends the questions if the pool runs out. Three questions that sounded like requests were replaced: hardware "do you have a charger? anything?" became "do you remember being plugged in?", hybrid "Would you trade a memory for a secret?" became "Do you keep secrets?", folklore "Have you come with an offering?" became "Have you come to stay?".
+
 ## v0.49 - Oct 8 2026, 01:10 HST
 
 ![v0.49](screenshots/v0.49.png)
