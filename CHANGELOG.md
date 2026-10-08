@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.51 - Oct 8 2026, 02:34 HST
+
+![v0.51](screenshots/v0.51.png)
+
+- **Fight text pacing:** each round's lines wait for a click, Enter or Space before the next one (`replayTimer = -1` sentinel; a blinking `_` marks the wait). The demon's lines come first (`round(..., demonFirst)`; `fight()` passes true), then "The party strikes. -N". Blows still resolve party first; only the display order changed. If the enemy dies, only the party/win lines show. The enemy's bar drops when "The party strikes" shows (`partyIdx`), KURA's when the demon's `-N HP` line shows (`hitIdx`).
+- **CU SITH is wordless:** `VOICE.beast`, `DEMON_ASK.beast`, `beast()`, `famOf()`, `said()`: no quoted speech in fights, talks or the wild-CU SITH folklore voice. Verified over 500 simulated fights and talks.
+- **ICHOR picker:** Enter on ICHOR opens a party list (name and HP, nothing on the right; up/down, 1-9 or click; Enter or a second click gives; Esc back). `giveIchor(st, idx)`: KURA (idx 0) still drinks (`drinkIchor`, 10 ICHOR, +5 HP, TAINT). A wounded demon heals 1 HP per ICHOR (3 if down). A full-health demon takes it for 3 ICHOR: CHAOS demons get `p.buzz` (+2 to its blows until the next sleep; cleared in the sleep step), everyone else just gets a line. `[D]RINK` is gone; `feedIchor` is still exported but unused.
+- **Last words:** `lastWords(e)` in `win()`, after the "falls. +N ICHOR" line. `LAST_WORDS` has 5-6 lines per family (data/hardware/hybrid/folklore), plus `LAST_ANY` ("my Mom is going to be SO mad.") for every family. CU SITH uses `LAST_BEAST` (2 wordless lines).
+- **Break arrival popup:** when a demon comes after you break something, `st.round` is cut to its first line (the stance line pushed [ OK ] off the box).
+- **Roster spreadsheet:** `roster/make.sh` in this repo rebuilds `daily-dungeon-characters.xlsx` from the game's current `rules.js`; it now includes last words. Rebuilt on every commit.
+
 ## v0.50 - Oct 8 2026, 01:31 HST
 
 ![v0.50](screenshots/v0.50.png)
