@@ -3,9 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## Unreleased
+## v0.48 - Oct 8 2026, 00:14 HST
 
-- **Open door search line:** facing an open door (an arch) and searching says "An arch to another room. It <sense of the room beyond>." Senses by kind (never the name): den warm, bay quiet and humming, relay thin tone and ticking, vault cold and dry, forge solder and cooling metal, altar glowing and listening, archive blinking lights; a passage (`hall`) is narrow and bare, a dead end closes in, an ordinary room is bare and quiet. Longest line is exactly 77 characters.
+![v0.48](screenshots/v0.48.png)
+
+- **Room names (bottom stat row):** `NAME  TURN 0000  DAY 01`, upper-cased, max 11 characters. Room 0 = "Stairs up"; the room holding the found stairs = "Stairs down". Otherwise a kind-flavored name, memoized per room in `RS(d,i).name`, unique per floor (falls back to the plain list, then repeats). Never says warm/cold or the real type. Lists: den (Snug, Burrow, Musty), bay (Quiet, Soft, Still), relay (Tone, Static, Dish), vault (Heavy, Sealed, Hushed), forge (Ash, Solder, Soot), altar ("The altar"), archive (Drive, Rack, Spin), all "... room"; passages: Passageway, Conduit, Crawlway, Corridor, Walkway, Service way; dead ends: Dead end, Sealed end; plain: 32 "<Adjective> room" names.
+- **Cell:** `CELL [#][ ]` two one-char slots: first = today's step used (# once stepped and no free steps), second = a spare step held (+).
+- **Open door / arch search line** (was Unreleased): "An arch to another room. It <sense of the room beyond>." Senses by kind (never the name): den warm, bay quiet and humming, relay thin tone and ticking, vault cold and dry, forge solder and cooling metal, altar glowing and listening, archive blinking lights; passage narrow and bare, dead end closes in, plain room bare and quiet. Longest line is 77 characters. Locked door: "A locked door." plus a hint or filler.
+- **Party reply on line 3:** `st.talkLine` marks the reply set by `reply()`; `act()` blanks it on the next action if still unchanged.
+- **Public changelog:** sanitized (no odds, drop rates, room names, hidden mechanics).
 
 ## v0.47 - Oct 7 2026, 23:51 HST
 
