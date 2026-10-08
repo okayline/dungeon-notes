@@ -42,6 +42,8 @@ d=[r[:3]+[r[3],', '.join(fam.get(r[0],[]))] for r in rows('enemy')]
 sheet(ws,['Family','Type','Situation','Line','Enemies that use it'],d,[12,8,36,70,60])
 ws=wb.create_sheet('Personalities')
 sheet(ws,['Personality','Type','Situation','Line'],rows('persona'),[14,10,32,80])
+ws=wb.create_sheet('Omens')
+sheet(ws,['Omen','Effect (all day)','Line 1 text'],o['omen'],[10,44,50])
 ws=wb.create_sheet('Notes')
 for t in ["Notes",
  "Enemies share voice lines by family (data, hardware, hybrid, folklore); the 'Enemies that use it' column lists who speaks them.",

@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.52 - Oct 8 2026, 02:58 HST
+
+![v0.52](screenshots/v0.52.png)
+
+- **Painted doors parked:** `PAINTED_DOORS = false` in floor.js stops new floors from generating false doors. The code, `isFalse` handling and `FALSE_GO` lines stay; floors saved earlier can still hold them. I tried making a press spend the charge and pay a stash (15 to 50 silver times the floor, 30% an item, once per door), then took it back: too hard to balance for now. A painted door press still keeps the charge.
+- **Painted door remark:** pressing one clears the stale line 3 and a living party member may comment (`FALSE_SAY`: ELF 2 lines, PIXIE "It's not a room, it's not a door, it's not anything!", CU SITH wordless 2).
+- **The ? room entry line:** walking into the room holding the unfound locker (`floor.lure`, no `"lure"` in its `found`) replaces "a cleared room"/"a new room" with one of three lines ("The room feels like it is holding its breath." and two more). Only on walk-ins, not on the door-unlock step.
+- **Minimap outline grid:** `.wall` opacity 0.4 to 0.6 (colour unchanged).
+- **Party patience warning:** `snap()`: at 0 patience the first push only warns (`p.warned`, they show their tired line); from the second push on the old 50% snap or leave applies. `warned` clears when patience rises above 0. Applies to talking, looping and fidgeting.
+- **Victory screen:** closes only on [ OK ] (click on the button, or Enter); clicking elsewhere, Space and Esc no longer close it. It also ignores any close for 900 ms after it appears (`doneAt`).
+- **Run end log:** `[R]ESET begins a new run.` is now the last line of the log (and of the download and copy text).
+- **Roster spreadsheet:** new `Omens` sheet (9 omens, 34 lines, each with its effect: ordinary, data x2, folk x2, heat x2, hard 0.5 find, easy 1.6 find, talk 1.6, calm 0.5 heat, loot x3). `roster/make.sh` exports `OMENS` to the dump.
+
 ## v0.51 - Oct 8 2026, 02:34 HST
 
 ![v0.51](screenshots/v0.51.png)

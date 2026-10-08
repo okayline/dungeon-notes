@@ -48,6 +48,9 @@ out.roster.push(["ATOM SLASHER","Unique enemy","—","—","—","Does not talk"
 for(const f of FAMS)for(const l of D.LAST_WORDS[f]||[])out.enemy.push([f,"Family","Last words",l]);
 for(const l of D.LAST_ANY||[])for(const f of FAMS)out.enemy.push([f,"Family","Last words",l]);
 for(const l of D.LAST_BEAST||[])out.party.push(["CU SITH","Party","Last words (wordless)",l]);
+out.omen=[];
+const OMDESC={none:"Ordinary day: no effect (about half of all days)",data:"Data demons twice as likely",folk:"Folklore demons twice as likely",heat:"Rooms heat up twice as fast",hard:"Searching finds half as much",easy:"Searching finds 1.6x as much",talk:"Talking works 1.6x as often",calm:"Rooms heat up half as fast",loot:"Loot drops 3x as often"};
+for(const o of D.OMENS)for(const l of o.lines)out.omen.push([o.key,OMDESC[o.key]||"",l]);
 out.personaOf=D.PERSONA_OF;
 require("fs").writeFileSync(process.env.OUT_DIR+"/rows.json",JSON.stringify(out));
 for(const k of ["roster","party","enemy","persona"])console.log(k,out[k].length);
