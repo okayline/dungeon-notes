@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.48.1 - Oct 8 2026, 00:24 HST
+
+![v0.48.1](screenshots/v0.48.1.png)
+
+- **Rename (player-visible only):** "Daily Digital Demon Dungeon" in the page title, help header (padStart now 71-30-7-13, row stays 71 wide), adventure-log export header, README. Internal strings (save key `daily-dungeon-run`, log filename), comments, `archive/`, and the repo name are unchanged.
+- **Silence tolerance (demon talk):** the first `[S]ILENT` answer to a demon never lowers its mood (`d = max(d, 0)`, so HAUGHTY is forgiven once), and if it was on its last question it gets one more (`e.left += 1`). `e.quiet` counts silences; later ones use the normal persona effect. Tested: after one silence the talk continues 100%; after up to 3 silences HAUGHTY ended 272/500 and PRIM 467/500, none angry.
+
 ## v0.48 - Oct 8 2026, 00:14 HST
 
 ![v0.48](screenshots/v0.48.png)
