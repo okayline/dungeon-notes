@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.54 - Oct 8 2026, 04:01 HST
+
+![v0.54](screenshots/v0.54.png)
+
+- **Player name:** asked at the start of every run (fresh page, old save with no name, after every [R]ESET): a `#found` popup (`mode "name"`, input prefilled with the last name, 3 to 10 of `A-Z a-z 0-9 space _ . -`, Enter or [ENTER] BEGIN). Nothing else takes keys until it is set (`needsName()`). Stored as `st.playerName`; `reset` sets `st.needName = true` and keeps the old name as the default (`RULES.setName`). The sidebar shows it as the first party row's label in place of KURA (upper-case, cut to 8 columns; stats stay KURA's); the PARTY header is unchanged. KURA stays everywhere else. The leaderboard post uses it: `POST YOUR SCORE AS NAME  [ENTER] SEND  [B]OARD`, no name box at the end.
+- **Altar dialogue:** the terminal speaks before it asks. `ALTAR_TALK` has 8 scripts of 5 to 7 lines (never the same one twice in a row in a room: `RS.altarScript`), each ending in an ask to give. The terminal's own lines scroll in from the right and stop at the left (long lines scroll until their end shows); a click, Enter or Space brings the next line (`altarNext`, `st.altar.page`), B or Esc leaves. The gift list only shows on the last line. A terminal already fed today keeps its quiet screen. The answer ("THANK YOU.") still types.
+- **Fight text:** the blinking `_` now also follows the last line while the box waits for your choice (and on question screens), not just between lines.
+- **Last words:** `win()` sets `st.lastLine` (cleared at the next round) instead of adding it to the round text; the victory screen shows it on the line under the art with a blank line before "THE WAY IS CLEAR" (only when the screen is a win; the art slot is a row or two shorter).
+- **Leaderboard Worker:** the pre-check (OPTIONS) now answers a bodiless 204 (the old one returned a body with a 204, which Cloudflare turns into a 500, so every post failed in the browser); CORS is `*` on every answer so the page can read why it was refused; `ALLOW_ORIGIN` takes several comma-separated pages and is enforced by the Worker (a refused page gets `{"error":"origin","seen":"..."}`). The game now says the real reason (page not allowed, slow down, bad name, bad score, or the HTTP status). The [B]OARD button left the bottom border; the board stays in the [?] menu, the B key and the end-of-run log.
+- **End-of-run log:** the buttons ([D]OWNLOAD, C[O]PY, [C]LOSE) and the post row come first, then the epitaph and totals, then the ADVENTURE LOG heading and entries, with [R]ESET last. A run in progress keeps its heading first.
+- **Painted door press:** unchanged this time (painted doors stay off).
 ## v0.53 - Oct 8 2026, 03:30 HST
 
 ![v0.53](screenshots/v0.53.png)
