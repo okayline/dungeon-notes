@@ -3,6 +3,18 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.49 - Oct 8 2026, 01:10 HST
+
+![v0.49](screenshots/v0.49.png)
+
+- **Unlock opens only:** `go()` onto a locked door (not in a fight) spends the day's charge or the spare, calls `FLOOR.grow` (builds the wing, seals the other offer), sets facing and logs "The X door cycles open. The way is clear." KURA does not move; a now-open door is free. Running through a locked door in a fight still moves her. Fixed a double spend of the spare in that running path.
+- **Search costs:** each thing needs 5 to 10 points (was 2 to 5) and every find already taken on that wall multiplies the next cost by 1.5. Fallback need 7 (was 3). The noise hint starts at 3 points (was 2). Average searches per find on one wall: bad day 0.6/search: 11.4, 16.0, 22.4 (1st, 2nd, 3rd); average 1.1: 6.8, 9.3, 13.6; good 1.5: 5.1, 6.8, 10.0; best 1.9: 4.3, 5.8, 8.3. Old average: 3.2 per find at 1.1. Walls hold 0/1/2/3 things in 39.8/43.6/13.6/2.9% of cases (300 runs; stairs counted as a thing); about a third of rooms hide a deep item (20 to 50 points).
+- **Minimap:** open doors are blank (were `=` and `‖`); the facing arrow is not drawn over a `#`.
+- **Fight popup:** body text is the last 2 lines (`maxLines = 2`); `[D]ISCHARGE` removed from the box and the `D` key (the `discharge()` rule is still in `rules.js`, unreachable). KURA gets a 10-block HP bar (party[0].hp / hpmax) under the enemy's, name padded to line up; it updates on the final frame of a round.
+- **Silence tolerance:** pushed in v0.48.1.
+- **Cheat menu (X):** `debugInfo` returns three lines: room/stairs/exits, cell/hidden/terminal/heat/enc, loop/linger/lean/taint/day. It is left-aligned in `#cheat`, one line up (same row as the build number, which sits under the screen at the right).
+- **Public changelog:** older entries rewritten to remove heat, loop, dread, taint, patience, odds and similar details. Full text lives in this file's older entries.
+
 ## v0.48.1 - Oct 8 2026, 00:24 HST
 
 ![v0.48.1](screenshots/v0.48.1.png)
