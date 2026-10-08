@@ -3,6 +3,20 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.53 - Oct 8 2026, 03:30 HST
+
+![v0.53](screenshots/v0.53.png)
+
+- **Leaderboard (Cloudflare Worker + D1, `leaderboard/` in the game repo):** ranked by deepest floor, then most days survived, then earliest post. TURNS are shown as a column and never ranked (spam). One entry per run (`st.runId`, a 16-char id made in `reset`); `RULES.score(st)` gives `{run, floor, days, demons, turns}` (real `st.steps`, not the on-screen TURN). `LEADERBOARD_URL` in index.html is `https://daily-dungeon-board.ddddungeon.workers.dev`; empty means every board button stays hidden (`SMT.setBoard`).
+- **Worker checks:** name 3 to 10 of `A-Z a-z 0-9 space _ . -`; run id `[a-z0-9]{8,40}`; floor 1 to 20 and not above days; days 1 to 400; demons at most 40 a day; turns at most 5000 a day; 5 posts an hour per sender (hashed IP, used only for this); `ALLOW_ORIGIN` must match the page's Origin on POST (wrangler.toml, currently `https://okayline.github.io`); optional `BLOCKLIST` of name words (empty). Scores can't be proven (saves are local), so these only stop casual junk.
+- **Where it shows:** [B]OARD in the bottom border (`SMT.setBoard`), B on the main screen, a `[B]OARD` line in the [?] menu keys list (click or B). After a run ends the log shows `POST YOUR SCORE  NAME [____] [ENTER] SEND`; after posting it says `POSTED AS NAME. RANK N.`
+- **Admin delete:** in X mode (`save.freeSteps`) the board lets up/down pick a row and D delete it: `DELETE /score?id=N` with header `x-admin-key` matching the Worker secret `ADMIN_KEY` (`wrangler secret put`). The key is asked once and kept in localStorage (`dd-admin`). Clicking no longer closes the board in X mode.
+- **Bag (INVOKE):** closes only with `[C]LOSE` (button or C), I or Esc; clicking outside no longer closes it. `[I] closes` left the header. The ICHOR picker's Esc still goes back to the bag.
+- **Adventure log:** buttons are `[D]OWNLOAD   C[O]PY   [C]LOSE` (O copies, C closes; L and Esc still close; a click on the log still closes it).
+- **Text selection:** `body { user-select: none }`; textareas, inputs and `#log pre` stay selectable.
+- **Floor arrival:** line 3 on a new floor and on descending is `atmosphere(st)` now (it used to repeat the deadline already on the status line).
+- **Roster spreadsheet:** rebuilt with `roster/make.sh` (no sheet changes this time).
+
 ## v0.52 - Oct 8 2026, 02:58 HST
 
 ![v0.52](screenshots/v0.52.png)
