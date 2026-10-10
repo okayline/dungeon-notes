@@ -3,6 +3,16 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.57.3 - Oct 10 2026, 03:25 HST
+
+![v0.57.3](screenshots/v0.57.3.png)
+
+- **HOLD moved into INVOKE as two pseudo-items, same pattern as the existing ICHOR/THE HELD DAY entries (`index.html`).** `showInv()` now unshifts `{ name: "Hold Omen", holdOmen: true, ... }` whenever `RULES.available(save).hold` is true, above `{ name: "Release Omen", omen: true, ... }` (renamed from THE HELD DAY — same `omen:true` mechanism, same `RULES.useBankedOmen` call, unchanged behavior) and above ICHOR. Unshift order: ICHOR first, then Hold Omen, then Release Omen last, so the final list reads Release Omen, Hold Omen, ICHOR, ...items — the two time-sensitive omen actions sit above the currency-like one.
+  - **Hold Omen keeps its confirmation popup, by the dev's explicit call** (bag items are normally immediate-on-Enter, this one isn't): `useInv()` special-cases `it.holdOmen` to close the bag and open the existing `holdBox()` ("GO ON STANDBY?") instead of running the action directly. The "yes" path is unchanged plumbing — `answerConfirm()` sets `holdOK = true` and calls `act("hold")`, which still falls through to `RULES.hold(save)` via the generic `: RULES[name](save)` dispatch at the end of the big action ternary, exactly as it did when STA[N]DBY was a border button. Declining returns to the main screen rather than reopening the bag (same as every other confirm box in this codebase — `restoreBoxes()` doesn't know to reopen INVOKE); noted as a minor UX rough edge, not fixed this pass.
+  - Border (`screen.js`): `STA[N]DBY` text removed from the bottom-border line entirely (not just un-wired) — the earlier v0.57.2 pass had only removed `index.html`'s click/key wiring for it, which left the bare, now-dead-looking `STA[N]DBY ` label still rendering in the border until this pass caught it in a screenshot check. `const free = ..., daily = cell.padEnd(15) + "STA[N]DBY "` → just `const free = " [F]IGHT [T]ALK [I]NVOKE [S]EARCH"`, right side of that line now blank.
+  - `index.html` cleanup alongside the border change: the `.replace("STA[N]DBY", b(...))` border-button wiring, the `n: "hold"` key binding, and the now-unused `.btn[data-act=hold]` CSS nudge rule are all removed. The `[?]` help menu's standalone `STA[N]DBY ....` line moved to sit under `[I]NVOKE`, split into two lines (`Hold Omen` / `Release Omen`) describing what each does.
+  - Tested: `new Function()` syntax-check on the extracted inline script (still passes), 300-run fuzz (5 timezones, random skew, `renderScreen()` called every turn) at 0 crashes, and a Playwright screenshot pass confirming: the bag shows both new entries with correct detail text, selecting Hold Omen opens the same "GO ON STANDBY?" box as before, and the border's bottom-right is now blank with no leftover dead text.
+
 ## v0.57.2 - Oct 10 2026, 03:20 HST
 
 ![v0.57.2](screenshots/v0.57.2.png)
