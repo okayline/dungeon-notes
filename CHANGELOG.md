@@ -3,6 +3,14 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.57.2 - Oct 10 2026, 03:20 HST
+
+![v0.57.2](screenshots/v0.57.2.png)
+
+- **Removed the `CELL [#]` indicator from `screen.js`'s bottom border**, per the dev's follow-up call right after v0.57.1: with the charge system itself gone, a visible gauge for it was no longer meaningful. `const free = ..., cell = ..., daily = cell.padEnd(15) + "STA[N]DBY "` simplified to `const free = ..., daily = "STA[N]DBY "` — `STA[N]DBY` now fills the space CELL used to occupy, right-aligned same as before. No `index.html` changes needed: nothing there referenced the `CELL` text (it was pure `screen.js` border rendering, not parsed/replaced elsewhere). The gate itself (`today(st).stepped`) is untouched — still exactly one locked door a day, just silent about it on screen now. `debugInfo()`'s CELL line (the hidden infinite-steps cheat readout) was left as-is; that's dev tooling, not player-facing UI.
+- Confirmed the dev's mental model directly: HOLD is kept specifically because it's the STANDBY-omen-banking trigger, not a flavor button — reconfirmed this wasn't touched by either v0.57.1 or this change.
+- Tested: 300-run fuzz (5 timezones, random skew) through real `go()`/`search()`/`fight()` play, now also calling `renderScreen()` every turn to exercise the border layout math directly (not just the action logic) — 0 crashes, border stays a clean 80 columns.
+
 ## v0.57.1 - Oct 10 2026, 03:15 HST
 
 ![v0.57.1](screenshots/v0.57.1.png)
