@@ -3,6 +3,20 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.57.1 - Oct 10 2026, 03:15 HST
+
+![v0.57.1](screenshots/v0.57.1.png)
+
+- **Removed the CELL charge/spare/discharge system from `rules.js`, per the dev's explicit "don't need it" call.** `today(st).stepped` (one boolean per real day) is still the only gate, now ungated by anything else:
+  - **`discharge()` deleted outright.** It turned out to be dead code already — `index.html`'s combat key map (`{ f: "fight", t: "talk", g: "offer", i: "invoke", r: "run" }`) never included a `d` binding and no button rendered it, so the only way to trigger it was `act("discharge")` directly, which nothing in the UI called. Its `dischargeBox()`, `dischargeOK`, the `act()` branch, and the `[D]ISCHARGE` help-menu line are all gone from `index.html` too. `win(st, lines, burned)`'s now-dead third parameter (the "burned out, better drops" branch discharge used to trigger) is removed — `win(st, lines)`, flat 50%/25% silver/item odds, matching its old non-discharge values.
+  - **The "spare charge" catch-up mechanic is gone.** `sync()` no longer computes `away`/`earned` or sets `st.spare`; skipping a real day is just a day with no door opened, same as any other skipped day now — no more banking a second door-open for the next visit. `go()`'s `spareUse` branch is deleted; the locked-door gate is now just `(locked || fals) && today(st).stepped && !st.freeSteps`.
+  - `reset()`'s field-cleanup list, `debugInfo()`'s CELL row, `available()`'s `spent` calc, and the STANDBY summary line (`chargeLeft`-adjacent `A spare cell is stored` text) all had their spare references stripped.
+  - `chargeLeft` dropped from the exported API (it only existed for the discharge button's "day's charge or the spare" wording).
+  - `index.html`'s door-open confirmation popup no longer branches on spare ("USE THE SPARE CELL..." wording removed, always "POWER THE ___ DOOR?").
+  - `screen.js`'s bottom-border CELL indicator is a single `[#]`/`[ ]` slot instead of two (`CELL [#][+]` → `CELL [#]`); `.padEnd(15)` already absorbs the shorter string so the border's column math didn't need touching.
+  - **HOLD (STA[N]DBY) is untouched and still shares the same one-per-day `today.stepped` flag** — confirmed this is load-bearing, not just a flavor button: `hold()` setting `today.held = true` is what `sync()` reads the next real day to trigger STANDBY (banking that day's omen into `st.bankedOmen`, usable later as THE HELD DAY in INVOKE). So the day's one action is still "open a locked door, or go on STANDBY, not both" — removing CELL's complexity didn't touch that trade-off, only the spare/discharge layers on top of it.
+  - Tested: 300-run fuzz across 5 timezones and random clock-skew with `freesteps` on (0 crashes, matching prior sessions' baseline), plus a second 300-run pass with `freesteps` OFF driving real `go()`/`search()`/`fight()` play — the one-door gate (`"> The door won't cycle..."`) fired 2,784 times across those runs with 0 crashes, confirming the simplified gate blocks correctly in ordinary play, not just in isolation. Confirmed `st.spare` is `undefined` after a multi-day skip (no catch-up banked) and `RULES.discharge`/`RULES.chargeLeft` are `undefined` from the module.
+
 ## v0.57 - Oct 10 2026, 03:00 HST
 
 ![v0.57](screenshots/v0.57.png)
