@@ -9,6 +9,19 @@ Covers async multiplayer (the main thread), plus two other systems discussed in 
 ## Goal
 Add asynchronous multiplayer — everyone feels like they're playing "the same" dungeon — without letting players spoil the experience for each other (no "vault's behind the north door, second wing" callouts), and while keeping the amount of hard-coded determinism low.
 
+## Status: what shipped in v0.56 (this session)
+
+**Shipped:** the shape/contents split, for real, in the live game.
+- Floor **shape** (wing count/topology, room-kind pairings, the 3x3-per-wing room grid) is now seeded from `(seasonEpoch, floorDepth)`, identical for every player while that lunar epoch lasts — generated lazily per-wing exactly as described below.
+- Floor **contents** — which paired kind lands in which slot, where each room's hidden item/pile is, and the Day-7 wildcard's kind — now come from a second, private per-account seed (`pseed`, rerolled every floor), per the "Contents/presentation (private per account)" list below.
+- Fixed a pre-existing bug along the way: the Day-7 wildcard's kind was being drawn from the *shared* seed, even though this doc already called for it to be private (see "Day 7 ... is a private, per-player wildcard" below). It's private now.
+
+**Not shipped — a real gap, not a minor one:** the **door-to-compass-direction mapping is still shared**, not private. See "Minimap handling" below — the per-account rotate/mirror transform that section calls "decided" was never actually built (not this session, not before it). Concretely: two players on the same shared wing right now would still see the same compass layout (same room behind the same N/S/E/W door), so a callout like "the vault's north door, second wing" is still a real spoiler today. Closing this is probably the single highest-priority remaining piece of Part 1, since it's the main threat model the whole shape/contents split exists to prevent.
+
+**Not shipped, by scope decision (not forgotten):** everything under "Lighter-lift shared-experience ideas," "Harder ideas considered" (live presence, player-to-player economy), and "Notes, bones, and other things players leave behind" below — all need new backend/Worker/D1 work and were explicitly deferred for a later session. Parts 2 (alignment naming) and 3 (Dissonance) are separate, unrelated design threads and were also out of scope this session.
+
+**Known pre-existing mismatch, not touched this session:** the "Bonus room" section below describes a private roll made fresh *every day*. The shipped game actually rolls it once per wing, at the moment a wing's door is unlocked (so once-or-twice per floor, not once per day) — this predates this session and wasn't part of the shape/contents work, just noticed in passing. Worth reconciling doc vs. code at some point.
+
 ## Core idea: shared shape, private contents
 
 Split a floor into two layers:
@@ -79,7 +92,9 @@ Reworked from earlier ideas (season-level, then week-level) to: **rolled private
 
 **Accepted tradeoff:** this makes the room-kind roster no longer strictly identical for every player every floor (a bonus-room day privately swaps one kind out for that player only). Fine — it's rare per-player, and reads as a nice personal variation rather than a broken shared-experience guarantee.
 
-## Minimap handling — decided
+## Minimap handling — decided, not yet implemented
+
+(See the status note near the top of Part 1 — this section describes the intended design; the game doesn't do this yet. Doors' compass directions and grid layout still come from the shared seed.)
 
 The minimap renders the shared shape graph, but direction is still privately scrambled — so a literal grid-based minimap (as currently built, with wall glyphs, door states, facing arrow) won't be pixel-identical between players even though the underlying wing count/shapes/content are.
 
@@ -198,6 +213,8 @@ Starting point: the daily omen already exists and quietly nudges invisible math 
 
 **Omen stays calendar-seeded, not per-player RNG.** Confirmed/kept as-is: the daily omen is a deterministic function of the real calendar date, same as the floor-shape layer in Part 1. Every player sees the same omen on the same real day. This is what makes the streak mechanic below meaningful as a *shared* event rather than a personal stat.
 
+**Shipped in v0.56.** The omen now keys off a pure UTC calendar day (`floor(now / 86400000)`) — identical for every player at every instant — replacing the old per-run random salt. Each client "stamps" (caches) the currently-true value once, at the exact moment of its own local midnight, and holds it until the next one, so it still reads as "resets at midnight, your time" even though it's one shared sequence underneath. Net effect: a bounded, predictable, recurring lag of at most one day near each player's own midnight (verified by simulation) — never more than that, and it never affects the streak or any other shared/authoritative logic, only what a given player happens to be looking at in that window.
+
 ## STANDBY banking (Variant B — delayed use)
 
 Gives the STANDBY (rest/skip-the-day) action a real strategic payoff instead of just forfeiting a day.
@@ -206,6 +223,7 @@ Gives the STANDBY (rest/skip-the-day) action a real strategic payoff instead of 
 - A banked omen can be spent on a later day **instead of** that day's natural omen, at the player's choice.
 - Lets a player who knows a tough floor/demon is coming deliberately take an off day specifically because it rolled a great omen, bank it, and cash it in right before the encounter that matters — a scheduling decision, not a reroll.
 - **Needs balance work later:** cap size, whether banked omens decay/expire, whether banking a bad omen is ever worth doing (insurance vs. hoarding), and whether STANDBY should have any other cost to offset how strong banking-a-great-omen could become.
+- **Shipped in v0.56:** cap of exactly 1 (a new held day simply overwrites whatever was already banked — no stacking). Spent via a new `[U]SE DAY` button/key, which only appears when there's something banked to spend. The bank is consumed only if actually used; otherwise it just sits there indefinitely. The "TBD" balance questions above are still open — this is a first-cut implementation, not a tuned one.
 
 ## Omen streaks → shared room unlocks
 
@@ -215,10 +233,14 @@ Gives the STANDBY (rest/skip-the-day) action a real strategic payoff instead of 
 - Should be **rare and telegraphed** — since the streak is shared, there's room to foreshadow it building (the streak is the same for everyone, so a buildup cue isn't a spoiler) before it actually unlocks.
 - Ties into the existing faction-season idea (Part 1's Lighter-lift list) — a LAW-trending stretch of the real calendar is now visibly "why" the bonus room opened that week, same underlying signal driving two systems.
 
+**Shipped in v0.56.** Each omen key got a LAW/CHAOS/neutral lean tag (an original call made during implementation, not pre-specified): `data`/`hard` lean LAW, `folk`/`easy`/`loot` lean CHAOS, everything else is neutral and breaks a streak. `omenStreak(day)` checks whether `day`, `day-1`, `day-2` all share a lean — pure function of the date, no stored state needed. On a LAW streak, the existing private bonus-room roll (still per-wing-door-unlock, see the status note above — not per-day) gets a flat +15% boost on top of its normal ~10%. On a CHAOS streak, a new room kind — **THE HUSK**, the anti-bonus mirror of the bonus room ("the archive") — becomes eligible at 15%, exclusively during the streak; its hidden-item pile is skewed toward extra demon encounters and away from loot, and the first visit guarantees a dangerous (possibly corrupted) demon encounter, mirroring how the archive guarantees a friendly recruitable PROGRAM.
+
+Because LAW only has 2 qualifying keys against CHAOS's 3, the two streaks are not equally rare: simulated over 20,000 days, LAW streaks land around 1-in-513 days and CHAOS streaks around 1-in-160 — noticeably more CHAOS than LAW. Flagged as a tuning knob, not yet addressed; the "rare and telegraphed" goal above is only half-met as shipped (rare, yes; no telegraphing/buildup cue was built this session — a player currently has no in-game signal that a streak is building toward 3).
+
 ## Flavor additions (small, queued for later alongside other text work)
 
-- **Fixture-wall tell:** a near-miss-style flavor line on whichever wall actually holds a hidden fixture, matching the existing "warmer than the others" tell pattern.
-- **Floor-entry flavor lines:** an arrival line hinting at which demon family dominates the floor's roster (e.g. "the halls feel old here" for folklore-heavy, "wires hum beneath the floor" for data-heavy) without naming anything specific — same "hint, don't tell" vocabulary the game already uses for room-kind senses.
+- **Fixture-wall tell:** a near-miss-style flavor line on whichever wall actually holds a hidden fixture, matching the existing "warmer than the others" tell pattern. **Shipped in v0.56.**
+- **Floor-entry flavor lines:** an arrival line hinting at which demon family dominates the floor's roster (e.g. "the halls feel old here" for folklore-heavy, "wires hum beneath the floor" for data-heavy) without naming anything specific — same "hint, don't tell" vocabulary the game already uses for room-kind senses. **Shipped in v0.56**, and also carries the streak state when one is active ("the pattern holds"/"the pattern breaks").
 
 ---
 
@@ -226,6 +248,8 @@ Gives the STANDBY (rest/skip-the-day) action a real strategic payoff instead of 
 
 - Final alignment tag naming (Part 2) — no decision made.
 - Whether Dissonance should merge into Patience or stay a separate system (Part 3).
-- STANDBY-banked-omen balance (Part 4) — cap size, decay/expiry, whether banking bad omens is worth it, whether STANDBY needs an offsetting cost.
-- Exact daily probability/telegraphing design for the omen-streak room unlock (Part 4).
+- **The per-account door-to-compass/minimap transform (Part 1, "Minimap handling") is still unbuilt.** This is the main unresolved piece of Part 1 now that shape/contents are shipped — without it, comparing compass-based room callouts between players is still a real spoiler, which was the thing Part 1 set out to prevent in the first place.
+- The pre-existing Bonus-room cadence mismatch (doc says per-day, code does per-wing-door-unlock) — not caused by this session, not yet reconciled either way.
+- STANDBY-banked-omen balance (Part 4) — cap is now 1 (shipped), but decay/expiry, whether banking bad omens is worth it, and whether STANDBY needs an offsetting cost are all still open.
+- Telegraphing for the omen-streak room unlock (Part 4) — the streak itself shipped, but no in-game buildup cue exists yet, so "rare and telegraphed" is only half-true as shipped. Also worth revisiting the LAW/CHAOS lean mapping, since it currently makes CHAOS streaks ~3x more common than LAW streaks.
 - Everything listed under Part 1's own open-questions section above.
