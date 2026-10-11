@@ -3,6 +3,18 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.96 - Crescent Over the Gate - Oct 11 2026, 11:40 HST
+
+![v0.96](screenshots/v0.96.png)
+
+- **A fixed waxing crescent on the title screen** (`screen.js` `renderTitle`, `index.html` `colorizeTitle`). Commit `e12aa13`. No Worker change.
+  - **Art:** seven rows by thirteen columns of `▀ ▄ █ ▓` (lit on the right, the northern-sky waxing side the header's moon box already uses), generated once from a disc minus an offset disc at the screen's real cell shape (a column is about 0.38 of a row), then hard-coded as `CRESCENT`. The two cells along the inner edge of each row are the lettering's own dotted block `▓`.
+  - **Layout:** the moon, a three-column gap and the 56-column lettering sit as one group in the 78-column band (`CRES_COL = 3`, so the lettering moves right by 19); the two lettering lines are still centered on each other. The moon takes banner rows 1 to 7 (`CRES_ROW = 1`), the rows the lettering fills. `SMT.CRES` (`w`, `row`, `col`, `rows`) tells the page where it is.
+  - **Page:** the moon's cells get `.cres` (the moon blue, flat). The dotted ones are also `.wm`, boxed like the lettering's own. No glow and no animation (the header box's `.lit` breathes; this does not), so the dots are exactly the lettering's dark.
+  - **Same every day.** The phase-following version (new, full and the rest, each with its own art) was offered and left for later.
+- **Also:** `VERSION` to v0.96. The header and banner images (a larger header and a 1920x480 itch banner of the crescent beside the lettering) are not in the repo.
+- **Testing (light):** the title renders with no page errors and every line still passes the 80-column check; a screenshot at 1000x760. Not checked: a full run, other browsers.
+
 ## v0.95 - The Locked Drawer - Oct 11 2026, 10:51 HST
 
 ![v0.95](screenshots/v0.95.png)
