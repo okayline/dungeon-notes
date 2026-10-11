@@ -3,6 +3,12 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.99.1 - The Twenty-Sixth Night - Oct 11 2026, 13:10 HST
+
+![v0.99.1](screenshots/v0.99.1.png)
+
+- **`PKANJI`'s last entry is 二十六夜** (was 有明月, which the dev found has no dictionary entry; 十三夜 and 十六夜 were confirmed there). 二十六夜 is the traditional night-count name for the waning crescent (the 26th-night moon vigils, 二十六夜待ち; ja.wikipedia 月待塔). Header reads `LUNAR DAY 25/29  二十六夜 WANE CRESC`; the strict width check passes for all frames. `VERSION` to v0.99.1.
+
 ## v0.99 - Moon in Kanji - Oct 11 2026, 13:00 HST
 
 ![v0.99](screenshots/v0.99.png)
