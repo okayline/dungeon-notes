@@ -24,6 +24,8 @@ jobs:
       TZ: Pacific/Honolulu
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: main          # always the newest saves, even when an old run is re-run
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -49,4 +51,5 @@ jobs:
           git config user.email "bots@users.noreply.github.com"
           git add bots
           git diff --cached --quiet || git commit -q -m "Bots: $(TZ=Pacific/Honolulu date '+%b %d, %H:%M HST')"
-          git pull -q --rebase && git push -q
+          # If the repo moved while the bots were playing, replay this commit on top; where both touched a file, the bots' copy wins.
+          git pull -q --rebase -X theirs && git push -q
