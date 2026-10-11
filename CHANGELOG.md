@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.59 - Oct 10 2026, 20:05 HST
+
+- **Dissonance added to `rules.js`, folded straight into the existing `patience` number rather than a second hidden value — the fold-in call made earlier this session in the design doc (Part 5).** Every standing member (KURA included, via `st.align`) has a gap against every other: same alignment 0, one side NEUTRAL 1, opposite LAW/CHAOS 2. A member's tension is the worst gap against anyone else currently standing (`hp > 0`), computed live rather than cached (`memberAlign`, `alignGap`, `tensionOf` — all private, module-scope, inserted right after the existing `STANCE_TALK` const).
+  - Three wear sources, each table keyed by gap size (1 or 2; gap 0 is always 0 and absent from the tables):
+    - **Fighting** (`fight()`): `DISSONANCE_FIGHT = { 1: 1, 2: 2 }`, applied once per fight resolution via `wearTension(st, DISSONANCE_FIGHT)` right after the existing `lean()`/`win()` calls.
+    - **Lingering in a hot room** (`act()`): `DISSONANCE_LINGER = { 1: 0, 2: 1 }`, fires once per `LINGER_AT` (30) crossed, gated on `heatTier(rs.heat) >= 2` — mirrors the existing linger-tracking shape (`rs.linger++`) rather than adding a parallel counter.
+    - **Skipping a real day** (`sync()`): `DISSONANCE_SKIP = { 1: 0, 2: 1 }`, fires once per `sync()` call where `!st.today.stepped && !held` — i.e. not even a STANDBY hold covered the day.
+  - `wearTension(st, table)` iterates `st.party`, skips dead/missing members, floors at 0 same as every other patience decrement in the file (`Math.max(0, (p.patience ?? PATIENCE) - w)`).
+  - **New tell, not a new flag:** `chat()`'s line-selection ternary gained `p.patience === 0 && tensionOf(st, p) > 0` ahead of the existing `p.patience <= 2` branch, pulling from two new tables (`PARTY_TENSE` / `FAMILY_TENSE`, same per-member/per-family shape as `PARTY_TIRED`/`FAMILY_TIRED`) instead of the ordinary zero-patience tired line. Computed live at display time — no `p.tense` flag (one was tried, then removed as redundant: nothing needs to *clear* it, since `tensionOf()` is just as cheap to call again).
+  - **Known, intentional imbalance** (flagged in the design doc as TBD, not a bug): `DISSONANCE_SKIP`'s max value (1) loses outright to the nightly +3 patience regen, even at the worst possible alignment gap — a skipped day with max tension still nets +2 patience. Mechanism is wired correctly (verified it does fire); it just doesn't yet erode an unmanaged party on its own. Fight and linger wear are large enough to matter in-session; skip wear is a placeholder pending balance.
+  - **Not implemented** (per the design doc's own "still open" framing): give-to-party-member easing tension, any omen tie-in, cross-alignment combo-skill payoffs, an explicit NEUTRAL bridge discount beyond its naturally smaller gap.
+  - **Tested:** `node -c rules.js` syntax check. Direct `RULES` module simulation (bootstrapping a real `st.dungeon` via `RULES.talk(st)` → `ensureFloor()`, since a hand-built fake dungeon object crashes `RS()`): confirmed fight-wear scales by gap (opposite pair -2/round, neutral-adjacent -1/round, same-alignment -0/round), the `PARTY_TENSE`/`FAMILY_TENSE` line correctly replaces the ordinary tired line when tension (not talk fatigue) is the reason for zero patience, the control case (no tension → ordinary tired line unchanged) still holds, and linger-wear fires exactly once per `LINGER_AT` crossed. 200-trial × 40-action fuzz (randomized alignments, random fight/talk/go/search/turn/tick) = 8000 actions, 0 crashes — confirms the new `act()` hook, which now runs on every single action in the game, introduced no regressions elsewhere.
+
 ## v0.58 - Oct 10 2026, 18:55 HST
 
 ![v0.58](screenshots/v0.58.png)
