@@ -1,7 +1,7 @@
 # Daily Dungeon — Theorycrafting Notes
 **v7 — Oct 11 2026**
 
-Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v0.70** (one room a day).
+Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v0.74** (one room a day, two doors on one wall).
 
 Moved out since v6, because they shipped or were settled: faction seasons (design doc Part 10), the title screen including its unbuilt stages 4–5 (Part 11), Dissonance and its open pieces (Part 5), alignment tag renames (Part 6), and the Hold/Release Omen consolidation (Part 1). The read-budget rules for any async feature are in the design doc's Part 10 as well.
 
@@ -154,6 +154,12 @@ Deferred and deliberately undesigned. There is already a real mechanic the playe
 ## 6. Bonus room and THE VOID on one-room floors (to do)
 
 Both are switched off as of v0.70 (`BONUS_ROOMS = false`). They used to take over a wing's passage or dead end, and one-room floors have neither. They need a new home before they come back. One idea floated: something hidden inside that day's room, a stash for the bonus and an ambush for the void. The omen-streak trigger and the moon-weighted roll are still in the code, dormant, along with the streak telegraph line.
+
+---
+
+## 7. The late-week start rule (to revisit)
+
+A run started with fewer than two days left in the week is given next week's floor (`firstDeadline()`), so a Sunday start has until the following Sunday. It exists so a weekend start isn't unwinnable. Left as is for now; to come back to. The title screen's WEEK line says so on those days as of v0.74.
 
 ---
 

@@ -3,6 +3,21 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.74 - Whispers - Oct 11 2026, 02:12 HST
+
+![v0.74](screenshots/v0.74.png)
+
+- **Title screen stage 5: rumor cards and the ambient-events channel.** Commit `0b6f2e8` (committed 01:56, amended several times, pushed 02:12). **The Worker changed again: `schema.sql` re-run and a redeploy are needed for `/event` and `/feed`.** The dev deployed v0.73's Worker at about 02:10 (`/stats` confirmed answering); until this one is deployed too, the title falls back to `/season`, `/top?n=1` and `/stats`, and events are posted to a 404 and dropped.
+  - **`rules.js`:** `ev(st, t, v)` pushes `{ t }` or `{ t, v }` onto `st.events` (the last 8 are kept). Eleven tags: `refused` (gift thrown back), `asked` (a demon's first question of an encounter), `restored`, `trickster`, `altar` (a "good" mood offering), `joined`, `silent` (to a demon), `deep`, `left` (both snap-and-leave paths), `fall` (KURA struck down), `words` (a beaten demon's last words; `v` is the index into `ALL_WORDS`, exported as `RULES.lastWordsList`). The rules never touch the network.
+  - **`index.html`:** `flushEvents()` runs at the top of `persist()`: takes `save.events`, deletes it, and posts up to four of them to `/event` with `keepalive`, fire-and-forget. Nothing is sent with the X cheat on. `rumorCards()` turns the feed's events into lines from `RUMORS` (three or four wordings per tag, chosen by `made` plus position) and `The dungeon whispered, "..."` with four lead-ins for `words`; unknown tags and out-of-range indexes are skipped; at most eight, no duplicates. `buildTitleCards()` interleaves two number cards, then one rumor.
+  - **Worker:** `events (id, type, v, made, who)`. `POST /event`: origin check, tag must be in `EVENT_TAGS`, `v` absent or an integer 0-199, 30 an hour per sender hash, then prune to the newest 20 of that tag (rows under an hour old are kept regardless, so the rate count is honest). `GET /feed` returns `{ epoch, law, chaos, counts, lastFall, deepest, events }` in one response, each part wrapped so a missing table just leaves it empty.
+  - **No free text anywhere in the channel** (last words travel as an index), so it can't carry a message. The "last words" are a demon's: KURA has none in the game yet.
+- **Fight-end screen:** laid out whole, then revealed in beats 700ms apart (art, last words, verdict, each result line, `[ OK ]`) by toggling `visibility`, so nothing shifts. Only the first showing of a given ending unfolds (`doneSeen` keyed on run and step count). A click anywhere in the box or Enter during the reveal shows the rest; the next closes.
+- **Controls, three passes in one evening with the dev:** `[ ^ ]` is now the "do" action (found stairs underfoot: descend; an open door ahead or the lone door: go through; otherwise search, which also listens, consults the moon and wakes the terminal). The up arrow is the same. Between `[ < ]` and `[ > ]`, `st.actLabel` (`actLabel()` in `rules.js`: LISTEN, OPEN, ENTER, SEARCH, USE, OFFER, CONSULT, DESCEND) replaces the compass letter and is itself a `do` button. Looking is a separate button at the right of that row whose label is the next state (`[ UP ]`, `[ DOWN ]`, `[ AHEAD ]`); U cycles, the down arrow looks down. The caret is the same button style as the turn arrows, scaled 1.35x by transform. `[S]EARCH` stays on the bottom bar by the dev's call.
+- **Title WEEK line:** with under two days left it reads `closes tonight/tomorrow. New runs get next week's.` The dev had read "0 days left" on the title against "7 days" in a fresh run as a bug; the run was right (`firstDeadline()`'s grace week).
+- **To come back to (dev's ask):** the late-week start rule itself. A run begun on Saturday or Sunday gets next week's floor and so a full 7-8 days; whether that should stay is open.
+- **Tested lightly:** the Worker against `node:sqlite` (valid and invalid events, the rate limit, `/feed`), and three short Playwright passes (feed with sample events, the fight-end reveal and skip, the new buttons). Zero page errors.
+
 ## v0.73 - Rumors and Numbers - Oct 11 2026, 01:51 HST
 
 ![v0.73](screenshots/v0.73.png)
