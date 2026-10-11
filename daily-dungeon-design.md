@@ -1,8 +1,8 @@
 # Daily Dungeon — Design Doc
 
-This is the general design doc, covering how the game actually plays: the daily loop, floor/room generation, combat, demons, Patience, alignment, items, omens, and run structure. It folds in what used to be a separate async-multiplayer-focused doc (now Part 10 below) alongside the core-mechanics writeup that didn't have a home before.
+How the game plays and why: the daily loop, floors and rooms, combat, the party, alignment, items, omens, run structure, async multiplayer, and the title screen. Current as of **v0.62.2**.
 
-One file, no version suffix — git history is the version history. Earlier drafts (a prior `v1`/`v2`/`v3` filename scheme) existed briefly but were dropped in favor of just editing this file in place and letting commits carry the history; look at the commit log or `git log -p` on this path for anything an older revision said differently.
+One file, no version suffix; git history is the version history. Ideas that are not built and not yet settled live in `theorycrafting-notes.md`. Exact per-release detail lives in `CHANGELOG.md`.
 
 ---
 
@@ -22,13 +22,12 @@ Everything else — searching, turning, talking to party or demons, using items,
 - any camp-triggered PROGRAM jobs run (COMPILER, CACHE — see Part 7),
 - and that night's omen gets **banked**.
 
-**Omen banking:** if yesterday was a STANDBY day, `st.bankedOmen` is set to that day's omen (one slot — a new banked day simply overwrites whatever was already held, no stacking). The player can later choose to apply the banked omen retroactively instead of today's natural one (`useBankedOmen`); it's one-shot and clears at the next sunrise whether spent or not. This is a scheduling tool: bank a day that happened to roll a good omen, then cash it in right before a floor or demon that matters, rather than a reroll.
-
-**Hold/Release cooldown (shipped v0.58):** releasing a banked omen also starts a flat **7-real-day** cooldown before KURA can hold again (`st.omenCooldownDay`, checked against `st.day` — a count of real days elapsed, so skipped days still count against it). This is the offsetting cost on *Release*, not Hold — a calendar-week version was considered and rejected, since it would let a player release right before the week's reset for close to no cost. In the bag (INVOKE), Hold Omen and Release Omen share one morphing control: Hold Omen normally, Release Omen once a day's banked, greyed out (with the days left folded into its own label) during the cooldown.
-
-**Hold/Release UI (shipped v0.61/v0.61.1):** moved out of the numbered item list entirely, into its own dedicated button + `H` key on the bag's bottom action bar, alongside [ENTER] use and [C]LOSE — it no longer takes up a numbered slot or bumps a found item down. No explanatory text in the bag itself anymore; the button's own label carries the state (`Hold Omen` / `Release Omen` / `Hold Omen (Nd)` while cooling), full explanation lives in the `?` help menu only.
+**Omen banking (Hold Omen / Release Omen):** a STANDBY night banks that day's omen in `st.bankedOmen` — one slot, a newer held day overwrites the old one, no stacking. The banked omen waits until the player releases it (`useBankedOmen`), which applies it in place of that day's natural omen; it's gone at the next sunrise. This is a scheduling tool, not a reroll: bank a day that happened to roll a good omen, then cash it in right before a floor or demon that matters.
+- **Cooldown:** releasing starts a flat **7-real-day** cooldown before KURA can hold again (`st.omenCooldownDay` against `st.day`, a count of real days, so skipped days still count). The cost sits on Release, not Hold. A calendar-week cooldown was rejected: it would let a player release right before the week's reset for close to no cost.
+- **UI:** one morphing button with its own `H` key, in the bag's foot block beside `[ENTER] use` and `[C]LOSE` (pinned there, so it stays visible however long the list is). It is not a numbered item. The label carries the state: `Hold Omen`, `Release Omen`, or `Hold Omen (Nd)` greyed out while cooling. The explanation lives only in the `?` menu.
 
 Every action runs `sync()` first, which also: halves every room's heat overnight, decays taint by 1, restores 3 Patience to each party member, heals a little HP to the party, rolls that day's bonus/void room placement (Part 8), and checks the floor's deadline — missing it ends the run (Part 9).
+
 
 ---
 
@@ -115,29 +114,31 @@ Gift pricing runs on a taste matrix by family (tech/both/spirit/plain/silver pre
 
 The party caps at **4** (KURA + 3). A demon that wants to join a full party offers a swap instead — the player picks who to send away (KURA can't be swapped) or declines and the demon leaves.
 
-**Dissonance (design only, settled on folding into Patience — not yet built):** the risk side of mixed-alignment parties, named Dissonance, and **decided to be the same underlying value as Patience above, not a second hidden number** (a separate theorycrafting thread on this project reached the same lean independently: "fold into patience, don't build a second meter"). Every standing member (KURA included, since she has her own alignment too) has an alignment-gap against every other standing member — same alignment = 0, one side NEUTRAL = 1, LAW vs CHAOS = 2 — and that gap is what Dissonance tracks: a member's tension is the gap against whoever in the current roster they clash with hardest.
+**Dissonance (shipped v0.59):** the risk side of mixed-alignment parties. It is the same number as Patience, not a second meter. Every standing member (KURA included, via her own alignment) has a gap against every other standing member — same alignment 0, one side NEUTRAL 1, LAW vs CHAOS 2 — and a member's tension is the worst gap against anyone else standing, computed live.
 
-Three new wear sources feed into that member's ordinary Patience, on top of the drains Patience already has (over-talking, breaking items, nagging, disliked answers, etc.), scaled by gap size — bigger for an opposite pair than a neutral-adjacent one:
-- **Fighting** while tension is present.
-- **Skipping a day** — letting a real day pass with no step at all, not even STANDBY — while tension exists. The point is an unmanaged mixed party gets worse even when nothing is actively happening, not only during fights.
-- **Lingering in a hot room** while tense, a smaller repeating tick the longer the stay.
+Three wear sources feed that tension into the member's Patience, on top of Patience's ordinary drains:
 
-Exact wear amounts are TBD/balance-later; the tuning targets stay what they were — mixed parties shouldn't strictly dominate pure ones, and a careless mixed party should collapse by around floor 3.
+| Source | Gap 1 | Gap 2 | When |
+|---|---|---|---|
+| Fighting | −1 | −2 | every fight **round** |
+| Lingering | 0 | −1 | each time the stay in a hot room (heat tier 2+) crosses another 30 actions |
+| Skipping | 0 | −1 | once per return, if any real day passed with no step and no STANDBY (days away count) |
 
-**Read-out:** no separate state tracker — Patience's own level doubles as the Dissonance read, per tense member:
-- **CALM** — Patience 3–5
-- **STRAINED** — Patience 1–2
-- **FRACTURING** — Patience 0 (the existing warn-then-snap/leave zone)
+**Read-out:** no separate tracker; Patience's own level doubles as the Dissonance read — **CALM** (3–5), **STRAINED** (1–2), **FRACTURING** (0, the existing warn-then-snap/leave zone). A member at 0 with tension present gives an alignment-flavored line instead of the ordinary tired one, so the player can tell the two causes apart. Snap behavior is unchanged: CHAOS members strike and stay, LAW/NEUTRAL leave.
 
-The one addition this needs on top of Patience as it already works: the warning line should read as alignment-driven (not generic talk-fatigue flavor) when tension is actually what zeroed the member out, so the player can tell the two causes apart. Snap behavior itself needs no change — CHAOS members already strike-and-stay, LAW/NEUTRAL already leave outright, which is already the "mixed parties are riskier" payoff this wanted.
+**Numbers are placeholders, with two known problems:**
+- The starting party is mixed by default (ELF and CU SITH are CHAOS; PIXIE and a fresh KURA are NEUTRAL), so every ally sits at gap 1 from the first fight. All three go from 5 Patience to 0 in five fight rounds, about two ordinary fights. Needs a decision: lower fight wear at gap 1, apply it once per fight instead of per round, or exempt the starting trio from each other.
+- Skip wear (1) loses to the nightly +3 regen even at the worst gap, so an unmanaged party doesn't erode on its own yet.
 
-**Comes down via:** nightly regen (already generic/party-wide); a new **give** action — handing an item directly to a party member (not a demon or the altar) to restore their Patience, priced/scaled the same taste-matrix way demon gifts already are (bigger effect on a member who's a fan of that item's nature) — giving a player a way to defuse a fracturing pair proactively rather than just waiting out the night; and omens, once the omen-balancing thread resumes (a `calm`-type day boosting the regen a tense pair gets, say) — deferred for now rather than designed here.
+Tuning targets are unchanged: mixed parties shouldn't strictly dominate pure ones, and a careless mixed party should collapse by around floor 3.
 
-**Already solved, no new work needed:** "an opposite-alignment recruit should nudge KURA's own alignment toward it, as a brake" — recruiting already does this (Part 6: joining leans KURA toward the new member's alignment).
+**Settled but not built:**
+- **Give** — handing an item to a party member to restore their Patience, priced by the same taste matrix demon gifts use (bigger for a fan of that item's nature). The proactive way to defuse a fracturing pair.
+- **Omen tie-in** — e.g. a `calm` day boosting a tense pair's regen. Deferred with the wider omen-balancing thread.
+- **Cross-alignment combo skills** — the payoff side: fixed pairings that only exist with an opposing pair in the party (examples floated: PING + REDCAP, a strike that always finds its target; CRON + BANSHEE, a scheduled scream). Pure parties get smaller, steady perks instead. Pairings and effects TBD.
+- **NEUTRAL as the bridge** — a NEUTRAL member's gap is never worse than 1, which the formula gives for free. Open: whether that reads as "the easy teammate" on its own or needs an explicit extra discount.
 
-**The payoff side — not yet mechanically specced, carried over from the same theorycrafting thread:** right now this section is all risk; a mixed party should get something for running that risk, or there's no reason to ever do it on purpose.
-- **Cross-alignment combo skills** — fixed pairings that only exist with an opposing pair in the party (e.g. a data member + a folklore member unlocking a move neither gets alone), as the reward side of carrying the extra Patience wear. Pure-alignment parties would get smaller, steady perks instead rather than nothing. Exact pairings/effects TBD.
-- **NEUTRAL as the bridge:** a NEUTRAL member should take much less of the gap-based wear than a LAW or CHAOS one does (their gap to either side is 1, not 2, which the tension formula above already gives them for free — worth confirming that's enough of a difference to actually read as "the easy teammate," or whether NEUTRAL needs an explicit extra discount on top). Gives the middle tag a combat-relevant payoff beyond easier recruiting from both sides, which right now is its only edge.
+An opposite-alignment recruit nudging KURA's own alignment toward it (a brake on mixing) already exists: recruiting leans KURA toward the new member (Part 6).
 
 ---
 
@@ -151,12 +152,12 @@ Thresholds use hysteresis to avoid flickering: `score ≤ −3` → LAW, `≥ 3`
 
 A demon's own alignment comes from its family (data → LAW, folklore → CHAOS, hardware/hybrid → NEUTRAL) with a handful of named outliers. `stance()` compares KURA's alignment to a demon's (same/neutral/opposite) and feeds both talk odds (Part 4) and gift pricing (Part 5).
 
-**Alignment tag naming (not yet decided):** the current `[LAW]`/`[NEU]`/`[CHA]`-style bracket tag has several renaming and re-axis options on the table, carried over from a separate design session:
+**Alignment tag naming (not decided):** the current tag is `[LAW]`/`[NEU]`/`[CHA]`, between SILVER and ICHOR, with a `<`/`>` pull mark on the action that just leaned it.
 
-- **Renames, same mechanic:** `[SYS]`/`[NEU]`/`[OLD]` (system vs. the old layer), `[COR]`/`[NEU]`/`[STR]` (corp vs. street), `[COD]`/`[NEU]`/`[RUN]` (code vs. rune), `[ORD]`/`[NEU]`/`[WLD]` (order vs. wild).
-- **Different driving axes:** data vs. flesh (augmentation-tied), talk vs. fight (driven by how encounters resolve), careful vs. reckless (driven by heat behavior), sun vs. moon (driven by day/night timing), debt (driven by offerings/deals/bribes).
-- **Finer-grained options considered:** a 5-step tag, or two side-by-side axes (Law/Chaos + Light/Dark) — both cost more UI space and complexity than the current single bracket.
-- **Recommendation given, no decision made:** `[SYS]`/`[NEU]`/`[OLD]` if just renaming (keeps all existing mechanics as-is), or talk-vs-fight if a genuinely different driving axis is wanted — it fits the recruiting-focused core loop particularly well.
+- **Renames, same mechanic:** `[SYS]`/`[NEU]`/`[OLD]` (the system vs. the old layer), `[COR]`/`[NEU]`/`[STR]` (corp vs. street), `[COD]`/`[NEU]`/`[RUN]` (code vs. rune), `[ORD]`/`[NEU]`/`[WLD]` (order vs. wild).
+- **Different driving axes** (need new demon-affinity rules, not a drop-in): data vs. flesh, talk vs. fight, careful vs. reckless, sun vs. moon, debt (`[OWE]`/`[EVN]`/`[OWN]`).
+- **Finer-grained:** a 5-step tag, or two side-by-side axes (Law/Chaos + Light/Dark) — both cost more UI space than the single bracket.
+- **Recommendation on file, no decision:** `[SYS]`/`[NEU]`/`[OLD]` if just renaming; talk-vs-fight if a different axis is wanted, since it fits the recruiting-focused loop.
 
 ---
 
@@ -207,7 +208,7 @@ The daily omen is a deterministic function of the real UTC calendar day — iden
 
 Demons talk most easily at new moon and hit hardest at full moon — opposite curves by design. Full moon also raises the moon-drop chance on a kill, gives a 50% chance of a MOON-tier item from the lure locker instead of the usual roll, and makes spirit-natured items more fragile.
 
-**STANDBY omen banking** (Part 1) lets a player hold a good day's omen and spend it later instead of the natural one — a scheduling decision, not a reroll. Shipped with a hold cap of exactly 1 (a new banked day overwrites the old one, no stacking) and, as of v0.58, a flat 7-real-day cooldown on holding again after a release. Whether a bigger cap or decay is worth adding is still open.
+**Omen banking** (Hold/Release, its cap of 1 and the 7-day cooldown) is described in Part 1.
 
 ---
 
@@ -225,123 +226,85 @@ The end-of-run summary covers floor/days/turns/steps/searches, final alignment a
 
 # Part 10: Async multiplayer
 
-*(Originally the main thread of a separate async-multiplayer design session, folded in here as this doc grew into the single general design doc, covering how the shared-shape/private-contents system lets every player feel like they're in "the same" dungeon without being able to spoil it for each other.)*
-
 ## Goal
-Add asynchronous multiplayer — everyone feels like they're playing "the same" dungeon — without letting players spoil the experience for each other (no "vault's behind the north door, second wing" callouts), and while keeping the amount of hard-coded determinism low.
+Everyone feels like they're playing "the same" dungeon, without players being able to spoil it for each other (no "vault's behind the north door, second wing" callouts), and with little hard-coded determinism.
 
-## Status: what's shipped
-- The shape/contents split is live: floor **shape** (wing count/topology, room-kind pairings, the per-wing room grid) is seeded from `(seasonEpoch, floorDepth)`, identical for every player while that lunar epoch lasts, generated lazily per-wing. Floor **contents** — which paired kind lands in which slot, where each room's hidden pile is, and the Day-7 wildcard's kind — come from a second, private per-account seed (`pseed`, rerolled every floor).
-- The door-to-compass-direction mapping is private too: a per-account rotate/mirror transform means two players on the same shared wing see the same rooms in the same true layout, but each account's own fixed (one of 8) rotation/mirror, so a callout like "the vault's north door, second wing" doesn't line up between accounts.
-- **Faction seasons (v0.60):** the Worker/D1 side is live — every ended run tallies a floor-weighted point to LAW/CHAOS for the current lunar epoch, NEUTRAL runs kingmaking to whichever side is behind. Nothing player-visible yet; the title screen's `LEAN` bar (Part 11) is what will actually display it.
-- **Deferred by scope decision, not forgotten:** the lighter-lift shared-experience ideas, the harder ideas (live presence, player-to-player economy), and the notes/bones/leavings ideas below all still need new backend/Worker/D1 work.
+## Status
+
+| Piece | State |
+|---|---|
+| Shared shape / private contents | Shipped v0.56 |
+| Private minimap rotate/mirror | Shipped v0.57 |
+| Faction seasons (tally + `/season`) | Shipped v0.60; Worker live since Oct 11 2026 |
+| Faction lean on the title screen | Shipped v0.62 |
+| Live presence, player economy | Accepted, not built |
+| Notes, bones, echoes, traces, altar gifts | Not built |
+| World boss, season title, epoch board, sighting log, one-time loot | Not scheduled |
 
 ## Core idea: shared shape, private contents
 
-Split a floor into two layers:
+A floor is two layers.
 
-- **Shape (shared)** — the stuff that defines the floor's structure but gives away nothing useful on its own:
-  - Wing count, which wings pair into a locked-door offer, which wing is last, which wing hides the stairs, which hides the dead-end clue
-  - Each wing's internal room-to-room topology (chain, branch, loop, etc. — a small fixed menu of shapes, rolled rather than always the same room→passage→dead-end template)
-  - Room-kind roster and pairings for the floor (e.g. "Vault pairs with Forge this floor") — safe to share since it says nothing about *where*. (Mostly — the Bonus room is the one private exception.)
-  - Demon roster for the floor (which demons exist, families, personalities, corruption state) — genuinely useful shared prep info, but requires actually finding them
-  - Loot pool available on the floor
-  - Clue/flavor text, omens
+- **Shape (shared)** — structure that gives away nothing useful on its own: wing count and topology, which kinds pair into a locked-door offer, the per-wing room grid, stairs direction. Seeded from `(seasonEpoch, floorDepth, wingIndex)`. The demon roster, loot pool, clue text and omens are shared too: useful prep info, but you still have to find them.
+- **Contents (private per account)** — everything that would turn the shape into a walkthrough: which paired kind lands in which slot, where items hide, the wildcard's kind, bonus/void placement, and the door-to-compass mapping. Seeded from `pseed`, re-rolled every floor, so two players' vocabulary for "where something is" never overlaps, even across one player's own alt accounts.
 
-  All of this is seeded off `(seasonEpoch, floorDepth, wingIndex, ...)` — a deterministic function, computed lazily the first time any player reaches that floor, not pre-rolled in bulk at the start of a season.
+**Lazy, per-wing, entirely client-side.** The shape is a pure hash of its inputs, so it gives the same answer for the first player to reach a wing and the thousandth. Each wing is computed on demand; there is no "roll the floor" step and **zero network calls**. Players are "in the same dungeon" because they solve the same math with the same inputs, not because anything synchronized them.
 
-- **Contents/presentation (private per account)** — everything that would turn the shared shape into a walkthrough if shared:
-  - Which room kind actually lands in which wing *slot*
-  - Which demon is in which slot
-  - Where items are hidden
-  - Door-to-compass-direction mapping (which physical door is "north" for this player)
-  - Order the week presents wing choices in
+**Why not a fully shared layout:** if the same door means the same room for everyone, any message between players is a spoiler. Splitting shape from contents keeps the shared feeling (same wings, same demon cast, same loot) while making coordinates meaningless outside one account.
 
-  All seeded off something private to the account (+ floor, re-rolled every floor), so two players' vocabulary for describing "where something is" never overlaps — including across a single player's own alt accounts, since there's no shared coordinate system to decode.
-
-**Generation is fully lazy, per-wing, and entirely client-side.** The shape function is a pure deterministic hash of `(epoch, floorDepth, wingIndex)`, so it doesn't matter *when* it's evaluated — `hash(epoch, 2, 3)` gives the identical answer whether it's computed for the first player to ever reach that wing or the thousandth, on day one of the epoch or day twenty. That means there's no "roll the whole floor at the start of the week" step at all: each wing's shape is simply computed fresh, on demand, the moment any given player actually reaches it. And because every input (epoch from the real date via the existing moon-phase math, floor depth and wing index from the player's own save) is already available locally, **this whole layer needs zero network calls** — no server round-trip, no central authority deciding what a wing looks like and broadcasting it. Two players end up "in the same dungeon" purely because they're independently solving the same math problem with the same inputs, not because anything synchronized them. (This only holds within one epoch — cross an epoch boundary between two players' visits and the inputs genuinely diverge, giving unrelated shapes, which is the intended "this month's dungeon" framing. The private per-account presentation layer is a second, separate deterministic function on top of this, also entirely local, also needing no server.)
-
-**Considered and rejected: a "one room a day" pivot** (dropping wings entirely — one room + a binary door choice per day, searching walls/ceiling/floor, no free wandering within a floor). Would have solved a real pacing complaint (walking around with no payoff feels cliché) but was rejected because it removes the spatial structure this whole shared-shape design depends on — once there's no space to walk through, there's no coordinate left to protect. Keeping wings, since the shared-experience-over-a-real-map feeling was the part worth protecting.
-
-**Also considered and superseded:** a simpler "fully shared seeded floor" with a patched-on mitigation (share room *kinds* and door connections only; keep stairs, items, and encounters rolled per-player), or alternatively spinning shared layouts off into a separate "weekly challenge" mode with its own board. The shared-shape/private-contents system above is the fuller, chosen answer to the same underlying problem.
-
-## Why this beats a fully shared layout
-
-A fully shared/seeded layout (same map for everyone, same door = same room) was the first idea, but it means *any* communication between players — a message, a note, a Discord post — becomes a spoiler, since "second wing, north door" means the same thing to everyone. Splitting shape from contents keeps the "we're all in the same dungeon" feeling (same wing count/shapes, same demon cast, same loot) while making coordinates themselves meaningless outside one account.
+**Rejected alternatives:**
+- *"One room a day"* (no wings, one room and a binary door choice per day). It would fix a pacing complaint, but with no space to walk through there is no coordinate left to protect, and the shared-map feeling was the part worth keeping.
+- *Shared kinds and connections only*, or shared layouts as a separate weekly challenge mode. Superseded by the split above.
 
 ## Season epoch
 
-**Epoch = the real lunar calendar / lunar month** (~29.5 days), not a manually-bumped counter. Reuses the date→moon-phase math the game already has; the epoch just advances on its own schedule whenever the real moon rolls into a new cycle. Fits the game's existing real-calendar-driven design (daily step, weekly deadlines, moon-linked find rates) and gives the shared floor content a natural in-world framing ("this month's dungeon").
+**Epoch = the real lunar month** (~29.5 days), from the same date-to-moon math the game already uses; it advances on its own. A new epoch is a full, unrelated reshuffle of every floor's shape (a hash input changed), which gives the "this month's dungeon" framing.
 
-Because the seed is a hash, including epoch isn't a partial influence — changing any single input (including epoch) produces a wholly new, uncorrelated shape (avalanche property of seeded hashes). So a new lunar month means a full, unrelated reshuffle of every floor's shape, not a gradual drift.
+**Mid-floor stability (the "calendar bug" fix):** the epoch is stamped into the save on floor arrival and that floor's shape reads the stamp, so a rollover mid-floor can't reshuffle it. Only the next floor picks up the new epoch.
 
-**Mid-floor stability ("calendar bug" fix):** since epoch changes over real time, a floor's shape must not be recomputed live from "today's epoch" while a player is on it — that would let a lunar-month rollover reshuffle a floor's shape out from under a player mid-traversal. Fix: stamp the epoch into the player's save the moment they arrive on a floor, and have that floor's shape generation read the stamped value for the rest of their time on it. Only the next floor, generated fresh on arrival, picks up wherever the moon actually is by then.
+## The deck and the wildcard
 
-## Room-kind dealing (the "deck")
+The dealing itself is in Part 2. Two privacy notes belong here:
+- **Elimination is harmless.** Once most pairs are seen, the rest are deducible by subtraction. That reveals *what* is left, never *where*, the same safety category as the demon roster.
+- **The last offer is a private wildcard**, never part of the shared deck, so the final day can't be predicted or talked about by anyone.
 
-Normal (non-bonus) dealing is a shared, deterministic process, seeded the same as everything else in the shape layer:
-- Shuffle the floor's 6 room kinds (seeded by `epoch + floorDepth`).
-- Deal 2 kinds on the first deal-day (a wing's two-door offer).
-- Reshuffle the remaining 4 (same deterministic seed-chain), deal 2 on the next deal-day.
-- The last 2 go together on the final deal-day.
-- Three deal-events, six kinds, no repeats, identical sequence for every player this floor.
+## Bonus room privacy
 
-**Elimination note:** in a 6-kind/3-pair deck, once a player has seen 2 of the 3 pairs (4 of 6 kinds), the last pair is deducible by subtraction regardless of how reveal is paced. Decided this is harmless — it only reveals *what's* left, never *where* it is, same safety category as the demon roster or loot pool.
+Mechanics and odds are in Part 8. The roll is private, per player, per day. Per-day beats per-week because a week would leave something shareable ("there's a bonus room this week"); a daily private roll leaves nothing that transfers. Saying "I got one today" is safe for the opposite reason shared content is safe: shared content is globally true, a private roll is true of nobody else's board.
 
-**Day 7 (the week's last day) is a private, per-player wildcard** — independently rolled per account, not drawn from the shared deck at all. This was chosen specifically so the final day can't be predicted or talked about by anyone (closes the elimination gap entirely for that slot, since it was never part of the visible deck to begin with).
+## Minimap
 
-## Bonus room
+The existing grid minimap, unchanged visually, with a per-account, per-floor rigid transform: one of the 8 rotations/mirrors of a rectangle, stamped at floor arrival and applied to both the map draw and the door labels. The map stays internally coherent and does not spin while exploring. Two players' minimaps are never comparable; accepted, since "same dungeon" was always about shared content.
 
-**Rolled privately, per player, per day.** Each day, before that day's normal (shared) deal happens, privately roll whether a bonus room triggers for this player, this day. Two independent sources, either can fire a bonus/void room, both stop once one lands or is already waiting on the floor (see Part 8 for the exact mechanics and odds, now shipped):
-1. **Guaranteed, not boosted:** the day a 3-day LAW/CHAOS omen streak *freshly* completes, it's a 100% trigger, no roll at all. LAW guarantees a bonus room, CHAOS guarantees THE VOID.
-2. **The ordinary roll, bonus-only (void never comes from this one):** capped at one per floor, plus never two days running, and at most twice a real lunar month. Odds follow the real moon (3%–7%, averaging ~5%), landing around 1.3 bonus floors/month.
+Set aside: an abstract node-graph minimap (the only option that could be pixel-identical, but a rendering rebuild for a cosmetic gain), and a heading-up rotating minimap (cheapest, but it spins with every turn). The choice was purely a rendering one; generation is identical either way.
 
-If it triggers: the bonus/void room takes over the wing's passage or dead-end slot (the room with no kind of its own), the next wing built after the day's roll hits. All six ordinary kinds still get offered every floor; nothing is bumped out.
+## Faction seasons
 
-**Why per-day beats per-week for privacy:** per-week still left something nominally shareable ("there's a bonus room this week"). Per-day removes even that — there's no stable "this week" concept to compare, and a player can't predict tomorrow's roll today, so nothing meaningfully transfers even as casual chat.
+**Season = one lunar epoch**, reusing `epochIndex()`.
 
-**Why "there's a bonus room" is safe to say even though it's private, for a different reason than the shared stuff is safe:** shared content (demon roster, loot pool) is safe because it's globally true — sharing it hands someone accurate prep info. A private roll is safe because it's *not* globally true of anything — one player's "I got one today" says nothing determinate about anyone else's board. Both are safe to talk about, via opposite mechanisms.
+**Scoring:** every ended run adds `floorNum(run)` points to its final alignment's side for the current epoch. A NEUTRAL run is the **kingmaker**: its points go to whichever of LAW/CHAOS is behind, and on an exact tie they go nowhere. This keeps a lopsided season contested and gives NEUTRAL a reason to exist in the metagame.
 
-## Minimap handling
+**Storage:** `faction_season (epoch, side, count)`, two rows per epoch (`LAW`, `CHAOS`). NEUTRAL never has a row.
 
-The minimap renders the shared shape graph, but direction is privately scrambled — so the grid-based minimap (wall glyphs, door states, facing arrow — unchanged visually) isn't pixel-identical between players even though the underlying wing count/shapes/content are.
+**Write path:** inside the existing `POST /score` (`tallyFaction()`), only when the score row is new, so a retried post can't double-count. LAW/CHAOS is a blind upsert; NEUTRAL is one conditional `UPDATE`, which avoids a race between two NEUTRAL runs.
 
-**Shipped: the existing grid-based minimap exactly as it always looked, with a per-account persistent rotate/mirror transform.** Each account+floor gets one of the 8 rigid transforms of a rectangle (4 rotations × optional mirror), applied uniformly to the whole floor's grid coordinates, computed once at floor arrival and read by both the minimap draw and the door-to-key input resolution. Keeps the map internally coherent (adjacent doors stay adjacent, corners still make sense) and keeps the minimap visually **fixed and non-rotating** while the player is on a floor. Two players' minimaps are never literally comparable as a result — accepted, since the game's "same dungeon" guarantee was always about shared *content* (demons, loot, kind pairings), not a literal pixel match.
+**Read path:** `GET /season` returns `{epoch, law, chaos}`. It is its own endpoint for now because there is nothing to batch it with; once notes/bones/echoes exist it should fold into the one-packet-a-day fetch (see Read budget).
 
-Two alternatives were considered and set aside at design time:
-- **Topology-only/abstract minimap** (a node-graph layout instead of the grid, no compass meaning at all) — the only option that could be pixel-identical between players, but it's a real rendering rebuild for a benefit judged mostly cosmetic.
-- **Heading-up / "N = current facing," live-rotating minimap** — technically the cheapest backend option, and would make the compass-scrambling problem disappear by construction rather than being hidden. Set aside specifically for feel — preferred a minimap that stays visually stable while exploring a floor, over one that spins with every turn.
+**Display:** the title screen's LEAN line and its Faction lean card (Part 11).
 
-One clarifying note worth keeping: **switching between these three options was purely a rendering decision, not a map-generation one.** The underlying shared-shape generation (wings, topology, pairing) is identical regardless of which of the three draws it — only the projection step changes.
+**Reward (not built):** cosmetic only — a board title, an omen-voice shift for the leading side. Nobody needs to win the season to play well.
 
-## Lighter-lift shared-experience ideas (not yet scheduled)
+**Known softness:** scores aren't provable and one sender can post five an hour at up to 20 points each, so the tally is forgeable. Acceptable while the reward is cosmetic.
 
-- **World bosses** — one demon identity (name, stats, dialogue) fixed for the whole epoch, same for every player, elevating the existing named-demon pattern (ATOM SLASHER) into something with a season-long reputation.
-- **Season title/flavor** — a generated name + theme line per lunar epoch ("The Hollow Moon"), shown on a title/log screen. Cheap (just a seeded phrase generator), gives the community a shared handle for "this month."
-- **Epoch-scoped leaderboard** — a board that resets each lunar month alongside the all-time one, reusing the existing scoring/posting pipeline. Pairs well with the shared-shape system since "furthest into this month's dungeon" is a meaningful, non-spoiler stat.
-- **Aggregate community stats / weekly counts** — a running tally across all players this epoch (total demons beaten, silver found, "412 runs ended on B2F this week," etc.), shown as flavor or tied to a threshold that nudges next epoch's generation slightly. No location info, no individual callouts possible.
-- **Faction seasons** — shipped v0.60 (Worker/D1 side; no display yet), picked to build first ahead of bones/ghost demons/weekly counts. See its own writeup below.
-- **Sighting log for named/rare demons** — anonymized "spotted on B5F" posts (floor depth only, which the leaderboard already exposes) when a player meets the epoch's world boss or a MYTHIC find.
-- **One-time shared loot** — a rare locker that exists once per floor-epoch; first player to open it gets it, later players see "emptied by [name]." Needs an atomic "first wins" write.
-- **Considered and not pursued: shared room heat.** Letting a room's heat persist across all players in a floor-epoch was judged the most expensive of these ideas — needs real per-room state shared across every player — and was dropped rather than designed further.
+## Lighter-lift shared ideas (not scheduled)
 
-## Faction seasons (shipped v0.60 — Worker/D1 side only, no display yet)
-
-Picked to build first, ahead of bones, ghost demons, and the other weekly-counts ideas.
-
-**Season length: a lunar epoch** — the same ~29.5-day cycle that already reseeds the shared floor shape (`epochIndex()`), reusing existing math rather than standing up a second, unrelated clock. A season starts and ends exactly when a new epoch does.
-
-**Scoring:** every ended run adds a floor-weighted point to its final alignment tag — `floorNum(run)` points go to LAW or CHAOS. A NEUTRAL run's point is the **kingmaker**: it goes to whichever of LAW/CHAOS currently has fewer points this epoch, nudging a lopsided season back toward contested rather than letting one side run away with it — giving NEUTRAL a real, dynamic reason to exist in the season metagame beyond easier recruiting from both sides. On an exact tie, a NEUTRAL run's point simply isn't added to either side — nothing to fix if nobody's behind.
-
-**Storage:** one small counters table, `(period, key) -> count` — the same generic shape any of the other weekly-counts ideas would use (`period` is just a string: a calendar-week label for some counters, the epoch index for this one). For faction seasons specifically: **two rows per epoch**, keyed `LAW`/`CHAOS` — not three, since in the kingmaker model NEUTRAL never has a tally of its own, its point always lands on an existing row.
-
-**Write path (shipped):** piggybacks on a run's existing leaderboard submission — no new endpoint, just more logic (`tallyFaction()`) inside the same `POST /score` Worker call that already posts a score, built exactly as scoped. LAW/CHAOS runs are a blind upsert (`count = count + floorNum`). The NEUTRAL case is a single conditional `UPDATE` — D1 handles it cleanly — rather than a SELECT-then-UPDATE round trip, closing the race this section flagged between two NEUTRAL runs landing close together. Also guarded against double-tallying a retried post of the same run (only fires when the leaderboard insert actually added a new row).
-
-**Read path (shipped differently than planned):** built as its own `GET /season` endpoint instead of riding along in the title screen's one-packet-a-day fetch — there's nothing yet to batch it *with*, since notes/bones/echoes don't exist in code. This is a known, deliberate deviation from the read-budget section below, not an oversight: once any of those other async features actually get built, `/season` should fold into the shared packet endpoint rather than staying its own request.
-
-**Display:** the title screen's `LEAN` bar (`this week leans CHAOS [||||||||.........] 35/65`) is the natural home for this — already mocked as a two-sided bar, which fits the kingmaker model cleanly since there are only ever two rows to split between.
-
-**Reward:** cosmetic only — a board title, an omen-voice shift for the leading faction. Nobody needs to win the season to play well; it's flavor, not power.
+- **World boss** — one demon identity fixed for the whole epoch, same for everyone, extending the named-demon pattern (ATOM SLASHER).
+- **Season title** — a generated name and theme line per epoch ("The Hollow Moon") on the title/log screen.
+- **Epoch-scoped leaderboard** — a board that resets each lunar month beside the all-time one.
+- **Aggregate counts** — running epoch tallies (demons beaten, "412 runs ended on B2F this week"), as flavor or as a threshold that nudges the next epoch. Same counters table shape as faction seasons, keyed by calendar week.
+- **Sighting log** — anonymized "spotted on B5F" posts for the world boss or a MYTHIC find.
+- **One-time shared loot** — a rare locker that exists once per floor-epoch; first to open it wins, later players see "emptied by [name]." Needs an atomic first-wins write.
+- **Dropped: shared room heat** — needs per-room state shared across every player; the most expensive idea here.
 
 ## Harder ideas considered, and the calls made
 
@@ -373,7 +336,7 @@ Not urgent at current scale, but cheap to build in from the start:
 - **One data packet per player per day.** Fetched once when a player first acts on a new day or descends to a new floor, cached client-side keyed by (day, floor), only re-fetched when either changes. On fetch failure, proceed with an empty/stale packet — never block play.
 - **Every query indexed and limited.** Matching D1 index for every `WHERE`/`ORDER BY` column set; every query carries a `LIMIT`. No `COUNT(*)` over a full table — incrementally-updated counter rows instead. No `ORDER BY RANDOM()` — instead assign each record a random "bucket" number at write time and rotate which bucket the daily packet pulls from.
 - **Batch writes at run-end / event-post time** rather than many small writes.
-- **Rough budget estimate:** a packet of ~10 counters + 3 faction rows + 10 notes/bones + 5 echoes ≈ 30 rows read; at 1,000 daily players that's ~30,000 rows/day against a 5,000,000 cap — not a concern until well into tens-of-thousands-of-daily-players territory.
+- **Rough budget estimate:** a packet of ~10 counters + 2 faction rows + 10 notes/bones + 5 echoes ≈ 30 rows read; at 1,000 daily players that's ~30,000 rows/day against a 5,000,000 cap — not a concern until well into tens-of-thousands-of-daily-players territory.
 - Explicitly **not** a fix for anti-cheat — forged local saves could still inflate what gets posted into notes/bones/counters; that's mitigated only by keeping all of this cosmetic/low-power and by the event-sourced economy ledger above, not by the read-budget rules.
 
 ## Notes, bones, and other things players leave behind
@@ -389,45 +352,42 @@ Not urgent at current scale, but cheap to build in from the start:
 
 # Part 11: Title screen
 
-**Status: stages 1-3 shipped (v0.62) — scaffold, the zero-new-write hard-number cards, and the scroll mechanism. Stage 4 (new counters for the rest of the hard-number cards) and stage 5 (rumor cards / the ambient-events channel) are not built yet; see below.**
+**Status:** stages 1–3 shipped (v0.62, fixed up in v0.62.1): the scaffold, the three no-new-backend cards, and the scroll. Stage 4 (more hard-number cards) and stage 5 (rumor cards) are not built.
 
-Reuses the real in-game frame's zones rather than inventing a new layout — just new content in the same slots, mocked at 80 columns to match the real game. Shown first on every load now, even with a run in progress — `CONTINUE` is the explicit resume (previously the game auto-resumed straight in, with no title at all).
+Shown first on every load, even with a run in progress; `CONTINUE` is the explicit resume. It reuses the in-game frame's zones with new content, at the same 80 columns.
 
-**Top box (moon + date header):** unchanged, exactly the real in-game header. Shared code (`headerLines()`) now, not just a shared look.
+- **Top box:** the real in-game moon/date header (shared code, `headerLines()`).
+- **3D-view slot:** a static wordmark, `DAILY DIGITAL` / `DEMON DUNGEON` / `a daily dungeon crawl`.
+- **Log box:** three cold facts that hold until the day rolls over:
+  ```
+  > WEEK      TUE, day 2 of 7  -  5 days left, this floor closes SUN
+  > EPOCH     epoch 14, day 9 of 29  -  new shape in 20 days
+  > LEAN      this season leans CHAOS   [||||||||.........]  35 / 65
+  ```
+  WEEK is pure calendar math (a floor always closes the coming Sunday), not a countdown to one save's deadline. EPOCH's denominator is held at 29, so an epoch's last day clamps instead of reading "day 30 of 29". LEAN reads `/season`; a tie reads EVEN, and an empty epoch reads "no votes logged yet this epoch".
+- **Sidebar, "RUMORS AND SECRETS":** a pinned header over a scrolling list of cards, one blank line between cards, long cards wrapped at a space. One line every 1.4 seconds, no pause-on-hover, fixed order per page load, a full cycle before any repeat.
+- **Menu bar:** `[N]EW RUN   [C]ONTINUE   [B]OARD   [?] ABOUT`. NEW RUN skips the confirm when there is nothing to lose. ABOUT carries `[P]ASSWORD` even before a run exists, so a run can be brought in from another device; loading one goes straight into it.
 
-**3D-view slot:** a static centered wordmark ("DAILY DIGITAL" / "DEMON DUNGEON" + the tagline "a daily dungeon crawl") stands in for the dungeon view, since there's no run yet. Pure decoration, as planned.
+**Cards shipped:** today's omen, deepest floor (the board's `/top?n=1`), faction lean.
 
-**Log box (3 lines):** repurposed as cold, stable facts that don't change until the day rolls over:
-```
-> WEEK      TUE, day 2 of 7  -  5 days left, this floor closes SUN
-> EPOCH     epoch 14, day 9 of 29  -  new shape in 20 days
-> LEAN      this week leans CHAOS   [||||||||.........]  35 / 65
-```
-WEEK turned out simpler than expected once built: it's not a personal countdown to any one save's own deadline (there's no save yet on first load) — a floor always closes the coming Sunday regardless, so it's pure calendar math off the real date, true for every viewer at once. EPOCH reads `epochIndex()`'s own day-within-epoch math, display denominator held at a steady 29 (the real synodic month runs ~29.53 days, so the last calendar day of an epoch clamps rather than occasionally showing "day 30 of 29"). LEAN reads Part 10's faction-season tally (the current epoch's LAW/CHAOS rows) via the `/season` endpoint — the one piece that needed a real fetch, and exactly why Part 10 got built first.
+**Stage 4 — more hard-number cards (not built).** Exact counts, anonymized, no names or rankings: `Last fall: 3 hours ago`, `Turns logged: 1,842`, `Players seen: 312`, `Pacts: 118 made, 54 ended`, `Items broken: 67`, `TRIPs reported: 9`, `Longest wall search: 61x`, `Gifts refused: 23`, `Answered [S]ILENT: 441x`. These need new counters threaded through scattered client actions: plumbing, not design.
 
-**Sidebar slot — "RUMORS AND SECRETS":** where PARTY/MAP/ALIGN normally render; a pinned header (`RUMORS AND SECRETS` + a rule line) over a scrolling, auto-advancing list of cards underneath — only the cards move, the header stays put. Shipped with three cards (today's shared omen, deepest floor via the leaderboard's existing `/top?n=1`, and the season's LAW/CHAOS lean again as its own card) — the rest of the hard-number cards and all of the rumor cards are stage 4/5, not yet built:
+**Stage 5 — rumor cards (not built).** Atmosphere-first lines that *reference* an in-game event without quoting its triggering line, so they neither spoil nor duplicate the game's own text: `A demon rejected a traveler's paltry gift.` / `Someone was asked if they trust the dark.` / `A corrupted voice turned, and was made whole again.` / `Something ran off laughing, gift in hand.` / `An altar considered an offering, and was pleased.` / `A stranger walked in, uninvited.` / `Silence, offered instead of an answer.` / `A wall gave up its secret, after many tries.` One exception: **last words are quoted verbatim but never attributed** (`The dungeon whispered, "my Mom is going to be SO mad."`). When mixed with number cards, cap at two of the same kind in a row.
 
-- **Hard-number cards** — exact counts, anonymized (no player names, no rankings). Shipped: today's omen, deepest floor, faction lean. Not yet built (stage 4, needs new counters): `Last fall: 3 hours ago`, `Turns logged: 1,842`, `Players seen: 312`, `Pacts: 118 made, 54 ended`, `Items broken: 67`, `TRIPs reported: 9`, `Longest wall search: 61x`, `Gifts refused: 23`, `Answered [S]ILENT: 441x`.
-- **Rumor cards** — not yet built (stage 5, needs the ambient-events channel below). Vaguer, atmosphere-first lines that *reference* an in-game event without quoting the actual triggering line, so they don't spoil or duplicate the game's own flavor text: `A demon rejected a traveler's paltry gift.` / `Someone was asked if they trust the dark.` / `A corrupted voice turned, and was made whole again.` One deliberate exception: **last words are quoted verbatim but never attributed** — framed as the dungeon speaking, not a named player's death.
-- One blank line between every card regardless of kind (shipped). Multi-line cards (most rumors, once built) will wrap to the sidebar's width; single-line cards (the hard-number ones) don't.
+Rumor cards need a new, deliberately light **ambient-events channel**: a tiny ping (type tag + which outcome fired + timestamp; no player ID, no name) whenever a listed moment happens in a real game — a gift refusal, a corrupted-demon restoration, a trickster running off, an altar reaction, a party member leaving, a deep-cache find, a `[S]ILENT` answer, a fall (for last words). The server keeps the last N of each type and the title pulls a handful at random. Forging one is cheap and harmless: nothing downstream trusts these for ranking or reward.
 
-**Scroll behavior (shipped as settled):** one line every 1.4 real seconds — readable without feeling static. No pause-on-hover. The card order is fixed per page load and the ticker just wraps around it (`offset % content.length`), so it's a full cycle before any repeat, same sequence every time around rather than reshuffling mid-session.
+# Part 12: Open questions
 
-**Menu bar (shipped):** `[N]EW RUN   [C]ONTINUE   [B]OARD   [?] ABOUT` — same bracket-letter convention as the real in-game action bar. `NEW RUN` skips the confirm when there's nothing to lose yet, otherwise reuses the existing in-game reset-confirm box.
-
-**New infra, and build order (as settled, confirmed correct once built): hard-number cards first.** They were the cheaper half, as expected — the three shipped ones needed zero new backend work, just reading endpoints Part 10 and the leaderboard already had. The remaining hard-number cards (stage 4) need new counters threaded through a bunch of scattered client actions (pacts, item breaks, TRIPs, wall searches, gift refusals, SILENT answers, turns, unique visitors) — more plumbing than new design, deferred rather than hard. Rumor cards (stage 5) are still the bigger lift and still need the new, deliberately lightweight "ambient events" channel described below, not started: a tiny ping (a type tag + which flavor line/outcome fired + a timestamp, no player ID, no name) sent whenever a listed moment happens in someone's real game (a gift refusal, a corrupted-demon restoration, a trickster running off, a party member leaving, a fall for the last-words case). The server keeps the last N of each event type; the title screen pulls a handful at random to build the day's rumor cards from. Forging a fake event here is cheap and that's fine — unlike the leaderboard, nothing downstream trusts these for ranking or rewards, so the worst case of abuse is a silly line in a flavor feed, not a cheated score.
-
-# Part 12: Open questions / not yet decided
-
-- Exact menu of wing-internal topology shapes (chain, branch, loop, + maybe one more) and whether topology variety implies variable wing size (currently fixed at 3 spaces per wing).
-- Whether/how to layer demon echoes, notes/bones, route traces, or the lighter-lift async ideas (world boss, season title, epoch leaderboard, faction seasons, sighting log, one-time loot) on top of the core system, and in what build order.
-- Trade-offer UX (how two players actually connect to trade) and secret-key export/backup UX (copy/paste vs. QR code).
-- Live-presence granularity and exact Durable Object design for it.
-- Exact schema for bones/echo/trace/counter rows (sketched conceptually, not laid out field-by-field).
-- Whether/when server-side replay verification is ever worth the Workers Paid tier, vs. accepting event-sourced "believability checks" indefinitely.
-- Final alignment tag naming (Part 6) — no decision made.
-- Dissonance (Part 5): merge-into-Patience is decided, naming/read-out is decided (CALM/STRAINED/FRACTURING on Patience's own scale). Still open: exact wear numbers for fight/skip-day/linger, the alignment-flavored warning-line text, the new give-to-party-member action's mechanics, the omen tie-in (deferred alongside the broader omen-balancing thread), the cross-alignment combo-skill pairings/effects, and whether NEUTRAL needs an explicit extra discount on top of its naturally smaller gap.
-- STANDBY-banked-omen balance (Part 1/8): cap is 1, decay/expiry still unexplored, and whether banking a bad omen is ever worth it is still open. The offsetting-cost question is partly answered as of v0.58 (a flat 7-real-day cooldown on holding again after a release) — open now is only whether Hold itself should ever cost something too, and whether a bigger cap is worth it.
-- Telegraphing for the omen-streak room unlock (Part 8) — the streak itself is shipped, but no in-game buildup cue exists yet. Also worth revisiting the LAW/CHAOS lean mapping, since it currently makes CHAOS streaks ~3x more common than LAW streaks.
-- Exact daily probability curve for the ordinary bonus-room roll (flat vs. smoothed to land closer to exactly-twice-a-month).
-- Title screen (Part 11): stages 1-3 shipped (v0.62). Still open: the exact full list of ambient-event trigger types to wire up for the rumor-card channel (stage 5), whether a bigger/different set is worth adding once it exists, and the specific new counters stage 4's remaining hard-number cards need.
+- **Dissonance balance (Part 5):** the starting party's gap-1 fight wear, skip wear losing to regen, and all exact numbers. Also the Give action's mechanics, the omen tie-in, combo-skill pairings, and whether NEUTRAL needs an extra discount.
+- **Alignment tag naming (Part 6):** no decision.
+- **Omen banking (Part 1):** whether Hold should cost something too, whether a cap above 1 is worth it, and whether banking a bad omen is ever worth it. Also a possible named buff for the day after a held day (see theorycrafting notes).
+- **Omen streaks (Part 8):** no in-game buildup cue yet, and CHAOS streaks are about 3x as common as LAW streaks.
+- **Bonus-room roll (Part 8):** flat vs. smoothed toward exactly twice a month.
+- **Wing topology:** the menu of shapes (chain, branch, loop, maybe one more) and whether variety implies variable wing size (fixed at 3 today).
+- **Async build order:** which of bones, echoes, traces, notes, and the lighter-lift ideas comes next. A blanket rule ("anything visible to other players is flavor-only, never mechanical") would settle the cosmetic-vs-functional question for all of them at once; not adopted.
+- **Economy:** trade-offer UX and secret-key export/backup (copy/paste vs. QR).
+- **Live presence:** granularity and the Durable Object design.
+- **Schemas** for bones/echo/trace/counter rows.
+- **Replay verification:** whether it is ever worth the Workers paid tier.
+- **Title screen (Part 11):** the exact list of ambient-event triggers and the counters stage 4 needs.
+- **Faction season reward:** what the leading side actually gets.
