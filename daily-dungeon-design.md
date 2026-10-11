@@ -231,6 +231,7 @@ Add asynchronous multiplayer — everyone feels like they're playing "the same" 
 ## Status: what's shipped
 - The shape/contents split is live: floor **shape** (wing count/topology, room-kind pairings, the per-wing room grid) is seeded from `(seasonEpoch, floorDepth)`, identical for every player while that lunar epoch lasts, generated lazily per-wing. Floor **contents** — which paired kind lands in which slot, where each room's hidden pile is, and the Day-7 wildcard's kind — come from a second, private per-account seed (`pseed`, rerolled every floor).
 - The door-to-compass-direction mapping is private too: a per-account rotate/mirror transform means two players on the same shared wing see the same rooms in the same true layout, but each account's own fixed (one of 8) rotation/mirror, so a callout like "the vault's north door, second wing" doesn't line up between accounts.
+- **Faction seasons (v0.60):** the Worker/D1 side is live — every ended run tallies a floor-weighted point to LAW/CHAOS for the current lunar epoch, NEUTRAL runs kingmaking to whichever side is behind. Nothing player-visible yet; the title screen's `LEAN` bar (Part 11) is what will actually display it.
 - **Deferred by scope decision, not forgotten:** the lighter-lift shared-experience ideas, the harder ideas (live presence, player-to-player economy), and the notes/bones/leavings ideas below all still need new backend/Worker/D1 work.
 
 ## Core idea: shared shape, private contents
@@ -317,12 +318,12 @@ One clarifying note worth keeping: **switching between these three options was p
 - **Season title/flavor** — a generated name + theme line per lunar epoch ("The Hollow Moon"), shown on a title/log screen. Cheap (just a seeded phrase generator), gives the community a shared handle for "this month."
 - **Epoch-scoped leaderboard** — a board that resets each lunar month alongside the all-time one, reusing the existing scoring/posting pipeline. Pairs well with the shared-shape system since "furthest into this month's dungeon" is a meaningful, non-spoiler stat.
 - **Aggregate community stats / weekly counts** — a running tally across all players this epoch (total demons beaten, silver found, "412 runs ended on B2F this week," etc.), shown as flavor or tied to a threshold that nudges next epoch's generation slightly. No location info, no individual callouts possible.
-- **Faction seasons** — settled design, picked to build first ahead of bones/ghost demons/weekly counts. See its own writeup below.
+- **Faction seasons** — shipped v0.60 (Worker/D1 side; no display yet), picked to build first ahead of bones/ghost demons/weekly counts. See its own writeup below.
 - **Sighting log for named/rare demons** — anonymized "spotted on B5F" posts (floor depth only, which the leaderboard already exposes) when a player meets the epoch's world boss or a MYTHIC find.
 - **One-time shared loot** — a rare locker that exists once per floor-epoch; first player to open it gets it, later players see "emptied by [name]." Needs an atomic "first wins" write.
 - **Considered and not pursued: shared room heat.** Letting a room's heat persist across all players in a floor-epoch was judged the most expensive of these ideas — needs real per-room state shared across every player — and was dropped rather than designed further.
 
-## Faction seasons (design settled, not yet built)
+## Faction seasons (shipped v0.60 — Worker/D1 side only, no display yet)
 
 Picked to build first, ahead of bones, ghost demons, and the other weekly-counts ideas.
 
@@ -332,9 +333,9 @@ Picked to build first, ahead of bones, ghost demons, and the other weekly-counts
 
 **Storage:** one small counters table, `(period, key) -> count` — the same generic shape any of the other weekly-counts ideas would use (`period` is just a string: a calendar-week label for some counters, the epoch index for this one). For faction seasons specifically: **two rows per epoch**, keyed `LAW`/`CHAOS` — not three, since in the kingmaker model NEUTRAL never has a tally of its own, its point always lands on an existing row.
 
-**Write path:** piggybacks on a run's existing leaderboard submission — no new endpoint, just more logic inside the same Worker call that already posts a score. LAW/CHAOS runs are a blind increment (`count = count + floorNum`). A NEUTRAL run is the one case that isn't a pure blind write: it needs to know which of the two rows is currently lower before it increments. Worth doing as a single conditional `UPDATE` if D1 allows one cleanly, rather than a separate SELECT-then-UPDATE round trip — avoids a race between two NEUTRAL runs landing at nearly the same moment. Low-stakes either way since this is purely cosmetic, but worth getting right rather than leaving a double-counting edge case sitting there.
+**Write path (shipped):** piggybacks on a run's existing leaderboard submission — no new endpoint, just more logic (`tallyFaction()`) inside the same `POST /score` Worker call that already posts a score, built exactly as scoped. LAW/CHAOS runs are a blind upsert (`count = count + floorNum`). The NEUTRAL case is a single conditional `UPDATE` — D1 handles it cleanly — rather than a SELECT-then-UPDATE round trip, closing the race this section flagged between two NEUTRAL runs landing close together. Also guarded against double-tallying a retried post of the same run (only fires when the leaderboard insert actually added a new row).
 
-**Read path:** a plain indexed SELECT of the current epoch's two rows — cheap, same shape as every other counter read, small enough to ride along in the title screen's one-packet-a-day fetch (see the read-budget section above) rather than needing a request of its own.
+**Read path (shipped differently than planned):** built as its own `GET /season` endpoint instead of riding along in the title screen's one-packet-a-day fetch — there's nothing yet to batch it *with*, since notes/bones/echoes don't exist in code. This is a known, deliberate deviation from the read-budget section below, not an oversight: once any of those other async features actually get built, `/season` should fold into the shared packet endpoint rather than staying its own request.
 
 **Display:** the title screen's `LEAN` bar (`this week leans CHAOS [||||||||.........] 35/65`) is the natural home for this — already mocked as a two-sided bar, which fits the kingmaker model cleanly since there are only ever two rows to split between.
 
