@@ -3,6 +3,23 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.73 - Rumors and Numbers - Oct 11 2026, 01:51 HST
+
+![v0.73](screenshots/v0.73.png)
+
+- **Title screen stage 4: the hard-number cards.** Commit `5647f1b`. **The Worker changed: it needs `schema.sql` re-run and a redeploy before any of the new cards can show** (until then `/stats` is a 404 and the feed shows the three old cards; scores still post).
+  - **Client, `rules.js`:** `score(st)` now carries `stats: { pacts, ended, broken, trips, refused, silent, wall }`. `pacts`/`ended` come from `st.pacts`; `broken` and `trips` were already tallied. Three new tallies: `silent` (in `lastChance()`, `reply()` and `demonHears()` when the answer is silence), `refused` (a demon throwing a gift back, the `hate` branch), and `stats.maxWall` (in `act()`: the longest unbroken run of searches at one face, from `st.loop.n`).
+  - **Worker:** `tallyStats(db, b, turns, who)` runs only when the score row is new (same guard as the season tally). Upserts into `counters (period, key, count)` with `period = epochIndex()`: `runs` +1, `turns` (capped 100,000), and each of `STAT_CAPS = { pacts: 30, ended: 30, broken: 200, trips: 50, refused: 200, silent: 500 }` capped per run; `wall` uses `MAX(count, ?)` (capped 9,999); `players` +1 only when `INSERT OR IGNORE INTO seen (period, who)` adds a row (the same sender hash the rate limit uses). Missing or junk `stats` (an older client) just adds `runs`, `turns` and `players`.
+  - **`GET /stats`** returns `{ epoch, counts, lastFall }`: one indexed read of this epoch's counter rows (`LIMIT 40`) plus `MAX(made)` over `scores` (new `made_idx`).
+  - **Both flavor tallies are wrapped in try/catch** in `POST /score`. Before, a missing `faction_season` table made the Worker answer 500 after the score row had already been inserted, and the retry then skipped the tally.
+  - **`schema.sql`:** `counters`, `seen`, `made_idx`, all `IF NOT EXISTS`.
+  - **`index.html`:** `loadTitleExtras()` fetches `/stats` into `titleStats`; `buildTitleCards()` adds, each only when above zero: `Last fall: N min/hours/days ago`, `Runs ended`, `Players seen`, `Turns logged`, `Pacts: N made, M ended`, `Items broken`, `TRIPs reported`, `Longest wall search: Nx`, `Gifts refused`, `Answered [S]ILENT: Nx`.
+  - **Design notes:** period is the lunar epoch (matches the EPOCH line; the design doc's "weekly counts" used calendar weeks). Totals only include runs that were posted to the board. Forgeable like everything on the board; the per-run caps bound the damage.
+- **Doors widened** to 11 columns each (at columns 9 and 27, knob at +8). **Map facing mark:** `^` on the top row ahead, `v` below her, `<`/`>` replacing her bracket at the sides; hidden while she looks up or down; a door's own mark stays on top. A v0.72.1 with these two existed locally and was folded in here before any push.
+- **Decided:** every room keeps facing north ("deeper is always north"); the compass stays.
+- **Tested lightly:** the Worker run against `node:sqlite` with the real schema (new post, retry, capped and junk stats, an old client, and all three flavor tables dropped: the score still posts); one Playwright load of the title with sample totals. Zero page errors.
+- **Not built:** stage 5, the rumor cards and the ambient-events channel.
+
 ## v0.72 - Left or Right - Oct 11 2026, 01:43 HST
 
 ![v0.72](screenshots/v0.72.png)
