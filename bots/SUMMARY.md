@@ -1,6 +1,6 @@
 # Bots: where everyone is
 
-Updated 2026-10-11 (Honolulu). Pinned build: `2e52611`. Canaries play the latest code.
+Updated 2026-10-11 (Honolulu). Pinned build: `0ab1a92`. Canaries play the latest code.
 
 | Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Last line |
 |---|---|---|---|---|---|---|---|---|---|---|---|
