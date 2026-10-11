@@ -1,7 +1,7 @@
 # Daily Dungeon — Theorycrafting Notes
-**v8 — Oct 11 2026**
+**v9 — Oct 11 2026**
 
-Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v0.77** (one room a day, two doors on one wall, a climb out of a pit on the moon's quarters).
+Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v0.94** (wing-based levels again since v0.80, a climb out of a pit on the moon's quarters, breath, a title screen with a live feed, and ten bots playing daily).
 
 Moved out since v6, because they shipped or were settled: faction seasons (design doc Part 10), the title screen including its unbuilt stages 4–5 (Part 11), Dissonance and its open pieces (Part 5), alignment tag renames (Part 6), and the Hold/Release Omen consolidation (Part 1). The read-budget rules for any async feature are in the design doc's Part 10 as well.
 
@@ -43,6 +43,8 @@ more free actions here no longer raises the old "does this eat into my
 charge" design question — there's nothing left for a free action to compete
 with. Doesn't change the designs below, just means they're lower-risk to
 add than when this list was first drafted.
+
+**Update, v0.83 on:** that is no longer quite true. Searching, scrying, using an item and stepping between rooms now cost **breath** (design doc Part 1), so any new action here needs a decision: does it take a breath? Listen and Knock probably should; Mark and Read probably not.
 
 ### More free actions beyond search/turn
 - **Listen** (a form of this shipped in v0.72 as listening at the doors; this is the in-room version)**:** quieter than search — gives a noise-type tell (repetition vs.
@@ -151,21 +153,53 @@ Deferred and deliberately undesigned. There is already a real mechanic the playe
 
 ---
 
-## 6. Bonus room and THE VOID on one-room floors (to do)
+## 6. Dead ends as a place for other players (discussed, nothing chosen)
 
-Both are switched off as of v0.70 (`BONUS_ROOMS = false`). They used to take over a wing's passage or dead end, and one-room floors have neither. They need a new home before they come back. One idea floated: something hidden inside that day's room, a stash for the bonus and an ambush for the void. The omen-streak trigger and the moon-weighted roll are still in the code, dormant, along with the streak telegraph line.
+Every wing has a dead end; today it holds the scrap that names one of the wing's two doors. Because wing shapes are shared, "the dead end of day 3's wing" is the same place for everyone on a level, which makes it a natural mailbox. Ideas floated:
+- **A message wall:** fixed-phrase notes, picked from a list, never typed.
+- **Bones:** a marker when a run ends on that level (a name, a day, last words), searchable for a small find.
+- **Tallies:** scratches for how many took each of that day's two doors. Popular, not which is which.
+- **A listening post:** the one room where she hears the rest of the level ("three others are on this level tonight").
+- **A cache:** leave one item, take what the last person left.
+- **A quiet room:** breath comes back faster and nothing wanders in.
+
+The suggestion on the table was to combine the wall, the tallies and the listening post into a "signal room", keeping the scrap. Open: whether leaving a mark costs anything (a breath, the key), how long marks last, flavor or true hints. Backend: one small table keyed by level, day and wing, read once on entering.
+
+(The bonus room and THE VOID, parked through the one-room releases, are live again since v0.80 and no longer a to-do.)
 
 ---
 
 ## 7. The escape: what is decided and not yet built
 
-Built in v0.77: the pit (B4F up to the surface), levels lost at the moon's quarters, waking on the level the dark has reached, play continuing past the surface. That also retired the late-week start rule.
+Built in v0.77 and kept through the v0.80 rollback: the pit (B4F up to the surface), levels lost at the moon's quarters, waking on the level the dark has reached, play continuing past the surface. That also retired the late-week start rule.
 
 Still to build, as agreed:
 - **Getting out is a finish.** Reaching the surface completes the monthly climb; the player can stop there or go on.
 - **Past the surface is the endgame,** with no top. It could be harder as well as longer (corruption from the first day, the bonus room and THE VOID back, less time a level).
 - **Two boards.** This moon: who got out and how fast, then by levels climbed; resets each lunar month. All time: the highest anyone has climbed past the surface.
 - **Open:** what is at the top; drawing the moon larger in the sky view the higher she is.
+
+---
+
+## 8. A map of the shared level (tried several ways)
+
+The offers and wing shapes are shared, so a level could be drawn for everyone. What was tried on Oct 11:
+- A sideways strip (`[v]----< >----< >...[?]--[^]`) with room counts and the offers by feel. It shipped only on the end-of-run page, cut down to the room she took each day, because showing the week's offers would spoil them.
+- An upright "readout" with block bars, and a "circuit" with a node a room: liked the look, "doesn't look like a map".
+- Trees (symmetric, asymmetric, twiggy): set aside.
+- **What shipped (v0.93):** a line of the quarter's lunar days with a decorative branch off each, future days masked. It is the level's mark, not a map.
+
+Things learned: every wing has exactly three rooms, so "size" can't be shown honestly; and anything that draws wing shapes lets a player work out their own map rotation. A later step that needs the Worker: marks on each day for how many players are there (the presence ping already carries the level; it would need the day).
+
+---
+
+## 9. Other ideas from the same session
+
+- **What could take `[F]IGHT`'s old slot on the bar** (left empty): `[W]AIT` for STANDBY (the day's other big choice, currently buried in the bag), `[G]IVE`, `[R]EST` (get breath back faster at a cost such as heat), `[L]ISTEN` (a quieter, less informative search).
+- **Live presence:** the daily ping on a few-minute interval and a "last five minutes" count. Cheap; only worth showing above zero.
+- **Names in the feed:** events now store the run's name. "HAL-BOT fell on B4F to a CHROME ONI" would make the typed line a world of people; it ends anonymity and needs the board's name filter.
+- **Per-level counts on the title** beyond presence (falls on B3F this moon).
+- **Breath levers:** a bigger bar, a faster refill, search time that grows as she tires (built in v0.84, removed), a `[R]EST` action.
 
 ---
 
