@@ -3,6 +3,21 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.85 - Word From Elsewhere - Oct 11 2026, 06:47 HST
+
+![v0.85](screenshots/v0.85.png)
+
+- **Presence, daily version.** Commit `9fe611c`. **Needs a Worker redeploy (schema and worker).**
+  - **Page (`index.html` `pingHere`):** once per local day, a device with a living run POSTs `/here` `{ id, level }`. `id` is 24 random hex characters kept in `localStorage` (`ddd.device`); `ddd.here` holds the last day pinged. Nothing personal; not sent while the testing cheat is on, or for a dead run. Called from `flushEvents`, so it rides the first save of the day.
+  - **Worker:** new table `present (id PRIMARY KEY, level, at, who)`, one row a device, overwritten. `/here` validates `id` (`[a-z0-9]{12,40}`) and `level` (1 to 60), allows a sender at most 40 other fresh ids in 24 hours (the bots share a sender), and prunes rows older than 60 days. `/feed` adds `here: { month, today, levels: [{ level, n }] }` (rows since the epoch began; rows in the last 24 hours, by level), `names` (distinct names in `scores` since the epoch began), and `deadliest: { name, n }`.
+  - **Live presence later** is the same ping on a shorter interval plus a "last five minutes" count; `at` is already a timestamp.
+- **"Players seen" now means devices seen this moon** (`here.month`). The old count (distinct senders that posted a score) is no longer shown; "Names carved on the board" replaces it for finished runs. The `players` counter and `seen` table are still written, unused.
+- **New counts reported with a score (`rules.js` `score().stats`):** `beaten`, `talks` (demonTalks), `joined` (recruited), `unlocks`, `standby`, `climbs` (floors), `moon` (moonAsked), `moonYes` (new tally `moonAnswered`), `breath` (new tally `breathOut`, once per run of blocked presses), `silver` (silverFound), `rare` (new tally: any RARE, MYTHIC or MOON item gained). Worker caps added to `STAT_CAPS`. `killer` (the demon that struck KURA down, `st.killer`) goes at the top level and becomes a `k:NAME` counter; the feed returns only the top one. The counters read limit went from 40 to 400 rows.
+- **New title cards:** Players seen, In the pit today, On B4F today (per level, up to four), Names carved on the board, Pacts that lasted (percent), the counts above, Most falls. With no network: the moon's quarter and days to the next, "The dark takes B4F in N days", days to the full moon, "The moon is new. She answers no one tonight." on a new moon, and "LAW/CHAOS omens, three days running." on a streak. Day counts use whole calendar days, the same as the LEVEL line. Cards still hide at zero.
+- **Log line 1 carries the feed.** The page lends its card lines to the run as `st.world` (moon lines as they are, everything else prefixed "Elsewhere: ", 74 characters at most). `report()` uses one a quarter of the time it isn't an air report or the last day's news. The lines are from the last title-screen load, so they are as old as the session.
+- **Bots:** they also send `/here`, each with its own id, once the pinned build is moved to this commit.
+- **Testing (light):** the Worker file loads; one browser check with a stand-in `/feed` showed every new card, one `/here` ping with a 24-character id, and a world line on log line 1. The real Worker was not exercised: it cannot be reached from here and is not redeployed yet. Until it is, the new cards simply don't show and the ping gets "not found".
+
 ## v0.84 - Searching . . . - Oct 11 2026, 06:18 HST
 
 ![v0.83](screenshots/v0.83.png)

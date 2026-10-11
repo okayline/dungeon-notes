@@ -158,6 +158,8 @@ async function play(name, build) {
     if (res.ok) st.submitted = { name: st.playerName, rank: res.rank }; else st.postTries = (st.postTries || 0) + 1;
     note.posted = res.ok ? `posted, rank ${res.rank}` : `post failed (${res.error || res.status || "dry run"})`;
   }
+  // "Someone is here": the same daily ping the page sends, with this bot's own id.
+  if (!st.dead) { st.botId = st.botId || [...Array(24)].map(() => "0123456789abcdef"[Math.floor(Math.random() * 16)]).join(""); const r = await post("/here", { id: st.botId, level: st.height || 1 }); note.here = r.ok ? "ok" : String(r.error || r.status || "?"); }
   st.botDay = today();
   note.st = st;
   if (!DRY) { fs.mkdirSync(path.join(HERE, "saves"), { recursive: true }); fs.writeFileSync(file, JSON.stringify(st)); }
@@ -195,7 +197,7 @@ async function play(name, build) {
   // The summary: every bot's latest state, plus today's counts for the ones that just played.
   const sumFile = path.join(HERE, "summary.json"); let sum = {};
   try { sum = JSON.parse(fs.readFileSync(sumFile, "utf8")); } catch (e) {}
-  for (const n of notes) if (n.skipped === "already played today") continue; else if (!n.skipped) sum[n.name] = { date: today(), build: n.build, version: n.version, crashed: n.crashed || null, row: n.row || null, n: n.n, posted: n.posted || null, events: n.events || null };
+  for (const n of notes) if (n.skipped === "already played today") continue; else if (!n.skipped) sum[n.name] = { date: today(), build: n.build, version: n.version, crashed: n.crashed || null, row: n.row || null, n: n.n, posted: n.posted || null, events: (n.events || "none") + (n.here ? "; here: " + n.here : "") };
     else sum[n.name] = { ...(sum[n.name] || { build: n.build }), skipped: `${today()}: ${n.skipped}` };
   fs.writeFileSync(sumFile, JSON.stringify(sum, null, 1));
   const rows = roster.bots.map(b => { const s = sum[b.name]; if (!s || !s.date) return `| ${b.name} | ${b.build} | - | | | | | | | | | ${s && s.skipped ? "skipped " + s.skipped : "not played yet"} |`;
