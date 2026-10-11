@@ -317,10 +317,28 @@ One clarifying note worth keeping: **switching between these three options was p
 - **Season title/flavor** — a generated name + theme line per lunar epoch ("The Hollow Moon"), shown on a title/log screen. Cheap (just a seeded phrase generator), gives the community a shared handle for "this month."
 - **Epoch-scoped leaderboard** — a board that resets each lunar month alongside the all-time one, reusing the existing scoring/posting pipeline. Pairs well with the shared-shape system since "furthest into this month's dungeon" is a meaningful, non-spoiler stat.
 - **Aggregate community stats / weekly counts** — a running tally across all players this epoch (total demons beaten, silver found, "412 runs ended on B2F this week," etc.), shown as flavor or tied to a threshold that nudges next epoch's generation slightly. No location info, no individual callouts possible.
-- **Faction seasons** — each run's final alignment tag (LAW/NEU/CHA) contributes a point to its faction, weighted by floor reached, tallied over a lunar epoch. A neutral run's point could go to whichever faction is currently behind, giving Neutral a purpose in the season metagame. Reward is cosmetic — a title, an omen-voice shift for the leading faction.
+- **Faction seasons** — settled design, picked to build first ahead of bones/ghost demons/weekly counts. See its own writeup below.
 - **Sighting log for named/rare demons** — anonymized "spotted on B5F" posts (floor depth only, which the leaderboard already exposes) when a player meets the epoch's world boss or a MYTHIC find.
 - **One-time shared loot** — a rare locker that exists once per floor-epoch; first player to open it gets it, later players see "emptied by [name]." Needs an atomic "first wins" write.
 - **Considered and not pursued: shared room heat.** Letting a room's heat persist across all players in a floor-epoch was judged the most expensive of these ideas — needs real per-room state shared across every player — and was dropped rather than designed further.
+
+## Faction seasons (design settled, not yet built)
+
+Picked to build first, ahead of bones, ghost demons, and the other weekly-counts ideas.
+
+**Season length: a lunar epoch** — the same ~29.5-day cycle that already reseeds the shared floor shape (`epochIndex()`), reusing existing math rather than standing up a second, unrelated clock. A season starts and ends exactly when a new epoch does.
+
+**Scoring:** every ended run adds a floor-weighted point to its final alignment tag — `floorNum(run)` points go to LAW or CHAOS. A NEUTRAL run's point is the **kingmaker**: it goes to whichever of LAW/CHAOS currently has fewer points this epoch, nudging a lopsided season back toward contested rather than letting one side run away with it — giving NEUTRAL a real, dynamic reason to exist in the season metagame beyond easier recruiting from both sides. On an exact tie, a NEUTRAL run's point simply isn't added to either side — nothing to fix if nobody's behind.
+
+**Storage:** one small counters table, `(period, key) -> count` — the same generic shape any of the other weekly-counts ideas would use (`period` is just a string: a calendar-week label for some counters, the epoch index for this one). For faction seasons specifically: **two rows per epoch**, keyed `LAW`/`CHAOS` — not three, since in the kingmaker model NEUTRAL never has a tally of its own, its point always lands on an existing row.
+
+**Write path:** piggybacks on a run's existing leaderboard submission — no new endpoint, just more logic inside the same Worker call that already posts a score. LAW/CHAOS runs are a blind increment (`count = count + floorNum`). A NEUTRAL run is the one case that isn't a pure blind write: it needs to know which of the two rows is currently lower before it increments. Worth doing as a single conditional `UPDATE` if D1 allows one cleanly, rather than a separate SELECT-then-UPDATE round trip — avoids a race between two NEUTRAL runs landing at nearly the same moment. Low-stakes either way since this is purely cosmetic, but worth getting right rather than leaving a double-counting edge case sitting there.
+
+**Read path:** a plain indexed SELECT of the current epoch's two rows — cheap, same shape as every other counter read, small enough to ride along in the title screen's one-packet-a-day fetch (see the read-budget section above) rather than needing a request of its own.
+
+**Display:** the title screen's `LEAN` bar (`this week leans CHAOS [||||||||.........] 35/65`) is the natural home for this — already mocked as a two-sided bar, which fits the kingmaker model cleanly since there are only ever two rows to split between.
+
+**Reward:** cosmetic only — a board title, an omen-voice shift for the leading faction. Nobody needs to win the season to play well; it's flavor, not power.
 
 ## Harder ideas considered, and the calls made
 
@@ -366,7 +384,35 @@ Not urgent at current scale, but cheap to build in from the start:
 
 ---
 
-# Part 11: Open questions / not yet decided
+# Part 11: Title screen (design settled, not yet built)
+
+Reuses the real in-game frame's zones rather than inventing a new layout — just new content in the same slots, mocked at 80 columns to match the real game.
+
+**Top box (moon + date header):** unchanged, exactly the real in-game header. No new work.
+
+**3D-view slot:** a static centered wordmark ("DAILY DIGITAL DEMON DUNGEON" + a one-line tagline) stands in for the dungeon view, since there's no run yet. Pure decoration, nothing to wire up.
+
+**Log box (3 lines):** repurposed as cold, stable facts that don't change until the day rolls over:
+```
+> WEEK      TUE, day 2 of 7  -  5 days left, this floor closes SUN
+> EPOCH     epoch 14, day 9 of 29  -  new shape in 20 days
+> LEAN      this week leans CHAOS   [||||||||.........]  35 / 65
+```
+WEEK/EPOCH are already computable from existing code (`epochIndex()`/`utcDay()`, the existing week/deadline logic). LEAN is the one new piece, and is now unblocked — it reads straight off Part 10's faction-season counters (the current epoch's two LAW/CHAOS rows), which is exactly why that got built first.
+
+**Sidebar slot — "RUMORS AND SECRETS":** where PARTY/MAP/ALIGN normally render; repurposed as a pinned header (`RUMORS AND SECRETS` + a rule line) with a scrolling, auto-advancing list of cards underneath — only the cards move, the header stays put. Cards are a mix of two kinds, shuffled together (capped at two of the same kind in a row so it never settles into a visible pattern):
+
+- **Hard-number cards** — exact counts, anonymized (no player names, no rankings): `Last fall: 3 hours ago`, `Deepest floor: B4F`, `Turns logged: 1,842`, `Players seen: 312`, `Pacts: 118 made, 54 ended`, `Items broken: 67`, `TRIPs reported: 9`, `Longest wall search: 61x`, `Gifts refused: 23`, `Answered [S]ILENT: 441x`, `Faction lean: CHAOS 65%`, and the day's real shared omen as one of these cards too.
+- **Rumor cards** — vaguer, atmosphere-first lines that *reference* an in-game event without quoting the actual triggering line, so they don't spoil or duplicate the game's own flavor text: `A demon rejected a traveler's paltry gift.` / `Someone was asked if they trust the dark.` / `A corrupted voice turned, and was made whole again.` One deliberate exception: **last words are quoted verbatim but never attributed** — framed as the dungeon speaking, not a named player's death.
+- One blank line between every card regardless of kind. Multi-line cards (most rumors) wrap to the sidebar's width; single-line cards (most stats) don't.
+
+**Scroll behavior (settled this pass):** medium/slow speed — readable without feeling static. No pause-on-hover for now (may revisit later). Cards show a full cycle before any repeat, rather than looping/repeating early within one sitting.
+
+**Menu bar:** `[N]EW RUN   [C]ONTINUE   [B]OARD   [?] ABOUT` — same bracket-letter convention as the real in-game action bar.
+
+**New infra, and build order (settled this pass): hard-number cards first.** They're the cheaper half — most of them read off counters that already exist or are now settled (the live leaderboard/graveyard tables via an indexed `LIMIT 1` query, the faction-season counters from Part 10) — same precomputed-counter approach as the weekly-counts idea, incremented once at run submission, never a `COUNT(*)` scan. Rumor cards are the bigger lift: they need a new, deliberately lightweight "ambient events" channel with nothing behind it yet — a tiny ping (a type tag + which flavor line/outcome fired + a timestamp, no player ID, no name) sent whenever a listed moment happens in someone's real game (a gift refusal, a corrupted-demon restoration, a trickster running off, a party member leaving, a fall for the last-words case). The server keeps the last N of each event type; the title screen pulls a handful at random to build the day's rumor cards from. Forging a fake event here is cheap and that's fine — unlike the leaderboard, nothing downstream trusts these for ranking or rewards, so the worst case of abuse is a silly line in a flavor feed, not a cheated score.
+
+# Part 12: Open questions / not yet decided
 
 - Exact menu of wing-internal topology shapes (chain, branch, loop, + maybe one more) and whether topology variety implies variable wing size (currently fixed at 3 spaces per wing).
 - Whether/how to layer demon echoes, notes/bones, route traces, or the lighter-lift async ideas (world boss, season title, epoch leaderboard, faction seasons, sighting log, one-time loot) on top of the core system, and in what build order.
@@ -379,3 +425,4 @@ Not urgent at current scale, but cheap to build in from the start:
 - STANDBY-banked-omen balance (Part 1/8): cap is 1, decay/expiry still unexplored, and whether banking a bad omen is ever worth it is still open. The offsetting-cost question is partly answered as of v0.58 (a flat 7-real-day cooldown on holding again after a release) — open now is only whether Hold itself should ever cost something too, and whether a bigger cap is worth it.
 - Telegraphing for the omen-streak room unlock (Part 8) — the streak itself is shipped, but no in-game buildup cue exists yet. Also worth revisiting the LAW/CHAOS lean mapping, since it currently makes CHAOS streaks ~3x more common than LAW streaks.
 - Exact daily probability curve for the ordinary bonus-room roll (flat vs. smoothed to land closer to exactly-twice-a-month).
+- Title screen (Part 11): layout, scroll behavior, and build order (hard-number cards before the ambient-events channel) are all settled. Still open: the exact full list of ambient-event trigger types to wire up, and whether a bigger/different set is worth adding once the channel exists.

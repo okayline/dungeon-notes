@@ -46,13 +46,17 @@ v0.47) already holds most of the data this would need.
 - One small counters table: period + key + number (e.g. `2026-W41` /
   `B2F_deaths`). Incremented in the same submission the leaderboard already
   does at run end — no new write path.
-- **Faction season:** every ended run's final alignment tag adds a
-  floor-weighted point to LAW/NEU/CHA; log shows which side is leading
-  (`412 runs ended on B2F this week`). Reward should be cosmetic (an omen
-  voice tweak, a board title) so nobody needs it to play well.
-- Season length: could be a calendar period, or computed from a known
-  lunar reference the same way `epochIndex()` already does for the shared
-  floor seed (v0.56) — reuse, don't reinvent.
+- **Faction season — design settled, picked to build first** (ahead of
+  bones/ghost demons/the rest of this section). Full writeup now lives in
+  `daily-dungeon-design.md`'s "Faction seasons" section. Summary: season
+  length is a lunar epoch (reusing `epochIndex()`, not a new clock); LAW/CHAOS
+  runs add a floor-weighted point to their own tally; a NEUTRAL run's point
+  is a **kingmaker** — it goes to whichever side is currently behind (a tie
+  moves nothing), so NEUTRAL only ever has two rows to tip, never a tally of
+  its own. Reward is cosmetic (an omen voice tweak, a board title).
+- Other weekly counts (deaths by floor, etc.) stay calendar-week-keyed in the
+  same generic table — only faction season itself uses the epoch as its
+  period.
 
 ### Shared floor-week / ghost routes (bigger lift, not started)
 - Full shared layout (same rooms/doors for everyone in a period) reintroduces
@@ -221,11 +225,17 @@ than being designed ahead of that.
 
 ---
 
-## 5. Title screen (not built — mockup only)
+## 5. Title screen (design settled this pass — not yet built)
 
 Reuses the real in-game frame's zones rather than being a separate layout,
 so no new screen structure is needed — just new content in the same slots.
-Mocked at 80 columns to match the real game.
+Mocked at 80 columns to match the real game. Full writeup now lives in
+`daily-dungeon-design.md` Part 11, including the pieces resolved this pass
+(open questions 4 and 5 below): **scroll speed is medium/slow, no
+pause-on-hover for now, a full cycle shows before any card repeats, and
+build order is hard-number cards first** (cheaper — mostly reads off
+counters that already exist, including the faction-season ones from Part
+10), with the ambient-events channel for rumor cards second.
 
 **Top box (moon + date header):** unchanged, exactly the real in-game header.
 No new work.
@@ -389,19 +399,23 @@ step, **not yet built, not yet confirmed:**
 
 ## Open questions (still open after the v0.57.3 changelog)
 
-1. Bones vs. ghost demons vs. faction seasons — which first, if any? (Note:
-   whichever ships first makes the other two, plus shared wards, cheaper —
-   see section 1's infra note.)
+1. ~~Bones vs. ghost demons vs. faction seasons — which first, if any?~~ —
+   resolved this pass: faction seasons go first, design settled (see
+   section 1's updated faction-season note). Bones vs. ghost demons for
+   *second* is still open; whichever of those ships next still makes the
+   other, plus shared wards, cheaper — see section 1's infra note.
 2. Should shared floor-weeks ever exist as a separate challenge mode,
    given the spoiler problem?
 3. Does the real build still want an "endgame" distinction between Mythic
    and Moon rarity, now that the room/floor structure has changed so much
    from the original weekly-floor design?
-4. Title screen: is the ambient-events channel worth building before the
-   hard-number counters, or the reverse — which gives more "alive" feel
-   per unit of work?
-5. Title screen: scroll speed/pause-on-hover, and whether cards should ever
-   repeat within one sitting or guarantee a full cycle before looping.
+4. ~~Title screen: is the ambient-events channel worth building before the
+   hard-number counters, or the reverse?~~ — resolved this pass: hard-number
+   counters first, cheaper to build.
+5. ~~Title screen: scroll speed/pause-on-hover, and whether cards should ever
+   repeat within one sitting or guarantee a full cycle before looping.~~ —
+   resolved this pass: medium/slow, no pause-on-hover for now, full cycle
+   before repeating.
 6. Ward materials: should chalk/salt/a match be consumed on use, and which
    existing junk items double as them?
 7. Does the data-demon "firewall mark" counterpart to the ward need its
