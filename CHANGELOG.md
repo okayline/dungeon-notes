@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.91.1 - A Slow Hand - Oct 11 2026, 08:16 HST
+
+![v0.91](screenshots/v0.91.png)
+
+- **Search result on its own line.** Commit `4926ceb`. In `draw()`, when the saved log reads "> KURA searches/scries the X. RESULT", the middle line is drawn as the first sentence and RESULT is drawn on the top line in place of the flavor text. Display only: `save.log` is restored at once and the history keeps the whole sentence. Not split during the 0.8 s beat, for a dead run, or while a party question holds the top line. A find (`KURA finds`, `A locker holds`, `Coins in the rubble`, `Deep in the stone`) sets `resultGold` and the top line gets `.logline.gold` (the popup gold, no glow).
+  - The result sits **above** the action because the line below is the typed news. Flagged to the dev as possibly reading backwards; the alternative is to swap the two.
+- **Typed line.** Slower: letters 110 to 200 ms (about six a second), 170 ms on a space, 520 ms after punctuation; deletion one character per 45 ms (was two per 18 ms); gap 0.7 s. A persistent `> ` prefix. Width 72. It never says KURA: status lines have "KURA is" / "KURA" rewritten to "She is" / "she".
+- **Run news rewritten** (`0f38d44`). Dropped as shallow or already on screen: SILVER, lean, bare day and turn. About thirty lines, each only when it applies: rooms of the level walked, days before the dark takes it, today's key, who walks with her, who has fallen, who is badly hurt, who is running out of patience (patience 2 or less), pacts holding, demons met / beaten / run from, talks, gifts and refusals, silences, party remarks, confidences, searches and finds, longest stay at one wall (5 or more), rare finds, things broken, doors and rooms, levels climbed, STANDBY nights, a held omen, fixtures, offerings, ICHOR, the moon, out of breath, things in the bag.
+  - **Mix:** two of hers, then one of the others' (others on her level today, then located rumors), repeating; the shorter list wraps. The others' list is only three or four items until located events accumulate.
+- **Testing (light):** browser checks of the split lines, the gold class, the typing rate (13 letters in 2 s) and the feed list with made-up counts. The slower delete was not watched on screen.
+
 ## v0.91 - Typed - Oct 11 2026, 08:08 HST
 
 ![v0.91](screenshots/v0.91.png)
