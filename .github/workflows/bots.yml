@@ -23,8 +23,8 @@ jobs:
     env:
       TZ: Pacific/Honolulu
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - name: Fetch the game (the pinned build and the latest)
