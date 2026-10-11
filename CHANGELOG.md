@@ -3,6 +3,18 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.82 - The Key - Oct 11 2026, 05:34 HST
+
+![v0.82](screenshots/v0.82.png)
+
+- **"Charge" is "key" again; doors "unlock".** Commits `da121a3`, `ffff04e`. Every player-facing line in `rules.js` and `index.html`: the door prompt ("UNLOCK THE NORTH DOOR?", "This uses today's key."), the unlock and refusal log lines, the painted-door lines, STANDBY's prompt, the status report ("Today's key spent / in hand"), the About text, and the debug row (`KEY spent/ready`). Code names are unchanged (`today.stepped`, `freeSteps`). "Recharge Bay" keeps its name.
+- **The [?] page rebuilt.** KEYS is generated from a list so every label is dot-padded to one column (the `[H]` line had no dots); the two `[G]IVE` lines merged; `[Y]ES [N]O [S]ILENT` on one line; the password entry on one line; a MARKS section for `+`, `#`, `x`, `[v] [^]`. All lines fit the 71-column box. "Each floor" is "Each level".
+- **v0.81.1, folded in here (never pushed alone):**
+  - `b150111`: the moon strip closes around the middle of what is drawn (columns 5 to 21 of 24), `round(heat / 24 * 9)` columns a side, so it no longer looks lopsided.
+  - `134ec11`: the dimming and wait cursor during a slow search are removed at the dev's request ("no dimming, no reload; please ask before you add things like that"). The middle log line shows "> KURA searches..." for the wait instead; it is drawn only, never saved or added to the history.
+- **Process note:** ask before adding any visual effect that wasn't requested.
+- **Testing (light):** the strip printed at nine heat levels; one browser check of the search line (shown during the wait, opacity 1, replaced by the result); one browser look at the [?] page. The renamed log lines were not played through, and the public screenshot predates the last line trims.
+
 ## v0.81 - The Moon Closes - Oct 11 2026, 05:24 HST
 
 ![v0.81](screenshots/v0.81.png)
