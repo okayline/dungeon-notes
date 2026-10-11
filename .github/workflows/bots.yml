@@ -1,0 +1,52 @@
+# The bots take their daily turn in the game. Three sittings a day (Honolulu morning, afternoon, evening);
+# each bot belongs to one of them (its "slot" in bots/roster.json). Run it by hand from the Actions tab to
+# play every bot at once (they still only play once a day unless "force" is ticked).
+name: bots
+on:
+  schedule:
+    - cron: "17 18 * * *"   # 08:17 HST
+    - cron: "23 0 * * *"    # 14:23 HST
+    - cron: "41 6 * * *"    # 20:41 HST
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Play even if a bot already played today"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency: bots
+jobs:
+  play:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Pacific/Honolulu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch the game (the pinned build and the latest)
+        run: |
+          PIN=$(node -p "require('./bots/roster.json').pinned")
+          git clone -q https://github.com/okayline/daily-dungeon.git /tmp/game-latest
+          git clone -q https://github.com/okayline/daily-dungeon.git /tmp/game-pinned
+          git -C /tmp/game-pinned checkout -q "$PIN"
+      - name: Play
+        run: |
+          case "${{ github.event.schedule }}" in
+            "17 18 * * *") SLOT="--slot 0" ;;
+            "23 0 * * *")  SLOT="--slot 1" ;;
+            "41 6 * * *")  SLOT="--slot 2" ;;
+            *)             SLOT="--all" ;;
+          esac
+          FORCE=""; [ "${{ inputs.force }}" = "true" ] && FORCE="--force"
+          node bots/bot.js --pinned /tmp/game-pinned --latest /tmp/game-latest $SLOT $FORCE
+      - name: Save the day
+        run: |
+          git config user.name "dungeon-bots"
+          git config user.email "bots@users.noreply.github.com"
+          git add bots
+          git diff --cached --quiet || git commit -q -m "Bots: $(TZ=Pacific/Honolulu date '+%b %d, %H:%M HST')"
+          git pull -q --rebase && git push -q

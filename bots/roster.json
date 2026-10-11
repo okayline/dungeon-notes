@@ -1,0 +1,15 @@
+{
+  "pinned": "088df27",
+  "bots": [
+    { "name": "HAL-bot",    "build": "pinned", "slot": 0 },
+    { "name": "C3PO-bot",   "build": "pinned", "slot": 0 },
+    { "name": "TARS-bot",   "build": "pinned", "slot": 0 },
+    { "name": "R2D2-bot",   "build": "latest", "slot": 0 },
+    { "name": "DATA-bot",   "build": "pinned", "slot": 1 },
+    { "name": "MARVIN-bot", "build": "pinned", "slot": 1 },
+    { "name": "GORT-bot",   "build": "latest", "slot": 1 },
+    { "name": "BENDER-bot", "build": "pinned", "slot": 2 },
+    { "name": "WALLE-bot",  "build": "pinned", "slot": 2 },
+    { "name": "ROSIE-bot",  "build": "latest", "slot": 2 }
+  ]
+}
