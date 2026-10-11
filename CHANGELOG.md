@@ -3,6 +3,21 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.83 - Breath - Oct 11 2026, 05:46 HST
+
+![v0.83](screenshots/v0.83.png)
+
+- **Breath: KURA's own tiredness, shown on the moon strip.** Commit `088df27`. Replaces v0.81's use of room heat for the strip; the dev wanted "click fast 5-6 times and the bar disappears, then regenerates", personal to KURA, named BREATH.
+  - **Rules (`rules.js`):** `BREATH_MAX = 6`. `st.breath = { n, at }` (absent when full): `n` breaths as of instant `at` (ms), which is when the next starts coming back. `spendBreath` sets `at = now + BREATH_WAIT` (2000 ms). `breathNow(st, write)` catches up: climbing from `n` to `n + 1` takes `BREATH_BACK[n]` seconds, `[10, 8, 6, 4, 3, 2]`, so emptier is slower. From empty: 12, 20, 26, 30, 33, 35 seconds for breaths 1 to 6 (measured). Real time, so it also refills while the page is closed.
+  - **What spends one:** every `search()` (walls, listening at a door, waking a terminal, using a fixture, `[ ^ ]` at a bare wall) and asking the moon (only when she is actually asked). Not moving, turning, looking, talking, fighting, or searching during a fight (already refused).
+  - **At zero:** `search()` returns early with "KURA is out of breath." / "KURA needs a moment." / "Not yet. KURA catches her breath." No turn is spent.
+  - **The strip (`screen.js`):** `st.breathNow` (set in `show`) closes `round((6 - breath) / 6 * 9)` columns a side around the drawn middle; nothing left at 0.
+  - **The page (`index.html`):** a 250 ms timer compares `RULES.breath(save)` (read-only) with what is shown and redraws when it changes. `RULES.breath` is new in the api. `breath` is cleared on reset.
+- **Heat reverted to v0.80 behaviour.** `cool()`, `COOL_MS` and `rs.heatAt` are removed: heat only halves overnight again and is not shown. Asking the moon adds no heat.
+- **The search pause is removed.** Commit `0224bcb`. The dev did not like it; the "KURA searches..." line went with it.
+- **Balance note:** breath caps the rate of searching (about 6 in a burst, then roughly one every 2 to 4 seconds if kept near full), not the total. Heat is still the cost of total searching.
+- **Testing (light):** one node check (six searches drain it, the 7th and 8th are refused, refill times above) and one browser check (seven fast presses empty the strip and block; it reopens with no input; searching works again; no page errors).
+
 ## v0.82 - The Key - Oct 11 2026, 05:34 HST
 
 ![v0.82](screenshots/v0.82.png)
