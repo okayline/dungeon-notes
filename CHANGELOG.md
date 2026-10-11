@@ -3,6 +3,24 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.75 - The Path - Oct 11 2026, 02:42 HST
+
+![v0.75](screenshots/v0.75.png)
+
+- **Commit `ab10448`.** A v0.74.1 with most of this sat locally through several rounds with the dev and was folded in here before any push; there is no v0.74.1.
+- **THE PATH (`rules.js` `pathView(st)`, shown at the top of `[L]OG`).** The four-week / whole-run view from the bot-testing notes, built as a forking tree at the dev's ask.
+  - **Recording:** `floorPath(d)` walks back from her room through `room.from`, giving `[{ s: side, k: kind }]` (both absent for a floor's first room). On taking the stairs, `go()` pushes `{ f, a: arrived, e: deadline, left, rooms }` onto `st.path`; the floor she is on is read live. About 100 bytes a floor (a simulated six-floor run: 991 bytes), so every floor is kept. `path` is cleared by `reset()`.
+  - **Drawing:** four floors to a row, 19 columns each (76 wide, the worst case of seven steps one way fits). Rooms on even rows from the bottom, two columns left or right of the last by the side taken; on the odd row between, a `\ /` fork under each offer room (a `|` under the lone wildcard door); an `x` on the child's row where the other door would have led. `[^]` first room, `[@]` her room, `[v]` the last room of a finished floor.
+  - **Marks, never names:** `"` warm (den), `~` quiet (bay), `:` signal (relay), `$` cold (vault), `*` ash (forge), `&` glow (altar); the legend lists only the marks that appear. The current room and a floor's last room show `@`/`v` in place of their mark.
+  - **To move later (dev):** to the end-of-run screen only. A sideways version was considered and dropped.
+- **Controls, settled after four passes:** compass letter between `[ < ]` and `[ > ]` again; `st.actLabel` centred above `[ ^ ]` on row `VH - 3`, flanked by `[ < LEFT ]`/`[ RIGHT > ]` while both doors are locked; the `[ ENTER ]`/`[ OPEN ]`/`[ DESCEND ]` overlays removed (the word is a `do` button). Looking moved to the bottom bar: `LOOK_[U]P`, or `LOOK_[D]OWN` while she looks at the sky (underscore by the dev's ask). Keys: U cycles, D looks down, Q/E the left/right door (they were A/D for one release), W/Enter enter, up arrow `do`.
+- **`minimap()`:** doors on row 0, her room on row 2 (`ME`), two rooms behind her; the facing mark has row 1 to itself when she faces the doors.
+- **Dissonance retuned (`rules.js`):** `DISSONANCE_FIGHT = { 1: 0, 2: 1 }` (was `{ 1: 1, 2: 2 }`), and `wearTension()` is called from `fight()` only when the demon falls (was every round). Gap 1 now costs nothing anywhere (linger and skip were already 0 at gap 1), so NEUTRAL is the bridge and the starting party (CHAOS, NEUTRAL, CHAOS beside a NEUTRAL KURA) takes no tension wear. Checked: four long fights with a NEUTRAL KURA leave all three at 5; with KURA held at LAW, ELF and CU SITH drop about 1 per fight and PIXIE stays at 5. The dev's report that prompted it: PIXIE left after being talked to once (two fights had zeroed her).
+- **Hold Omen:** `showInv()` falls back to a greyed, inert `Hold Omen` button whenever none of the live states applies (the charge is spent, a demon is here). Before, the button vanished once the day's door was opened, which read as the feature being gone.
+- **Fight-end screen:** the click/Enter skip added in v0.74 is removed; `closeFound()` returns while `doneTimer` is running, so it closes only from `[ OK ]` after the last beat.
+- **README screenshot** points back at v0.72's in-game shot (v0.75's is the log).
+- **Tested lightly:** Node prints of the tree and the Dissonance check; three short Playwright passes over the controls, the bag and the log. Zero page errors.
+
 ## v0.74 - Whispers - Oct 11 2026, 02:12 HST
 
 ![v0.74](screenshots/v0.74.png)
