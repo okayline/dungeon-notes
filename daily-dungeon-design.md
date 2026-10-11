@@ -1,79 +1,85 @@
 # Daily Dungeon — Design Doc
 
-How the game plays and why: the daily loop, floors and rooms, combat, the party, alignment, items, omens, run structure, async multiplayer, and the title screen. Current as of **v0.62.2**.
+How the game plays and why. Current as of **v0.77**: one room a day, two doors on one wall, a climb out of a pit on the moon's clock.
 
 One file, no version suffix; git history is the version history. Ideas that are not built and not yet settled live in `theorycrafting-notes.md`. Exact per-release detail lives in `CHANGELOG.md`.
 
 ---
 
-# Part 1: Core daily loop
+# Part 1: The premise and the daily loop
 
-One real-world day = one "step." A step is spent by:
-- Opening a **locked** door (the game's main action), or
-- Going on **STANDBY** (resting instead of moving)
+**The premise.** KURA wakes in a pit and climbs out. The pit is four levels deep: **B4F** at the bottom, then B3F, B2F, B1F, then the surface (**1F**) and on upward with no top. The dark rises from below, a level at a time, on the moon's clock (Part 9). The moon is overhead in every room: there is no ceiling, only the night sky. "Higher is always north": the doors onward are always in the north wall, and the map and the long view both grow upward.
 
-Everything else — searching, turning, talking to party or demons, using items, visiting the altar — is free and unlimited within a day. The gate is a single boolean, `today(st).stepped`: once true, no further locked door can be opened until the next real-day rollover. Already-open doors stay walkable regardless.
+**One room a day.** KURA stands in exactly one room. Its north wall holds two locked doors, LEFT and RIGHT: an offer of two rooms. One real-world day gives one **charge**, spent by:
+- opening one of the two doors (the other **seals for good**), or
+- going on **STANDBY** (resting instead of moving).
 
-**STANDBY** spends the day's step without moving (blocked if a demon encounter is in progress). It's a deeper rest than an ordinary night: on the *following* rollover, a STANDBY night triggers "camp" effects —
+Opening a door only opens it; stepping through is free and happens when the player chooses, and it is one-way: the door shuts behind her and there is no going back. Everything else is free and unlimited: searching, listening at the doors, turning, looking up or down, talking to the party or to demons, using items, the altar, asking the moon.
+
+The gate is a single boolean, `today(st).stepped`: once true, no further locked door opens until the next real-day rollover.
+
+**STANDBY** spends the day's charge without moving (blocked while a demon is in the room). On the *following* rollover a STANDBY night triggers "camp" effects:
 - every standing party member restored to full HP/MP and full Patience,
 - taint reset to 0,
-- current room's heat cleared,
+- the room's heat cleared,
 - the loop-detection counter reset,
-- any camp-triggered PROGRAM jobs run (COMPILER, CACHE — see Part 7),
+- any camp-triggered PROGRAM jobs run (COMPILER, CACHE; Part 7),
 - and that night's omen gets **banked**.
 
-**Omen banking (Hold Omen / Release Omen):** a STANDBY night banks that day's omen in `st.bankedOmen` — one slot, a newer held day overwrites the old one, no stacking. The banked omen waits until the player releases it (`useBankedOmen`), which applies it in place of that day's natural omen; it's gone at the next sunrise. This is a scheduling tool, not a reroll: bank a day that happened to roll a good omen, then cash it in right before a floor or demon that matters.
-- **Cooldown:** releasing starts a flat **7-real-day** cooldown before KURA can hold again (`st.omenCooldownDay` against `st.day`, a count of real days, so skipped days still count). The cost sits on Release, not Hold. A calendar-week cooldown was rejected: it would let a player release right before the week's reset for close to no cost.
-- **UI:** one morphing button with its own `H` key, in the bag's foot block beside `[ENTER] use` and `[C]LOSE` (pinned there, so it stays visible however long the list is). It is not a numbered item. The label carries the state: `Hold Omen`, `Release Omen`, or `Hold Omen (Nd)` greyed out while cooling. The explanation lives only in the `?` menu.
+With no going back to a Recharge Bay or a Forge, a camp night is one of the few ways to heal. It costs a day of the level's time.
 
-Every action runs `sync()` first, which also: halves every room's heat overnight, decays taint by 1, restores 3 Patience to each party member, heals a little HP to the party, rolls that day's bonus/void room placement (Part 8), and checks the floor's deadline — missing it ends the run (Part 9).
+**Omen banking (Hold Omen / Release Omen):** a STANDBY night banks that day's omen in `st.bankedOmen`: one slot, a newer held day overwrites the old one. The banked omen waits until the player releases it (`useBankedOmen`), which applies it in place of that day's natural omen; it's gone at the next sunrise. A scheduling tool, not a reroll.
+- **Cooldown:** releasing starts a flat **7-real-day** cooldown before KURA can hold again (`st.omenCooldownDay` against `st.day`). The cost sits on Release, not Hold.
+- **UI:** one morphing button with its own `H` key in the bag's pinned foot block. It is always there: `Hold Omen`, `Release Omen`, `Hold Omen (Nd)` while cooling, or greyed when it can't be used (the charge is spent, a demon is here).
 
+Every action runs `sync()` first, which also: halves the room's heat overnight, decays taint by 1, restores 3 Patience to each party member, heals a little HP, and checks the level's deadline. Missing it ends the run (Part 9).
 
----
-
-# Part 2: Floor & room generation
-
-- A floor has `KINDS = [den, bay, relay, vault, forge, altar]` — six ordinary room kinds — plus two kinds that are never dealt into the normal rotation: `archive` (bonus room) and `void` (anti-bonus room).
-- A floor runs for `days = 7` (clamped 3–7), giving `pairs = days - 1 = 6` door-offer events across the week.
-- **The deck:** the six kinds are shuffled twice and concatenated, retried until no adjacent pair repeats a kind, then split into offers of two kinds each — one offer per wing, dealt one wing at a time across the week. **The last offer is a wildcard**, not part of the shared deck at all: a single kind rolled from the private per-account seed. This is the "Day-7 wildcard" — because it never touches the shared deck, it's immune to the elimination-by-subtraction problem the other kinds have (see Part 10 for why that's considered harmless there anyway).
-- **Wings:** each non-final wing is three rooms — K (entered room), P (a passage), X (a dead end) — in either a "chain" (K→P→X) or "star" (K→P, K→X) layout, chosen at random, with every non-final wing hanging **two locked doors** off K or P. Opening one seals the other permanently.
-- **The final wing** has a single door (the wildcard's) and hides the stairs down in its passage or dead end.
-- **Lure room:** roughly 60% of floors get one hidden locker (`?`), placed in a random wing's dead end (or entered room if there's no dead end).
-- **Stairs direction** and each room's grid position are fixed per floor (keyed off the shared seed), not randomized per player.
-- Two seeds drive all of this, split exactly along the shared/private line Part 10 describes: the shared `seed` picks wing topology and which two kinds pair up where; the private `pseed` (re-rolled every floor) picks which paired kind lands in which slot, hidden-item placement, the wildcard's actual kind, and bonus/void placement.
+**Controls.** At the foot of the view: the word for what `[ ^ ]` will do here (LISTEN, OPEN, ENTER, SEARCH, USE, OFFER, CONSULT, CLIMB), `[ ^ ]` itself (also the up arrow), and `[ < ]  N  [ > ]` to turn, with the compass letter between. `[ < LEFT ]` and `[ RIGHT > ]` flank the word while both doors are locked (keys Q and E). The bottom bar holds `[F]IGHT [T]ALK [I]NVOKE [S]EARCH LOOK_[U]P`; looking steps through sky, floor, level (U), and D looks down. The slot under the map names what she faces (TWO DOORS, BARE WALL, THE MOON...).
 
 ---
 
-# Part 3: Room kinds & searching
+# Part 2: Levels & rooms
 
-Each kind-room (den/bay/relay/vault/forge) hides a **fixture** behind one wall — found by searching like anything else, usable once per real day once found:
+- A level has `KINDS = [den, bay, relay, vault, forge, altar]`. Two more, `archive` (the bonus room) and `void`, are **parked** (Part 8).
+- A level lasts `days` (3 to 7, the days left in its moon quarter when she arrives, capped at 7), giving `pairs = days - 1` offers.
+- **The deck:** the six kinds are shuffled twice and concatenated, retried until no pair repeats a kind, then dealt two at a time, one offer per room. The pairs and their order are **shared** (seeded from the lunar epoch and the level's height). **The last door is a wildcard**: one door of a kind rolled from the private seed, never part of the shared deck.
+- **Rooms** are built the moment their door is unlocked. A room is `{ doors: { L, R } | { C } | {}, hidden, stage, exits, clueKind, ahead: "N", back: "S", from, side, kind }`. Every room faces the same way: doors north, the way back south, east and west bare.
+- **The run of rooms:** rooms at `stage < pairs` have two doors; the room at `stage === pairs` has one, the wildcard, and hides the **stairs up**; the wildcard room (`stage === pairs + 1`) has no doors and hides stairs of its own. So the stairs are reachable after `pairs` door-days, leaving one spare day: for a STANDBY, a missed day, or the wildcard room.
+- **What a room hides:** 2 to 4 things from `[demon, demon, item, item, silver]`, a **scrap** (`clue`) that names what one of its doors is (never which), the **locker** (`lure`) in one room on about 60% of levels, and the stairs in the last rooms. A Recharge Bay's demons become items.
+- **Private (`pseed`, re-rolled per level):** which kind is behind the left door and which behind the right, where everything hides, the wildcard's kind. **Shared (`seed`):** only the offers.
+
+---
+
+# Part 3: Room kinds, searching & listening
+
+Each kind-room (den/bay/relay/vault/forge) hides a **fixture** in one bare wall, found by searching like anything else, usable once a day:
 
 | Kind | Fixture effect |
 |---|---|
-| Den (CYBER-DEN) | Heats the room to at least 60% of max — "the room stirs," more demons and better finds |
-| Bay (RECHARGE BAY) | Safe room (never spawns encounters); fixture heals the party ⅓ max HP |
-| Relay (SIGNAL RELAY) | Reveals a clue naming the wing's *other* offered kind |
-| Vault (DATA VAULT) | `R(40,110) × floor depth` SILVER |
+| Den (CYBER-DEN) | Heats the room to at least 60% of max: "the room stirs" |
+| Bay (RECHARGE BAY) | Safe room (no encounters); fixture heals the party ⅓ max HP |
+| Relay (SIGNAL RELAY) | Reveals the kind of the door the room's scrap doesn't cover |
+| Vault (DATA VAULT) | `R(40,110) × levels climbed` SILVER |
 | Forge (FORGE-NODE) | Clears taint to 0, ends a trip |
-| Altar (MATRIX ALTAR) | No fixture — an offering terminal instead (Part 7) |
+| Altar (MATRIX ALTAR) | No fixture: an offering terminal in a bare wall (Part 7) |
 
-**Archive** (bonus room, one per floor max): pile is rewritten to a locker + 2 items + silver, no demons; items roll RARE 35%/UNCOMMON 65% instead of the normal tiers; silver is doubled. Entering always yields a free, friendly PROGRAM.
+Room type names are never shown to the player. A room has a flavor name ("Soft room", "Ash room"), said once as she steps in.
 
-**Void** (anti-bonus): mirror image — pile becomes two demons, no items/silver; entering always spawns a hostile demon, corrupted unless it's a program or a unique.
+**Where things hide:** in the bare walls (east and west; south too in a level's first room) and the floor. Nothing hides overhead. The fixture is always in a wall. The stairs up are in a bare wall and are always the first thing that wall gives up.
 
-**Pile contents**, ordinary (non-bonus/void) rooms: a shuffled mix of demon/demon/item/item/silver for the entered room and dead end (1–3 and 0–2 items respectively), item/silver only for the passage (0–1).
+**Searching** is NetHack-style and unlimited: each hidden thing needs `5–10` base search-points, scaled **×1.5 per prior find on that face**. Each search adds up to about 1.9 points, scaled by the day's omen, the room's heat tier (calm rooms yield more), a rested-day bonus (×1.25 the day after a STANDBY night), and moon fullness (up to ×1.35 at full). About a third of rooms hide a much deeper MYTHIC find (20–50 points).
 
-**Item rarity on a find** (`rollItem`): `rare = 8% × omen's loot multiplier`, else `32%` uncommon, else common — so rare chance ranges roughly 8%–24% depending on the day's omen. Silver found by searching is `R(20,150)`.
+**Item rarity on a find** (`rollItem`): `rare = 8% × the omen's loot multiplier`, else `32%` uncommon, else common. Silver found by searching is `R(20,150)`.
 
-**Searching** is NetHack-style and unlimited: each hidden thing in a wall needs `5–10` base search-points, scaled **×1.5 per prior find already taken from that wall** (walls "tire" the more you've pulled from them). Each search contributes up to ~1.9 points, scaled by the day's omen, the room's heat tier (calm rooms yield more per search than hot ones), a rested-day bonus (×1.25, the day after a STANDBY night), and moon fullness (up to ×1.35 at full moon). About a third of rooms hide a much deeper MYTHIC find (20–50 points) behind the same mechanic.
+**Listening at the doors.** Searching the door wall listens at each locked door in turn and says which ("The left door. Warm air breathes along the bottom."). It **always** gives a hint. The senses overlap on purpose (warm: Den/Forge, hum: Bay/Altar, cold and static: Vault/Relay), so a hint narrows a door to two kinds. With the scrap, the Relay and the moon, that is the evidence for the day's one choice; every extra search for more of it heats the room.
 
-Doors can't be searched directly, but leak atmosphere instead: a locked door has a ~55% chance of a sense-clue toward the kind behind it (warm → Den/Forge, hum → Bay/Altar, cold/static → Vault/Relay), a false door gives itself away, a sealed door reads as sealed, and an open door's description (never naming the kind) hints at what's inside.
+**Heat** is per room: each search adds 1 (max 20), halves overnight, and raises the encounter chance. All of a day's searching is now in one room, so it climbs faster than it did across a wing.
 
 ---
 
 # Part 4: Combat & demons
 
-**Encounters** never trigger in a bay or passage. Elsewhere, chance per search is `(1/24 + (1/4 − 1/24) × min(1, heat/20)) × moon multiplier` — roughly 4% cold up to 25% at max heat, scaled 0.8×–1.25× by moon phase.
+**Encounters** never trigger in a Bay. Elsewhere, chance per search is `(1/24 + (1/4 − 1/24) × min(1, heat/20)) × moon multiplier` — roughly 4% cold up to 25% at max heat, scaled 0.8×–1.25× by moon phase.
 
 **Demon HP:** `round((16 + 9 × floor depth + R(0,8)) × unique multiplier × (1.15 if corrupted))`. Named uniques (e.g. ATOM SLASHER) carry their own HP/hit multipliers and can be flagged untalkable.
 
@@ -83,18 +89,18 @@ Doors can't be searched directly, but leak atmosphere instead: a locked door has
 
 **TALK:** a demon listens with probability up to 95%, built from a moon curve (most willing at new moon, least at full moon) × 0.7 if corrupted × the day's omen talk multiplier × a stance multiplier (1.5 same-alignment / 1 neutral / 0.6 opposite). Programs always listen. A demon that doesn't listen has a 50% chance to get angry and attack instead. One that does listen asks 2–3 yes/no questions before sizing up (Part 5).
 
-**RUN:** 50/50 whether the demon blocks the escape (can't retry that encounter) or KURA gets away; a locked door still costs the day's step either way.
+**RUN:** 50/50 whether the demon blocks the way (can't retry that encounter) or KURA gets away. The ways out are an open door, found stairs, or a locked door. A locked door takes the day's charge **only if she gets through**: a blocked run costs nothing but the demon's blow. Once the charge is spent and no door stands open, there is usually no running at all. Difficulty everywhere in this Part scales with *levels climbed in the run* (`st.climb`), not the level's name, so a late start high in the pit meets first-level demons.
 
 **Corruption** only becomes possible in the back half of a floor's week, scaling from 0% up to `(10% + 30% × remaining-week progress) × ½ for non-data families`. A corrupted demon gets a glitched name (first vowel swapped for a symbol), forced CHAOS alignment, and +15% HP; talking it down (mood reaching ≥1) restores its real name/alignment and gives a 60% chance it then offers to join. Programs and uniques are never corrupted.
 
 **Demon families and their floor-depth weighting** (data/hardware/hybrid/folklore):
 
-| Depth | data | hardware | hybrid | folklore |
+| Levels into the run | data | hardware | hybrid | folklore |
 |---|---|---|---|---|
-| B1F | 7 | 3 | 0 | 0 |
-| B2F | 4 | 5 | 1 | 0 |
-| B3F | 1 | 3 | 5 | 2 |
-| B4F+ | 0 | 1 | 4 | 6 |
+| 1st | 7 | 3 | 0 | 0 |
+| 2nd | 4 | 5 | 1 | 0 |
+| 3rd | 1 | 3 | 5 | 2 |
+| 4th+ | 0 | 1 | 4 | 6 |
 
 Modifiers on top: a flat 3% chance of ATOM SLASHER, 7% chance of a free PROGRAM; repeatedly searching the same wall (4+) boosts data/hardware; lingering in a room (30+ actions) boosts folklore/hybrid; the day's omen can multiply either pairing (Part 8).
 
@@ -114,31 +120,26 @@ Gift pricing runs on a taste matrix by family (tech/both/spirit/plain/silver pre
 
 The party caps at **4** (KURA + 3). A demon that wants to join a full party offers a swap instead — the player picks who to send away (KURA can't be swapped) or declines and the demon leaves.
 
-**Dissonance (shipped v0.59):** the risk side of mixed-alignment parties. It is the same number as Patience, not a second meter. Every standing member (KURA included, via her own alignment) has a gap against every other standing member — same alignment 0, one side NEUTRAL 1, LAW vs CHAOS 2 — and a member's tension is the worst gap against anyone else standing, computed live.
+**Dissonance (shipped v0.59, retuned v0.75):** the risk side of mixed-alignment parties. It is the same number as Patience, not a second meter. Every standing member (KURA included, via her own alignment) has a gap against every other standing member (same alignment 0, one side NEUTRAL 1, LAW vs CHAOS 2), and a member's tension is the worst gap against anyone else standing, computed live.
 
-Three wear sources feed that tension into the member's Patience, on top of Patience's ordinary drains:
+Only an opposite pair (gap 2) wears at all; a gap of 1 costs nothing, so **NEUTRAL is the bridge**:
 
-| Source | Gap 1 | Gap 2 | When |
-|---|---|---|---|
-| Fighting | −1 | −2 | every fight **round** |
-| Lingering | 0 | −1 | each time the stay in a hot room (heat tier 2+) crosses another 30 actions |
-| Skipping | 0 | −1 | once per return, if any real day passed with no step and no STANDBY (days away count) |
+| Source | Gap 2 | When |
+|---|---|---|
+| Fighting | −1 | once, when a fight is won (not every round) |
+| Lingering | −1 | each time the stay in a hot room (heat tier 2+) crosses another 30 actions |
+| Skipping | −1 | once per return, if any real day passed with no charge spent and no STANDBY |
 
-**Read-out:** no separate tracker; Patience's own level doubles as the Dissonance read — **CALM** (3–5), **STRAINED** (1–2), **FRACTURING** (0, the existing warn-then-snap/leave zone). A member at 0 with tension present gives an alignment-flavored line instead of the ordinary tired one, so the player can tell the two causes apart. Snap behavior is unchanged: CHAOS members strike and stay, LAW/NEUTRAL leave.
+The starting party (ELF and CU SITH are CHAOS, PIXIE and a fresh KURA are NEUTRAL) is at peace until KURA herself turns LAW or a LAW demon joins. Each source is 1 point against a night's +3, so tension erodes a party only if it is fed every day.
 
-**Numbers are placeholders, with two known problems:**
-- The starting party is mixed by default (ELF and CU SITH are CHAOS; PIXIE and a fresh KURA are NEUTRAL), so every ally sits at gap 1 from the first fight. All three go from 5 Patience to 0 in five fight rounds, about two ordinary fights. Needs a decision: lower fight wear at gap 1, apply it once per fight instead of per round, or exempt the starting trio from each other.
-- Skip wear (1) loses to the nightly +3 regen even at the worst gap, so an unmanaged party doesn't erode on its own yet.
-
-Tuning targets are unchanged: mixed parties shouldn't strictly dominate pure ones, and a careless mixed party should collapse by around floor 3.
+**Read-out:** Patience's own level doubles as the Dissonance read: **CALM** (3–5), **STRAINED** (1–2), **FRACTURING** (0, the existing warn-then-snap/leave zone). A member at 0 with tension present gives an alignment-flavored line. Snap behavior is unchanged: CHAOS members strike and stay, LAW/NEUTRAL leave.
 
 **Settled but not built:**
-- **Give** — handing an item to a party member to restore their Patience, priced by the same taste matrix demon gifts use (bigger for a fan of that item's nature). The proactive way to defuse a fracturing pair.
-- **Omen tie-in** — e.g. a `calm` day boosting a tense pair's regen. Deferred with the wider omen-balancing thread.
-- **Cross-alignment combo skills** — the payoff side: fixed pairings that only exist with an opposing pair in the party (examples floated: PING + REDCAP, a strike that always finds its target; CRON + BANSHEE, a scheduled scream). Pure parties get smaller, steady perks instead. Pairings and effects TBD.
-- **NEUTRAL as the bridge** — a NEUTRAL member's gap is never worse than 1, which the formula gives for free. Open: whether that reads as "the easy teammate" on its own or needs an explicit extra discount.
+- **Give**: handing an item to a party member to restore their Patience, priced by the taste matrix.
+- **Omen tie-in**: e.g. a `calm` day boosting a tense pair's regen.
+- **Cross-alignment combo skills**: fixed pairings that only exist with an opposing pair in the party (floated: PING + REDCAP, CRON + BANSHEE). Pure parties get smaller, steady perks.
 
-An opposite-alignment recruit nudging KURA's own alignment toward it (a brake on mixing) already exists: recruiting leans KURA toward the new member (Part 6).
+Recruiting already leans KURA toward the new member's alignment (Part 6), a brake on mixing.
 
 ---
 
@@ -208,75 +209,76 @@ The daily omen is a deterministic function of the real UTC calendar day — iden
 
 Demons talk most easily at new moon and hit hardest at full moon — opposite curves by design. Full moon also raises the moon-drop chance on a kill, gives a 50% chance of a MOON-tier item from the lure locker instead of the usual roll, and makes spirit-natured items more fragile.
 
+**Asking the moon (v0.72).** Looking up shows the night sky with the real moon at today's phase. SEARCHing her asks, once a night, free (no heat, nothing wanders in). With probability `[0, .15, .5, .85, 1, .85, .5, .15]` by phase she shows what one of the room's still-locked doors hides, never which door; otherwise she keeps her counsel. A new moon never answers and doesn't use the night's ask.
+
+**Bonus room and THE VOID are parked (`BONUS_ROOMS = false`).** They took over a wing's passage or dead end, which one-room levels don't have. The streak trigger and the moon-weighted roll described above are still in the code, dormant, and neither room appears. To be redesigned.
+
 **Omen banking** (Hold/Release, its cap of 1 and the 7-day cooldown) is described in Part 1.
 
 ---
 
-# Part 9: Run structure & scoring
+# Part 9: Run structure, the moon's quarters & scoring
 
-A new run starts KURA at 30/30 HP, 8/8 MP, alignment reset to NEUTRAL/0, with a starting trio of folklore allies and a small starting kit (2–3 COMMON items, 1 UNCOMMON, and a small chance — 0.5% MYTHIC, else 3% RARE — of a bonus rare starting item).
+A new run starts KURA at 30/30 HP, 8/8 MP, alignment NEUTRAL/0, with a starting trio of folklore allies and a small kit (2–3 COMMON items, 1 UNCOMMON, and a small chance, 0.5% MYTHIC else 3% RARE, of a bonus rare).
 
-**Deadlines:** the first floor's door closes this coming Sunday (or the Sunday after, if fewer than 2 days remain when the run starts); every floor after that closes exactly a week after it's reached. Missing a deadline ends the run outright (no death blow, just "the week ended"); KURA's HP hitting 0 in combat ends it immediately.
+**The dark rises by the moon.** The lunar month is cut into four equal quarters (`quarterOf`, about 7.4 days each). Each level of the pit belongs to one quarter and is lost when it ends: at the half moon, the full moon, the waning half, the new. A level's last day is the day its quarter ends; being still on it the next day ends the run ("the week ended" is gone; the dark closes over her). Sundays no longer matter.
 
-**Scoring** tracks floor depth reached, real days survived, and turns taken; the leaderboard ranks by floor depth, then days survived, then earliest post (turns are shown but not ranked on). Posting requires the run to have ended and a valid 3–10 character name, and happens once per run.
+**Where a run wakes** (`startSlot`): on the level the dark has reached.
 
-The end-of-run summary covers floor/days/turns/steps/searches, final alignment and lean, heat/hottest room touched, demons met/beaten/talked-down/recruited/restored/escaped, items found/broken, ICHOR fed/drunk and trips taken, silver collected, the final party roster, and the full pact history (including members who later left).
+| Moon's quarter | Wakes on | Height |
+|---|---|---|
+| First (new to half) | B4F | 1 |
+| Second (half to full) | B3F | 2 |
+| Third (full to waning half) | B2F | 3 |
+| Last (waning half to new) | B1F | 4 |
+
+If fewer than two days of the quarter are left, she wakes one level higher with the whole next quarter ahead (in the month's last two days, on next month's B4F). Everyone playing in the same quarter is on the same level, which is what the shared room (Part 10) will build on.
+
+**Climbing.** The next level always belongs to the next quarter, so leaving early banks the rest of this one. From B1F she "climbs out of the pit, into open air": 1F. Nothing ends there yet; the run carries on upward, quarter by quarter, across months.
+
+**Two numbers:** `st.height` is the level (1 = B4F, 5 = 1F); `st.climb` is how far into the run she is (1 on the level she woke on). Difficulty, the demon ladder and the board's count all follow `climb`.
+
+**Scoring** tracks levels climbed, real days survived, and turns; the leaderboard ranks by levels climbed, then days, then earliest post (turns are shown, never ranked). Posting needs an ended run and a 3–10 character name, once per run. A finished run also reports a few plain counts for the title screen's totals (Part 11).
+
+**THE PATH (v0.75)** sits at the top of the log: the whole run as a tree of choices, level by level, four to a row. Each level grows upward from where she came up; at every room a fork, one arm to the next room and the other to an `x`, the door not taken. Rooms carry a mark for what they were like (`"` warm, `~` quiet, `:` signal, `$` cold, `*` ash, `&` glow), never a name. Every level of the run is kept (about 100 bytes each). Meant to move to the end-of-run screen only, eventually.
+
+**Decided, not built:** getting out is a finish (the monthly game can be won); past the surface is the endgame, with no top; two boards (this moon: who got out and how fast, then levels climbed, resetting each month; all time: highest past the surface). See the theorycrafting notes.
 
 ---
 
 # Part 10: Async multiplayer
 
 ## Goal
-Everyone feels like they're playing "the same" dungeon, without players being able to spoil it for each other (no "vault's behind the north door, second wing" callouts), and with little hard-coded determinism.
+Everyone feels like they're in the same place, without players being able to spoil it for each other, and with little hard-coded determinism.
 
 ## Status
 
 | Piece | State |
 |---|---|
-| Shared shape / private contents | Shipped v0.56 |
-| Private minimap rotate/mirror | Shipped v0.57 |
-| Faction seasons (tally + `/season`) | Shipped v0.60; Worker live since Oct 11 2026 |
-| Faction lean on the title screen | Shipped v0.62 |
+| Shared offers / private rooms | Shipped v0.56, simplified for one-room in v0.70 |
+| Everyone in a quarter on the same level | Shipped v0.77 |
+| Faction seasons (tally, `/season`, title LEAN) | Shipped v0.60 / v0.62; Worker live |
+| Title totals and rumor cards (`/stats`, `/event`, `/feed`) | Shipped v0.73 / v0.74; Worker live |
+| The shared room: notes, bones, wards left for others | Designed, not built |
+| Monthly and all-time boards, the finish at the surface | Decided, not built |
 | Live presence, player economy | Accepted, not built |
-| Notes, bones, echoes, traces, altar gifts | Not built |
-| World boss, season title, epoch board, sighting log, one-time loot | Not scheduled |
+| Bots that play the live game | Planned, not built |
 
-## Core idea: shared shape, private contents
+## What is shared, what is private
 
-A floor is two layers.
+- **Shared:** which two kinds are offered together each day of a level, for everyone on that level this lunar month (`seedFrom(epoch, height)`); the demon cast and loot pool; the omens and the moon; and, since v0.77, the level itself.
+- **Private (`pseed`):** which kind is behind the left door and which behind the right, where things hide, the wildcard, every roll of a search or a fight.
 
-- **Shape (shared)** — structure that gives away nothing useful on its own: wing count and topology, which kinds pair into a locked-door offer, the per-wing room grid, stairs direction. Seeded from `(seasonEpoch, floorDepth, wingIndex)`. The demon roster, loot pool, clue text and omens are shared too: useful prep info, but you still have to find them.
-- **Contents (private per account)** — everything that would turn the shape into a walkthrough: which paired kind lands in which slot, where items hide, the wildcard's kind, bonus/void placement, and the door-to-compass mapping. Seeded from `pseed`, re-rolled every floor, so two players' vocabulary for "where something is" never overlaps, even across one player's own alt accounts.
+The layout holds nothing to protect any more: every room is the same shape and faces north. That retired the minimap's rotate/mirror transform (v0.57), the self-avoiding path and the compass privacy work. A callout like "it's behind the left door" is useless to another player because left and right are shuffled per player.
 
-**Lazy, per-wing, entirely client-side.** The shape is a pure hash of its inputs, so it gives the same answer for the first player to reach a wing and the thousandth. Each wing is computed on demand; there is no "roll the floor" step and **zero network calls**. Players are "in the same dungeon" because they solve the same math with the same inputs, not because anything synchronized them.
+**Lazy and client-side.** Offers are a pure hash of their inputs: every client computes the same answer with no network call.
 
-**Why not a fully shared layout:** if the same door means the same room for everyone, any message between players is a spoiler. Splitting shape from contents keeps the shared feeling (same wings, same demon cast, same loot) while making coordinates meaningless outside one account.
+**The shared room (next step, not built).** On a given day, everyone on a level stands in one of the same two rooms. Things left for others (fixed-phrase notes, bones, wards) attach to that room, keyed by month, level, day and kind: one small table, one fetch a day, a few thousand rows a day at most. Notes use fixed phrases, never free text. A thing "by the forge door" is stored by kind and drawn on each viewer's own side.
 
-**Rejected alternatives:**
-- *"One room a day"* (no wings, one room and a binary door choice per day). It would fix a pacing complaint, but with no space to walk through there is no coordinate left to protect, and the shared-map feeling was the part worth keeping.
-- *Shared kinds and connections only*, or shared layouts as a separate weekly challenge mode. Superseded by the split above.
+## The map
 
-## Season epoch
+The in-game map is the path of choices, upright: the doors ahead on the top row, a row for the mark of which way she is turned, her room in the middle, two rooms behind her, each a step left or right of the next, with an `x` where the door not taken would have led. It mirrors the view (left is left) and "higher is north". A sideways version was considered and dropped for that reason.
 
-**Epoch = the real lunar month** (~29.5 days), from the same date-to-moon math the game already uses; it advances on its own. A new epoch is a full, unrelated reshuffle of every floor's shape (a hash input changed), which gives the "this month's dungeon" framing.
-
-**Mid-floor stability (the "calendar bug" fix):** the epoch is stamped into the save on floor arrival and that floor's shape reads the stamp, so a rollover mid-floor can't reshuffle it. Only the next floor picks up the new epoch.
-
-## The deck and the wildcard
-
-The dealing itself is in Part 2. Two privacy notes belong here:
-- **Elimination is harmless.** Once most pairs are seen, the rest are deducible by subtraction. That reveals *what* is left, never *where*, the same safety category as the demon roster.
-- **The last offer is a private wildcard**, never part of the shared deck, so the final day can't be predicted or talked about by anyone.
-
-## Bonus room privacy
-
-Mechanics and odds are in Part 8. The roll is private, per player, per day. Per-day beats per-week because a week would leave something shareable ("there's a bonus room this week"); a daily private roll leaves nothing that transfers. Saying "I got one today" is safe for the opposite reason shared content is safe: shared content is globally true, a private roll is true of nobody else's board.
-
-## Minimap
-
-The existing grid minimap, unchanged visually, with a per-account, per-floor rigid transform: one of the 8 rotations/mirrors of a rectangle, stamped at floor arrival and applied to both the map draw and the door labels. The map stays internally coherent and does not spin while exploring. Two players' minimaps are never comparable; accepted, since "same dungeon" was always about shared content.
-
-Set aside: an abstract node-graph minimap (the only option that could be pixel-identical, but a rendering rebuild for a cosmetic gain), and a heading-up rotating minimap (cheapest, but it spins with every turn). The choice was purely a rendering one; generation is identical either way.
 
 ## Faction seasons
 
@@ -288,7 +290,7 @@ Set aside: an abstract node-graph minimap (the only option that could be pixel-i
 
 **Write path:** inside the existing `POST /score` (`tallyFaction()`), only when the score row is new, so a retried post can't double-count. LAW/CHAOS is a blind upsert; NEUTRAL is one conditional `UPDATE`, which avoids a race between two NEUTRAL runs.
 
-**Read path:** `GET /season` returns `{epoch, law, chaos}`. It is its own endpoint for now because there is nothing to batch it with; once notes/bones/echoes exist it should fold into the one-packet-a-day fetch (see Read budget).
+**Read path:** `GET /feed` returns the season, the title totals, the highest climb and the latest ambient events in one response; `GET /season` remains for older clients.
 
 **Display:** the title screen's LEAN line and its Faction lean card (Part 11).
 
@@ -333,7 +335,7 @@ Set aside: an abstract node-graph minimap (the only option that could be pixel-i
 
 Not urgent at current scale, but cheap to build in from the start:
 
-- **One data packet per player per day.** Fetched once when a player first acts on a new day or descends to a new floor, cached client-side keyed by (day, floor), only re-fetched when either changes. On fetch failure, proceed with an empty/stale packet — never block play.
+- **One data packet per player per day.** Fetched once when a player first acts on a new day or climbs to a new level, cached client-side keyed by (day, floor), only re-fetched when either changes. On fetch failure, proceed with an empty/stale packet — never block play.
 - **Every query indexed and limited.** Matching D1 index for every `WHERE`/`ORDER BY` column set; every query carries a `LIMIT`. No `COUNT(*)` over a full table — incrementally-updated counter rows instead. No `ORDER BY RANDOM()` — instead assign each record a random "bucket" number at write time and rotate which bucket the daily packet pulls from.
 - **Batch writes at run-end / event-post time** rather than many small writes.
 - **Rough budget estimate:** a packet of ~10 counters + 2 faction rows + 10 notes/bones + 5 echoes ≈ 30 rows read; at 1,000 daily players that's ~30,000 rows/day against a 5,000,000 cap — not a concern until well into tens-of-thousands-of-daily-players territory.
@@ -352,42 +354,39 @@ Not urgent at current scale, but cheap to build in from the start:
 
 # Part 11: Title screen
 
-**Status:** stages 1–3 shipped (v0.62, fixed up in v0.62.1): the scaffold, the three no-new-backend cards, and the scroll. Stage 4 (more hard-number cards) and stage 5 (rumor cards) are not built.
+Shown first on every load, even with a run in progress; `CONTINUE` is the explicit resume. It reuses the in-game frame's zones at the same 80 columns. All five stages are shipped.
 
-Shown first on every load, even with a run in progress; `CONTINUE` is the explicit resume. It reuses the in-game frame's zones with new content, at the same 80 columns.
-
-- **Top box:** the real in-game moon/date header (shared code, `headerLines()`).
+- **Top box:** the real in-game moon/date header.
 - **3D-view slot:** a static wordmark, `DAILY DIGITAL` / `DEMON DUNGEON` / `a daily dungeon crawl`.
-- **Log box:** three cold facts that hold until the day rolls over:
+- **Log box:** three facts that hold until the day rolls over:
   ```
-  > WEEK      TUE, day 2 of 7  -  5 days left, this floor closes SUN
-  > EPOCH     epoch 14, day 9 of 29  -  new shape in 20 days
+  > LEVEL     B4F  -  7 days left, closes SUN, at the half moon
+  > EPOCH     epoch 331, day 1 of 29  -  new shape in 28 days
   > LEAN      this season leans CHAOS   [||||||||.........]  35 / 65
   ```
-  WEEK is pure calendar math (a floor always closes the coming Sunday), not a countdown to one save's deadline. EPOCH's denominator is held at 29, so an epoch's last day clamps instead of reading "day 30 of 29". LEAN reads `/season`; a tie reads EVEN, and an empty epoch reads "no votes logged yet this epoch".
-- **Sidebar, "RUMORS AND SECRETS":** a pinned header over a scrolling list of cards, one blank line between cards, long cards wrapped at a space. One line every 1.4 seconds, no pause-on-hover, fixed order per page load, a full cycle before any repeat.
-- **Menu bar:** `[N]EW RUN   [C]ONTINUE   [B]OARD   [?] ABOUT`. NEW RUN skips the confirm when there is nothing to lose. ABOUT carries `[P]ASSWORD` even before a run exists, so a run can be brought in from another device; loading one goes straight into it.
+  LEVEL is the level the dark has reached and when it takes it; with under two days left it says new runs wake a level higher.
+- **Sidebar, "RUMORS AND SECRETS":** a pinned header over a scrolling list of cards, one blank line between cards, long cards wrapped. One line every 1.4 seconds, fixed order per load.
+- **Menu bar:** `[N]EW RUN   [C]ONTINUE   [B]OARD   [?] ABOUT`. ABOUT carries `[P]ASSWORD` even before a run exists.
 
-**Cards shipped:** today's omen, deepest floor (the board's `/top?n=1`), faction lean.
+**Number cards (v0.73).** Exact, anonymous counts for the current lunar month, from every run posted to the board: last fall, runs ended, players seen, turns logged, pacts made and ended, items broken, TRIPs, longest wall search, gifts refused, SILENT answers; plus today's omen, the faction lean and the most levels climbed. A card shows only once its number is above zero. A finished run reports its counts with its score; the Worker adds them to `counters (period, key, count)`, capped per run.
 
-**Stage 4 — more hard-number cards (not built).** Exact counts, anonymized, no names or rankings: `Last fall: 3 hours ago`, `Turns logged: 1,842`, `Players seen: 312`, `Pacts: 118 made, 54 ended`, `Items broken: 67`, `TRIPs reported: 9`, `Longest wall search: 61x`, `Gifts refused: 23`, `Answered [S]ILENT: 441x`. These need new counters threaded through scattered client actions: plumbing, not design.
+**Rumor cards (v0.74).** When one of twelve moments happens in a run, the game sends the Worker a tag and nothing else (no name, no run, no free text): a gift thrown back, a demon's first question, a corrupted demon restored, a trickster running off, a pleased altar, a pact, a silent answer, a deep find, someone leaving, a fall, reaching the surface, and a beaten demon's last words (sent as an index into the game's own list). The Worker keeps the newest 20 of each, 30 an hour per sender. The title turns them into vague lines that refer to the moment without quoting the game; last words are quoted and never attributed. Numbers and rumors are mixed, never more than two of a kind in a row. Forging one is cheap and harmless: nothing ranks on these.
 
-**Stage 5 — rumor cards (not built).** Atmosphere-first lines that *reference* an in-game event without quoting its triggering line, so they neither spoil nor duplicate the game's own text: `A demon rejected a traveler's paltry gift.` / `Someone was asked if they trust the dark.` / `A corrupted voice turned, and was made whole again.` / `Something ran off laughing, gift in hand.` / `An altar considered an offering, and was pleased.` / `A stranger walked in, uninvited.` / `Silence, offered instead of an answer.` / `A wall gave up its secret, after many tries.` One exception: **last words are quoted verbatim but never attributed** (`The dungeon whispered, "my Mom is going to be SO mad."`). When mixed with number cards, cap at two of the same kind in a row.
+**One request:** the title reads everything from `GET /feed`.
 
-Rumor cards need a new, deliberately light **ambient-events channel**: a tiny ping (type tag + which outcome fired + timestamp; no player ID, no name) whenever a listed moment happens in a real game — a gift refusal, a corrupted-demon restoration, a trickster running off, an altar reaction, a party member leaving, a deep-cache find, a `[S]ILENT` answer, a fall (for last words). The server keeps the last N of each type and the title pulls a handful at random. Forging one is cheap and harmless: nothing downstream trusts these for ranking or reward.
+**The fight-end screen (v0.74)** unfolds a beat at a time (art, last words, verdict, each line, `[ OK ]`), 0.7s apart, and closes only from `[ OK ]`.
 
 # Part 12: Open questions
 
-- **Dissonance balance (Part 5):** the starting party's gap-1 fight wear, skip wear losing to regen, and all exact numbers. Also the Give action's mechanics, the omen tie-in, combo-skill pairings, and whether NEUTRAL needs an extra discount.
-- **Alignment tag naming (Part 6):** no decision.
-- **Omen banking (Part 1):** whether Hold should cost something too, whether a cap above 1 is worth it, and whether banking a bad omen is ever worth it. Also a possible named buff for the day after a held day (see theorycrafting notes).
-- **Omen streaks (Part 8):** no in-game buildup cue yet, and CHAOS streaks are about 3x as common as LAW streaks.
-- **Bonus-room roll (Part 8):** flat vs. smoothed toward exactly twice a month.
-- **Wing topology:** the menu of shapes (chain, branch, loop, maybe one more) and whether variety implies variable wing size (fixed at 3 today).
-- **Async build order:** which of bones, echoes, traces, notes, and the lighter-lift ideas comes next. A blanket rule ("anything visible to other players is flavor-only, never mechanical") would settle the cosmetic-vs-functional question for all of them at once; not adopted.
-- **Economy:** trade-offer UX and secret-key export/backup (copy/paste vs. QR).
-- **Live presence:** granularity and the Durable Object design.
-- **Schemas** for bones/echo/trace/counter rows.
-- **Replay verification:** whether it is ever worth the Workers paid tier.
-- **Title screen (Part 11):** the exact list of ambient-event triggers and the counters stage 4 needs.
-- **Faction season reward:** what the leading side actually gets.
+- **Balance of one-room:** heat in a single room, no running once the charge is spent, no going back to heal. Unplayed.
+- **The finish at the surface, the endgame and the two boards** (Part 9): decided, not built. What is at the top is open.
+- **Bonus room and THE VOID** (Part 8): parked, need a new home.
+- **Dissonance** (Part 5): exact numbers, the Give action, the omen tie-in, combo skills.
+- **Alignment tag naming** (Part 6): no decision.
+- **Omen banking** (Part 1): whether Hold should cost something, a cap above 1, a named buff for the day after a held day.
+- **Omen streaks** (Part 8): parked with the rooms they trigger; CHAOS streaks are about 3x as common as LAW streaks.
+- **The moon's odds** (Part 8): first guesses, kept "for now".
+- **The shared room** (Part 10): cosmetic-only or functional for whoever finds a thing. A blanket rule ("anything visible to other players is flavor-only") would settle it for notes, bones and wards at once; not adopted.
+- **Economy and presence:** trade-offer UX, key backup; presence was planned on Durable Objects here, while the bot-testing notes chose a simpler heartbeat. Unresolved.
+- **Bots:** whether they count toward the board and totals.
+- **Faction season reward**, the rumor wordings (the dev means to rewrite them), KURA's own last words, the broken half-digital walls.

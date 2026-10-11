@@ -1,5 +1,5 @@
 # Daily Dungeon — Theorycrafting Notes
-**v7 — Oct 11 2026**
+**v8 — Oct 11 2026**
 
 Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v0.77** (one room a day, two doors on one wall, a climb out of a pit on the moon's quarters).
 
@@ -14,20 +14,20 @@ These are working notes, not a spoiler-safe document.
 The leaderboard and faction seasons already give async players some shared context. This section is about going further. The design doc's Part 10 lists the same ideas in one line each; the detail is here.
 
 ### Bones (highest interest, explicitly wanted)
-NetHack-style: when a run ends, keep a small server-side snapshot (name, floor, party, cause of death, last words) attached to a **floor depth**, not coordinates (layouts are split shared-shape/private-contents, so bones have to live on the shared side to make sense across players). Later players at that depth can find the remains: fixed flavor, maybe recoverable loot, never free text.
+NetHack-style: when a run ends, keep a small server-side snapshot (name, floor, party, cause of death, last words) attached to a **level and room kind** (the offers are shared, the doors are private, so bones have to live on the shared side to make sense across players). Later players in that room can find the remains: fixed flavor, maybe recoverable loot, never free text.
 
 ### Ghost demons
 A dead player's party member reappears as a nameable wild encounter (`PIPEDREAM's PIXIE`), keeping its personality and alignment, recruitable by someone else. The existing pact record (name, floor, day, active) already holds most of the data this needs.
 
-### Weekly counts
-Deaths by floor and similar tallies, in the same counters table shape faction seasons use, keyed by calendar week (`2026-W41` / `B2F_deaths`) and incremented in the run-end submission the board already makes.
+### Counts by level
+The monthly counters shipped in v0.73 (design doc Part 11). Not built: the same tallies split by level (falls on B3F this moon), which would be more keys in the same table.
 
-### Shared floor-week / ghost routes (bigger lift, not started)
-- A fully shared layout (same rooms and doors for everyone in a period) brings back the spoiler problem the private minimap was built to avoid, so it would have to be a **separate challenge mode**, not the main game.
-- Softer version: record a compact **route** per run (room/day/search counts, a few hundred bytes, never the full log) and show faint traces of other players at the same depth ("`PIPEDREAM` was here, day 3"). Informational only, so forgeable routes don't matter much.
+### Ghost routes (not started)
+- Since v0.77 everyone playing in a moon quarter is on the same level with the same offers, which is most of what a "shared floor-week" asked for. Sharing which door is which would still be a spoiler, so that part would have to be a **separate challenge mode**.
+- Softer version: record a compact **route** per run (room/day/search counts, a few hundred bytes, never the full log) and show faint traces of other players on the same level ("`PIPEDREAM` was here, day 3"). Informational only, so forgeable routes don't matter much.
 
 ### Bones, ghost routes and shared wards are one shape
-All three are the same record: small, anonymous, keyed to a floor depth, read once a day inside the one-packet budget. Whichever is built first makes the other two cheap. That doesn't decide which goes first, only narrows the cost of building more than one.
+All three are the same record: small, anonymous, keyed to a level and room, read once a day inside the one-packet budget. Whichever is built first makes the other two cheap. That doesn't decide which goes first, only narrows the cost of building more than one.
 
 ---
 
@@ -45,7 +45,7 @@ with. Doesn't change the designs below, just means they're lower-risk to
 add than when this list was first drafted.
 
 ### More free actions beyond search/turn
-- **Listen:** quieter than search — gives a noise-type tell (repetition vs.
+- **Listen** (a form of this shipped in v0.72 as listening at the doors; this is the in-room version)**:** quieter than search — gives a noise-type tell (repetition vs.
   lingering) without raising much heat. A softer, less precise read than
   what search already gives.
 - **Knock:** narrows a secret's rough location, but is loud — adds more
@@ -63,7 +63,7 @@ add than when this list was first drafted.
   NetHack-style identify-by-use.
 - **Pray / call out:** an alignment-flavored gamble — could draw a friendly
   or hostile demon depending on the player's tag and the room's heat.
-- **Ask the room a question:** rare, moon-gated yes/no tell.
+- **Ask the room a question:** rare, moon-gated yes/no tell. Asking the moon herself shipped in v0.72 (design doc Part 8).
 
 ### The ward (Elbereth, reskinned)
 - Write a ward on the current room's floor; some monsters flee or
@@ -94,13 +94,13 @@ add than when this list was first drafted.
   half-erased ward "someone else" left, is a good way to teach the
   mechanic exists without an explicit tutorial.
 
-### Shared visibility within the week
+### Shared visibility within the quarter
 - A ward written in a room could be visible to other players who reach
-  that same floor depth during the same week — not functional for them,
+  that same room on the same level during the same moon quarter — not functional for them,
   just visible, like a trace that "someone wrote something here."
 - Slots directly into the existing multiplayer/read-budget framework
   (section 1): same shape as a bones/ghost-route record — small,
-  anonymous, attached to a floor depth, read as part of the one-packet-
+  anonymous, attached to a level and room, read as part of the one-packet-
   a-day fetch. No new infra category needed, just another record type.
 - Open design fork, **still undecided — flagged for you, not resolved
   here:** is the ward cosmetic-only when seen by someone else (safer,
@@ -172,8 +172,8 @@ Still to build, as agreed:
 ## Open questions
 
 1. Bones or ghost demons next, now that faction seasons are built?
-2. Should shared floor-weeks ever exist as a separate challenge mode, given the spoiler problem?
-3. Does the game still want an endgame distinction between Mythic and Moon rarity, now that the floor structure has changed so much from the original weekly-floor design?
+2. Should a fully shared level (same doors for everyone) ever exist as a separate challenge mode, given the spoiler problem?
+3. Does the game still want an endgame distinction between Mythic and Moon rarity, now that the structure has changed so much from the original weekly-floor design?
 4. Ward materials: are chalk, salt or a match consumed on use, and which existing junk items double as them?
 5. Does the data-demon "firewall mark" need its own flavor and materials, or just a different name on the same mechanic?
 6. Shared wards, and by extension bones and ghost routes: cosmetic-only trace, or functional for whoever finds it? A blanket rule ("anything visible to other players is flavor-only, never mechanical") would settle all three at once. Not adopted without your go-ahead.
