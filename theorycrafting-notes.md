@@ -1,5 +1,5 @@
 # Daily Dungeon — Theorycrafting Notes
-**v5 — Oct 10 2026**
+**v6 — Oct 10 2026**
 
 This file only holds ideas from this chat that are **not** (yet) in the real
 build. The actual game lives in the `daily-dungeon` repo and its own
@@ -312,35 +312,33 @@ bracket-letter convention as the real in-game action bar.
 
 ---
 
-## 6. Not built yet: Dissonance (cross-alignment party tension)  *(low priority)*
+## 6. Not built yet: Dissonance (cross-alignment party tension)  *(low priority — design settled this pass, not yet in `rules.js`)*
 
-Still just an idea — no `rules.js` equivalent exists. Likely **superseded**
-by the real **patience** system (v0.24+, warn-then-snap-or-leave, v0.52's
-`p.warned` one-free-warning behavior), which already covers "party member
-gets fed up and leaves/snaps." If this is revisited, the cleanest path is
-probably an alignment-gap *modifier* on existing patience decay rather than
-a whole second hidden value:
+Still no `rules.js` equivalent — **design question resolved** in a different
+chat on this project, now written up in `daily-dungeon-design-v3.md` Part 5:
+folds into the real **patience** system (v0.24+, warn-then-snap-or-leave,
+v0.52's `p.warned` one-free-warning behavior) rather than a second hidden
+value, confirming the lean this section already had. Full mechanism (an
+alignment-gap number per member-pair, three new wear sources — fighting,
+skipping a day, lingering in a hot room — scaled by gap size, and a
+CALM/STRAINED/FRACTURING read-out that's just Patience's own level relabeled)
+lives in that doc, not repeated here.
 
-- Mixed-alignment parties (e.g. a Law data demon next to a Chaos folklore
-  demon) are the **strongest and riskiest** combo.
-- **Power:** combo skills/resonance that only exist across alignments
-  (PING + REDCAP: a strike that always finds its target; CRON + BANSHEE: a
-  scheduled scream). Pure-alignment parties get smaller, steady perks instead.
-- **Risk:** patience (or a gap-scaled bonus penalty to it) drains faster the
-  bigger the alignment gap between two party members (Law+Neutral mild,
-  Law+Chaos severe). Always warns before a member snaps/leaves — the real
-  `p.warned` behavior already does this generically.
-- **Neutral is the bridge:** a `[NEU]` player should see much less of this
-  penalty, finally giving the middle tag a mechanical payoff beyond "easy
-  recruiting from both sides."
-- An opposite-alignment recruit also nudges the player's own alignment
-  toward its side — the natural brake against one alignment snowballing.
-- Tuning goal: mixed must not strictly dominate; a careless mixed party
-  should visibly struggle by mid-dungeon; a managed one should be ahead.
+Two pieces from this section **were not yet carried into that writeup** and
+stay open:
+- **Power/combo skills** (PING + REDCAP: a strike that always finds its
+  target; CRON + BANSHEE: a scheduled scream) as the reward side of running
+  a mixed party — exact pairings/effects still TBD, now flagged in v3's open
+  questions too.
+- **Neutral as the bridge** — whether a `[NEU]` member's naturally smaller
+  gap (1, vs. 2 for an opposite pair) reads as enough of a discount on its
+  own, or needs an explicit extra one, to give the middle tag a combat
+  payoff beyond easy recruiting from both sides.
 
-Open question: is this worth building as a distinct mechanic at all, given
-patience already does most of the job? Leaning toward "fold into patience,
-don't build a second meter."
+The opposite-alignment-recruit brake and the "mixed shouldn't strictly
+dominate, careless mixed should struggle by mid-dungeon" tuning goal are
+both carried over into v3 as-is (the brake turns out to already exist via
+ordinary recruiting's alignment lean, no new work needed there).
 
 ---
 
@@ -416,7 +414,7 @@ step, **not yet built, not yet confirmed:**
    never mechanical") would settle this question for all three at once —
    worth deciding as policy rather than case-by-case, but not adopted here
    without your go-ahead.
-9. Is Dissonance worth building separately, or does patience already cover it?  *(low priority)*
+9. ~~Is Dissonance worth building separately, or does patience already cover it?~~ — resolved this pass: folds into patience, written up in `daily-dungeon-design-v3.md` Part 5. Still open from section 6: the cross-alignment combo-skill pairings, and whether NEUTRAL needs an explicit extra discount beyond its naturally smaller gap.  *(low priority)*
 10. Which alignment-tag rename, if any — or keep `[LAW]/[NEU]/[CHA]`?  *(low priority)*
 11. Hold/Release Omen consolidation (section 8): cooldown-from-release vs.
     cooldown-from-hold, and 7-flat-days vs. calendar week — unconfirmed,

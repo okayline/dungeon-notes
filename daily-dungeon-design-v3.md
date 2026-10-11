@@ -113,7 +113,29 @@ Gift pricing runs on a taste matrix by family (tech/both/spirit/plain/silver pre
 
 The party caps at **4** (KURA + 3). A demon that wants to join a full party offers a swap instead — the player picks who to send away (KURA can't be swapped) or declines and the demon leaves.
 
-**Dissonance (design only, not yet built):** the planned risk side of mixed-alignment parties. Builds from fighting, skipped days, and lingering in hot rooms while the party holds opposing alignments — faster the bigger the gap (Law+Chaos worse than Law+Neutral). Rising levels would have a member act out of turn, refuse a command, sit out a fight, or at the top leave/turn on the party, always preceded by an in-voice warning line. Read by the player as a simple `CALM`/`STRAINED`/`FRACTURING` state rather than a number; comes down via resting, calming items, certain recruits, or fitting omens. Tuning goals: mixed parties shouldn't strictly dominate pure ones, a careless mixed party should collapse by around floor 3, and an opposite-alignment recruit should nudge KURA's own alignment toward it as a brake against snowballing. **Flagged overlap with the shipped Patience system above** — both track per-member wear/warnings/leaving — and the current lean is toward **merging Dissonance into Patience** (an alignment gap simply adds extra wear between opposed members) rather than maintaining two separate hidden values. Not yet decided.
+**Dissonance (design only, settled on folding into Patience — not yet built):** the risk side of mixed-alignment parties, named Dissonance, and **decided to be the same underlying value as Patience above, not a second hidden number** (a separate theorycrafting thread on this project reached the same lean independently: "fold into patience, don't build a second meter"). Every standing member (KURA included, since she has her own alignment too) has an alignment-gap against every other standing member — same alignment = 0, one side NEUTRAL = 1, LAW vs CHAOS = 2 — and that gap is what Dissonance tracks: a member's tension is the gap against whoever in the current roster they clash with hardest.
+
+Three new wear sources feed into that member's ordinary Patience, on top of the drains Patience already has (over-talking, breaking items, nagging, disliked answers, etc.), scaled by gap size — bigger for an opposite pair than a neutral-adjacent one:
+- **Fighting** while tension is present.
+- **Skipping a day** — letting a real day pass with no step at all, not even STANDBY — while tension exists. The point is an unmanaged mixed party gets worse even when nothing is actively happening, not only during fights.
+- **Lingering in a hot room** while tense, a smaller repeating tick the longer the stay.
+
+Exact wear amounts are TBD/balance-later; the tuning targets stay what they were — mixed parties shouldn't strictly dominate pure ones, and a careless mixed party should collapse by around floor 3.
+
+**Read-out:** no separate state tracker — Patience's own level doubles as the Dissonance read, per tense member:
+- **CALM** — Patience 3–5
+- **STRAINED** — Patience 1–2
+- **FRACTURING** — Patience 0 (the existing warn-then-snap/leave zone)
+
+The one addition this needs on top of Patience as it already works: the warning line should read as alignment-driven (not generic talk-fatigue flavor) when tension is actually what zeroed the member out, so the player can tell the two causes apart. Snap behavior itself needs no change — CHAOS members already strike-and-stay, LAW/NEUTRAL already leave outright, which is already the "mixed parties are riskier" payoff this wanted.
+
+**Comes down via:** nightly regen (already generic/party-wide); a new **give** action — handing an item directly to a party member (not a demon or the altar) to restore their Patience, priced/scaled the same taste-matrix way demon gifts already are (bigger effect on a member who's a fan of that item's nature) — giving a player a way to defuse a fracturing pair proactively rather than just waiting out the night; and omens, once the omen-balancing thread resumes (a `calm`-type day boosting the regen a tense pair gets, say) — deferred for now rather than designed here.
+
+**Already solved, no new work needed:** "an opposite-alignment recruit should nudge KURA's own alignment toward it, as a brake" — recruiting already does this (Part 6: joining leans KURA toward the new member's alignment).
+
+**The payoff side — not yet mechanically specced, carried over from the same theorycrafting thread:** right now this section is all risk; a mixed party should get something for running that risk, or there's no reason to ever do it on purpose.
+- **Cross-alignment combo skills** — fixed pairings that only exist with an opposing pair in the party (e.g. a data member + a folklore member unlocking a move neither gets alone), as the reward side of carrying the extra Patience wear. Pure-alignment parties would get smaller, steady perks instead rather than nothing. Exact pairings/effects TBD.
+- **NEUTRAL as the bridge:** a NEUTRAL member should take much less of the gap-based wear than a LAW or CHAOS one does (their gap to either side is 1, not 2, which the tension formula above already gives them for free — worth confirming that's enough of a difference to actually read as "the easy teammate," or whether NEUTRAL needs an explicit extra discount on top). Gives the middle tag a combat-relevant payoff beyond easier recruiting from both sides, which right now is its only edge.
 
 ---
 
@@ -353,7 +375,7 @@ Not urgent at current scale, but cheap to build in from the start:
 - Exact schema for bones/echo/trace/counter rows (sketched conceptually, not laid out field-by-field).
 - Whether/when server-side replay verification is ever worth the Workers Paid tier, vs. accepting event-sourced "believability checks" indefinitely.
 - Final alignment tag naming (Part 6) — no decision made.
-- Whether Dissonance should merge into Patience or stay a separate system (Part 5).
+- Dissonance (Part 5): merge-into-Patience is decided, naming/read-out is decided (CALM/STRAINED/FRACTURING on Patience's own scale). Still open: exact wear numbers for fight/skip-day/linger, the alignment-flavored warning-line text, the new give-to-party-member action's mechanics, the omen tie-in (deferred alongside the broader omen-balancing thread), the cross-alignment combo-skill pairings/effects, and whether NEUTRAL needs an explicit extra discount on top of its naturally smaller gap.
 - STANDBY-banked-omen balance (Part 1/8): cap is 1, decay/expiry still unexplored, and whether banking a bad omen is ever worth it is still open. The offsetting-cost question is partly answered as of v0.58 (a flat 7-real-day cooldown on holding again after a release) — open now is only whether Hold itself should ever cost something too, and whether a bigger cap is worth it.
 - Telegraphing for the omen-streak room unlock (Part 8) — the streak itself is shipped, but no in-game buildup cue exists yet. Also worth revisiting the LAW/CHAOS lean mapping, since it currently makes CHAOS streaks ~3x more common than LAW streaks.
 - Exact daily probability curve for the ordinary bonus-room roll (flat vs. smoothed to land closer to exactly-twice-a-month).
