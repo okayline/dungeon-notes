@@ -1,0 +1,65 @@
+
+## 2026-10-11  -  B4F, day 1  (latest v0.83)
+
+```
+  The PING strikes KURA. -2 HP
+  The party strikes. -9
+  PING: "01001000 01001001 00111111"
+  PING: "01000110 01010010 01001001 01000101 01001110 01000100 00111111 Y / N"
+  KURA: "No."
+  PING: "01001110 01001111"
+  PING: "QUERY: DO YOU FOLLOW RULES? Y / N"
+  KURA: "No."
+  PING: "INCOMPATIBLE."
+  The PING has heard enough.
+  The PING strikes KURA. -7 HP
+  The PING won't listen.
+  The PING strikes ELF. -5 HP
+  The PING won't listen.
+  The PING strikes CU SITH. -6 HP
+  The party strikes. -9
+  The PING falls.  +26 ICHOR
+  It drops 38 SILVER.
+KURA searches the WEST wall. A DAEMON wanders in!
+  DAEMON: "PROCESS DETECTED"
+  DAEMON: "QUERY: ARE YOU LOST? Y / N"
+  KURA: "Yes."
+  DAEMON: "ROUTE UNKNOWN. RELATABLE."
+  DAEMON: "QUERY: DO YOU FOLLOW RULES? Y / N"
+  KURA says nothing.
+  The DAEMON waits, then quietly takes note.
+  DAEMON: "01000110 01010010 01001001 01000101 01001110 01000100 00111111 Y / N"
+  KURA: "No."
+  DAEMON: "01001110 01001111"
+  The DAEMON loses interest. 01000010 01011001 01000101
+KURA searches the NORTH wall. Only stone.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA searches the NORTH wall. Nothing yet.
+KURA searches the NORTH wall. Only stone.
+KURA searches the SOUTH wall. A crack. It goes nowhere.
+KURA searches the SOUTH wall. Damp. The smell of old pipes.
+KURA searches the SOUTH wall. Someone has looked here before.
+KURA is out of breath.
+KURA goes EAST into a cleared room.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA goes SOUTH into a cleared room.
+KURA needs a moment.
+KURA is out of breath.
+KURA goes NORTH into a cleared room.
+KURA needs a moment.
+KURA is out of breath.
+KURA goes EAST into a new room.
+```
