@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.81 - The Moon Closes - Oct 11 2026, 05:24 HST
+
+![v0.81](screenshots/v0.81.png)
+
+- **Heat is now visible, cools in real time, and slows searching.** Commit `9d9c12f` (plus `b9bb753`, the end-screen wording). The dev asked for "tiredness" shown on the moon strip; we reused room heat so nothing new is tracked beyond a timestamp.
+  - **Cooling (`rules.js` `cool`, called at the top of `sync`):** every room with heat loses 1 point per 60,000 ms of real time (`COOL_MS`), using `rs.heatAt` (ms of the last point lost; set in `heatUp` when a room first warms). Works while the page is closed; the page's once-a-minute `tick` applies it while open. The overnight halving and the STANDBY clear are unchanged and stack with it. A full room (24) is calm in 24 minutes.
+  - **The strip (`screen.js`):** `st.heatNow` (set in `show`) blanks `round(heat / 2)` columns, capped at 12, from each end of the 24-column phase strip. The dot over today's phase is untouched. Note the strip already has blank cells at the new-moon end, so the closing can look lopsided at low heat.
+  - **The pause (`index.html` `act`):** a search in a room at heat 5 or more waits `min(2000, (heat - 4) / 20 * 2000)` ms before it lands; input is ignored meanwhile and the screen dims slightly (`body.tired`). No pause in a fight, while looking up, or below heat 5. `[ ^ ]` at a bare wall counts as a search. The pause is page-side only: the rules and the bots are unaffected.
+  - **Asking the moon** now calls `heatUp(st, 2)` when she is actually asked (not on a new moon, not on a repeat the same night).
+  - **Not changed:** heat still caps at `HEAT_MAX + 4` = 24 and the top tier is still named "wrong"; both were checked at the dev's request and are as designed (same in v0.62).
+  - **Balance note:** cooling at 1 a minute is far faster than the old overnight-only halving, so heat is much less of a threat than it was. Rate chosen by the dev "for now"; raising heat per search is the lever if it proves too easy.
+- **Testing (light):** one node check (strip at heat 0/6/12/22, 5 minutes of cooling takes 22 to 17) and one browser check (searches took about 0.5s, 0.9s, 1.3s, 1.7s as the strip closed; no page errors). The moon's 2 heat was not observed: it is a new moon today, so she can't be asked.
+
 ## v0.80 - Back to the Wings - Oct 11 2026, 05:06 HST
 
 ![v0.80](screenshots/v0.80.png)
