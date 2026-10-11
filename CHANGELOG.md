@@ -3,6 +3,23 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.77 - Out of the Pit - Oct 11 2026, 03:03 HST
+
+![v0.77](screenshots/v0.77.png)
+
+- **The theme turns over: a climb out of a pit, on the moon's clock.** Commit `fda09bf`. There is no v0.76: a wording-only climb (floors `1F`, `2F`...) was committed locally under that number and folded in here once the dev asked for B4F at the bottom and the quarter rule. Floor format `v: 10`.
+  - **Why:** the dev noticed the map and THE PATH grow upward while a dungeon implies going down, and that a sky overhead makes no sense underground. Of six directions offered, they chose "escape": you are at the bottom and trying to get out; the deadline is the dark rising behind you.
+  - **Levels (`rules.js`):** `st.height` is levels up from the bottom of the pit (1 = B4F ... 4 = B1F, 5 = the surface, `1F`, and on); `levelName(h)`. `st.climb` is how far into the run she is (1 on the level she woke on, +1 per climb), and `floorNum(st)` now returns it: every difficulty formula, the demon ladder and `score().floor` follow the run, not the level's name, so a late start isn't thrown in at the deep end.
+  - **Quarters (`screen.js`):** `quarterOf(date)` / `quarter(n)` give `{ n, q, epoch, end }` from the same new-moon reference as `epochIndex`, with `QLEN = 29.530588853 / 4` days. `QUARTER_END = ["the half moon", "the full moon", "the waning half moon", "the new moon"]`.
+  - **Deadlines:** `quarterDeadline(st, n)` is the local day the quarter ends on, and a level's last day. `arrive(st, height, n)` stamps `st.floorEpoch = quarter(n).epoch` (so a level's shared offers follow the month its quarter is in) and `dungeon.quarter = n`. `sundayOf`-based deadlines and `firstDeadline()` are gone; `nowMs(st)` keeps the X cheat's day offset working.
+  - **Where a run wakes:** `startSlot(st)` takes the current quarter, or the next one if fewer than two days of it are left; `height = q + 1`. So first quarter B4F, last quarter B1F, and a start in the last two days of the month wakes on next month's B4F. This is the "late starters get a shorter pit" rule and it retires the late-week start rule noted for revisiting.
+  - **Climbing:** the next level is always `dungeon.quarter + 1`, so leaving early banks the rest of the quarter (a clean climb from the bottom reaches the surface with days in hand, and the bank keeps growing past it). Climbing from `height` 4 logs "KURA climbs out of the pit, into open air. 1F." and raises the ambient event `out` (new Worker tag; needs a redeploy to be accepted). Nothing ends: past the surface the run carries on, quarter by quarter, across months.
+  - **The stairs up** are in a bare wall: `walls()` unshifts `stairs` onto one of the room's bare walls and records `stairsDir`; `atStairs(st)` is "found, and facing that wall" (`D` only as a fallback when a room has no bare wall). The view's old `stairs` end art is back in use; `actLabel` gives `CLIMB`, the label slot `STAIRS UP`. Internally the way is still id `"D"`.
+  - **Wording:** "the way up closes", "climbs to", "Stairs lead up", summary "floors climbed"; lines about things "below" are kept, since the dark is below now. Map and THE PATH: `[v]` where she came up, `[^]` where she went up.
+  - **Title screen:** the WEEK line is LEVEL: `B4F  -  7 days left, closes SUN, at the half moon`, or `closes tonight. New runs wake a level higher.` The card is "Most levels climbed: N". **Board (stopgap):** the column is LEVELS and shows `score().floor`, the levels climbed in a run.
+  - **Tested lightly:** Node: where a run wakes across a whole month, a full climb from B4F past the surface with the days banked at each step, the status lines, a short strict-width fuzz; one Playwright load of the title and a new run. Zero page errors.
+- **Decided with the dev, not built yet:** one run in two parts. The climb out is the monthly game and can be won; past the surface is the endgame with no top (endgame and "endless mode" are the same thing; such runs carry on across months). Two boards: this moon (who got out and how fast, then levels climbed; resets each lunar month) and all time (highest past the surface). A late starter can get out but ranks below a longer climb. Also open: what is at the top, and drawing the moon larger the higher she is.
+
 ## v0.75 - The Path - Oct 11 2026, 02:42 HST
 
 ![v0.75](screenshots/v0.75.png)

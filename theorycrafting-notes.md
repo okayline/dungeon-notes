@@ -1,7 +1,7 @@
 # Daily Dungeon — Theorycrafting Notes
 **v7 — Oct 11 2026**
 
-Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v0.74** (one room a day, two doors on one wall).
+Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v0.77** (one room a day, two doors on one wall, a climb out of a pit on the moon's quarters).
 
 Moved out since v6, because they shipped or were settled: faction seasons (design doc Part 10), the title screen including its unbuilt stages 4–5 (Part 11), Dissonance and its open pieces (Part 5), alignment tag renames (Part 6), and the Hold/Release Omen consolidation (Part 1). The read-budget rules for any async feature are in the design doc's Part 10 as well.
 
@@ -157,9 +157,15 @@ Both are switched off as of v0.70 (`BONUS_ROOMS = false`). They used to take ove
 
 ---
 
-## 7. The late-week start rule (to revisit)
+## 7. The escape: what is decided and not yet built
 
-A run started with fewer than two days left in the week is given next week's floor (`firstDeadline()`), so a Sunday start has until the following Sunday. It exists so a weekend start isn't unwinnable. Left as is for now; to come back to. The title screen's WEEK line says so on those days as of v0.74.
+Built in v0.77: the pit (B4F up to the surface), levels lost at the moon's quarters, waking on the level the dark has reached, play continuing past the surface. That also retired the late-week start rule.
+
+Still to build, as agreed:
+- **Getting out is a finish.** Reaching the surface completes the monthly climb; the player can stop there or go on.
+- **Past the surface is the endgame,** with no top. It could be harder as well as longer (corruption from the first day, the bonus room and THE VOID back, less time a level).
+- **Two boards.** This moon: who got out and how fast, then by levels climbed; resets each lunar month. All time: the highest anyone has climbed past the surface.
+- **Open:** what is at the top; drawing the moon larger in the sky view the higher she is.
 
 ---
 
