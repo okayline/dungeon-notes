@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.99.4 - One Line for the Moon - Oct 11 2026, 13:45 HST
+
+![v0.99.4](screenshots/v0.99.4.png)
+
+- **`levelBones` drops the floor row above the moon line** (the LEVEL line under the frame already shows it, as the dev noticed). The heading is the one moon line, pinned to the second row from the foot of the 8-row panel with a blank row under it (`8 - rows.length - 2` filler rows, then the line, then ""). The branches below the line stay one row deep from v0.99.3 (the dev chose to keep them). Net effect: one more blank row between the line of days and the heading than in v0.99.3.
+- **`VERSION`** to v0.99.4. **Testing (light):** `renderTitle` for 1,772 days (about 60 lunar months) with the strict 80-column check, the line on one row with a blank above and below each time; a Chromium screenshot, no page errors. Not checked: other browsers.
+
 ## v0.99.3 - Room Below the Moon - Oct 11 2026, 13:40 HST
 
 ![v0.99.3](screenshots/v0.99.3.png)
