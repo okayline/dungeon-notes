@@ -1,8 +1,8 @@
-# Daily Dungeon — Design Doc v2
+# Daily Dungeon — Design Doc
 
-This is the general design doc, covering how the game actually plays: the daily loop, floor/room generation, combat, demons, Patience, alignment, items, omens, and run structure. It folds in everything from `daily-dungeon-design-v1.md` (async multiplayer, alignment-tag naming, the Dissonance mechanic, and the omen-streak work), reorganized alongside the core-mechanics writeup that didn't have a home before. v1 stays where it is, unchanged, as the original async-focused doc.
+This is the general design doc, covering how the game actually plays: the daily loop, floor/room generation, combat, demons, Patience, alignment, items, omens, and run structure. It folds in what used to be a separate async-multiplayer-focused doc (now Part 10 below) alongside the core-mechanics writeup that didn't have a home before.
 
-Bump this file's version (filename and the heading above) on each substantive content revision — currently **v2**.
+One file, no version suffix — git history is the version history. Earlier drafts (a prior `v1`/`v2`/`v3` filename scheme) existed briefly but were dropped in favor of just editing this file in place and letting commits carry the history; look at the commit log or `git log -p` on this path for anything an older revision said differently.
 
 ---
 
@@ -24,6 +24,8 @@ Everything else — searching, turning, talking to party or demons, using items,
 
 **Omen banking:** if yesterday was a STANDBY day, `st.bankedOmen` is set to that day's omen (one slot — a new banked day simply overwrites whatever was already held, no stacking). The player can later choose to apply the banked omen retroactively instead of today's natural one (`useBankedOmen`); it's one-shot and clears at the next sunrise whether spent or not. This is a scheduling tool: bank a day that happened to roll a good omen, then cash it in right before a floor or demon that matters, rather than a reroll.
 
+**Hold/Release cooldown (shipped v0.58):** releasing a banked omen also starts a flat **7-real-day** cooldown before KURA can hold again (`st.omenCooldownDay`, checked against `st.day` — a count of real days elapsed, so skipped days still count against it). This is the offsetting cost on *Release*, not Hold — a calendar-week version was considered and rejected, since it would let a player release right before the week's reset for close to no cost. In the bag (INVOKE), Hold Omen and Release Omen share one morphing slot: Hold Omen normally, Release Omen once a day's banked, then a greyed-out Hold Omen showing the days left during the cooldown.
+
 Every action runs `sync()` first, which also: halves every room's heat overnight, decays taint by 1, restores 3 Patience to each party member, heals a little HP to the party, rolls that day's bonus/void room placement (Part 8), and checks the floor's deadline — missing it ends the run (Part 9).
 
 ---
@@ -32,12 +34,12 @@ Every action runs `sync()` first, which also: halves every room's heat overnight
 
 - A floor has `KINDS = [den, bay, relay, vault, forge, altar]` — six ordinary room kinds — plus two kinds that are never dealt into the normal rotation: `archive` (bonus room) and `void` (anti-bonus room).
 - A floor runs for `days = 7` (clamped 3–7), giving `pairs = days - 1 = 6` door-offer events across the week.
-- **The deck:** the six kinds are shuffled twice and concatenated, retried until no adjacent pair repeats a kind, then split into offers of two kinds each — one offer per wing, dealt one wing at a time across the week. **The last offer is a wildcard**, not part of the shared deck at all: a single kind rolled from the private per-account seed. This is the "Day-7 wildcard" — because it never touches the shared deck, it's immune to the elimination-by-subtraction problem the other kinds have (see v1 Part 1 for why that's considered harmless there anyway).
+- **The deck:** the six kinds are shuffled twice and concatenated, retried until no adjacent pair repeats a kind, then split into offers of two kinds each — one offer per wing, dealt one wing at a time across the week. **The last offer is a wildcard**, not part of the shared deck at all: a single kind rolled from the private per-account seed. This is the "Day-7 wildcard" — because it never touches the shared deck, it's immune to the elimination-by-subtraction problem the other kinds have (see Part 10 for why that's considered harmless there anyway).
 - **Wings:** each non-final wing is three rooms — K (entered room), P (a passage), X (a dead end) — in either a "chain" (K→P→X) or "star" (K→P, K→X) layout, chosen at random, with every non-final wing hanging **two locked doors** off K or P. Opening one seals the other permanently.
 - **The final wing** has a single door (the wildcard's) and hides the stairs down in its passage or dead end.
 - **Lure room:** roughly 60% of floors get one hidden locker (`?`), placed in a random wing's dead end (or entered room if there's no dead end).
 - **Stairs direction** and each room's grid position are fixed per floor (keyed off the shared seed), not randomized per player.
-- Two seeds drive all of this, split exactly along the shared/private line v1's Part 1 describes: the shared `seed` picks wing topology and which two kinds pair up where; the private `pseed` (re-rolled every floor) picks which paired kind lands in which slot, hidden-item placement, the wildcard's actual kind, and bonus/void placement.
+- Two seeds drive all of this, split exactly along the shared/private line Part 10 describes: the shared `seed` picks wing topology and which two kinds pair up where; the private `pseed` (re-rolled every floor) picks which paired kind lands in which slot, hidden-item placement, the wildcard's actual kind, and bonus/void placement.
 
 ---
 
@@ -111,7 +113,29 @@ Gift pricing runs on a taste matrix by family (tech/both/spirit/plain/silver pre
 
 The party caps at **4** (KURA + 3). A demon that wants to join a full party offers a swap instead — the player picks who to send away (KURA can't be swapped) or declines and the demon leaves.
 
-**Dissonance (design only, not yet built):** the planned risk side of mixed-alignment parties. Builds from fighting, skipped days, and lingering in hot rooms while the party holds opposing alignments — faster the bigger the gap (Law+Chaos worse than Law+Neutral). Rising levels would have a member act out of turn, refuse a command, sit out a fight, or at the top leave/turn on the party, always preceded by an in-voice warning line. Read by the player as a simple `CALM`/`STRAINED`/`FRACTURING` state rather than a number; comes down via resting, calming items, certain recruits, or fitting omens. Tuning goals: mixed parties shouldn't strictly dominate pure ones, a careless mixed party should collapse by around floor 3, and an opposite-alignment recruit should nudge KURA's own alignment toward it as a brake against snowballing. **Flagged overlap with the shipped Patience system above** — both track per-member wear/warnings/leaving — and the current lean is toward **merging Dissonance into Patience** (an alignment gap simply adds extra wear between opposed members) rather than maintaining two separate hidden values. Not yet decided.
+**Dissonance (design only, settled on folding into Patience — not yet built):** the risk side of mixed-alignment parties, named Dissonance, and **decided to be the same underlying value as Patience above, not a second hidden number** (a separate theorycrafting thread on this project reached the same lean independently: "fold into patience, don't build a second meter"). Every standing member (KURA included, since she has her own alignment too) has an alignment-gap against every other standing member — same alignment = 0, one side NEUTRAL = 1, LAW vs CHAOS = 2 — and that gap is what Dissonance tracks: a member's tension is the gap against whoever in the current roster they clash with hardest.
+
+Three new wear sources feed into that member's ordinary Patience, on top of the drains Patience already has (over-talking, breaking items, nagging, disliked answers, etc.), scaled by gap size — bigger for an opposite pair than a neutral-adjacent one:
+- **Fighting** while tension is present.
+- **Skipping a day** — letting a real day pass with no step at all, not even STANDBY — while tension exists. The point is an unmanaged mixed party gets worse even when nothing is actively happening, not only during fights.
+- **Lingering in a hot room** while tense, a smaller repeating tick the longer the stay.
+
+Exact wear amounts are TBD/balance-later; the tuning targets stay what they were — mixed parties shouldn't strictly dominate pure ones, and a careless mixed party should collapse by around floor 3.
+
+**Read-out:** no separate state tracker — Patience's own level doubles as the Dissonance read, per tense member:
+- **CALM** — Patience 3–5
+- **STRAINED** — Patience 1–2
+- **FRACTURING** — Patience 0 (the existing warn-then-snap/leave zone)
+
+The one addition this needs on top of Patience as it already works: the warning line should read as alignment-driven (not generic talk-fatigue flavor) when tension is actually what zeroed the member out, so the player can tell the two causes apart. Snap behavior itself needs no change — CHAOS members already strike-and-stay, LAW/NEUTRAL already leave outright, which is already the "mixed parties are riskier" payoff this wanted.
+
+**Comes down via:** nightly regen (already generic/party-wide); a new **give** action — handing an item directly to a party member (not a demon or the altar) to restore their Patience, priced/scaled the same taste-matrix way demon gifts already are (bigger effect on a member who's a fan of that item's nature) — giving a player a way to defuse a fracturing pair proactively rather than just waiting out the night; and omens, once the omen-balancing thread resumes (a `calm`-type day boosting the regen a tense pair gets, say) — deferred for now rather than designed here.
+
+**Already solved, no new work needed:** "an opposite-alignment recruit should nudge KURA's own alignment toward it, as a brake" — recruiting already does this (Part 6: joining leans KURA toward the new member's alignment).
+
+**The payoff side — not yet mechanically specced, carried over from the same theorycrafting thread:** right now this section is all risk; a mixed party should get something for running that risk, or there's no reason to ever do it on purpose.
+- **Cross-alignment combo skills** — fixed pairings that only exist with an opposing pair in the party (e.g. a data member + a folklore member unlocking a move neither gets alone), as the reward side of carrying the extra Patience wear. Pure-alignment parties would get smaller, steady perks instead rather than nothing. Exact pairings/effects TBD.
+- **NEUTRAL as the bridge:** a NEUTRAL member should take much less of the gap-based wear than a LAW or CHAOS one does (their gap to either side is 1, not 2, which the tension formula above already gives them for free — worth confirming that's enough of a difference to actually read as "the easy teammate," or whether NEUTRAL needs an explicit extra discount on top). Gives the middle tag a combat-relevant payoff beyond easier recruiting from both sides, which right now is its only edge.
 
 ---
 
@@ -153,7 +177,7 @@ A demon's own alignment comes from its family (data → LAW, folklore → CHAOS,
 
 # Part 8: Omens & moon phases
 
-The daily omen is a deterministic function of the real UTC calendar day — identical for every player, immune to reload-rerolling, and the same mechanism the floor-shape layer (v1 Part 1) and the async design lean on. About half of days roll `"none"` (no effect); the rest are one of eight keyed effects, four of which also carry a LAW/CHAOS lean:
+The daily omen is a deterministic function of the real UTC calendar day — identical for every player, immune to reload-rerolling, and the same mechanism the floor-shape layer (Part 10) and the async design lean on. About half of days roll `"none"` (no effect); the rest are one of eight keyed effects, four of which also carry a LAW/CHAOS lean:
 
 | Key | Effect | Lean |
 |---|---|---|
@@ -181,7 +205,7 @@ The daily omen is a deterministic function of the real UTC calendar day — iden
 
 Demons talk most easily at new moon and hit hardest at full moon — opposite curves by design. Full moon also raises the moon-drop chance on a kill, gives a 50% chance of a MOON-tier item from the lure locker instead of the usual roll, and makes spirit-natured items more fragile.
 
-**STANDBY omen banking** (Part 1) lets a player hold a good day's omen and spend it later instead of the natural one — a scheduling decision, not a reroll. Shipped with a hold cap of exactly 1 (a new banked day overwrites the old one, no stacking); whether a bigger cap, decay, or an offsetting cost for STANDBY itself is worth adding is still open.
+**STANDBY omen banking** (Part 1) lets a player hold a good day's omen and spend it later instead of the natural one — a scheduling decision, not a reroll. Shipped with a hold cap of exactly 1 (a new banked day overwrites the old one, no stacking) and, as of v0.58, a flat 7-real-day cooldown on holding again after a release. Whether a bigger cap or decay is worth adding is still open.
 
 ---
 
@@ -199,7 +223,7 @@ The end-of-run summary covers floor/days/turns/steps/searches, final alignment a
 
 # Part 10: Async multiplayer
 
-*(Carried over from v1 Part 1 — the main thread of a separate design session, covering how the shared-shape/private-contents system lets every player feel like they're in "the same" dungeon without being able to spoil it for each other.)*
+*(Originally the main thread of a separate async-multiplayer design session, folded in here as this doc grew into the single general design doc, covering how the shared-shape/private-contents system lets every player feel like they're in "the same" dungeon without being able to spoil it for each other.)*
 
 ## Goal
 Add asynchronous multiplayer — everyone feels like they're playing "the same" dungeon — without letting players spoil the experience for each other (no "vault's behind the north door, second wing" callouts), and while keeping the amount of hard-coded determinism low.
@@ -351,7 +375,7 @@ Not urgent at current scale, but cheap to build in from the start:
 - Exact schema for bones/echo/trace/counter rows (sketched conceptually, not laid out field-by-field).
 - Whether/when server-side replay verification is ever worth the Workers Paid tier, vs. accepting event-sourced "believability checks" indefinitely.
 - Final alignment tag naming (Part 6) — no decision made.
-- Whether Dissonance should merge into Patience or stay a separate system (Part 5).
-- STANDBY-banked-omen balance (Part 1/8): cap is 1, but decay/expiry, whether banking bad omens is worth it, and whether STANDBY needs an offsetting cost are all open.
+- Dissonance (Part 5): merge-into-Patience is decided, naming/read-out is decided (CALM/STRAINED/FRACTURING on Patience's own scale). Still open: exact wear numbers for fight/skip-day/linger, the alignment-flavored warning-line text, the new give-to-party-member action's mechanics, the omen tie-in (deferred alongside the broader omen-balancing thread), the cross-alignment combo-skill pairings/effects, and whether NEUTRAL needs an explicit extra discount on top of its naturally smaller gap.
+- STANDBY-banked-omen balance (Part 1/8): cap is 1, decay/expiry still unexplored, and whether banking a bad omen is ever worth it is still open. The offsetting-cost question is partly answered as of v0.58 (a flat 7-real-day cooldown on holding again after a release) — open now is only whether Hold itself should ever cost something too, and whether a bigger cap is worth it.
 - Telegraphing for the omen-streak room unlock (Part 8) — the streak itself is shipped, but no in-game buildup cue exists yet. Also worth revisiting the LAW/CHAOS lean mapping, since it currently makes CHAOS streaks ~3x more common than LAW streaks.
 - Exact daily probability curve for the ordinary bonus-room roll (flat vs. smoothed to land closer to exactly-twice-a-month).

@@ -315,7 +315,7 @@ bracket-letter convention as the real in-game action bar.
 ## 6. Not built yet: Dissonance (cross-alignment party tension)  *(low priority — design settled this pass, not yet in `rules.js`)*
 
 Still no `rules.js` equivalent — **design question resolved** in a different
-chat on this project, now written up in `daily-dungeon-design-v3.md` Part 5:
+chat on this project, now written up in `daily-dungeon-design.md` Part 5:
 folds into the real **patience** system (v0.24+, warn-then-snap-or-leave,
 v0.52's `p.warned` one-free-warning behavior) rather than a second hidden
 value, confirming the lean this section already had. Full mechanism (an
@@ -414,7 +414,7 @@ step, **not yet built, not yet confirmed:**
    never mechanical") would settle this question for all three at once —
    worth deciding as policy rather than case-by-case, but not adopted here
    without your go-ahead.
-9. ~~Is Dissonance worth building separately, or does patience already cover it?~~ — resolved this pass: folds into patience, written up in `daily-dungeon-design-v3.md` Part 5. Still open from section 6: the cross-alignment combo-skill pairings, and whether NEUTRAL needs an explicit extra discount beyond its naturally smaller gap.  *(low priority)*
+9. ~~Is Dissonance worth building separately, or does patience already cover it?~~ — resolved this pass: folds into patience, written up in `daily-dungeon-design.md` Part 5. Still open from section 6: the cross-alignment combo-skill pairings, and whether NEUTRAL needs an explicit extra discount beyond its naturally smaller gap.  *(low priority)*
 10. Which alignment-tag rename, if any — or keep `[LAW]/[NEU]/[CHA]`?  *(low priority)*
 11. Hold/Release Omen consolidation (section 8): cooldown-from-release vs.
     cooldown-from-hold, and 7-flat-days vs. calendar week — unconfirmed,
