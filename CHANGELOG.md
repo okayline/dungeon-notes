@@ -3,6 +3,26 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.95 - The Locked Drawer - Oct 11 2026, 10:51 HST
+
+![v0.95](screenshots/v0.95.png)
+
+- **The X testing cheats ask for the admin key.** Commits `270d6ad` (game) and `432d050` (Worker). **Needs a Worker redeploy** (worker only; no schema change).
+  - **Page (`index.html`):** `X` (infinite steps) and `Shift+X` (the clock a day ahead) go through `adminGate()`. It reads `dd-admin` from `localStorage` (the same slot the board's delete uses) and asks the Worker `GET /admin` with it. A right key keeps the cheats unlocked for the page load (`adminOK`); a missing or rejected key shows `prompt("Admin key:")`, a wrong answer shows "That key was not accepted." and the key is dropped; no answer from the Worker shows "Could not reach the board." A right key is stored. Until the Worker is redeployed the check 404s, so the keys fail with "not accepted".
+  - **Worker:** `GET /admin` (header `x-admin-key`): 200 `{ok}` when the key equals the `ADMIN_KEY` secret and the page's origin is allowed, otherwise 403. No attempt limit, so the key should be long.
+  - **Cheated runs are marked.** `st.cheated` is set by `freesteps()` (when turned on) and `next()`. It stops the score post (the page's `submitScore`, and the end page shows "THIS RUN USED A TESTING CHEAT AND CAN'T BE POSTED." in place of the post button) and suppresses events and the presence ping, as infinite steps already did. It is page-side: a direct POST to the Worker is still possible, as it always was.
+  - **Old saves:** on load and each tick, with no unlocked admin, a save with infinite steps still on has it switched off and the run marked (`sweepCheats`); a leftover clock offset marks the run and stays until reality catches up, as before.
+  - **New run (`reset`):** the flag is cleared, unless infinite steps (the one cheat that carries over) is still on.
+  - **Deleting a board row** (`D` in the board) still needs X mode and the key; it now has the key stored from unlocking.
+  - **Bots** are unchanged: they call the rules directly and never use the cheats.
+- **Testing (light):** the Worker's `/admin` with a fake environment (right key, wrong key, no key, another website, no secret set); browser checks with a mock Worker of a wrong key, cancel, the right key, the same session (no second prompt, `Shift+X` moves the clock), a reload (silent re-check), and a stale stored key (asked again); a cheated dead run (no post button, the message) against a clean one (post button); and `reset`'s flag. Not checked: Firefox, and the real Worker (not redeployed when this was written).
+- **Also today, no game change:**
+  - `README.md` rewritten for the wing-based game (`83ce1f4`).
+  - **Bots are off the board** (`584675b`, Worker): `/top`, a player's rank and the "names carved" count skip names ending in `-bot`; their scores still feed the season, counters, deepest and last fall, and their events and presence are untouched. A person named "...-bot" only hides themselves.
+  - **itch.io:** `ALLOW_ORIGIN` also lists `https://html-classic.itch.zone`, the host itch serves the HTML5 build from. A score posted from the itch page ranked 8th.
+  - **The itch build is a separate zip, not the repo's files:** `index.html` carries VT323 loaded from bytes with the FontFace API (a Firefox extension that blocked fonts had broken the page's font file, which is what first looked like an itch problem), and the testing cheats are blocked outright (`X` and `adminGate` return at once: no prompt, no admin request). Every itch zip needs that lock.
+- **No new design-doc changes yet** (the doc is only updated on request).
+
 ## v0.94 - The Name in Lights - Oct 11 2026, 09:15 HST
 
 ![v0.94](screenshots/v0.94.png)
