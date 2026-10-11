@@ -3,7 +3,7 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## v0.62.1 - Oct 11 2026, 00:04 HST
+## v0.62.1 - Loose Threads - Oct 11 2026, 00:04 HST
 
 ![v0.62.1](screenshots/v0.62.1.png)
 
@@ -23,7 +23,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - **Found, not fixed:** (1) the open-door description for a bay (`"An arch to another room. It is quiet and clean, and hums like something asleep."`) is 4 columns too wide for the log row and is trimmed on screen. (2) Dissonance wear is per fight *round* (see the v0.59 correction below) and the starting party is gap 1 all round, so a new run's three allies go 5 -> 0 patience in five rounds. (3) The Worker was not actually deployed until tonight: the dev re-ran the schema and `wrangler deploy` by hand around 00:16 HST Oct 11, after which `/season` answers `{"epoch":331,"law":0,"chaos":0}`. Until then v0.60's tally and v0.62's LEAN line had nothing behind them.
 - **Changelog housekeeping in the same follow-up:** screenshots added for v0.59, v0.60 and v0.61 (taken from those exact commits: `424a72b`, `bc03654`, `8bc90a9`); v0.59 and v0.60 timestamps corrected to their commit times (20:02, 20:09). v0.59 and v0.60 shipped without bumping `VERSION`, so those two builds and their screenshots read v0.58; the number went straight from v0.58 to v0.61.
 
-## v0.62 - Oct 10 2026, 21:48 HST
+## v0.62 - The Front Door - Oct 10 2026, 21:48 HST
 
 ![v0.62](screenshots/v0.62.png)
 
@@ -42,7 +42,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - **Side effect, not asked for but noted:** a corrupt or too-old save previously got silently discarded straight into a brand-new run with no visible transition (`start()`'s old `stash()`-then-reset-silently branch). It's now surfaced instead -- the title screen shows with `CONTINUE` dimmed and the raw save still stashed under `-corrupt`/`-old` in localStorage, same as before, just not auto-replaced without the player seeing it happen.
   - **Tested:** every width-sensitive piece checked by direct Node calls against `renderTitle()` first (gets the strict `finishFrame()` throw-on-bad-width for free, same as `renderScreen()` always has), confirming no regression in `renderScreen()`'s own output after the `headerLines()`/`finishFrame()` extraction. Then three separate Playwright passes against the real page over a local static server: (1) a totally fresh visitor -- NEW RUN present and enabled, CONTINUE rendered `off`, ABOUT opens with no THIS RUN/CODEX and no crash, NEW RUN with nothing to lose skips the confirm straight into the name box, naming completes into a normal in-run screen (`PARTY` visible); (2) an existing named save -- reload still shows the title first (confirms "always show title" rather than silently reverting to old auto-resume behavior), CONTINUE now rendered without `off`, NEW RUN now raises the confirm box, declining it returns to the title screen (`atTitle` stays `true`, RUMORS AND SECRETS still showing, not the stale game view), confirming it resets and opens the name box with `atTitle` now `false`, and a full fresh reload afterward resumes correctly via the `C` key into a normal in-run screen with the header/minimap/party panel all rendering exactly as before the `headerLines()` refactor; (3) the scroll ticker's `titleOffset` confirmed actually incrementing on its own after a real 3.2-second wait, and the mid-game ABOUT screen (not from the title) confirmed still showing THIS RUN/CODEX/the CODEX button exactly as before the null-save tolerance change. Zero console/page errors across all three runs, aside from this sandbox's expected proxy-blocked fetches to the leaderboard worker's domain (handled identically to any other `/season`/`/top` failure: silent `null`, graceful fallback text).
 
-## v0.61.1 - Oct 10 2026, 21:15 HST
+## v0.61.1 - Bottom Shelf - Oct 10 2026, 21:15 HST
 
 ![v0.61.1](screenshots/v0.61.1.png)
 
@@ -52,7 +52,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - **`?` menu's `[H]` line simplified twice in direct response to dev feedback**: first trimmed from a 4-line mechanic explanation down to one line with dot-padding matching the other entries' style, then -- after the dev pointed out they'd given the exact text to use in quotes -- stripped the dot-padding entirely to match verbatim: `"  [H] Hold Omen, or Release Omen once one's banked"`.
   - **Tested:** full Playwright re-run against the actual page after the layout change (not assumed-safe from the earlier pass) -- all three button states (available/release/cooling) confirmed on their own line with correct text, click and `H` both still trigger correctly from the new position, a blank click still closes the bag without false-triggering `holdAction()`, and a save state engineered so `RULES.available(save).hold` is genuinely `false` (today already spent) confirmed the `holdBtn`-null fallback renders the single plain bottom line with no leftover empty row. Zero console/page errors. Screenshot retaken post-fix and visually confirmed nothing clips at the real 47-column width (the first screenshot attempt, pre-fix, is what caught the bug in the first place).
 
-## v0.61 - Oct 10 2026, 20:30 HST
+## v0.61 - A Button of Its Own - Oct 10 2026, 20:30 HST
 
 ![v0.61](screenshots/v0.61.png)
 
@@ -67,7 +67,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **All five full-screen popups (About, Log, Invoke, Codex, Leaderboard) now close on a click anywhere on them**, not just their `[C]LOSE` button -- previously About/Log/Invoke/Codex had an explicit comment stating a blank click does nothing ("never a click anywhere" / "no click-to-close here"), which is the behavior being reversed here per the dev's request ("all of the full-screen popups can be clickable to close"). Each handler's existing interactive targets (buttons, item/tab rows, the log's name-submit text field) are checked first and keep their own behavior unchanged; only the final "nothing matched" fallthrough now closes instead of no-op'ing. The `#found` dialog (name entry, party questions, replay) was deliberately left alone -- it's a required-decision box with no close concept, not a dismissible view.
   - **`leaderboard`'s `#board` popup** had no other interactive elements at all (admin row-select/delete there is keyboard-only), so its handler simplified to an unconditional `() => toggleBoard(false)` on any click.
 
-## v0.60 - Oct 10 2026, 20:09 HST
+## v0.60 - Taking Sides - Oct 10 2026, 20:09 HST
 
 ![v0.60](screenshots/v0.60.png)
 
@@ -83,7 +83,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - **Tested:** a standalone `node:sqlite` harness running the exact SQL strings used by `tallyFaction` (not a mock -- the literal query text) through 9 scenarios: blind LAW/CHAOS increments, NEUTRAL correctly favoring whichever side is behind, exact-tie no-op, the specific edge case of a NEUTRAL run being the *very first* faction-relevant post of a fresh epoch (both rows don't exist yet -- confirmed this still resolves to a tie/no-op, not a crash or a wrong default), and an unrecognized align tag touching nothing. All 9 passed. Separately, confirmed `RULES.score()` includes the new `align` field via a bootstrapped-dungeon smoke test (`RULES.talk()` → real `st.dungeon`, same pattern as the Dissonance tests below). `node -c` on both changed files.
   - **Not yet done:** anything player-visible. This is pure plumbing -- no title-screen display, no season reset/rollover notice, no reward. Those are Part 11's job (title screen, queued next) and the "cosmetic reward" line in the design doc (board title / omen-voice shift), both still open.
 
-## v0.59 - Oct 10 2026, 20:02 HST
+## v0.59 - Bad Company - Oct 10 2026, 20:02 HST
 
 ![v0.59](screenshots/v0.59.png)
 
@@ -98,7 +98,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - **Not implemented** (per the design doc's own "still open" framing): give-to-party-member easing tension, any omen tie-in, cross-alignment combo-skill payoffs, an explicit NEUTRAL bridge discount beyond its naturally smaller gap.
   - **Tested:** `node -c rules.js` syntax check. Direct `RULES` module simulation (bootstrapping a real `st.dungeon` via `RULES.talk(st)` → `ensureFloor()`, since a hand-built fake dungeon object crashes `RS()`): confirmed fight-wear scales by gap (opposite pair -2/round, neutral-adjacent -1/round, same-alignment -0/round), the `PARTY_TENSE`/`FAMILY_TENSE` line correctly replaces the ordinary tired line when tension (not talk fatigue) is the reason for zero patience, the control case (no tension → ordinary tired line unchanged) still holds, and linger-wear fires exactly once per `LINGER_AT` crossed. 200-trial × 40-action fuzz (randomized alignments, random fight/talk/go/search/turn/tick) = 8000 actions, 0 crashes — confirms the new `act()` hook, which now runs on every single action in the game, introduced no regressions elsewhere.
 
-## v0.58 - Oct 10 2026, 18:55 HST
+## v0.58 - One Slot, One Week - Oct 10 2026, 18:55 HST
 
 ![v0.58](screenshots/v0.58.png)
 
@@ -108,7 +108,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - **Not changed:** the known rough edge from v0.57.3 (declining the Hold Omen confirmation drops to the main screen instead of reopening the bag) is still there — untouched by this pass.
   - **Tested:** direct `rules.js` simulation stepping through hold → sync (banks the omen) → release → day-by-day through the full window, confirming `available().hold` goes `true → false → … → true` and `omenCooldownDays` counts down `7 → 1 → 0` across exactly 7 real days (day 2 release, available again on day 9 — verified via `SMT.setSkew`). 300-run fuzz across 5 timezones and random clock-skew, randomly holding/releasing every few days, `available()` and `renderScreen()` called every turn — 0 crashes. `new Function()` syntax-check on the extracted inline script. Playwright screenshot of a mid-cooldown save confirming the greyed "Hold Omen" entry, its detail text with the correct day count, and that it's visually dimmed in the bag list.
 
-## v0.57.3 - Oct 10 2026, 03:25 HST
+## v0.57.3 - Into the Bag - Oct 10 2026, 03:25 HST
 
 ![v0.57.3](screenshots/v0.57.3.png)
 
@@ -118,7 +118,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - `index.html` cleanup alongside the border change: the `.replace("STA[N]DBY", b(...))` border-button wiring, the `n: "hold"` key binding, and the now-unused `.btn[data-act=hold]` CSS nudge rule are all removed. The `[?]` help menu's standalone `STA[N]DBY ....` line moved to sit under `[I]NVOKE`, split into two lines (`Hold Omen` / `Release Omen`) describing what each does.
   - Tested: `new Function()` syntax-check on the extracted inline script (still passes), 300-run fuzz (5 timezones, random skew, `renderScreen()` called every turn) at 0 crashes, and a Playwright screenshot pass confirming: the bag shows both new entries with correct detail text, selecting Hold Omen opens the same "GO ON STANDBY?" box as before, and the border's bottom-right is now blank with no leftover dead text.
 
-## v0.57.2 - Oct 10 2026, 03:20 HST
+## v0.57.2 - No More Cell - Oct 10 2026, 03:20 HST
 
 ![v0.57.2](screenshots/v0.57.2.png)
 
@@ -126,7 +126,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - Confirmed the dev's mental model directly: HOLD is kept specifically because it's the STANDBY-omen-banking trigger, not a flavor button — reconfirmed this wasn't touched by either v0.57.1 or this change.
 - Tested: 300-run fuzz (5 timezones, random skew) through real `go()`/`search()`/`fight()` play, now also calling `renderScreen()` every turn to exercise the border layout math directly (not just the action logic) — 0 crashes, border stays a clean 80 columns.
 
-## v0.57.1 - Oct 10 2026, 03:15 HST
+## v0.57.1 - Simpler Cell - Oct 10 2026, 03:15 HST
 
 ![v0.57.1](screenshots/v0.57.1.png)
 
@@ -140,7 +140,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - **HOLD (STA[N]DBY) is untouched and still shares the same one-per-day `today.stepped` flag** — confirmed this is load-bearing, not just a flavor button: `hold()` setting `today.held = true` is what `sync()` reads the next real day to trigger STANDBY (banking that day's omen into `st.bankedOmen`, usable later as THE HELD DAY in INVOKE). So the day's one action is still "open a locked door, or go on STANDBY, not both" — removing CELL's complexity didn't touch that trade-off, only the spare/discharge layers on top of it.
   - Tested: 300-run fuzz across 5 timezones and random clock-skew with `freesteps` on (0 crashes, matching prior sessions' baseline), plus a second 300-run pass with `freesteps` OFF driving real `go()`/`search()`/`fight()` play — the one-door gate (`"> The door won't cycle..."`) fired 2,784 times across those runs with 0 crashes, confirming the simplified gate blocks correctly in ordinary play, not just in isolation. Confirmed `st.spare` is `undefined` after a multi-day skip (no catch-up banked) and `RULES.discharge`/`RULES.chargeLeft` are `undefined` from the module.
 
-## v0.57 - Oct 10 2026, 03:00 HST
+## v0.57 - Your Own Map - Oct 10 2026, 03:00 HST
 
 ![v0.57](screenshots/v0.57.png)
 
@@ -155,7 +155,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   2. **Ordinary roll, bonus-only (void never comes from this path), moon-weighted.** `const MOON_BONUS = [0.03, 0.04, 0.05, 0.06, 0.07, 0.06, 0.05, 0.04];` (new `rules.js` const, same shape/indexing as the existing `MOON_PULL` encounter-odds multiplier, by `moon()` phase index) replaces the flat 7%. Still capped at 1/floor, plus the two balance rules from the same session: never two days running (`st.lastBonusDay === undefined || utcDay() - st.lastBonusDay > 1`) and at most 2 a real lunar month (`st.bonusEpoch`/`st.bonusCount`, reset when `epochNow()` changes). Averages ~5% over real moon data (not 7% flat), so long-run frequency is **≈1.3/month** before the monthly cap even binds (200,000-trial standalone-logic-replica sim, not the full game loop — `RULES.hold()` in a loop hits the floor-turnover test-harness bug noted in the v0.56 session notes, where a stalled run freezes `sync()`'s day-rollover forever) — confirmed by the dev as fine ("under twice a month is perfect"), even though it undershoots the doc's original "twice a month" phrasing slightly.
   - `reset()`'s per-run field-cleanup list gained `"bonusEpoch", "bonusCount", "lastBonusDay"`. `debugInfo()`'s row 3 gained `BONUS ${st.bonusCount||0}/2` plus `+PEND`/`+PEND(void)` flags.
 
-## v0.56.1 - Oct 10 2026, 02:00 HST
+## v0.56.1 - The Void, Named - Oct 10 2026, 02:00 HST
 
 ![v0.56.1](screenshots/v0.56.1.png)
 
@@ -166,7 +166,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
   - Verified end-to-end: manually set `pendingBonus`/`pendingAnti` on a floor, fully BFS-explored it via `FLOOR.grow`, confirmed the flag gets consumed (cleared, `bonusRolled`/`antiRolled` set) and the room actually appears with the right kind. Also re-ran the 300-floor timezone/skew fuzz — 0 crashes.
 - **Screenshot:** real Playwright render again, this time of the INVOKE screen open with THE HELD DAY selected, to show the new placement specifically.
 
-## v0.56 - Oct 10 2026, 01:41 HST
+## v0.56 - The Same Dungeon - Oct 10 2026, 01:41 HST
 
 ![v0.56](screenshots/v0.56.png)
 
@@ -188,7 +188,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Known gap, not addressed this session:** the design doc's per-account minimap/compass rotate-mirror transform ("Minimap handling — decided") still isn't built. Doors' compass directions still come from the shared `rand`, so a callout like "the vault's north door" is still a real cross-player spoiler today. See the design doc's status note.
 - **Save compatibility intentionally broken** this release (floor schema v6→v7, omen storage reshaped) — agreed with the dev beforehand.
 
-## v0.55 - Oct 8 2026, 04:14 HST
+## v0.55 - Tidier Screens - Oct 8 2026, 04:14 HST
 
 ![v0.55](screenshots/v0.55.png)
 
@@ -197,7 +197,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Player name:** stored upper-case (`setName`); "POSTED AS" upper-cases too. A name that fails the rules shows a warning line with the reasons; the name popup's sine wave animates.
 - **End screen post row:** `[P]OST YOUR HIGH SCORE AS NAME` (P or Enter posts), `[B]OARD` on the next line.
 
-## v0.54 - Oct 8 2026, 04:01 HST
+## v0.54 - What's Your Name? - Oct 8 2026, 04:01 HST
 
 ![v0.54](screenshots/v0.54.png)
 
@@ -208,7 +208,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Leaderboard Worker:** the pre-check (OPTIONS) now answers a bodiless 204 (the old one returned a body with a 204, which Cloudflare turns into a 500, so every post failed in the browser); CORS is `*` on every answer so the page can read why it was refused; `ALLOW_ORIGIN` takes several comma-separated pages and is enforced by the Worker (a refused page gets `{"error":"origin","seen":"..."}`). The game now says the real reason (page not allowed, slow down, bad name, bad score, or the HTTP status). The [B]OARD button left the bottom border; the board stays in the [?] menu, the B key and the end-of-run log.
 - **End-of-run log:** the buttons ([D]OWNLOAD, C[O]PY, [C]LOSE) and the post row come first, then the epitaph and totals, then the ADVENTURE LOG heading and entries, with [R]ESET last. A run in progress keeps its heading first.
 - **Painted door press:** unchanged this time (painted doors stay off).
-## v0.53 - Oct 8 2026, 03:30 HST
+## v0.53 - The Board - Oct 8 2026, 03:30 HST
 
 ![v0.53](screenshots/v0.53.png)
 
@@ -222,7 +222,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Floor arrival:** line 3 on a new floor and on descending is `atmosphere(st)` now (it used to repeat the deadline already on the status line).
 - **Roster spreadsheet:** rebuilt with `roster/make.sh` (no sheet changes this time).
 
-## v0.52 - Oct 8 2026, 02:58 HST
+## v0.52 - Kinder Endings - Oct 8 2026, 02:58 HST
 
 ![v0.52](screenshots/v0.52.png)
 
@@ -235,7 +235,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Run end log:** `[R]ESET begins a new run.` is now the last line of the log (and of the download and copy text).
 - **Roster spreadsheet:** new `Omens` sheet (9 omens, 34 lines, each with its effect: ordinary, data x2, folk x2, heat x2, hard 0.5 find, easy 1.6 find, talk 1.6, calm 0.5 heat, loot x3). `roster/make.sh` exports `OMENS` to the dump.
 
-## v0.51 - Oct 8 2026, 02:34 HST
+## v0.51 - Last Words - Oct 8 2026, 02:34 HST
 
 ![v0.51](screenshots/v0.51.png)
 
@@ -246,7 +246,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Break arrival popup:** when a demon comes after you break something, `st.round` is cut to its first line (the stance line pushed [ OK ] off the box).
 - **Roster spreadsheet:** `roster/make.sh` in this repo rebuilds `daily-dungeon-characters.xlsx` from the game's current `rules.js`; it now includes last words. Rebuilt on every commit.
 
-## v0.50 - Oct 8 2026, 01:31 HST
+## v0.50 - The Party Talks Back - Oct 8 2026, 01:31 HST
 
 ![v0.50](screenshots/v0.50.png)
 
@@ -257,7 +257,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Bottom stat row:** `NAME` padded to 11, then `TURN 0000`, then `DAY 01`; no gaps vary with the name (10-character names used to shift the others one column).
 - **Demon talk:** `e.left = R(2, 3)` (was R(1, 2)), so a demon asks at least 2 questions before the gift roll (data 10%, hardware 30%, hybrid 40%, folklore 45%, scaled by personality). A guard ends the questions if the pool runs out. Three questions that sounded like requests were replaced: hardware "do you have a charger? anything?" became "do you remember being plugged in?", hybrid "Would you trade a memory for a secret?" became "Do you keep secrets?", folklore "Have you come with an offering?" became "Have you come to stay?".
 
-## v0.49 - Oct 8 2026, 01:10 HST
+## v0.49 - Doors That Wait - Oct 8 2026, 01:10 HST
 
 ![v0.49](screenshots/v0.49.png)
 
@@ -269,14 +269,14 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Cheat menu (X):** `debugInfo` returns three lines: room/stairs/exits, cell/hidden/terminal/heat/enc, loop/linger/lean/taint/day. It is left-aligned in `#cheat`, one line up (same row as the build number, which sits under the screen at the right).
 - **Public changelog:** older entries rewritten to remove heat, loop, dread, taint, patience, odds and similar details. Full text lives in this file's older entries.
 
-## v0.48.1 - Oct 8 2026, 00:24 HST
+## v0.48.1 - Daily Digital Demon Dungeon - Oct 8 2026, 00:24 HST
 
 ![v0.48.1](screenshots/v0.48.1.png)
 
 - **Rename (player-visible only):** "Daily Digital Demon Dungeon" in the page title, help header (padStart now 71-30-7-13, row stays 71 wide), adventure-log export header, README. Internal strings (save key `daily-dungeon-run`, log filename), comments, `archive/`, and the repo name are unchanged.
 - **Silence tolerance (demon talk):** the first `[S]ILENT` answer to a demon never lowers its mood (`d = max(d, 0)`, so HAUGHTY is forgiven once), and if it was on its last question it gets one more (`e.left += 1`). `e.quiet` counts silences; later ones use the normal persona effect. Tested: after one silence the talk continues 100%; after up to 3 silences HAUGHTY ended 272/500 and PRIM 467/500, none angry.
 
-## v0.48 - Oct 8 2026, 00:14 HST
+## v0.48 - Rooms With Names - Oct 8 2026, 00:14 HST
 
 ![v0.48](screenshots/v0.48.png)
 
@@ -286,7 +286,7 @@ The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics
 - **Party reply on line 3:** `st.talkLine` marks the reply set by `reply()`; `act()` blanks it on the next action if still unchanged.
 - **Public changelog:** sanitized (no odds, drop rates, room names, hidden mechanics).
 
-## v0.47 - Oct 7 2026, 23:51 HST
+## v0.47 - Programs and Corruption - Oct 7 2026, 23:51 HST
 
 ![v0.47](screenshots/v0.47.png)
 
@@ -301,7 +301,7 @@ Talking, programs, corrupted demons, and rooms that describe themselves.
 - **Corrupted demons:** from the midpoint of the floor's week on: data 10% rising to 40% on the last day, other families half that. CHAOS, 15% more HP, glitched name (first vowel becomes a symbol), listen chance x0.7. After the questions: mood 1 or more restores it (real name, original alignment, -0.5 lean, 60% offer to join, else it leaves), otherwise the noise takes it again and it attacks.
 - **Rooms:** entry lines are flavor only, no room names or effects spelled out. The bonus room (THE ARCHIVE) no longer gives its item on entry: a random program not in the party is always waiting (a talkable encounter), and its wall piles are a locker, two items, and silver, with no demons; item finds there are UNCOMMON or RARE (35% RARE), silver doubled. Search lines: a locked door starts "A locked door." with a 55% hint appended; an open arch gets a sense line (see Unreleased).
 
-## v0.46.1 - Oct 7 2026, 23:21 HST
+## v0.46.1 - Yes, No, and Where You Stand - Oct 7 2026, 23:21 HST
 
 ![v0.46.1](screenshots/v0.46.1.png)
 
@@ -310,7 +310,7 @@ Alignment between SILVER and ICHOR, and questions answered beside the question.
 - **Alignment tag:** `[NEU]` now sits between SILVER and ICHOR (`< [LAW]` or `[CHA] >` when the last action pulled that way). It tightens to `<[LAW]` when the amounts are big and drops out when there is no room. The bottom row keeps just TURN and DAY.
 - **Questions:** `[Y]ES   [N]O` sit at the right end of log line 3, beside the question, instead of in the bottom bar. STA[N]DBY stays put.
 
-## v0.46 - Oct 7 2026, 23:19 HST
+## v0.46 - Room for Art - Oct 7 2026, 23:19 HST
 
 ![v0.46](screenshots/v0.46.png)
 
@@ -320,7 +320,7 @@ Fight popups get art space, a clearer cell, and a party exit that always says so
 - **Cell:** `CELL [##]` when charged and `CELL [  ]` when spent, so the spare `[+]` stays put.
 - **A party member leaving** now always gets its popup, even when a find was already open (it waits its turn).
 
-## v0.45 - Oct 7 2026, 23:09 HST
+## v0.45 - The Spare Cell - Oct 7 2026, 23:09 HST
 
 ![v0.45](screenshots/v0.45.png)
 
@@ -332,7 +332,7 @@ The spare cell on screen, a cleaner minimap, and bonus rooms on unlock.
 - **Questions:** `[Y]ES` and `[N]O` no longer glow or change color, line up with the bar, and flash twice.
 - The help page calls it `[P]ASSWORD`.
 
-## v0.44 - Oct 7 2026, 22:34 HST
+## v0.44 - Charge - Oct 7 2026, 22:34 HST
 
 ![v0.44](screenshots/v0.44.png)
 
@@ -347,7 +347,7 @@ A longer week, charge instead of keys, camp, discharge, drops, and the open-door
 - **Open doors are a big double-line arch** with the room left empty. A passage is `) (` on the minimap (`)@(` when you stand in it), and the grid outline is dimmer.
 - `[P]ASS` moved to the help page, next to `[C]ODEX`. The log page has a gap under its heading. TURN has four digits and DAY two.
 
-## v0.43 - Oct 7 2026, 21:45 HST
+## v0.43 - Tiles - Oct 7 2026, 21:45 HST
 
 ![v0.43](screenshots/v0.43.png)
 
@@ -358,7 +358,7 @@ Minimap and door tiles, plus a few fixes.
 - **A blocked run opens a popup** ("PING blocked your way.") that waits for `[ OK ]`.
 - **A new run rerolls the omens.** The invoke result line is plain white, not gold, and STA[N]DBY sits a touch lower.
 
-## v0.42 - Oct 7 2026, 21:23 HST
+## v0.42 - Search and Run - Oct 7 2026, 21:23 HST
 
 ![v0.42](screenshots/v0.42.png)
 
@@ -371,7 +371,7 @@ Searching, running, and a tidier top box.
 - **The log page** has the heading on top and the buttons right-aligned below it. `[C]ODEX` is gone from the bottom bar.
 - `[  ^  ]` never greys out, the `^` is centered, and STA[N]DBY sits a touch lower.
 
-## v0.41 - Oct 7 2026, 20:59 HST
+## v0.41 - Housekeeping - Oct 7 2026, 20:59 HST
 
 ![v0.41](screenshots/v0.41.png)
 
@@ -387,7 +387,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - **Buttons.** `[C]ODEX` and `[P]ASS` are on the bottom bar; popups are marked as dialogs and Tab and F-keys work.
 - Dead code removed.
 
-## v0.40 - Oct 7 2026, 19:57 HST
+## v0.40 - Walls on the Map - Oct 7 2026, 19:57 HST
 
 ![v0.40](screenshots/v0.40.png)
 
@@ -395,7 +395,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - **A new demon says so first.** The fight box opens on `NAME APPEARS` with an `[ OK ]` (ignored for the first moment), so a run of key presses can't charge into the fight unseen.
 - **`[   ^   ]`** is a little narrower again, with a bigger `^` (no glow).
 
-## v0.39 - Oct 7 2026, 19:48 HST
+## v0.39 - The Game Asks - Oct 7 2026, 19:48 HST
 
 ![v0.39](screenshots/v0.39.png)
 
@@ -405,7 +405,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - **Yes/No fixes:** a party member's answer now shows at once instead of the old question staying up. Blinking buttons stay clickable while dark.
 - **`[  ^  ]`** is wider (`[    ^    ]`), and facing a bare wall it searches that wall. STA[N]DBY stays lit with the X cheat on.
 
-## v0.38 - Oct 7 2026, 19:31 HST
+## v0.38 - The Wide Button - Oct 7 2026, 19:31 HST
 
 ![v0.38](screenshots/v0.38.png)
 
@@ -415,7 +415,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - **INVOKE:** the `[ENTER] use` row stays at the foot of the bag so it no longer jumps up a line when you use or switch items.
 - **Line 1 never says the day** (line 2 already shows it). Item descriptions no longer show an alignment.
 
-## v0.37 - Oct 7 2026, 19:13 HST
+## v0.37 - Wings - Oct 7 2026, 19:13 HST
 
 ![v0.37](screenshots/v0.37.png)
 
@@ -427,7 +427,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - **Fixes and polish:** the find popup only closes on its `[ OK ]` (Enter or a click); a party member's `[Y]ES`/`[N]O` question waits for an answer; `[^]` matches `[<]` `[>]` (no glow, same size); the X cheat info is on two lines (with each wing's exits and clue); the fight popup has a blank line under the names; a `[C]ODEX` link sits at the top of the `[?]` page; the help text explains `+` and `x`.
 - Runs saved before this change start over.
 
-## v0.36 - Oct 7 2026, 18:45 HST
+## v0.36 - One Key a Day - Oct 7 2026, 18:45 HST
 
 ![v0.36](screenshots/v0.36.png)
 
@@ -441,13 +441,13 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - **Fight popup.** The art frame is on top, then the enemy's name and HP bar with `ROUND #` at the right, then `> KURA` and the text, indented in from the edge.
 - Runs saved before this change start over (the floors work differently now). Fixed a few lines that were too long for the log.
 
-## v0.35 - Oct 7 2026, 18:03 HST
+## v0.35 - Groundwork - Oct 7 2026, 18:03 HST
 
 ![v0.35](screenshots/v0.35.png)
 
 - **Under the hood: each room keeps its own record.** Everything the game remembers about a room (visited, what's been found, heat, linger, the daily marks for the room kinds and the Altar, its wall contents) now lives in one place per room, instead of five lists that all assumed three rooms. Nothing about how the game plays changes. It's the groundwork for a bigger, branching map. Runs saved the old way convert themselves the first time they load, with every value kept.
 
-## v0.34 - Oct 7 2026, 17:53 HST
+## v0.34 - Rooms With Character - Oct 7 2026, 17:53 HST
 
 ![v0.34](screenshots/v0.34.png)
 
@@ -466,7 +466,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - `[^]` has no glow. `[P]ASS` moved off the bottom border (the `P` key and the `[?]` help still have it).
 - **Cheats:** `X` toggles infinite steps (and shows the room and counters under the screen), `Shift+X` jumps a day.
 
-## v0.33 - Oct 7 2026, 16:45 HST
+## v0.33 - Hold That Line - Oct 7 2026, 16:45 HST
 
 ![v0.33](screenshots/v0.33.png)
 
@@ -475,7 +475,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - **Lingering counts every action in a room**, and the trigger is now 30.
 - **Dread, when KURA is alone.** Repeat the same action about 8 times and the room starts to whisper. At 15 she starts TRIPPING. At 25, something answers: ATOM SLASHER (it can't be talked to, tough and hits hard). Company keeps the dark away.
 
-## v0.32 - Oct 7 2026, 16:19 HST
+## v0.32 - The Moon Was Backwards - Oct 7 2026, 16:19 HST
 
 ![v0.32](screenshots/v0.32.png)
 
@@ -485,7 +485,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - The blinking `[^]` and `RUN` glow less.
 - VT323 now ships with the game (`fonts/`, with its license), so the page no longer loads anything from Google.
 
-## v0.31 - Oct 7 2026, 15:01 HST
+## v0.31 - A Shorter Welcome - Oct 7 2026, 15:01 HST
 
 ![v0.31](screenshots/v0.31.png)
 
@@ -496,7 +496,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - The `[^]` step button glows more softly, and when it's spent (or facing a wall) it dims to a dark blue.
 - In a fight, the way out flashes: `[^]` blinks with RUN beside it when KURA faces an open way, and the turn buttons blink when she faces a wall (turn to find a door). Nothing flashes once today's step is spent.
 
-## v0.30 - Oct 6 2026, 20:58 HST
+## v0.30 - The Big Step - Oct 6 2026, 20:58 HST
 
 ![v0.30](screenshots/v0.30.png)
 
@@ -509,7 +509,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - The CODEX button moved from INVOKE to the top of the LOG page (C still opens it anywhere).
 - The stray `|` to the right of `[S]EARCH` on the menu bar is gone.
 
-## v0.29 - Oct 6 2026, 20:36 HST
+## v0.29 - Omen on the Ceiling - Oct 6 2026, 20:36 HST
 
 ![v0.29](screenshots/v0.29.png)
 
@@ -524,7 +524,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - Data demons sometimes slip into binary (real ASCII, if you decode it): `01001000 01001001`, and one even asks a question in it. Only a data demon in the party can read binary: with one along, each binary line comes with a translation (`01001000 01001001  [PACKET: "HI"]`); without one, it's just 1s and 0s.
 - Fixed the right border of a log line sitting one cell short in the page font (an apostrophe, as in "Today's", wasn't exactly one cell wide). Each log line's text now sits in a box exactly 78 cells wide.
 
-## v0.28 - Oct 6 2026, 20:03 HST
+## v0.28 - About - Oct 6 2026, 20:03 HST
 
 ![v0.28](screenshots/v0.28.png)
 
@@ -548,7 +548,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - Each changelog entry now comes with a screenshot of that build.
 - The README is up to date with how the game plays now.
 
-## v0.27 - Oct 6 2026, 19:16 HST
+## v0.27 - A Block Moon - Oct 6 2026, 19:16 HST
 
 ![v0.27](screenshots/v0.27.png)
 
@@ -560,32 +560,32 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - The fight box has a `[R]UN` button (or R): KURA runs through the door she faces, or another open one. It's dimmed when today's step is already spent.
 - When the run ends, the adventure log opens by itself (after the fight box is closed), topped with where and when it ended: "THE RUN IS OVER. B2F, day 4, turn 61."
 
-## v0.26 - Oct 6 2026, 16:02 HST
+## v0.26 - Every Turn Counts - Oct 6 2026, 16:02 HST
 
 - Trying to use an item that does nothing still counts a TURN, like any other action.
 - **Runs that got ahead of the real date snap back.** Old X presses (the hidden testing cheat) or a wrong device clock could push a run's calendar days ahead, and the rewind guard then locked that in. Once the page knows the real time, such a run snaps back to today once ("The calendar shudders and settles on today."), and a deadline further out than next week's Sunday is pulled in. RST always starts a run on the real calendar now.
 
-## v0.25 - Oct 6 2026, 15:54 HST
+## v0.25 - Real Time - Oct 6 2026, 15:54 HST
 
 - **The game uses the real time, not the device's.** When the page loads it asks the server for the time and goes by that, so a wrong or changed device clock can't move the game forward or back. If the server can't be reached (offline), it falls back to the device clock, still guarded against rewinding.
 - **Days follow the player's own midnight.** A new run counts days in the timezone of the device that starts it: the clock, the date, the daily step and the Sunday deadlines are all local. The run keeps that timezone, so traveling mid-run can't add or skip a day. Runs started before this, and the chat run, stay on Honolulu time.
 - Using an item from INVOKE shows the result on log line 2 in gold, instead of inside the INVOKE box.
 - The clock shows the timezone after the time (`15:51 HST`, `EDT`, or `GMT+9` where there's no short name).
 
-## v0.24 - Oct 6 2026, 15:42 HST
+## v0.24 - Reading the Room - Oct 6 2026, 15:42 HST
 
 - **Talking reads the room.** When KURA talks to the party, the answer follows the room's heat: easy chatter when it's calm, then uneasy ("Lower your voice. The room is waking."), nervous ("Something keeps breathing. It isn't us."), and finally just wrong ("PIXIE tries to answer. Her voice won't come.") as it heats up. Each member answers in their own way; recruited demons in their family's voice ("MULTIPLE SIGNALS. ORIGIN: EVERYWHERE.").
 
 - **Patience.** Party members get tired of being talked to. Each talk wears down the one who answers: after a few they get short ("ELF: "Must you?"", "RATE LIMIT EXCEEDED."), then irritated ("PIXIE sticks out her tongue."), then they ignore KURA ("CU SITH pretends to be asleep."). A night's rest gives some patience back. A dangerous room still outranks being annoyed. Keep pushing someone with no patience left and they snap: CHAOS members lash out at KURA ("CU SITH bites KURA's hand. Not hard. Hard enough."), never fatally; LAW and NEUTRAL ones leave the party ("SESSION TERMINATED.", "PIXIE: "FINE. Bye!"").
 - Nervous replies are less explicit too ("MULTIPLE SIGNALS. ORIGIN: EVERYWHERE.", "WARNING: TRACE DETECTED.").
 
-## v0.23 - Oct 6 2026, 15:31 HST
+## v0.23 - Small Talk - Oct 6 2026, 15:31 HST
 
 - **TALK with no demon around** talks to the party. Someone answers on line 3: PIXIE chatters, ELF is aloof, CU SITH answers without words, and recruited demons speak in their family's voice ("QUERY NOT UNDERSTOOD. RETRY?"). Now and then something that isn't the party answers instead ("A voice below counts to seven, then stops."), more often under a full moon. Alone, KURA hears only the walls, or the voice.
 - INVOKE: `[ENTER] use` and `[C]ODEX` can be clicked, and what happened shows right in the box. Items with no use yet say "KURA turns the spent battery over. Nothing happens." and aren't spent.
 - The minimap sits one row higher, so KURA is centered in the map box.
 
-## v0.22 - Oct 6 2026, 15:20 HST
+## v0.22 - Demands - Oct 6 2026, 15:20 HST
 
 - **Demons ask for anything.** A demon that listens asks for a gift, and KURA picks from a list: SILVER, any item she carries, or nothing. How it reacts depends on what it gets:
   - **Taste by family.** Data and hardware demons like tech junk, hardware loves SILVER, hybrids love things that are both machine and spirit (most RARE items), and folklore likes old spirit things and hates tech. Data demons hate spirit things too.
@@ -597,7 +597,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - KURA starts each run with 2-3 pieces of COMMON junk and one UNCOMMON item, so there's something to give the first demon. Very rarely there's more: 1 run in 40 starts with a RARE item and 1 in 200 with a MYTHIC ("Her bag feels heavier than it should.").
 - **CODEX** (`[C]`, in the bottom border): an encyclopedia of every demon met and item found, with `[D]EMONS` and `[I]TEMS` tabs. Unknown entries show as `???`. Demon entries have the family, alignment, a line of its voice, what it wants, and how often it's been met and recruited. Item entries have rarity, alignment, which families love or hate it, and how it pulls KURA. The codex survives RST, so it fills up across runs.
 
-## v0.21 - Oct 6 2026, 15:00 HST
+## v0.21 - Recruiting - Oct 6 2026, 15:00 HST
 
 - **Recruiting.** KURA is the only human; ELF, PIXIE and CU SITH are demons too, and any demon can join. TALK goes in steps: the demon decides whether to listen (moon, omen and alignment), names its price, KURA answers `[Y]ES` or `[N]O`, and once paid it may offer to join. With a full party (KURA plus 3), you choose who to send away, or keep everyone.
 - **Each family speaks and bargains its own way.** Data demons talk in system messages and just want a task ("ASSIGN TASK? Y / N", "TASK RECEIVED. LINKED TO USER."). Haunted hardware speaks in corrupted memory and wants SILVER ("ERROR 404: owner not found"). Hybrids mix the two and take a SILVER toll ("ACCESS GRANTED, traveler."). Folklore speaks in old words and wants an offering from the inventory.
@@ -610,12 +610,12 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - Long demon names are shortened in the party panel (STATIC BANSHEE shows as S.BANSHE).
 - Fixed the right border on the clock line sticking out past the rest of the frame (the weekday kanji was taking more than its two cells).
 
-## v0.20 - Oct 6 2026, 14:35 HST
+## v0.20 - Kanji - Oct 6 2026, 14:35 HST
 
 - The Japanese weekday kanji sits left of the date (`火 TUE OCT 06 2026`).
 - The moon panel's marker row carries a short moon update: "The moon is day 26, waning crescent." It sits on whichever side the `^^^` marker isn't.
 
-## v0.19 - Oct 6 2026, 14:24 HST
+## v0.19 - No Going Back - Oct 6 2026, 14:24 HST
 
 - The game never goes back in time: setting the device clock earlier than a day the run has already seen leaves the game on that day ("The calendar won't turn back."), so a day can't be redone and a deadline can't be dodged.
 - `?` lockers are much rarer: about 1 floor in 4.
@@ -623,7 +623,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - Good omens: "The halls are sleeping." (heat rises half as fast) and "The deep is generous today." (rare finds three times as likely), alongside the existing good ones for finding secrets and talking.
 - Omens are always in quotes. Ordinary days get mysterious lines too ("Count the doors. Then count them again."), so every day reads like an omen; they just carry no effect.
 
-## v0.18 - Oct 6 2026, 14:13 HST
+## v0.18 - Omens - Oct 6 2026, 14:13 HST
 
 - **Daily omens** on line 1: one per real day, seeded from the date, always true. About half are ordinary days; the rest make data or folklore demons more common, make heat rise faster, make secrets harder or easier to find, or make demons easier to talk down.
 - **Heat:** every search warms the room. Encounter odds climb from about 1 in 24 per search when cold to about 1 in 4 at the hottest. Heat halves each night and never fully resets. Line 3 tells you when it rises ("Your footsteps sound louder than before." / "Something in the walls goes quiet." / "The room is listening."), and "The room settles." when it cools.
@@ -640,7 +640,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - New demons: half old folklore (GHOUL, ONI, KAPPA, LAMIA…), half born in the city's wires (GLITCH, STATIC, CHROMEDOG, WIREWRAITH, NEON ONI, DATAGHOUL, RUST KAPPA, BLACK ICE).
 - ATOM SLASHER: a rare named demon (3% of encounters), twice as tough, hits harder, and won't talk.
 
-## v0.17 - Oct 6 2026, 11:06 HST
+## v0.17 - Search Is Free - Oct 6 2026, 11:06 HST
 
 - SE[A]RCH moved to the free actions on the left, since it can be used any number of times.
 - The day's step buttons are spelled out: `[N]ORTH [S]OUTH [E]AST [W]EST`.
@@ -652,7 +652,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - Demons hit harder under a brighter moon. If KURA falls, the run is over. Using an item mid-fight is free.
 - Moving takes two presses: the first lights the button gold and asks "Use today's step to go NORTH? Press [N] again.", the second moves. Anything else, or six seconds, cancels.
 
-## v0.16 - Oct 6 2026, 10:48 HST
+## v0.16 - Invoke - Oct 6 2026, 10:48 HST
 
 - Deep caches: about one room in three hides something rare deep inside one wall, found only 1 in 35 per search. That wall can stay silent for 30, 40, 50 tries and then give.
 - Moon drops: demons that fall under a gibbous moon (10%) or a full moon (25%) sometimes leave a rare item behind.
@@ -660,7 +660,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - 20 more common finds, old-dungeon things (a rusted iron key, a jar of grave salt) and ruined-city tech (a dead pager, a cracked phone, a neon tube fragment, a VR visor). Just for keeping, each with a short note.
 - Usable for now: a vial of medicine (heals everyone by a third), a strip of prayer cloth (raises fallen allies a little), a stub of black candle. Keepsakes and rares can be looked at but not used yet.
 
-## v0.15 - Oct 6 2026, 10:31 HST
+## v0.15 - Demons Can Kill - Oct 6 2026, 10:31 HST
 
 - Demons can kill. Every demon fight (hidden or wandering) can drop party members to 0 HP, and if KURA falls, the run is over. A night's rest heals a fifth of everyone's HP.
 - SEARCH works on the wall KURA faces. Each wall has its own hidden things (the stairs are always behind the wall they open in), so turn to try another wall. Doors can't be searched, and SE[A]RCH dims while facing one.
@@ -669,7 +669,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - The adventure log records every action now: steps, every search (empty ones too), turns, walls and new days, each tagged with its day and turn (`D005 T012  KURA turns to face NORTH. Bare stone.`). It keeps the last 20,000 entries; a BACKUP code carries the last 300.
 - Turning now says what KURA sees on line 2: "KURA turns to face WEST. A warped door in its frame." Only what the 3D view already shows (wall, door, or found stairs), in a few different words each.
 
-## v0.14 - Oct 6 2026, 10:17 HST
+## v0.14 - Quieter Searching - Oct 6 2026, 10:17 HST
 
 - Search lines no longer show a try count ("KURA searches. Nothing.").
 - The third line drifts: besides changing with each step and new day, it has a chance to change after any search or turn, so it isn't frozen all day.
@@ -677,21 +677,21 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - The controls under the 3D view only look around now: `[<]` and `[>]` (and the left/right arrow keys) turn KURA, and `[^]` is gone. Moving is only `[N] [S] [E] [W]`.
 - The minimap shows which way KURA faces with an arrow beside her room: `[@]>` east, `<[@]` west, `^` above for north, `v` below for south. It covers the door mark on that side.
 
-## v0.13 - Oct 6 2026, 10:00 HST
+## v0.13 - Anyone Can Play - Oct 6 2026, 10:00 HST
 
 - Anyone can play on the page: each player's run is saved in their own browser and saves itself after every action. A first visit starts a fresh run. No accounts or tokens.
 - `[L]OG` shows the run's adventure log, newest first: every step, find, new day and descent. Empty searches are left out.
 - `[B]ACKUP` shows the run as a save code to copy. Pasting a code restores that run, for backups or moving to another device.
 - `[R]ST` asks before ending a run. LOAD is gone; the repo's `save.json` is now only the chat run (`/smt-screen`).
 
-## v0.12 - Oct 6 2026, 10:00 HST
+## v0.12 - The Real Calendar - Oct 6 2026, 10:00 HST
 
 - Days follow the real calendar (Honolulu time). The day's step comes back at midnight, DAY counts real days since the run began, and the map header shows today's real weekday.
 - Each floor's way down closes at the end of a Sunday. A new run's first floor closes this Sunday (or next Sunday if fewer than 3 days are left). Taking the stairs early gives bonus days: the next floor closes the Sunday after next.
 - On the last day, the third line warns that the way down closes tonight. Miss the deadline and the run is over.
 - NE[X]T is gone from the screen. The X key still jumps the game a day ahead, as a hidden testing cheat.
 
-## v0.11 - Oct 6 2026, 09:48 HST
+## v0.11 - One Step a Day - Oct 6 2026, 09:48 HST
 
 - One step per day. `[N] [S] [E] [W]` take the day's step through the door on that side (or down the stairs once found), and dim once used. Turning and the free actions are unlimited.
 - Searching works like NetHack: unlimited, but each search has only a small chance (1 in 5) to turn up the room's next hidden thing, and an empty room never answers. The log counts the tries ("KURA searches (12). Nothing."). Each search also risks a wandering demon, rare at new moon and common at full moon.
@@ -701,7 +701,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - STEP on the bottom line is renamed TURN, to match DAY. It still counts every action: steps, searches and turning.
 - Keys: N S E W step, A search, arrows turn and step forward, X next day, L load, R reset.
 
-## v0.10 - Oct 6 2026, 09:25 HST
+## v0.10 - Map Symbols - Oct 6 2026, 09:25 HST
 
 - New minimap symbols, one per room: `[@]` KURA, `[^]` the way up, `[v]` the stairs down once found, `[?]` the lure, `[ ]` a visited room. Doors are `=` between rooms side by side and `‖` between stacked rooms. The facing direction lives in the turn controls and FACE instead of the map.
 - The saved game's map is redrawn in the new style.
@@ -710,14 +710,14 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - The three log lines each have one job. Line 1 (moon and demons) changes once per real day. Line 2 describes KURA's latest action: moving, searching, turning, walking into a wall. Line 3 is flavor, with the occasional faint clue, and changes when a day passes.
 - FACE on the bottom line is replaced by STEP, a count of every action KURA has taken: GO, SEARCH and turning (`STEP 012`). Bumping a wall doesn't count.
 
-## v0.9 - Oct 6 2026, 09:15 HST
+## v0.9 - Turning Around - Oct 6 2026, 09:15 HST
 
 - Turn controls at the foot of the 3D view: `[^]` walks forward, `[<]` and `[>]` turn, and the letter between them shows which way KURA faces. Click them or use the arrow keys.
 - Turning writes "KURA turns to face EAST." (free, no day spent), so direction words show up in actions as well as movement.
 - The "[L]OAD returns to the saved game" note under the screen is gone.
 - The first log line is now a mysterious word on the moon, the demons or both ("Demons drowse in the corners.", "The moon is a white eye, wide open."), with no phase number since the moon bar shows it. Five versions per phase, changing with each new day.
 
-## v0.8 - Oct 6 2026, 08:16 HST
+## v0.8 - Saved - Oct 6 2026, 08:16 HST
 
 - The save status moved into the bottom border (`SAVED 2026-10-06` or a gold `NOT SAVED`), so all three log lines are free for the game.
 - Log lines only name a direction when stating a character's action, such as "KURA goes WEST into a new room". Doors and hints never give a direction away; the map, the room view and FACE show where things are.
@@ -726,13 +726,13 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - The save status shows for a few seconds after loading or playing, then fades back into the border.
 - The clock's colon blinks more slowly.
 
-## v0.7 - Oct 6 2026, 08:02 HST
+## v0.7 - A Live Clock - Oct 6 2026, 08:02 HST
 
 - The clock is live: the colon blinks every second and the time changes the moment the minute turns over.
 - The minimap is centered on KURA: her room stays in the middle and the floor moves around her.
 - The README links to the playable page.
 
-## v0.6 - Oct 6 2026, 07:53 HST
+## v0.6 - Real Floors - Oct 6 2026, 07:53 HST
 
 - The game now plays on real floors. The minimap, the room view and the second log line all follow KURA.
 - `[G]O` (or the up arrow) walks through the door KURA faces, or down the stairs once they're found. Facing a wall, GO turns to the next way out instead. The left and right arrows turn KURA. Turning is free.
@@ -742,7 +742,7 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - RST starts a new run on a fresh B1F.
 - MAG is now ICHOR.
 
-## v0.5 - Oct 6 2026, 07:43 HST
+## v0.5 - Floors - Oct 6 2026, 07:43 HST
 
 - Floor generation in the new `floor.js`. Each floor is 3 rooms in a 3x3 grid, joined by doors in a line or an L. KURA starts in the up-stairs room.
 - The stairs down are hidden in one of the other rooms. Every room hides 1-3 things (demons, items, SILVER, the stairs, sometimes the `?`), and searching turns them up one at a time. Walking straight to the stairs room and searching it always fits in the 7-day week.
@@ -750,27 +750,27 @@ A pass over the code, fixing what a review found, plus a few small changes.
 - New minimap for floors: only rooms KURA has been in are drawn, as `[   ]`, with doors `╫` (side by side) and `═` (stacked). Floors aren't wired into NEXT or the save yet.
 - MACCA is now SILVER.
 
-## v0.4 - Oct 6 2026, 06:57 HST
+## v0.4 - Buttons - Oct 6 2026, 06:57 HST
 
 - `[N]EXT`, `[L]OAD` and `[R]ST` buttons in the bottom border of the page. Click them or press N, L or R.
 - NEXT rerolls a placeholder room (random map, room view, HP/MP, MACCA, MAG) and RST starts a new run. Both happen only in your browser and are never saved; a `NOT SAVED` note shows until you LOAD.
 - LOAD reloads the saved game from GitHub.
 - Random rolls live in the new `rules.js`.
 
-## v0.3 - Oct 6 2026, 06:42 HST
+## v0.3 - Fog of War - Oct 6 2026, 06:42 HST
 
 - New fog-of-war minimap: visited rooms are `□`, unexplored rooms stay hidden, and a lone gold `?` waits in the dark (a lure, not the exit).
 - Stairs: `⋰↑` up, `↓⋱` down.
 - Text is soft white instead of green-tinted, KURA's arrow is pure white, and the screen is slightly bigger on computers.
 - Map symbols are boxed to exactly one character so the right border stays straight in any font; plain characters like `?` and the arrow use the retro screen font.
 
-## v0.2 - Oct 6 2026, 05:59 HST
+## v0.2 - One Line for Money - Oct 6 2026, 05:59 HST
 
 - MACCA and MAG share one line; the party panel uses the full width.
 - KURA is drawn on the minimap as an arrow showing the facing direction (`^ > v <`), and the bottom line reads `ALIGN [NEU]  FACE E  DAY 004`.
 - The page refreshes once a minute and picks up new saves without reloading.
 
-## v0.1 - Oct 6 2026, 05:43 HST
+## v0.1 - First Screen - Oct 6 2026, 05:43 HST
 
 - First screen on the web: an 80-column Shin Megami Tensei-style dungeon screen drawn from `save.json`, with the live Honolulu date, time and moon phase.
 - The same drawing code (`screen.js`) is used by the web page, the `/smt-screen` chat command and the morning screen.
