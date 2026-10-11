@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.84 - Searching . . . - Oct 11 2026, 06:18 HST
+
+![v0.83](screenshots/v0.83.png)
+
+- **The searching line.** Commits `f12face`, `1243590`, and the stretch commit. Page-side only (`index.html` `act`): a search at a bare wall shows "> KURA is searching", adds " ." three times, then runs the real search; at a locked (or painted) door the word is "listening". Step time is `250 + (6 - breath) * 50` ms, four steps: 1.0 s in all at full breath, 2.0 s on the last breath. Input is ignored meanwhile; the breath and minute timers skip their redraws. The line is drawn only: never saved, never in the history.
+  - Instant, with no line: an open doorway, looking up (the moon), out of breath, in a fight, with a question pending.
+  - **Standing rule from the dev: no dimming or visual effects, ever.** Only the log line changes. Written into the code comment too.
+  - The rules and the bots are untouched: bots still search instantly.
+- **Bug fix (`rules.js` `search`, present since v0.62):** searching an open arch twice could filter its single line out of the pool and log "> undefined". The pool now falls back to itself when nothing else is left.
+- **No new screenshot:** nothing visible changed except a log line in motion; the entry reuses v0.83's.
+- **Testing (light):** one browser check of the dots sequence, and one that timed it: searching 1013 ms at full breath, listening 1216 ms a breath down, searching 1406 ms two down; arches and out-of-breath presses instant; no page errors. The arch fix was not re-run in the browser.
+- **Bots went live this morning** (dungeon-notes `bots/`, commit `1edc847`): ten scripted players on a daily GitHub Actions timer, seven pinned to `088df27` (v0.83), three canaries on latest. First run started by hand by the dev; result not yet seen.
+
 ## v0.83 - Breath - Oct 11 2026, 05:46 HST
 
 ![v0.83](screenshots/v0.83.png)
