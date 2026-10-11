@@ -3,6 +3,18 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.99 - Moon in Kanji - Oct 11 2026, 13:00 HST
+
+![v0.99](screenshots/v0.99.png)
+
+- **The header (`headerLines` in `screen.js`) reads `LUNAR DAY d/29  <kanji> <PHASE>`** instead of `MOON  n/8  <PHASE>`. Commit `dc3b577`. No Worker change.
+  - **Day:** new `epochDay(now)` gives the day of the lunar month (1 to 29; the 29.53-day month rounded down to a steady 29, as the title's EPOCH line already did) and `epochLine` now uses it, so the header and the title cannot disagree. "LUNAR DAY" is exactly as long as the old "MOON  DAY", so nothing else on the row moved. The reason: the old `0/8` was the phase number (0 = new) and sat beside the title's "day 1 of 29" and "Lunar Days 1-8", which read as a mismatch.
+  - **Phase kanji** (`PKANJI`): 新月, 三日月, 上弦, 十三夜, 満月, 十六夜, 下弦, 有明月, indexed by `moonIndex`. Picked with the dev from a table they supplied (新月 shingetsu, 三日月 mikazuki, 半月 hangetsu, 満月 mangetsu), with 上弦 and 下弦 for the two quarters so each has its own word, and the traditional night-count names (十三夜 and 十六夜 for the gibbous phases, 有明月 for the waning crescent) for the three the table lacked. Those last three are to be checked against a source. The dev's first paste had 親月 (a typo for 新月) and called 上弦 and 下弦 crescents; the header names 上弦 as the first quarter and 下弦 as the last. (A quarter-of-the-month kanji for the header was built and dropped: next to a phase name it read as a contradiction on days like 8 and 21.)
+  - **Width:** each kanji is one character but two columns, so the header's padding subtracts the kanji's length; `finishFrame` (strict in node) passes for every phase across two lunar months. Three-character names fit with room to spare.
+- **The title's heading names its quarter in kanji** (`levelBones`): `B3F - 上弦 First Quarter - Lunar Days 9-15`, using 新月 / 上弦 / 満月 / 下弦 for the four quarters. The heading is one fixed-width block (name padded to 13, days to 5, then centered by columns with the new `colsOf`), so "- Lunar Days" starts in the same column (28) for all four quarters. `renderTitle` pads the left panel's rows by columns now, not characters.
+- **Kanji at 80%** (`.kanji .g { font-size: 0.8em }`): the weekday, the phase and the quarter. The box stays two cells wide, so the frame is unchanged. The page wraps every CJK character on the title (`/([一-鿿])/g`) and in the header, not just the weekday.
+- **`VERSION`** to v0.99. **Testing (light):** the title and header for every phase and quarter in node (the strict width check), and in Chromium for a waxing gibbous day, no page errors. Not checked: a full run on every phase, other browsers or fonts (the kanji fall back to the system's Japanese font; the sandbox's was Noto Sans JP).
+
 ## v0.98 - Short of Breath - Oct 11 2026, 12:40 HST
 
 ![v0.98](screenshots/v0.98.png)
