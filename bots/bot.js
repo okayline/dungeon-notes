@@ -147,7 +147,10 @@ async function play(name, build) {
   }
 
   // The day is over: send what the game left to send, and post the score if the run ended.
-  for (const ev of (st.events || []).slice(-4)) await post("/event", ev);
+  // (what the Worker said to each is kept, so the summary shows whether the rumor events are landing)
+  const evs = (st.events || []).slice(-4); let evOk = 0, evBad = "";
+  for (const ev of evs) { const r = await post("/event", ev); if (r.ok || r.status === 200) evOk++; else evBad = String(r.error || r.status || "?"); }
+  note.events = evs.length ? `${evOk}/${evs.length} sent${evBad ? " (" + evBad + ")" : ""}: ${evs.map(e => e.t).join(", ")}` : "none";
   delete st.events;
   if (st.dead && !st.submitted) {
     say(st.log);
@@ -192,12 +195,12 @@ async function play(name, build) {
   // The summary: every bot's latest state, plus today's counts for the ones that just played.
   const sumFile = path.join(HERE, "summary.json"); let sum = {};
   try { sum = JSON.parse(fs.readFileSync(sumFile, "utf8")); } catch (e) {}
-  for (const n of notes) if (!n.skipped) sum[n.name] = { date: today(), build: n.build, version: n.version, crashed: n.crashed || null, row: n.row || null, n: n.n, posted: n.posted || null };
-    else if (sum[n.name]) sum[n.name].note = `${today()}: ${n.skipped}`;
+  for (const n of notes) if (n.skipped === "already played today") continue; else if (!n.skipped) sum[n.name] = { date: today(), build: n.build, version: n.version, crashed: n.crashed || null, row: n.row || null, n: n.n, posted: n.posted || null, events: n.events || null };
+    else sum[n.name] = { ...(sum[n.name] || { build: n.build }), skipped: `${today()}: ${n.skipped}` };
   fs.writeFileSync(sumFile, JSON.stringify(sum, null, 1));
-  const rows = roster.bots.map(b => { const s = sum[b.name]; if (!s) return `| ${b.name} | ${b.build} | - | | | | | | not played yet |`;
+  const rows = roster.bots.map(b => { const s = sum[b.name]; if (!s || !s.date) return `| ${b.name} | ${b.build} | - | | | | | | | | | ${s && s.skipped ? "skipped " + s.skipped : "not played yet"} |`;
     const r = s.row || {}, c = s.n || {};
-    return `| ${b.name} | ${s.build} ${s.version || ""} | ${s.date} | ${s.crashed ? "CRASHED" : r.level + (r.alive ? "" : " (dead)")} | ${r.climbed ?? ""} | ${r.day ?? ""} | ${r.turns ?? ""} | ${c.searches ?? 0} / ${c.blocked ?? 0} / ${Math.round(c.waited ?? 0)}s | ${c.fights ?? 0} / ${c.talks ?? 0} / ${c.runs ?? 0} | ${c.unlocks ?? 0} / ${c.holds ?? 0} / ${c.climbs ?? 0} | ${s.crashed || (r.last || "").slice(0, 70)}${s.posted ? " [" + s.posted + "]" : ""} |`; });
+    return `| ${b.name} | ${s.build} ${s.version || ""} | ${s.date} | ${s.crashed ? "CRASHED" : r.level + (r.alive ? "" : " (dead)")} | ${r.climbed ?? ""} | ${r.day ?? ""} | ${r.turns ?? ""} | ${c.searches ?? 0} / ${c.blocked ?? 0} / ${Math.round(c.waited ?? 0)}s | ${c.fights ?? 0} / ${c.talks ?? 0} / ${c.runs ?? 0} | ${c.unlocks ?? 0} / ${c.holds ?? 0} / ${c.climbs ?? 0} | ${s.events || ""} | ${s.crashed || (r.last || "").slice(0, 70)}${s.posted ? " [" + s.posted + "]" : ""}${s.skipped && s.skipped.slice(0, 10) >= s.date ? " (skipped " + s.skipped + ")" : ""} |`; });
   fs.writeFileSync(path.join(HERE, "SUMMARY.md"), `# Bots: where everyone is\n\nUpdated ${today()} (Honolulu). Pinned build: \`${roster.pinned}\`. Canaries play the latest code.\n\n` +
-    "| Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Last line |\n|---|---|---|---|---|---|---|---|---|---|---|\n" + rows.join("\n") + "\n");
+    "| Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Last line |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n" + rows.join("\n") + "\n");
 })();
