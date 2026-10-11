@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.98 - Short of Breath - Oct 11 2026, 12:40 HST
+
+![v0.98](screenshots/v0.98.png)
+
+- **Mashing while out of breath lengthens the wait** (`rules.js`, `index.html`). Commit `8c9e73d`. No Worker change.
+  - **Rule:** every refused try (a search, a step into another room, using the bag; never a fight's bag use, which is never refused) calls `nudgeBreath`, which moves `st.breath.at` back `BREATH_NUDGE = 500` ms, to at most `BREATH_NUDGE_MAX = 10000` ms past `now + BREATH_WAIT`. So the extra is capped at ten seconds on top of the usual wait (the usual wait from empty is about 12 s: the 2 s hold plus 10 s to climb from 0 to 1, so the worst case is about 22 s). The two clamps in `breathNow` and `breathNext` (`Math.min(b.at, now + BREATH_WAIT)`, which stopped a jumped-back clock stranding her) were loosened to allow it.
+  - **Held keys count once:** `RULES.holding(e.repeat)` is set around `act(k)` in the keydown handler; a repeat press is ignored by `nudgeBreath`. Clicks on buttons always count.
+  - **Tested** in the browser: timer 11.3 s then +0.5 s a press (less the 0.25 s between presses); one press plus eight repeats adds one nudge; thirty more presses stop at about 21.9 s. The bots wait out their breath rather than press on, so they are not affected.
+- **The marker over the breath bar counts the breath the other way** (`renderScreen` in `screen.js`, `colorizeTitle`'s row 20 in `index.html`). One dot when `breathNow > 4`, two for 1 to 4, three (". . .") when under 1 (out of breath, the same moment the timer shows). The first dot stays at the old single dot's column (`1 + 3*idx + DOT`) and the others follow to its right, two columns apart. The page's half-column shift for the quarter phases now applies to every dot (`/\./g`).
+- **Search lines:** the opening is `KURA searches the SOUTH wall...` with three dots typed one at a time and no spaces (was ` . . .`), the result follows on the same line (`... A TRACER wanders in!`), and the heading the page splits the result from (`/^> KURA (searches|scries) the [^.]+\.+/`, in the beat code and in `colorizeTitle`) takes the longer run of dots. `rules.js`'s `where` is `...`; the short form is `KURA searches NORTH... text`; scrying the moon or sky ends in `...` too. Door listening still shows only its result.
+- **The `>` and `<` on the breath bar** (shown for a second after a search) were covered by the bar's blocks, which are drawn 1.3x wide. They are now `.mk` spans (`position:relative; z-index:1`), the `>` nudged 0.25 ch left and 1 px up and the `<` 0.5 ch + 2 px right and 1 px up, so they clear the bar, sit level with each other and have the same gap on each side.
+- **`VERSION`** to v0.98. **Testing (light):** the run screen in Chromium, no page errors; not a full run, not other browsers.
+
 ## v0.97 - Plain Words - Oct 11 2026, 11:59 HST
 
 ![v0.97](screenshots/v0.97.png)
