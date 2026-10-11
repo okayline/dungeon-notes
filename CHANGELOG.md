@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.91 - Typed - Oct 11 2026, 08:08 HST
+
+![v0.91](screenshots/v0.91.png)
+
+- **Typed line in place of the ticker.** Commit `d72f8e1`. The dev tried a gliding scroll (`37e9b11`, built and never pushed alone: sub-character `translateX` on every animation frame) and then asked for a terminal instead. A `setTimeout` state machine (`typeStep`) cycles gap, type, hold, delete: letters at 35 to 90 ms, 70 ms on a space, 260 ms after punctuation; the finished line holds 3.2 s with the `_` blinking (`.wait`); it is deleted two characters every 18 ms; 0.5 s gap. Lines are cut at 74 characters. Only `#ticker`'s HTML is rewritten. Content is unchanged from v0.90: a new status report goes next whenever one is waiting, otherwise `tickerFeed()` in turn.
+  - The first build broke the page outright: a leftover `}` and `requestAnimationFrame(tickerFrame)` from the scroll code stopped the script loading, and `tickerHtml` as a `const` was read before its declaration on the first frame. Caught by the browser check; fixed (a function declaration and `var`).
+- **A beat before a search's result** (`6d302e5`): with instant results the popup felt too fast. The search runs at once, but for 0.8 s the middle log line shows only the lead-in ("KURA searches the SOUTH wall.", "KURA scries the moon.", or "KURA listens at the door." where the log has no such sentence) with a blinking `_`; then the full line is restored and the result box opens. Keys are ignored during the beat; the minute timer skips its save.
+- **`[M]OON` fixed in place:** `[S]CRY` is padded to `[S]EARCH`'s width in `screen.js`.
+- **Worker** was redeployed for v0.90 at about 07:59; `/feed` then showed presence at 11 (the dev and ten bots), no names in any event, and only old-style events so far. The `news` table has not been seen to take a write yet.
+- **Testing (light):** browser checks of the beat (lead-in with cursor, a key ignored, then the box; the scry version; the bar text in both states) and of one full type, hold, delete, type cycle (about 6 s for a 40-character line). Not checked: the typed line during a fight or under a popup.
+
 ## v0.90 - News From This Level - Oct 11 2026, 07:58 HST
 
 ![v0.89](screenshots/v0.89.png)
