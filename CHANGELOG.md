@@ -3,6 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.97 - Plain Words - Oct 11 2026, 11:59 HST
+
+![v0.97](screenshots/v0.97.png)
+
+- **The `[?]` page (`showAbout` in `index.html`) has a new intro and a boxed THIS RUN.** Commit in the game repo (see its log). No Worker change.
+  - **Intro:** the dev wanted the old paragraph ("Each level is four wings. Three times, two locked doors offer two rooms... dead ends hold the big clues") to explain less. Now seven lines: "A dungeon crawler you play on the real lunar calendar." / you wake at the bottom of a pit and the dark rises with the moon / everyone shares the same floor, each floor closes when its quarter of the moon ends, find the stairs / the moon and the demons are real, some talk, some fight / search all you like, but be careful digging too deep / "Come back tomorrow." Wording went through several rounds: "one key a day" and "one door a day" were dropped from the first line because they sit oddly beside "climb" (a run only climbs once a level closes); "about a week", "KURA" (now "you") and "some are lying" were cut.
+  - **THIS RUN** is a box in the page's frame characters (`framed()`: `+- THIS RUN ---+`, `|` rows, `+---+`), 71 columns like the divider. The rows are the same `two()` lines as before.
+- **`VERSION`** to v0.97. **Testing (light):** the page with a run open (no errors, all box lines 71 wide); the title and run screens untouched.
+
 ## v0.96 - Crescent Over the Gate - Oct 11 2026, 11:40 HST
 
 ![v0.96](screenshots/v0.96.png)
