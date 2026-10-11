@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.88 - Half a Breath - Oct 11 2026, 07:34 HST
+
+![v0.88](screenshots/v0.88.png)
+
+- **Steps cost half a breath.** Commit `00cba0e`. `STEP_BREATH = 0.5`; `spendBreath(st, amount = 1)`. `st.breath.n` can now sit on a half. Regeneration climbs to the next whole number, taking that share of `BREATH_BACK[floor(n)]` (`breathStep`): from 5.5, one second after the 2-second wait. A step is refused below 0.5; a search, a scry and an item still need and take a whole one. The bar's `round((6 - breath) / 6 * 9)` copes with halves.
+- **Countdown.** `RULES.breathNext(st)` returns the milliseconds until the next breath is back (null when full). The page writes it into a five-cell `<span id="breathT">` at the right end of the strip's row (panel columns 24 to 28) as `2.8s`, and a 100 ms timer updates only that span's text: the screen is not redrawn for it. Blank at full breath, on the title, and for a dead run.
+- **`>` `<` for every breath** (v0.87.1, `e593c87`, never pushed alone): `draw()` compares `save.breathNow` with the last frame's and calls `squeeze()` on any drop, and also when a new out-of-breath line appears at zero. So steps and items press the bar too, and anything made to cost breath later will.
+- **Result popup replaces the waiting cursor.** The dev found the swallowed key press broke the flow and asked to try a popup. `resultBox()` reuses the find box (`mode = "found"`, closed only by its `[ OK ]`: Enter or a click): the log line wrapped at 38, plus the moon's own line after a scry when she answered or kept her counsel. Not shown when the search opened something else (a find, a fight, a question, the terminal), and not for an out-of-breath refusal, which only shows its line. `contWait`, the `_` rendering and its capture listeners are removed.
+  - It is the same number of presses as the cursor was; the difference is that only Enter or a click closes it, and it covers part of the view. To be judged in play.
+- **Testing (light):** browser checks of a step (5.5, the marks, the countdown 2.8 / 2.1 / 1.4 / 0.5, then full) and of the popup (a wall result, another key leaves it open, Enter closes it, a scry result). After the last fix (dropping a stray atmosphere line from the scry box) it was not re-run. Not checked: the bag's refusal line, a refused step, the out-of-breath case with the popup code.
+
 ## v0.87 - Scry - Oct 11 2026, 07:27 HST
 
 ![v0.87](screenshots/v0.87.png)
