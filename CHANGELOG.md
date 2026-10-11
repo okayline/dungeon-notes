@@ -3,6 +3,21 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.90 - News From This Level - Oct 11 2026, 07:58 HST
+
+![v0.89](screenshots/v0.89.png)
+
+- **Events carry where and who.** Commit `598c5b1`. **Needs a Worker redeploy (schema and worker).**
+  - **Game (`rules.js` `ev`):** every event now also has `lv` (level height), `d` (day on the level), `k` (room kind, or hall / dead / plain), `a` (lean: L, N, C), `p` (party members standing, not counting KURA), `c` (levels into the run), `dm` (the demon in the room, if any), `m` (moon phase 0 to 7) and `n` (the run's name).
+  - **Worker:** a new table `news (id, type, v, made, who, x)`; `x` is a JSON object of the fields that passed their checks (each is validated against a fixed shape and silently dropped otherwise; the name also goes through the leaderboard's blocklist). `/event` writes to `news` and rate-limits against it; the newest 20 per tag are kept as before. `/feed` reads `news` and tops up from the old `events` table while `news` fills. **The name is stored but never returned by `/feed`**: the dev wants it "for later".
+  - A new table instead of new columns on `events`, so `schema.sql` stays safe to run again (no ALTER).
+  - **Cost:** no extra requests and no extra rows; a row grows from about 50 to about 120 bytes and the table stays at a few hundred rows.
+- **The ticker's content changed** (v0.89.1, `e6f4c31`, never pushed alone): no month totals or calendar lines. It alternates one item about this run (name, day, turn, level; who is with her; demons met, beaten and fled; pacts; searches and finds; doors; levels; SILVER; lean; the moon; out of breath; each only above zero) with one about others (how many others are on her level today, then the rumors). Status reports still join the tape as they change. Speed 200 ms a character (5 a second), was 140.
+- **Located rumors on the ticker:** `rumorCards(level)` sorts events from her level first and prefixes "On this level, day N:" or "On B3F, day N:"; a fall with a demon reads "A CHROME ONI struck a traveler down." Events without a level (the old rows) show as before. The title screen's rumor cards are unchanged.
+- **Bots** send the new fields automatically once pinned to this commit.
+- **Testing (light):** the Worker file loads; a node run produced an event with all the fields; one browser check with a stand-in feed showed the located lines and the slower speed. The real Worker is untested until redeployed; until then `/event` posts with extra fields are still accepted by the old Worker (it ignores them), so nothing breaks.
+- **No new screenshot;** the entry reuses v0.89's.
+
 ## v0.89 - The Ticker - Oct 11 2026, 07:50 HST
 
 ![v0.89](screenshots/v0.89.png)

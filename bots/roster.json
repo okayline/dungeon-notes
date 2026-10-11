@@ -1,5 +1,5 @@
 {
-  "pinned": "61ba9db",
+  "pinned": "598c5b1",
   "bots": [
     { "name": "HAL-bot",    "build": "pinned", "slot": 0 },
     { "name": "C3PO-bot",   "build": "pinned", "slot": 0 },
