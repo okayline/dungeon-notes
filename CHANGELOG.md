@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.99.2 - Two Lines for the Moon - Oct 11 2026, 13:35 HST
+
+![v0.99.2](screenshots/v0.99.2.png)
+
+- **`levelBones`'s heading is two rows pinned to the bottom of the left panel (8 rows under the wordmark):** ` B3F` (left-aligned, one column in), then `2nd QTR - 上弦 WAX HALF - Lunar Days 9-15`, a fixed 43-column block centered (name padded to 9, days to 5, so "- Lunar Days" lines up for every quarter). Names are now NEW MOON / WAX HALF / FULL MOON / WANE HALF (was the long forms), prefixed by `1st`..`4th QTR`. Blank rows between the drawing and the heading fill to keep the last two rows fixed; before, the heading moved up a row on days with no lower branch (86 of 1,182 days tried). Tried and dropped: a one-line heading (49 columns against the 47-column panel; dropping a space or the comma was too cramped).
+- **`VERSION`** to v0.99.2. **Testing (light):** `renderTitle` for 1,182 days (about 40 lunar months) with the strict 80-column check, the heading on the same row every time; Chromium screenshot of the 2nd quarter, no page errors. Not checked: other browsers.
+
 ## v0.99.1 - The Twenty-Sixth Night - Oct 11 2026, 13:10 HST
 
 ![v0.99.1](screenshots/v0.99.1.png)
