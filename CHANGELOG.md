@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.86 - Wait For It - Oct 11 2026, 07:03 HST
+
+![v0.86](screenshots/v0.86.png)
+
+- **Click to continue after a search.** Commits `141a3e2`, `2e52611`. Page-side (`index.html`): after a wall search or a listen lands, `contWait` is set and the log's middle line ends in a blinking `_` (the existing `.wait` class), drawn in place of one trailing space so the row stays 78 wide. Any click (a capture listener on `document`) or key (except Shift, Tab and F-keys) clears it and does nothing else. Not set when the search opened a popup, started a fight, or raised a question.
+  - **Out of breath** now takes the same path: the refusal shows at once (no "searching" moment), then waits with the `_`.
+  - Still instant with no cursor: an open archway, and asking the moon.
+- **`>` `<` on the breath bar for one second.** `screen.js` draws them at either end of what is left of the strip only when `st.squeeze` is set; the page sets it for a frame inside `draw()` while `Date.now() < squeezeUntil` and deletes it straight after, so it is never saved. `squeeze()` starts the second when a search lands (or is refused) and schedules the redraw that removes them. First built as always-on while the bar was closed; the dev wanted them only as a brief pop on the key press.
+- **Cost in presses:** a search is now press, 1 to 2 seconds, press. Noted for balance.
+- **Testing (light):** the strip printed at each breath; one browser check of the cursor (first key only dismisses, second acts; rows stay 80 wide) and one of the marks (absent during the wait, present on landing, gone 1.2 s later; out-of-breath line waits with the cursor). The marks on an empty bar were not observed, only the code path.
+- **Screenshot** was taken before the marks became momentary; it shows the waiting cursor.
+- **Also today (dungeon-notes only):** the bots workflow moved to `actions/checkout@v5` and `actions/setup-node@v5` after a Node 20 deprecation warning; untested until the next run.
+
 ## v0.85 - Word From Elsewhere - Oct 11 2026, 06:47 HST
 
 ![v0.85](screenshots/v0.85.png)
