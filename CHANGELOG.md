@@ -3,9 +3,9 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## v0.57.4 - Oct 10 2026, 18:55 HST
+## v0.58 - Oct 10 2026, 18:55 HST
 
-![v0.57.4](screenshots/v0.57.4.png)
+![v0.58](screenshots/v0.58.png)
 
 - **Hold Omen / Release Omen consolidated into one morphing bag slot, with a new flat-7-real-day cooldown on holding again.** Design call made this pass: calendar-week cooldown was considered and rejected — it would let a player wait until near the week's reset to release at effectively no cost (release Saturday, back to full strength Sunday), which isn't a real cost at all. Flat 7 real days from the moment of release was chosen instead, matching the shape every other personal resource in the game already uses (patience, the rested-day search bonus, the locked-door budget) — private, self-timed, never tied to the shared weekly floor cycle.
   - **`rules.js`:** new `onOmenCooldown(st) = st.omenCooldownDay !== undefined && (st.day - st.omenCooldownDay) < 7`. `st.day` is the right clock for this — it's already real days elapsed since the run started (`st.day = t - st.startDay + 1` where `t = utcDay()`), so a skipped day still counts against the cooldown, same as it already does for everything else keyed off `st.day`. `useBankedOmen()` now sets `st.omenCooldownDay = st.day` the moment a banked omen is released (not when it was held). `available(st).hold` now also requires `!onOmenCooldown(st)`. Two new fields on the `available()` result for the UI: `omenCoolingDown` (should the bag show the greyed slot right now) and `omenCooldownDays` (how many real days left). `omenCoolingDown` deliberately excludes the case where Release Omen itself should still be showing (`bankedOmen !== undefined && !st.useBanked`) — without that exclusion, the slot would show nothing at all on the exact day of release, since `bankedOmen` isn't cleared until the next `sync()`. `omenCooldownDay` added to `reset()`'s new-run field-wipe list. `debugInfo()`'s row2 gained an `OMEN COOLDOWN Nd` entry, shown only while active.
