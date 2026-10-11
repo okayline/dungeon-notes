@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.94 - The Name in Lights - Oct 11 2026, 09:15 HST
+
+![v0.94](screenshots/v0.94.png)
+
+- **Wordmark in block letters, full width** (`screen.js` `renderTitle`). Commit `0ab1a92`. The dev pasted their own lettering for DAILY DIGITAL / DEMON DUNGEON (44 and 54 columns wide; the left panel is 47). Tried first as a mockup with the gap closed to one space and the wide line overlapping the frame bar and the divider: rejected. Built as the full-width layout: the first nine rows of the main area are one 78-column band (`TOP = 9`: four rows, a blank, three rows, a blank) with both lines centred; the remaining eight rows are split as before, the level line on the left and the rumor sidebar on the right.
+  - The sidebar's card window is now `VH - TOP - 2` = 6 rows (was 15). The tagline "a daily dungeon crawl" is gone.
+  - The level line exactly fills its eight rows (three above the spine, the spine, two below, a blank, the heading). It cannot grow taller.
+  - **Page:** rows 6 to 13 box each of `▀▄█▓▌▐` into a one-cell span (`.cell.wm`), as the moon's glyphs are, with the fallback font's glyph scaled to 0.82 wide. VT323 has none of these characters, so their exact weight depends on the machine's fallback font.
+- **Heading under the drawing,** worded "B4F - New Moon - Lunar Days 1-8" (`86d1dd1`, `2b0473f`): title case, "Lunar Days", and placed one row below the lowest branch showing, so it can sit a row or two lower later in a quarter.
+- **Testing (light):** the title printed as text for several dates (every row 80 wide); a browser screenshot of the real title; a new run still starts from it. The mockups were images only.
+
 ## v0.93 - The Line of Days - Oct 11 2026, 08:57 HST
 
 ![v0.93](screenshots/v0.93.png)
