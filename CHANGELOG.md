@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.62.2 - A Shorter Sentence - Oct 11 2026, 00:22 HST
+
+![v0.62.2](screenshots/v0.62.2.png)
+
+- **`rules.js` `ARCH_DESC.bay[0]` shortened** from `"is quiet and clean, and hums like something asleep"` (50 chars) to `"is quiet, and hums like something asleep"` (40). Wrapped in `"> An arch to another room. It ${desc}."` the old one made an 81-character log line against the row's 77, so `finishFrame()` trimmed its last 4 characters on screen (and threw under Node's strict check, about once in 15 fuzz runs). Every other `ARCH_DESC` entry is 46 characters or fewer and fits. Commit `63fabda`. 500-run fuzz with `renderScreen()` every action: 0 width failures.
+- **Same pass, docs only:** every entry in both changelogs got a title; the design doc and theorycrafting notes were brought up to date and de-duplicated (theorycrafting notes now v7, unbuilt ideas only).
+
 ## v0.62.1 - Loose Threads - Oct 11 2026, 00:04 HST
 
 ![v0.62.1](screenshots/v0.62.1.png)
