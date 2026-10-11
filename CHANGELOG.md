@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.89 - The Ticker - Oct 11 2026, 07:50 HST
+
+![v0.89](screenshots/v0.89.png)
+
+- **The log's three lines are reordered** (`screen.js`): top, the flavor line (`extra`: atmosphere, party and demon lines, tells, and a question with its `[Y]ES [N]O [S]ILENT`); middle, the action log; bottom, the status report. The page's question buttons moved to the top row (`lines.length - 6`).
+- **The bottom line is a ticker** (`index.html`). Commits `56ff272`, `61ba9db`. A tape string is extended as needed and shown through a 76-character window in `<span id="ticker">`, advanced one character every 140 ms (about 7 a second). Only that span's text is rewritten; `draw()` re-renders it at the current position, so nothing jumps. It does not pause for popups or fights.
+  - **What goes on the tape:** each new status report (`save.status`, as it changes), and between them the title feed's lines in turn (`worldLines`: number cards, rumors, moon lines), separated by `   //   `. The dev chose `//` over `+++`, a centered dot and others.
+  - `report()` no longer mixes "Elsewhere:" lines into the status line, and the page no longer writes `save.world`.
+  - In node and for the bots the bottom row is simply the status line: the ticker is page-only.
+- **The "searching . . ." moment is removed** (v0.88.2, `a8d343d`, never pushed alone), at the dev's request "for now". Every search lands at once and its result box opens straight away (about 18 ms in the check). `searchWait` is gone.
+- **Noted by the dev:** the out-of-breath countdown is rarely seen, because the result box stops rapid searching and the bar refills meanwhile. Left in.
+- **Testing (light):** one browser check of an instant search, and one of the new layout with a stand-in feed (rows in the new order, the ticker advancing over several seconds, every row 80 wide). Not checked: a party question on the top line, the ticker during a fight, the `//` separator on screen (a string change after the check; the screenshot still shows `+++`).
+
 ## v0.88.1 - Plain Boxes - Oct 11 2026, 07:39 HST
 
 ![v0.88](screenshots/v0.88.png)
