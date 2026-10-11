@@ -3,6 +3,26 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.87 - Scry - Oct 11 2026, 07:27 HST
+
+![v0.87](screenshots/v0.87.png)
+
+- **`[M]OON` and `[S]CRY`.** Commit `f559147`. The bar reads `[F]IGHT [T]ALK [I]NVOKE [S]EARCH [M]OON`; `[M]OON` (key M) toggles `st.look`, replacing `LOOK_[U]P` / `LOOK_[D]OWN` and the U and D keys (down arrow still looks level). While looking up the search button reads `[S]CRY`, same S key, and the log says "KURA scries the moon / the sky". The dev considered PURSUE, AUGUR, WISH, CHERISH and DIVINATE; chose MOON "for now" and SCRY.
+- **Breath is spent on more things (`rules.js`).**
+  - **Steps** (`2ebc2ab`'s sibling `40f899f`): every `go()` that moves her to another room, and climbing the stairs, calls `spendBreath`. At zero the move is refused ("KURA is out of breath. She stays where she is."). Unlocking a door is not a step and costs none. Running from a demon is never refused; it takes a breath if she has one.
+  - **Using an item** (`2ebc2ab`): `useItem` takes a breath and is refused at zero ("The bag can wait."), except in a fight, where it is never refused. ICHOR, gifts and altar offerings are separate actions and cost none.
+  - Fighting, talking, turning and looking cost none.
+  - **Balance:** six breaths now cover searching, scrying, items and walking. Crossing a wing and back is four or five. Untested by a human; the bar size (`BREATH_MAX`) and the refill table are the levers.
+- **Every search waits and every door search takes the moment** (`b8e0438`, `324aa70`). Page-side: any non-look search with a breath to spend shows "KURA is searching . . ." ("listening" at a locked door), including open archways and sealed doors. Every other search (scrying, out of breath) lands at once and waits with the `_`. No cursor when the search opened a popup, a fight, a question or the terminal.
+- **Breath bar centred** (`324aa70`): the strip and its phase dot start one column into the panel instead of three, so the drawn part (the strip's columns 5 to 21) sits mid-panel.
+- **The level on the end-of-run page** (`324aa70`, `f3ab1fe`, `7940fa4`): `RULES.levelMap(st)`, shown under the stats when the run is dead. One column a day: `[v]`, `< >` per two-door day, `[?]`, `[^]`; "seen" is rooms entered out of the wing's three (`-` if never reached); "took" is the feel word of the room she opened that day; "left" is always `?`; "^ here" marks the wing she ended in.
+  - The dev's mockup had a "rooms" row with varied counts; in the real floors every wing has exactly three rooms, so that row became "seen".
+  - First build showed both offered rooms for every day; the dev pointed out that dying early would reveal the week's shared offers, so it now shows only the room she took.
+  - Also removed a leftover call to the deleted `RULES.pathView`, which logged a caught TypeError every time the log opened (since v0.80).
+- **Shared-map mockups** (title screen, tree and readout versions) were tried and set aside twice today; nothing built.
+- **Testing (light):** node checks of the bar text, breath draining on item use and on steps (with refusals at zero), and the map from generated runs; browser checks of M / S / Enter / the MOON button, of an archway search (the moment, then breath 6 to 5), and of the end page. Not checked in the browser: the bag's refusal line, a refused step.
+- **Bots:** the 06:50 re-run failed at "Save the day" (it was a re-run of the first run, so it started from a snapshot with no saves and collided). The workflow now checks out `main` and rebases with the bots' files winning. A fresh forced run was started at about 07:07; result not seen yet.
+
 ## v0.86 - Wait For It - Oct 11 2026, 07:03 HST
 
 ![v0.86](screenshots/v0.86.png)
