@@ -1,6 +1,6 @@
 # Daily Dungeon — Design Doc
 
-How the game plays and why. Current as of **v0.94**: wing-based levels, a climb out of a pit on the moon's clock, breath, and a title screen that shows who else is in there.
+How the game plays and why. Current as of **v0.99.1**: wing-based levels, a climb out of a pit on the moon's clock, breath, and a title screen that shows who else is in there.
 
 One file, no version suffix; git history is the version history. Ideas that are not built and not yet settled live in `theorycrafting-notes.md`. Exact per-release detail lives in `CHANGELOG.md`.
 
@@ -21,8 +21,9 @@ Unlocking only opens the door; she walks through when the player chooses, and op
 **Breath (v0.83).** What limits how fast she acts within a day. Six breaths (`BREATH_MAX`), shown as the moon strip under the map, which closes in from both sides as they are spent and is gone at zero.
 - **Costs:** a search (walls, doors, archways, a terminal, a fixture) and a scry take one; using an item from the bag takes one; a step into another room or up the stairs takes half (`STEP_BREATH`). Turning, looking up, unlocking, talking and fighting take none.
 - **At zero** she can't search, use an item (except in a fight, where it is never refused) or step (except when running from a demon). "KURA is out of breath."
+- **Pressing on makes the wait longer (v0.98).** Each refused try (a search, a step, the bag) pushes the recovery back half a second, to at most ten seconds past the usual wait. A held key counts once; clicks always count.
 - **It comes back in real time,** starting 2 seconds after the last one spent, slower the emptier it got: climbing from n to n+1 takes `[10, 8, 6, 4, 3, 2]` seconds, so about 35 seconds from empty and a few seconds from a small dip. It follows KURA from room to room and refills while the page is closed.
-- **On screen:** a `>` and a `<` press on the strip for one second whenever a breath is spent; while she is out, a countdown beside it shows the seconds until she can act again.
+- **On screen:** a `>` and a `<` press on the strip for one second whenever a breath is spent; while she is out, a countdown beside it shows the seconds until she can act again. The marker above the strip counts the other way from the breath: one dot when rested (over 4), two in between, three when out (under 1).
 - Heat (Part 3) is separate and is what total searching costs; breath caps the rate.
 
 **STANDBY** spends the day's key without moving (blocked while a demon is in the room). On the *following* rollover a STANDBY night triggers "camp" effects:
@@ -43,7 +44,7 @@ Every action runs `sync()` first, which also: halves every room's heat overnight
 
 **The three log lines** (v0.89 on). Top: the flavor line (the place, the party, a demon's words, and a question with its `[Y]ES [N]O [S]ILENT`). Middle: what KURA just did. Bottom: a line typed out as if at a terminal (Part 11).
 
-**How a search plays out** (page-side, v0.92.1). The middle line shows the lead-in ("KURA searches the WEST wall", "KURA listens at the door", "KURA scries the moon") and three dots appear one at a time; only then does the search happen, so a demon, a find or the terminal never appears the instant the key is pressed. With nothing else opening, the result follows on the same line a sentence at a time, in a color for what it is: grey for nothing or a common or uncommon thing, silver for SILVER, blue for rare, bright gold for mythic and the deep find, lavender for a moon thing. A real find still opens its "KURA FOUND" box. There are no glows, dimming or other effects anywhere: a standing rule.
+**How a search plays out** (page-side, v0.92.1). The middle line shows the lead-in ("KURA searches the WEST wall...", "KURA listens at the door", "KURA scries the moon...") and the three dots (no spaces, since v0.98) appear one at a time; only then does the search happen, so a demon, a find or the terminal never appears the instant the key is pressed. With nothing else opening, the result follows on the same line a sentence at a time, in a color for what it is: grey for nothing or a common or uncommon thing, silver for SILVER, blue for rare, bright gold for mythic and the deep find, lavender for a moon thing. A real find still opens its "KURA FOUND" box. There are no glows, dimming or other effects anywhere: a standing rule.
 
 ---
 
@@ -378,13 +379,16 @@ Not urgent at current scale, but cheap to build in from the start:
 # Part 11: Title screen, the typed line & the feed
 
 **The title** is shown first on every load; `CONTINUE` is the explicit resume. Top to bottom (v0.94):
-- The in-game moon/date header.
-- **The wordmark** in block letters (the dev's own lettering), across the full width, eight rows.
+- The in-game moon/date header (v0.99): `LUNAR DAY d/29  <kanji> <PHASE>`, then the weekday, date and time. The day counts the lunar month from 1 to 29 (the 29.53-day month rounded down to a steady 29), the same number the EPOCH line shows. The phase's Japanese name sits beside its English one: 新月, 三日月, 上弦, 十三夜, 満月, 十六夜, 下弦, 二十六夜 (the last is the traditional "twenty-sixth night"; v0.99.1 replaced a word that isn't in the dictionary). Kanji are drawn at 80% size in a two-cell box so the frame stays at 80 columns.
+- **The wordmark** in block letters (the dev's own lettering), eight rows, with a fixed waxing crescent to its left (v0.96: seven rows by thirteen columns, flat blue, the lettering's own dotted block on its inner edge; the same every day, a phase-following version left for later).
 - Under it, side by side:
-  - **The level as a line of days** (`levelBones`): a dashed line of this quarter's lunar days with a branch off each, above and below in turn. Today's number is in brackets; days that haven't come show `?` and no branch. The shape is rolled from the lunar month and the quarter alone, so it is the same for everyone and different each quarter; it carries no information about the rooms. Heading underneath: `B4F - New Moon - Lunar Days 1-8`.
+  - **The level as a line of days** (`levelBones`): a dashed line of this quarter's lunar days with a branch off each, above and below in turn. Today's number is in brackets; days that haven't come show `?` and no branch. The shape is rolled from the lunar month and the quarter alone, so it is the same for everyone and different each quarter; it carries no information about the rooms. Heading underneath (v0.99): `B4F - 新月 New Moon - Lunar Days 1-8`, the quarter's kanji (新月, 上弦, 満月, 下弦) beside its name, laid out so "Lunar Days" starts in the same column for every quarter.
   - **RUMORS AND SECRETS:** a scrolling list of cards, six rows.
 - **Three facts:** LEVEL (the level the dark has reached and when it takes it), EPOCH, LEAN.
 - **Menu:** `[N]EW RUN   [C]ONTINUE   [B]OARD   [?] ABOUT`.
+- **The `[?]` page** (v0.97) opens with a plain intro (what the game is, the weekly limits and the shared floors) and leaves the rest to find out; THIS RUN sits in a bordered box.
+
+**Testing cheats and hosting (v0.95).** `X` (infinite steps) and `Shift+X` (the clock a day ahead) ask the Worker's `/admin` for the admin key; a cheated run can't post a score. The itch.io build is a separate zip of the same files with VT323 loaded by the FontFace API and the cheats blocked outright; every itch zip needs that lock. The Worker allows the GitHub Pages and itch.io origins, and bot names (ending `-bot`) are hidden from the board.
 
 **Number cards.** Exact, anonymous counts for the lunar month: last fall, runs ended, players seen, in the pit today, on each level today, names carved on the board, turns, pacts and the share that lasted, demons beaten / spoken to / joined, the demon with the most falls, doors unlocked, STANDBY nights, levels climbed, the moon asked and answered, times out of breath, SILVER and rare finds, wall searches, gifts refused, silent answers. With no network: the moon's week and the days to the next, when the dark takes the level, days to the full moon, the new-moon line, omen streaks. A card shows only above zero.
 
