@@ -69,10 +69,11 @@ async function play(name, build) {
   try { st = JSON.parse(fs.readFileSync(file, "utf8")); } catch (e) {}
   if (st && st.botDay === today() && !FORCE) { note.skipped = "already played today"; return finish(); }
   if (Math.random() < k.skip && !FORCE) { note.skipped = "did not show up"; return finish(); }
-  const want = fresh();
+  const want = fresh(), keepId = st && st.botId;         // a bot is one device: its id outlives its runs
   if (!st) { st = want; say("(a new run begins)"); }
   else if (!st.dungeon || !st.dungeon.floor || st.dungeon.floor.v !== want.dungeon.floor.v) { st = want; say("(the build changed shape under it: a new run begins)"); }
   else if (st.dead && (st.submitted || st.postTries >= 3)) { st = want; say("(a new run begins)"); }
+  if (keepId) st.botId = keepId;
   st = R.tick(st);                                        // catch up with the real date: a new day, or a missed deadline
   say(st.log);
 
