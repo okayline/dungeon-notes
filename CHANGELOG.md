@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.78 - A Word on the Button - Oct 11 2026, 04:52 HST
+
+![v0.78](screenshots/v0.78.png)
+
+- **The action word moved inside the button.** Commits `5c73e80`, `4bd90eb`, `09239fb`. `screen.js`: row VH-2 draws `[ ${st.actLabel} ]` centred on column 23 (fallback `[ ^ ]` with no label); the separate word on row VH-3 is gone. `index.html` wraps `/\[ (LISTEN|OPEN|ENTER|SEARCH|USE|OFFER|CONSULT|CLIMB|\^) \]/` on rows 21-22 as the `do` button. The `.caret2` enlarged caret is no longer used (the CSS rule remains).
+  - `[ < LEFT ]` / `[ RIGHT > ]` stay on row VH-3: they don't fit beside the wider button.
+  - **Opened door:** for an L or R door in state `open`, row VH-3 shows `[ ENTER ]` under it (col 9 or 28), wired to `go-L` / `go-R`. While that is showing, the centre button is a plain `[ ^ ]` (still `do`, still enters) so there aren't two ENTERs. The lone C door has no label under it, so the centre button keeps `[ ENTER ]` there.
+- **The fight's opening unfolds in beats.** Commit `fe47609`. `encounterBox` intro mode groups its rows (art slot, `NAME APPEARS`, each said line, `[ OK ]`) and reveals them 450ms apart via `visibility`, same technique as the end screen (700ms there). `introTimer` blocks `introOK` until the last beat; after it, a 100ms guard. Only the first showing unfolds (`introSeen = runId:steps:name`); a redraw shows it whole. Not skippable, at the dev's request.
+- **Testing:** one short browser check per change (labels at doors/sky/wall; beats in order and an early press ignored; ENTER under the right door). The plain `[ ^ ]` beside ENTER was not seen on screen by the check, only inferred from the code.
+- **Docs:** the design doc and theory notes were brought up to v0.77 just before this (dungeon-notes `24e3197`).
+
 ## v0.77 - Out of the Pit - Oct 11 2026, 03:03 HST
 
 ![v0.77](screenshots/v0.77.png)
