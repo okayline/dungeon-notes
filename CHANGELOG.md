@@ -3,6 +3,16 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.61.1 - Oct 10 2026, 21:15 HST
+
+![v0.61.1](screenshots/v0.61.1.png)
+
+- **Follow-up patch to v0.61's Hold Omen button, both dev-requested fixes made in the same pass.**
+  - **Moved from the `INVOKE` header down to the bottom action bar**, as its own line directly above `[1-9] choose  [ENTER] use  [C]LOSE`, instead of sharing a line with them. Reason: the `#inv` popup is hard-sized to exactly 47 columns via `placeInView()` (it overlays the 3D view area), and `"[1-9] choose  [ENTER] use  [H] Release Omen  [C]LOSE"` alone runs 49 characters, 54 for the cooldown case with its day count (`"[H] Hold Omen (7d)"`) -- both well past the ~45-character usable width after padding. This was a real overflow bug caught only by taking an actual screenshot of the popup, not just syntax-checking or headlessly reading `textContent` (which doesn't show layout clipping). Fixed by giving the hold/release line its own `div` ahead of the existing `help` line, rather than trying to abbreviate the labels to fit -- `help` stays the flex container's last child so the CSS that pins it to the box's foot (`.viewpop pre > div:last-child { margin-top: auto }`) still works unchanged.
+  - **Removed the explanatory caption entirely** (`"[H] stays put today and banks tonight's omen..."` etc. from the previous pass) -- per the dev's follow-up ask to drop the mechanic description from the Invoke screen, leaving just the button. The cooldown's day-count, previously only in that now-removed caption, is folded into the button's own label instead (`"Hold Omen (4d)"`) so that information isn't lost, just relocated onto the label.
+  - **`?` menu's `[H]` line simplified twice in direct response to dev feedback**: first trimmed from a 4-line mechanic explanation down to one line with dot-padding matching the other entries' style, then -- after the dev pointed out they'd given the exact text to use in quotes -- stripped the dot-padding entirely to match verbatim: `"  [H] Hold Omen, or Release Omen once one's banked"`.
+  - **Tested:** full Playwright re-run against the actual page after the layout change (not assumed-safe from the earlier pass) -- all three button states (available/release/cooling) confirmed on their own line with correct text, click and `H` both still trigger correctly from the new position, a blank click still closes the bag without false-triggering `holdAction()`, and a save state engineered so `RULES.available(save).hold` is genuinely `false` (today already spent) confirmed the `holdBtn`-null fallback renders the single plain bottom line with no leftover empty row. Zero console/page errors. Screenshot retaken post-fix and visually confirmed nothing clips at the real 47-column width (the first screenshot attempt, pre-fix, is what caught the bug in the first place).
+
 ## v0.61 - Oct 10 2026, 20:30 HST
 
 - **Hold Omen / Release Omen pulled out of the numbered inventory list entirely, into its own header button + `H` key, per the dev's explicit call ("should be an actual button, not take up an inventory slot!").**
