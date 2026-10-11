@@ -3,6 +3,22 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.80 - Back to the Wings - Oct 11 2026, 05:06 HST
+
+![v0.80](screenshots/v0.80.png)
+
+- **Rolled back to the wing floor, keeping the newer layers.** Commit `f2f511c`. At the dev's request: "roll back the one room thing and go back to the wing-based, shared floor multiplayer version". Floor format `v: 11`; older saves are refused and start fresh.
+  - **How it was built:** branch from `63fabda` (v0.62.2), cherry-pick `5647f1b` (v0.73), `0b6f2e8` (v0.74), `ab10448` (v0.75), `fda09bf` (v0.77) and `fe47609` (fight opening), skipping `5d2dee8` (v0.70) and `3ab00ec` (v0.72), resolving each conflict toward the wing code; then the four code files were copied onto `main` as one commit. `leaderboard/` came out identical to main's.
+  - **Back from v0.62.2:** `floor.js` whole (wings, passages, dead ends, false doors, wildcard, bonus/void placement), movement and `go(st, dir)` by compass direction, the room minimap with its per-player rotate/mirror, room names in the slot under the map, `[  ^  ]` as `forward` (walk through the faced door; a bare wall searches), stairs found in their wall via `stairsDir`.
+  - **Kept from v0.70-v0.78:** pit levels and `st.height` / `st.climb` / `levelName`; quarter deadlines (`arrive(st, height, n)`, `startSlot`, `quarterDeadline`), with `streak` passed to `FLOOR.generate` again; title numbers, rumor cards, `/feed`; fight-end and fight-opening pacing; Dissonance `{1:0, 2:1}` once per fight won; greyed Hold Omen button; a blocked run through a locked door keeps the charge (`today.stepped` set only on getting through).
+  - **Sky and moon, re-fitted:** `st.look` is only `"U"` now. `turn(st, "U")` toggles; turning or moving clears it. `show` returns `view: { look: "U" }` and `renderLook` draws it. SEARCH (or `[ ^ ]`) while looking up calls `askMoon`: same odds `[0, .15, .5, .85, 1, .85, .5, .15]`, once per run-day; it picks from the kinds behind this room's still-locked doors, or failing that any locked door of a visited room. The map slot reads THE SKY / THE MOON. Bottom bar `LOOK_[U]P` / `LOOK_[D]OWN`; keys U, and D or down arrow to look level again.
+  - **Bonus room and THE VOID are on again:** there is no `BONUS_ROOMS` flag in this code; the streak guarantee and the moon-weighted roll run as in v0.62.
+  - **Removed:** two-door wall (`renderDoors` is left in `screen.js`, unused), floor view, `actLabel` / `facingLabel`, `[ ENTER ]` labels, choice-path minimap, `pathView` / `floorPath` / `st.path`.
+  - **Wording:** map marks flipped for the climb (`[v]` where she came up, `[^]` found stairs); death line "The moon turned. The dark rose and closed over KURA."; About text rewritten.
+- **Testing (light, as asked):** one node run (25 random runs with free steps, 2,500 actions each, 9 seconds: no exceptions, every screen row 80 wide, levels climbed, the moon asked 946 times) and one browser pass (new run, search, look up, ask the moon, turn, walk into a locked door and get the charge prompt; no page errors).
+- **Not checked:** actually opening a door and walking wings in the browser, a fight in the browser, the bonus/void rooms, a deadline death, the title screen beyond loading. Balance is as v0.62 plus quarter-length levels (3 to 7 days).
+- **Docs are now behind:** `daily-dungeon-design.md` was rewritten for one-room at v0.77 a few hours ago and no longer matches. To be redone when asked.
+
 ## v0.78 - A Word on the Button - Oct 11 2026, 04:52 HST
 
 ![v0.78](screenshots/v0.78.png)
