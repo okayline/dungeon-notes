@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.99.3 - Room Below the Moon - Oct 11 2026, 13:40 HST
+
+![v0.99.3](screenshots/v0.99.3.png)
+
+- **`levelBones` keeps a blank row under the two heading lines** (the dev wanted one open row between the moon line and the rule below). The drawing used up to 6 of the panel's 8 rows (4 above and including the line, up to 2 below), which left none, so the branches **below** the line are now always one row deep with no twig (`put(y0 + 1, x + 1, "\\")` then the `_` run at `y0 + 1`); the rolls (`h`, `twig`, `t2`) are still made, so the branches above the line are unchanged and no player's shape moves above the line. The drawing is now at most 5 rows; the filler is `8 - rows.length - 3` blank rows, then the floor, the moon line, and one blank row, so the heading is on the same row every day. Commit follows v0.99.2's `6be62be`.
+- **`VERSION`** to v0.99.3. **Testing (light):** `renderTitle` for 1,772 days (about 60 lunar months) with the strict 80-column check, the heading on one row with its blank row each time; a Chromium screenshot, no page errors. Not checked: other browsers.
+
 ## v0.99.2 - Two Lines for the Moon - Oct 11 2026, 13:35 HST
 
 ![v0.99.2](screenshots/v0.99.2.png)
