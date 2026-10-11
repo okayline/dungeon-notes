@@ -3,6 +3,21 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.93 - The Line of Days - Oct 11 2026, 08:57 HST
+
+![v0.93](screenshots/v0.93.png)
+
+- **The level as a branching line on the title** (`screen.js` `levelBones`). Commits `e3c6bff`, `9552d47`, and the heading commit. From the dev's sketch: a dashed spine with a branch off each day, above and below in turn. Heading: "B4F  -  new moon  -  days 1-8" (level, the moon the quarter opens with: new moon / first quarter / full moon / last quarter, and the lunar day range). The wordmark moved up to rows 1, 2 and 4; the heading is on row 7 and the drawing on rows 9 to 15.
+  - **Days** are lunar days by the same count as the EPOCH line (`floor(days into the epoch) + 1`, 1 to 29): quarter q runs from `ceil(q * 29.53 / 4) + 1` to `ceil((q + 1) * 29.53 / 4)` (8, 7, 8 and 6 days). Today's number is in brackets.
+  - **Shape** is rolled from `(epoch, q)` only (a small mulberry generator), so it is the same for everyone and changes each quarter: each branch 1 or 2 steps high, a 1 to 4 character twig, sometimes a second small one. It carries no information: every wing has three rooms.
+  - **Masked future:** a day after today shows `?` and no branch. Its rolls are still consumed, so visible branches never change as days are uncovered.
+  - The line can show 8 days where a level's run has at most 7 door-days; left as is.
+  - The title's quarter card now reads "The new moon's week. The next in N days." to match the naming.
+- **The search beat now comes before the search** (v0.92.1, `0314797`). The dev saw a demon appear with no delay. The dots used to play only when nothing else opened. Now the page shows the lead-in (built from the facing: "KURA searches the WEST wall", "KURA listens at the door", "KURA scries the moon / sky"), adds three dots at 200 ms, and only then calls the rules; a demon, a find or the terminal opens at about 0.8 s. With no popup, a multi-sentence result still follows a sentence at a time. Out of breath: no beat.
+- **`[F]IGHT` removed from the bottom bar** (`f77f311`): the bar is `[T]ALK [I]NVOKE [S]EARCH [M]OON`. The fight box keeps its own button and the F key. The dev considered STANDBY, GIVE, REST and LISTEN for the slot and chose to leave it empty.
+- **Typed line:** a finished line holds 5 s (was 3.2); every line ends in a full stop unless it already ends in one or a quote; six kinds trail off with " . . ." (the dark taking the level, walking alone, a member fallen, badly hurt, running out of patience, an omen in reserve).
+- **Testing (light):** the title line printed for several dates and quarters (two-digit days, the mask on days 1, 4 and 7) and seen in a browser screenshot; a browser run that waited for both an ordinary result and a demon (its box opened 0.81 s after the key). Not checked in the browser: the typed line's endings and hold, the bar after `[F]IGHT` left, a find or the terminal after the dots.
+
 ## v0.92 - In Color - Oct 11 2026, 08:38 HST
 
 ![v0.92](screenshots/v0.92.png)
