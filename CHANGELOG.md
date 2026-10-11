@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.92 - In Color - Oct 11 2026, 08:38 HST
+
+![v0.92](screenshots/v0.92.png)
+
+- **Result colors.** Commits `f40e594` to `b6d36cd`. `resultClass()` picks a class for the result text: `q-plain` (`--trail` grey: nothing, or a COMMON or UNCOMMON item), `q-silver` (`#d6e8ff`: SILVER), `q-rare` (`#6aa6e8`), `q-mythic` (`#f5c542`: a MYTHIC item or the deep find), `q-moon` (`#c9b6ff`: a MOON item). No glow. Settled with the dev over several swatches: rare was tried in green and went back to the traditional blue; mythic went from the border gold `#e3b341` to a brighter gold ("more shiny"); moon went from the header's moon blue to lavender (cyan was the other finalist); silver was made cooler and brighter after it proved nearly identical to the log's off-white.
+- **Where the result shows changed three times and ended on the action line.** v0.91.1 put it on the top line; a popup had been tried before that (v0.88). Final (`6abf4ff`): the middle line reads "KURA searches the WEST wall. RESULT" and only RESULT is wrapped in the quality's span (`colorize`, row `lines.length - 5`). The top line is untouched. `resultBox()` and the result popup are removed. **The find popup ("KURA FOUND") stays**, at the dev's explicit request.
+- **The beat is dots, then sentences** (`6abf4ff`, `504be0b`). After a search with a breath to spend and nothing else opening: the line shows the lead-in without its full stop, adds " ." three times at 200 ms, then the result one sentence at a time, 550 ms apart ("A crack." ... "It goes nowhere."). Input is ignored until the last sentence. A one-sentence result takes 0.8 s, two about 1.4 s. At a door, where the log has no "KURA searches" sentence, the lead-in is "KURA listens at the door" and the whole line then appears uncolored. A search that opens the find popup has no beat.
+- **"Coins" is gone** (`c91ba19`): `reveal` now says "N SILVER, loose in the rubble."; the find popup's check for that line was updated to match.
+- **Typed line:** letters 80 to 150 ms (about eight a second), 120 ms on a space, 420 ms after punctuation; a 2.2 s pause on a bare `> _` (blinking) between lines.
+- **Testing (light):** browser checks of the class and computed color for dust, a common item, a rare item, SILVER, and the deep find; of the dots and the sentence-by-sentence reveal with timings; and that the top line is unchanged by a search. Not checked: a MYTHIC or MOON item by name, a find popup after the SILVER rewording, the typed line's new pause.
+
 ## v0.91.1 - A Slow Hand - Oct 11 2026, 08:16 HST
 
 ![v0.91](screenshots/v0.91.png)
