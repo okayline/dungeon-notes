@@ -3,6 +3,16 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v0.88.1 - Plain Boxes - Oct 11 2026, 07:39 HST
+
+![v0.88](screenshots/v0.88.png)
+
+- **Popup text.** Commit `b3336f6`. `resultBox()` strips a leading "KURA searches the X wall." / "KURA scries the moon / the sky." so only the result shows; the log line keeps the full sentence. A first version printed a literal "null" line (the absent moon line went through `String()`); fixed before push.
+- **No glow on any box.** The `box-shadow` on `.foundbox` (the floating find, break, confirm and result boxes) is removed; the gold border stays. The in-frame fight box never had one. Part of the dev's standing "no visual effects" rule.
+- **Countdown meaning changed.** `RULES.breathNext` now returns the time until she has one whole breath, and only while she has less than one; otherwise null and the cells are blank. The dev asked for "seconds until the player is allowed to take the next breath"; read as "until she can search again". With half-breath steps she can still step at 0.5 while the countdown shows.
+- **Testing (light):** one browser check: the box has no shadow and reads "Nothing but dust." / "No moon tonight. No one to ask."; the timer is blank at 5 breaths, 11.8s at zero and 8.8s three seconds later. The other boxes were not opened after the glow was removed (a one-line CSS deletion).
+- **Screenshot** reuses v0.88's file, retaken with the plain result box.
+
 ## v0.88 - Half a Breath - Oct 11 2026, 07:34 HST
 
 ![v0.88](screenshots/v0.88.png)
