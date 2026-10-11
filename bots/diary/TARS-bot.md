@@ -38,3 +38,40 @@ KURA goes WEST into a cleared room.
 KURA goes EAST into a cleared room.
 KURA goes NORTH into a cleared room.
 ```
+
+## 2026-10-11  -  B4F, day 1  (pinned v0.86)
+
+```
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall. KURA hears a soft knock. Or her own pulse.
+KURA searches the NORTH wall. A small sound, there and gone.
+KURA searches the NORTH wall. A crack. It goes nowhere.
+KURA searches the WEST wall. Nothing yet.
+KURA searches the NORTH wall. A TRACER wanders in!
+  KURA runs SOUTH and leaves the TRACER behind.
+KURA searches the EAST wall. Mortar, mostly. Some is older.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall. Old tally marks, in groups of five.
+KURA searches the NORTH wall. Mortar, mostly. Some is older.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall. A crack. It goes nowhere.
+KURA searches the EAST wall. Mortar, mostly. Some is older.
+KURA searches the sky. Only the dark, a long way up.
+Your footsteps sound louder than before.
+KURA searches the EAST wall. Cold stone, cold hands.
+KURA searches the EAST wall. A crack. It goes nowhere.
+KURA searches the EAST wall. Nothing.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall. Salt along the base, in a line.
+KURA searches the EAST wall. Cold stone, cold hands.
+KURA searches the EAST wall. Old tally marks, in groups of five.
+KURA searches the EAST wall. Only stone.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes SOUTH into a new room.
+KURA goes NORTH into a cleared room.
+```

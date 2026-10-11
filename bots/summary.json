@@ -2,43 +2,44 @@
  "HAL-bot": {
   "date": "2026-10-11",
   "build": "pinned",
-  "version": "v0.83",
+  "version": "v0.86",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
    "day": 1,
-   "turns": 61,
+   "turns": 118,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face EAST. An opening in the stone, the dark past it."
+   "last": "KURA turns to face EAST. The wall stares back."
   },
   "n": {
-   "searches": 16,
+   "searches": 17,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 1,
+   "unlocks": 0,
    "moves": 12,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null
+  "posted": null,
+  "events": "none; here: ok"
  },
  "TARS-bot": {
   "date": "2026-10-11",
   "build": "pinned",
-  "version": "v0.83",
+  "version": "v0.86",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
    "day": 1,
-   "turns": 54,
+   "turns": 111,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
@@ -51,88 +52,153 @@
    "fights": 0,
    "talks": 0,
    "runs": 1,
-   "unlocks": 1,
-   "moves": 11,
-   "moon": 2,
+   "unlocks": 0,
+   "moves": 12,
+   "moon": 1,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null
+  "posted": null,
+  "events": "none; here: ok"
  },
  "R2D2-bot": {
   "date": "2026-10-11",
   "build": "latest",
-  "version": "v0.83",
+  "version": "v0.86",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
    "day": 1,
-   "turns": 75,
+   "turns": 140,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face WEST. Bare stone."
+   "last": "KURA turns to face EAST. Bare stone."
   },
   "n": {
    "searches": 18,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
-   "talks": 0,
+   "talks": 1,
    "runs": 0,
-   "unlocks": 1,
+   "unlocks": 0,
    "moves": 12,
-   "moon": 0,
+   "moon": 1,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null
+  "posted": null,
+  "events": "1/1 sent: asked; here: ok"
  },
  "DATA-bot": {
   "date": "2026-10-11",
   "build": "pinned",
-  "version": "v0.83",
+  "version": "v0.86",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
    "day": 1,
-   "turns": 43,
+   "turns": 96,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face SOUTH. A blank wall, slick with damp."
+   "last": "KURA turns to face EAST. Cracked stone, nothing more."
   },
   "n": {
-   "searches": 16,
+   "searches": 17,
    "blocked": 0,
    "waited": 75,
    "fights": 1,
-   "talks": 1,
+   "talks": 3,
    "runs": 0,
-   "unlocks": 1,
+   "unlocks": 0,
+   "moves": 12,
+   "moon": 0,
+   "holds": 0,
+   "climbs": 0
+  },
+  "posted": null,
+  "events": "3/3 sent: asked, silent, asked; here: ok"
+ },
+ "GORT-bot": {
+  "date": "2026-10-11",
+  "build": "latest",
+  "version": "v0.86",
+  "crashed": null,
+  "row": {
+   "level": "B4F",
+   "climbed": 0,
+   "day": 1,
+   "turns": 109,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, CU SITH",
+   "align": "NEUTRAL",
+   "last": "KURA goes NORTH into a cleared room."
+  },
+  "n": {
+   "searches": 18,
+   "blocked": 0,
+   "waited": 75,
+   "fights": 4,
+   "talks": 0,
+   "runs": 0,
+   "unlocks": 0,
    "moves": 8,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null
+  "posted": null,
+  "events": "1/1 sent: words; here: ok"
  },
- "GORT-bot": {
+ "BENDER-bot": {
   "date": "2026-10-11",
-  "build": "latest",
-  "version": "v0.83",
+  "build": "pinned",
+  "version": "v0.86",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
    "day": 1,
-   "turns": 60,
+   "turns": 165,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face NORTH. An open arch. The dark goes on beyond it."
+   "last": "KURA turns to face SOUTH. The wall stares back."
+  },
+  "n": {
+   "searches": 6,
+   "blocked": 6,
+   "waited": 0,
+   "fights": 0,
+   "talks": 0,
+   "runs": 0,
+   "unlocks": 0,
+   "moves": 12,
+   "moon": 0,
+   "holds": 0,
+   "climbs": 0
+  },
+  "posted": null,
+  "events": "none; here: ok"
+ },
+ "WALLE-bot": {
+  "date": "2026-10-11",
+  "build": "pinned",
+  "version": "v0.86",
+  "crashed": null,
+  "row": {
+   "level": "B4F",
+   "climbed": 0,
+   "day": 1,
+   "turns": 147,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, CU SITH",
+   "align": "NEUTRAL",
+   "last": "KURA turns to face WEST. An open arch. The dark goes on beyond it."
   },
   "n": {
    "searches": 18,
@@ -141,32 +207,64 @@
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 1,
+   "unlocks": 0,
    "moves": 12,
-   "moon": 0,
+   "moon": 1,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null
+  "posted": null,
+  "events": "none; here: ok"
  },
- "BENDER-bot": {
+ "ROSIE-bot": {
   "date": "2026-10-11",
-  "build": "pinned",
-  "version": "v0.83",
+  "build": "latest",
+  "version": "v0.86",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
    "day": 1,
-   "turns": 83,
+   "turns": 132,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face SOUTH. A blank wall, slick with damp."
+   "last": "KURA is out of breath."
   },
   "n": {
-   "searches": 6,
-   "blocked": 10,
+   "searches": 14,
+   "blocked": 31,
+   "waited": 75,
+   "fights": 0,
+   "talks": 0,
+   "runs": 0,
+   "unlocks": 0,
+   "moves": 9,
+   "moon": 0,
+   "holds": 0,
+   "climbs": 0
+  },
+  "posted": null,
+  "events": "none; here: ok"
+ },
+ "C3PO-bot": {
+  "date": "2026-10-11",
+  "build": "pinned",
+  "version": "v0.86",
+  "crashed": null,
+  "row": {
+   "level": "B4F",
+   "climbed": 0,
+   "day": 1,
+   "turns": 42,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, CU SITH",
+   "align": "NEUTRAL",
+   "last": "KURA turns to face NORTH. A bare archway, and the way through."
+  },
+  "n": {
+   "searches": 3,
+   "blocked": 0,
    "waited": 0,
    "fights": 0,
    "talks": 1,
@@ -177,66 +275,38 @@
    "holds": 0,
    "climbs": 0
   },
-  "posted": null
+  "posted": null,
+  "events": "3/3 sent: asked, silent, silent; here: ok"
  },
- "WALLE-bot": {
+ "MARVIN-bot": {
   "date": "2026-10-11",
   "build": "pinned",
-  "version": "v0.83",
+  "version": "v0.86",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
    "day": 1,
-   "turns": 73,
+   "turns": 26,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face SOUTH. The wall stares back."
+   "last": "KURA turns to face EAST. A door, its handle worn smooth."
   },
   "n": {
-   "searches": 17,
+   "searches": 6,
    "blocked": 0,
-   "waited": 75,
-   "fights": 1,
-   "talks": 1,
+   "waited": 0,
+   "fights": 0,
+   "talks": 0,
    "runs": 0,
-   "unlocks": 1,
+   "unlocks": 0,
    "moves": 12,
-   "moon": 1,
-   "holds": 0,
-   "climbs": 0
-  },
-  "posted": null
- },
- "ROSIE-bot": {
-  "date": "2026-10-11",
-  "build": "latest",
-  "version": "v0.83",
-  "crashed": null,
-  "row": {
-   "level": "B4F",
-   "climbed": 0,
-   "day": 1,
-   "turns": 77,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "NEUTRAL",
-   "last": "KURA goes EAST into a new room."
-  },
-  "n": {
-   "searches": 18,
-   "blocked": 18,
-   "waited": 75,
-   "fights": 3,
-   "talks": 4,
-   "runs": 1,
-   "unlocks": 1,
-   "moves": 8,
    "moon": 0,
-   "holds": 0,
+   "holds": 1,
    "climbs": 0
   },
-  "posted": null
+  "posted": null,
+  "events": "none; here: ok"
  }
 }

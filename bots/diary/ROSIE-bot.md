@@ -63,3 +63,62 @@ KURA needs a moment.
 KURA is out of breath.
 KURA goes EAST into a new room.
 ```
+
+## 2026-10-11  -  B4F, day 1  (latest v0.86)
+
+```
+KURA goes EAST into a new room.
+KURA searches the EAST wall. Nothing.
+KURA searches the EAST wall. The wall gives nothing away.
+KURA searches the EAST wall. Nothing.
+KURA searches the EAST wall. Damp. The smell of old pipes.
+KURA goes NORTH into a new room.
+KURA searches the WEST wall. Damp. The smell of old pipes.
+KURA goes SOUTH into a cleared room.
+A cradle of cables, humming softly in the wall. It can be used. Two doors.
+KURA plugs in. The party mends a little.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA goes SOUTH into a new room.
+KURA needs a moment.
+KURA searches the WEST wall. Only stone.
+KURA goes NORTH into a cleared room.
+KURA is out of breath.
+KURA goes NORTH into a cleared room.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA searches the WEST wall. Mortar, mostly. Some is older.
+KURA searches the WEST wall. Nothing yet.
+KURA searches the WEST wall. Damp. The smell of old pipes.
+KURA searches the WEST wall. Nothing yet.
+KURA goes SOUTH into a cleared room.
+KURA searches the EAST wall. Fingers come away gray.
+KURA searches the EAST wall. Someone has looked here before.
+KURA needs a moment.
+KURA goes WEST into a cleared room.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA goes EAST into a cleared room.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA goes WEST into a cleared room.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+```

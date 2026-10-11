@@ -47,3 +47,31 @@ KURA goes NORTH into a cleared room.
 KURA goes SOUTH into a cleared room.
 KURA goes EAST into a new room.
 ```
+
+## 2026-10-11  -  B4F, day 1  (pinned v0.86)
+
+```
+KURA turns to face SOUTH. The wall stares back.
+KURA searches the EAST wall. Someone has looked here before.
+KURA searches the EAST wall. Damp. The smell of old pipes.
+KURA goes WEST into a cleared room.
+KURA searches the SOUTH wall. Fingers come away gray.
+KURA goes NORTH into a cleared room.
+KURA searches the EAST wall. A crack. It goes nowhere.
+KURA searches the sky. Only the dark, a long way up.
+Humming. Low, and getting closer.
+KURA searches the WEST wall. Nothing yet.
+KURA goes NORTH into a cleared room.
+KURA touches the terminal. The screen wakes.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall. Only stone.
+KURA searches the WEST wall. Damp. The smell of old pipes.
+KURA goes SOUTH into a cleared room.
+KURA touches the terminal. The screen wakes.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+```

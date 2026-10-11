@@ -1,16 +1,16 @@
 # Bots: where everyone is
 
-Updated 2026-10-11 (Honolulu). Pinned build: `088df27`. Canaries play the latest code.
+Updated 2026-10-11 (Honolulu). Pinned build: `2e52611`. Canaries play the latest code.
 
-| Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Last line |
-|---|---|---|---|---|---|---|---|---|---|---|
-| HAL-bot | pinned v0.83 | 2026-10-11 | B4F | 0 | 1 | 61 | 16 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | KURA turns to face EAST. An opening in the stone, the dark past it. |
-| C3PO-bot | pinned | - | | | | | | not played yet |
-| TARS-bot | pinned v0.83 | 2026-10-11 | B4F | 0 | 1 | 54 | 17 / 0 / 75s | 0 / 0 / 1 | 1 / 0 / 0 | KURA goes NORTH into a cleared room. |
-| R2D2-bot | latest v0.83 | 2026-10-11 | B4F | 0 | 1 | 75 | 18 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | KURA turns to face WEST. Bare stone. |
-| DATA-bot | pinned v0.83 | 2026-10-11 | B4F | 0 | 1 | 43 | 16 / 0 / 75s | 1 / 1 / 0 | 1 / 0 / 0 | KURA turns to face SOUTH. A blank wall, slick with damp. |
-| MARVIN-bot | pinned | - | | | | | | not played yet |
-| GORT-bot | latest v0.83 | 2026-10-11 | B4F | 0 | 1 | 60 | 18 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | KURA turns to face NORTH. An open arch. The dark goes on beyond it. |
-| BENDER-bot | pinned v0.83 | 2026-10-11 | B4F | 0 | 1 | 83 | 6 / 10 / 0s | 0 / 1 / 0 | 1 / 0 / 0 | KURA turns to face SOUTH. A blank wall, slick with damp. |
-| WALLE-bot | pinned v0.83 | 2026-10-11 | B4F | 0 | 1 | 73 | 17 / 0 / 75s | 1 / 1 / 0 | 1 / 0 / 0 | KURA turns to face SOUTH. The wall stares back. |
-| ROSIE-bot | latest v0.83 | 2026-10-11 | B4F | 0 | 1 | 77 | 18 / 18 / 75s | 3 / 4 / 1 | 1 / 0 / 0 | KURA goes EAST into a new room. |
+| Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Last line |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| HAL-bot | pinned v0.86 | 2026-10-11 | B4F | 0 | 1 | 118 | 17 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | KURA turns to face EAST. The wall stares back. |
+| C3PO-bot | pinned v0.86 | 2026-10-11 | B4F | 0 | 1 | 42 | 3 / 0 / 0s | 0 / 1 / 0 | 1 / 0 / 0 | 3/3 sent: asked, silent, silent; here: ok | KURA turns to face NORTH. A bare archway, and the way through. |
+| TARS-bot | pinned v0.86 | 2026-10-11 | B4F | 0 | 1 | 111 | 17 / 0 / 75s | 0 / 0 / 1 | 0 / 0 / 0 | none; here: ok | KURA goes NORTH into a cleared room. |
+| R2D2-bot | latest v0.86 | 2026-10-11 | B4F | 0 | 1 | 140 | 18 / 0 / 75s | 0 / 1 / 0 | 0 / 0 / 0 | 1/1 sent: asked; here: ok | KURA turns to face EAST. Bare stone. |
+| DATA-bot | pinned v0.86 | 2026-10-11 | B4F | 0 | 1 | 96 | 17 / 0 / 75s | 1 / 3 / 0 | 0 / 0 / 0 | 3/3 sent: asked, silent, asked; here: ok | KURA turns to face EAST. Cracked stone, nothing more. |
+| MARVIN-bot | pinned v0.86 | 2026-10-11 | B4F | 0 | 1 | 26 | 6 / 0 / 0s | 0 / 0 / 0 | 0 / 1 / 0 | none; here: ok | KURA turns to face EAST. A door, its handle worn smooth. |
+| GORT-bot | latest v0.86 | 2026-10-11 | B4F | 0 | 1 | 109 | 18 / 0 / 75s | 4 / 0 / 0 | 0 / 0 / 0 | 1/1 sent: words; here: ok | KURA goes NORTH into a cleared room. |
+| BENDER-bot | pinned v0.86 | 2026-10-11 | B4F | 0 | 1 | 165 | 6 / 6 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | KURA turns to face SOUTH. The wall stares back. |
+| WALLE-bot | pinned v0.86 | 2026-10-11 | B4F | 0 | 1 | 147 | 18 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | KURA turns to face WEST. An open arch. The dark goes on beyond it. |
+| ROSIE-bot | latest v0.86 | 2026-10-11 | B4F | 0 | 1 | 132 | 14 / 31 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | KURA is out of breath. |

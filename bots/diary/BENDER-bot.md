@@ -45,3 +45,32 @@ KURA goes NORTH into a cleared room.
 KURA goes WEST into a cleared room.
 KURA answers CU SITH: no.
 ```
+
+## 2026-10-11  -  B4F, day 1  (pinned v0.86)
+
+```
+KURA turns to face SOUTH. A blank wall, slick with damp.
+KURA searches the SOUTH wall. A crack. It goes nowhere.
+KURA searches the SOUTH wall. Faded paint. A number, or a sigil.
+KURA goes EAST into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall. Someone has looked here before.
+KURA searches the SOUTH wall. Only stone.
+KURA searches the WEST wall. Faded paint. A number, or a sigil.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA goes NORTH into a cleared room.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes WEST into a cleared room.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA goes EAST into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes WEST into a cleared room.
+```
