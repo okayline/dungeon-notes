@@ -74,3 +74,20 @@ KURA goes SOUTH into a cleared room.
 KURA goes NORTH into a cleared room.
 KURA goes WEST into a cleared room.
 ```
+
+## 2026-10-12  -  B4F, day 2, the run ended  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the SOUTH wall. KURA hears a soft knock. Or her own pulse.
+KURA searches the SOUTH wall. Damp. The smell of old pipes.
+KURA searches the SOUTH wall. A PING wanders in!
+  The PING strikes KURA. -5 HP
+  The party strikes. -7
+  PING: "0000000000000000"
+  The PING strikes KURA. -2 HP. FALLS
+  KURA falls. The run is over.
+The PING strikes KURA down.
+
+posted, rank 1
+```

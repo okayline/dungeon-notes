@@ -75,3 +75,68 @@ KURA goes EAST into a cleared room.
 KURA goes WEST into a cleared room.
 KURA goes EAST into a cleared room.
 ```
+
+## 2026-10-12  -  B4F, day 2  (pinned v0.94)
+
+```
+KURA searches the SOUTH wall. Mortar, mostly. Some is older.
+KURA searches the SOUTH wall. Damp. The smell of old pipes.
+KURA searches the SOUTH wall. A dead cable runs in and stops.
+KURA searches the SOUTH wall. Nothing yet.
+KURA searches the SOUTH wall. Fingers come away gray.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA searches the SOUTH wall. A crack. It goes nowhere.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall. Salt along the base, in a line.
+KURA searches the WEST wall. A PING wanders in!
+  The PING strikes KURA. -6 HP
+  The party strikes. -8
+  PING: "01001000 01001001 00111111"
+  PING: "QUERY: DO YOU FOLLOW RULES? Y / N"
+  KURA: "Yes."
+  PING: "COMPATIBLE."
+  PING: "QUERY: ARE YOU LOST? Y / N"
+  KURA: "No."
+  PING: "DISAGREE. YOU ARE LOST."
+  The PING loses interest. PROCESS ENDED
+KURA searches the WEST wall. A DEADLINK appears! Two doors.
+  DEADLINK: "ERROR 404: owner not found"
+  DEADLINK: "is it still raining up there?"
+  KURA: "Yes."
+  DEADLINK: "I liked the rain. on my casing."
+  DEADLINK: "do you remember being plugged in?"
+  KURA: "Yes."
+  DEADLINK: "me too. it hummed."
+  DEADLINK: "are you here to fix me?"
+  KURA: "Yes."
+  DEADLINK: "finally. finally."
+  DEADLINK: "got anything? anything at all?"
+  KURA gives a neon tube fragment.
+  DEADLINK: "...is there more?"
+  KURA gives a tangle of fiber cable.
+  DEADLINK: "ok. that's ok"
+  The DEADLINK offers to join the party.
+  The party is full. Send someone away?
+  CU SITH leaves the party.
+  DEADLINK: "NEW OWNER ACCEPTED. ok. I'll wait with you."
+  DEADLINK joins the party.
+KURA searches the WEST wall. Fingers come away gray.
+KURA searches the WEST wall. Nothing but dust.
+KURA goes NORTH into a cleared room.
+KURA touches the terminal. The screen wakes.
+KURA makes an offering.
+KURA touches the terminal. The screen wakes.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall. Someone has looked here before.
+KURA unlocks the EAST door. The way is clear.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+```

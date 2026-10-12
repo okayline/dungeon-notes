@@ -155,97 +155,100 @@
   "events": "1/1 sent: words; here: ok"
  },
  "BENDER-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "pinned",
-  "version": "v0.86",
+  "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 165,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
+   "day": 2,
+   "turns": 172,
+   "alive": false,
+   "party": "",
    "align": "NEUTRAL",
-   "last": "KURA turns to face SOUTH. The wall stares back."
+   "last": "The PING strikes KURA down."
   },
   "n": {
-   "searches": 6,
-   "blocked": 6,
+   "searches": 3,
+   "blocked": 0,
    "waited": 0,
-   "fights": 0,
-   "talks": 0,
+   "fights": 1,
+   "talks": 1,
    "runs": 0,
    "unlocks": 0,
-   "moves": 12,
+   "moves": 0,
+   "moon": 0,
+   "holds": 0,
+   "climbs": 0
+  },
+  "posted": "posted, rank 1",
+  "events": "1/1 sent: fall",
+  "eco": ""
+ },
+ "WALLE-bot": {
+  "date": "2026-10-12",
+  "build": "pinned",
+  "version": "v0.94",
+  "crashed": null,
+  "row": {
+   "level": "B4F",
+   "climbed": 0,
+   "day": 2,
+   "turns": 210,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, DEADLINK",
+   "align": "NEUTRAL",
+   "last": "KURA turns to face SOUTH. An open arch. The dark goes on beyond it."
+  },
+  "n": {
+   "searches": 15,
+   "blocked": 0,
+   "waited": 75,
+   "fights": 1,
+   "talks": 2,
+   "runs": 0,
+   "unlocks": 1,
+   "moves": 6,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok"
- },
- "WALLE-bot": {
-  "date": "2026-10-11",
-  "build": "pinned",
-  "version": "v0.86",
-  "crashed": null,
-  "row": {
-   "level": "B4F",
-   "climbed": 0,
-   "day": 1,
-   "turns": 147,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "NEUTRAL",
-   "last": "KURA turns to face WEST. An open arch. The dark goes on beyond it."
-  },
-  "n": {
-   "searches": 18,
-   "blocked": 0,
-   "waited": 75,
-   "fights": 0,
-   "talks": 0,
-   "runs": 0,
-   "unlocks": 0,
-   "moves": 12,
-   "moon": 1,
-   "holds": 0,
-   "climbs": 0
-  },
-  "posted": null,
-  "events": "none; here: ok"
+  "events": "3/3 sent: asked, asked, joined; here: ok",
+  "eco": "nothing"
  },
  "ROSIE-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "latest",
-  "version": "v0.86",
+  "version": "v1.02",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 132,
+   "day": 2,
+   "turns": 177,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA is out of breath."
+   "last": "KURA needs a moment before she moves on."
   },
   "n": {
    "searches": 14,
-   "blocked": 31,
+   "blocked": 28,
    "waited": 75,
    "fights": 0,
    "talks": 0,
    "runs": 0,
    "unlocks": 0,
-   "moves": 9,
+   "moves": 1,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok"
+  "events": "none; here: ok",
+  "eco": "nothing"
  },
  "C3PO-bot": {
   "date": "2026-10-11",

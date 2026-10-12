@@ -122,3 +122,59 @@ KURA is out of breath.
 Not yet. KURA catches her breath.
 KURA is out of breath.
 ```
+
+## 2026-10-12  -  B4F, day 2  (latest v1.02)
+
+```
+KURA wakes on B4F.
+KURA searches the NORTH wall... Fingers come away gray.
+KURA searches the NORTH wall... Salt along the base, in a line.
+KURA searches the NORTH wall... A crack. It goes nowhere.
+KURA searches the NORTH wall... Nothing yet.
+KURA searches the NORTH wall... Fingers come away gray.
+KURA searches the NORTH wall... A crack. It goes nowhere.
+KURA searches the NORTH wall... Old tally marks, in groups of five.
+KURA goes EAST into a cleared room.
+KURA plugs in. No one needs it.
+KURA searches the EAST wall... The wall gives nothing away.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA searches the EAST wall... Cold stone, cold hands.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA is out of breath. She stays where she is.
+KURA is out of breath.
+KURA searches the EAST wall... Something ticks, very softly.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA searches the EAST wall... Fingers come away gray.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA needs a moment before she moves on.
+```
