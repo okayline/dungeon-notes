@@ -3,6 +3,39 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.02 - Hold Your Breath - Oct 11 2026, 17:37 HST
+
+![v1.02](screenshots/v1.02.png)
+
+Game commit `898bd20`. **Needs the Worker redeployed** for `[H]ERE` (`worker.js` only; no schema change). Everything else is page-only.
+
+- **The search beat** (`act`, the `searchBeat` step):
+  - **Dots:** the usual three dots (200 ms each), then the search runs. For a good find, more dots follow at 260 ms each (`WEIGHT`): 3 for a RARE thing or the stairs, 5 for MYTHIC or MOON.
+  - **Typing:** the result after the head is typed at 30 ms a letter, sentence by sentence, with a 1000 ms beat between sentences (was 550 ms, shown a sentence at a time).
+  - **The box waits:** `holdFound` makes `foundBox` keep its call (`heldFound`) until the typing ends.
+  - **Early exits:** a demon, a question, the altar, a door or the exchange screen leave it as before, whole.
+- **Line 1 (party):** for a good find, `beatLine1 = partyLeans()` replaces line 1 while the extra dots run: a standing member other than KURA, five wordings ("PIXIE leans closer.", "ELF goes quiet."...), or "KURA holds her breath." with nobody. `draw` uses it over `extraToShow()`; `act` clears it on her next action.
+- **Line 3 (the typed line):**
+  - **Quiet:** `typeHush()` at the start of every search beat clears it to a bare `>`, and `typeQuiet` stops its round.
+  - **After a good find:** `typeSay(searchEcho(best))` shows one line whole, held 6 s (`typeHoldUntil`), then deleted as usual.
+  - **The lines:** MOON "The moon looks down a little longer."; stairs "Cold air comes down from above."; with others on her level right now (`liveNow`) "On this level, someone else stops to listen."; alone "Somewhere above, the dark shifts." (2-3 wordings each).
+  - Otherwise the line resumes after the result.
+- **Found box for good finds only:** `foundBoxNow` returns unless the lines include a RARE, MYTHIC or MOON thing or the log says the stairs. Common and uncommon things and loose SILVER (and fight drops of those) are told on line 2 alone. A good find's box still lists everything found with it.
+- **Breath dots** (`screen.js` row 20):
+  - **Count:** `7 - floor(breath)` dots, 3 columns apart, centered on the bar's middle (column 13.5 of the panel row), so one when rested and seven when out. They grow from the middle as the bar closes.
+  - **On the page:** each dot is a `.bdot` scaled 1.5 (tried 2.2, too big) and nudged `.65ch` like the bar, `1.15ch` when the count is odd (the middle dot falls on a half column).
+  - The old 1-3 dot marker over today's phase is gone.
+- **Exchange wall arrow:** re-evaluated every 14 beats (~1.5 s, was 20). Tried and dropped: the same arrow at the end of the window's ticker row.
+- **Admin presence:** Worker `GET /admin/here` (admin key) returns the counts (right now without bots, the last day, this moon) and up to 60 rows (a 6-character piece of the id, level, seconds since seen, bot), newest first, never the sender hash. In the X-mode board, `H` toggles it (`showPresence`, `boardView`); D and the arrows act only on the board view.
+- **`VERSION`** to v1.02 (v1.01.1 was never pushed on its own).
+- **Testing (light):**
+  - Line 3 hushed for a search and resumed after.
+  - A result typed out letter by letter.
+  - The dots at 6/5/3/1/0 breaths, 80 columns each.
+  - `/admin/here` on a local SQLite copy (403 without the key).
+  - Chromium screenshots, no page errors.
+  - Not checked: a good find's full cadence (party line, extra dots, the pit's line, the held box) end to end.
+
 ## v1.01 - The House Rolls - Oct 11 2026, 17:15 HST
 
 ![v1.01](screenshots/v1.01.png)
