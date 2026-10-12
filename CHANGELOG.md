@@ -3,6 +3,30 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.01 - The House Rolls - Oct 11 2026, 17:15 HST
+
+![v1.01](screenshots/v1.01.png)
+
+Game commit `41d7581`; bots `9366e68`. **Needs the Worker redeployed** (`worker.js` only; no schema change). Folds in the v1.00.2 changes, which were never pushed on their own.
+
+- **The Worker picks the thing (option A).** `/eco/find` keeps the claimed tier but rolls `crypto.getRandomValues` over that tier's catalog for which thing it is, stores that, and returns it as `name`.
+  - **Page:** `ecoScan` renames the bag's copy (and `ecoSeen`, and the log line that named it). `foundBox` waits for pending finds (`ecoWait`), at most 1.2 s, then shows the Worker's pick. A stashed MOON thing is listed as "(kept in the stash)".
+  - **Bots** rename the same way, so the next `/eco/mine` doesn't count the renamed thing as gone.
+  - A cheater can still claim that a find of a tier happened, but can no longer choose which thing.
+- **Tighter limits.**
+  - Per key a day: RARE 3 / MYTHIC 2 / MOON 1 (was 4/2/1). Per sender a day: RARE 6 / MYTHIC 3 / MOON 2 (was 8/4/2).
+  - New: at most 2 MOON finds a lunar month per key and 3 per sender (`ECO_MOON_MONTH`, counted from `epochStart()`).
+  - Refusals say "enough today" / "enough this moon"; the find stays a plain local item.
+- **Exchange window.**
+  - **Header:** "EXCHANGE   Offers close end of quarter (Nd)", falling back to "Offers close end of quarter" when the days don't fit (43 columns).
+  - **Loading:** until the market first answers (`ex.loaded`), the list shows "..." in its place. Before, an extra "..." line sat over "Nothing on offer right now." (said before the answer came), and everything moved up when it went away.
+  - **STASH tab:** empty reads "Special things go here."; the withdraw prompt and a used cap ("This quarter's one from someone else is used.") no longer name MOON. The cap text is swapped on the page, so the Worker's own message is not shown.
+- **Room names:** a dead end with no kind takes `NAMES_BY_KIND.exchange`: Exchange, Xchange, Trade floor, Market end, Ticker room, Trading gap, Swap room (Bourse and Trading pit tried and dropped). A dead end named "Dead end"/"Sealed end" before v1.00 is renamed from this list.
+- **The wall screen's arrow** (`EXW.up`) re-evaluates every 20 beats (about 2.2 s), comparing now with six steps back, and keeps its way on a tie. Before, it followed each step.
+- **Breath bar** (`screen.js`): `PHASE`'s moon shapes are no longer used for it. It is `▓` + `█`×n + `▓` over columns 3-22 (20 wide), closing in up to 10 columns a side (`shut = round((6 - breath) / 6 * 10)`), and what is left keeps a `▓` at each end. The dot above still marks today's phase. On the page, row 21's strip is wrapped in a span nudged `left: .65ch`: measured, the bar's middle sat 5 px (about two thirds of a column) left of the panel's, and now matches it to the pixel.
+- **`VERSION`** to v1.01.
+- **Testing (light):** the Worker's pick and the new limits on a local SQLite copy (MOON claims came back as other MOON things; a key's third MOON find in a month refused; a fourth RARE in a day refused); the page parses; Chromium screenshots of the exchange window, the room name and the bar, no page errors. Not checked: the found box's wait against the live Worker, the bots' renaming.
+
 ## v1.00.1 - Where the Moon Things Go - Oct 11 2026, 16:55 HST
 
 ![v1.00.1](screenshots/v1.00.1.png)
