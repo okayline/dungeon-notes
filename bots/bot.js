@@ -90,7 +90,14 @@ async function trade(name, st, R, note) {
     const left = (st.ecoSeen || []).slice(), fresh = [];
     for (const n of mine) { const i = left.indexOf(n); if (i >= 0) left.splice(i, 1); else fresh.push(n); }
     st.ecoSeen = mine.slice();
-    for (const n of fresh) { const r = await eco("find", key, { run, name: n }); if (r.ok) { did.push(`found ${n}${r.stash ? " (stash)" : ""}`); if (r.stash) drop(n); } }
+    // (v1.01: the Worker picks which thing of the tier it is; the bag's copy takes its name.)
+    for (const n of fresh) {
+      const r = await eco("find", key, { run, name: n }); if (!r.ok) continue;
+      const got = r.name || n;
+      if (r.stash) drop(n);
+      else if (got !== n) for (const list of [st.items, st.ecoSeen]) { const i = (list || []).lastIndexOf(n); if (i >= 0) list[i] = got; }
+      did.push(`found ${got}${r.stash ? " (stash)" : ""}`);
+    }
   }
   const m = await eco("mine", key, { run, bag: (st.items || []).filter(tradeable) });
   if (m.error) { note.eco = "mine: " + (m.why || m.error); return; }
