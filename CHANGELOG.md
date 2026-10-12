@@ -3,6 +3,53 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.00 - 100 - Oct 11 2026, 16:42 HST
+
+![v1.00](screenshots/v1.00.png)
+
+Live presence and the exchange (the player economy). Game commit `42515ad`; bots `716f464`. **Needs the Worker redeployed** with the new `schema.sql` run against D1 and `BOTS_PUBLIC = "1"` added under `[vars]` in the dev's own `wrangler.toml`.
+
+- **Live presence.**
+  - **Page:** `pingLive` sends `/here` every 3 min (`LIVE_EVERY`) only while a run is on screen, the tab is visible and a key or click came in the last 10 min (`LIVE_IDLE`); checked every 30 s and on `visibilitychange`. The daily ping is unchanged and writes the same row.
+  - **Worker `/here`:** a known id costs one row read and is rewritten only when its level changed or it is 2+ min old (`PRESENCE_WRITE_GAP`). Only a new id pays for the 40-ids-a-day sender check (now indexed, `present_who_idx`) and the 60-day cleanup.
+  - **"Right now"** = `at` within 300 s, ids not starting `bot`, worked out at most once a minute per Worker instance (`liveNow`, in memory) and returned by every `/here` reply and by `/feed` as `here.now`. Bots keep counting in the daily totals.
+  - **Title cards** (plain): `In the pit right now: N`, `On B3F right now: N`.
+  - **Typed line** (sentences, `PRESENCE.nowMine` / `todayMine`): four wordings for right now and two for today, rotating every 10 min, small numbers spelled out, her own device not counted ("Three others are on this level with you.").
+- **The key:** `ddd.key` in localStorage (48 hex), copied into every save as `save.key`, so the password carries it. A loaded password's key becomes the browser's; the REPLACE THIS RUN box says so when it differs. The PASSWORD box warns "whoever has it has your stash". The Worker keeps only `SHA-256(key + ":daily-dungeon-exchange")`.
+- **Finds (`/eco/find`):**
+  - `ecoScan` (on every save) diffs RARE/MYTHIC/MOON names in the bag against `save.ecoSeen` and posts each new one; a new run (`ecoRun !== runId`) starts counting from its kit.
+  - **Limits:** per key per UTC day RARE 4 / MYTHIC 2 / MOON 1; per sender (IP hash) RARE 8 / MYTHIC 4 / MOON 2; MOON only at moon phases 3-5; at most 5 new keys a day per sender. Bots skip the sender limits.
+  - An accepted MOON find goes straight to the stash and leaves the bag ("... goes to the stash. [E]XCHANGE keeps it."). Refused or offline finds stay plain local items. Cheated runs send nothing; a dead run sends `/eco/end` once.
+- **Ledger (D1):** `eco_owners`, `eco_items` (states `bag` / `stash` / `escrow` / `gone` / `dead`), `eco_offers` (open / taken / cancelled / closed / dead), `eco_retired`.
+  - A key has one run at a time; a request from a new run retires the old (bag things die, offers die, an escrowed MOON thing goes back to the stash). A retired run is refused.
+  - `/eco/mine` takes the bag's names and marks ledger bag things no longer in the bag as `gone`; returns stash, bag, open offers, deliveries (`fresh`), news of taken offers, `moonCap`, `quarterEnd`.
+- **Offers:** one thing, asking `""` (gift), `tier:X` or `name:...`; codes `XXX-XXX` from a 31-letter alphabet, typed loosely (case and dash ignored).
+  - At most 3 open per key.
+  - **Close strictly at quarter end** (`ecoQuarter`, the same math as `quarterOf`). The thing comes back: MOON to the stash, the rest to the run's bag if that run still lives, else it dies.
+  - An offer dies with its run (rule A: a RARE/MYTHIC in an offer is lost like the bag).
+  - Taking moves the offered thing to the taker (MOON to the stash, else into the run's bag) and the payment to the maker the same way (a delivery to their run).
+- **MOON cap:** `withdraw` (stash to run, one-way, the thing leaves the economy for good) is limited to one MOON thing a quarter that someone else found (`eco_owners.moon_q`). Own finds are not capped.
+- **Bots:** `BOTS_PUBLIC = "1"` puts bot offers in everyone's market and lets bots take players' offers (all anonymous). `"0"` keeps them to a bots-only market the admin key can see (X inside the exchange window asks for the admin key without turning the testing cheats on).
+  - `bot.js` gives each bot an exchange key, reports finds, picks up deliveries and trades by temperament (`TRADE`), with a new Exchange column in SUMMARY.md.
+  - Bot presence ids start `bot`. The summary header names the pinned/latest versions and the newest real turn on file.
+- **The exchange room:**
+  - **The wall:** every dead end with no kind (`exchDir`: not a door wall, not the stairs wall, `(seed + i*13) % free`) has a screen in one wall, view end `exchange`. `walls()` hides nothing there.
+  - **Older dead ends:** a dead end laid out before v1.00 that still hides something behind that wall searches normally until it's empty (`exchHere`).
+  - **Opening:** SEARCH or [^] at it is free, even out of breath, with the lead "KURA reaches for the screen" and the log "KURA touches the screen. The market wakes." The rules set `st.exchangeOpen`; the page opens the window.
+  - **The wall screen:** 27 by 7 with two slots under it. Its inner cells are drawn as U+2800 and swapped by the page for `EXCHANGE ^/v  N ON OFFER` and a 4-row market line.
+  - **The market line** is a random walk (`EXW`, a step every 3 beats of 110 ms), decoration only. The window shows the same line, 3 rows, under a right-to-left ticker of the market's offers (one letter every 220 ms).
+- **The window:** tabs MARKET / YOURS / STASH / CODE, as INVOKE's box (43 columns of text). [ESC] leaves. The bottom bar has no exchange button and no E key.
+- **Bonus room and THE VOID** now take a wing's passage (`floor.js` `bonusSlot = P`), never the dead end and never the stairs wing.
+- **Title feed:** `market` in `/feed` (newest 3 public offers, last 3 trades, open count). Cards: `MARKET: a moonstone, for any RARE. Code K7Q-2MX`, `Traded: x, for y`, `Given away: x`. They also ride the typed line's news.
+- **`VERSION`** to v1.00.
+- **Testing (light):**
+  - The Worker on a local SQLite copy (29 checks: finds and limits, gifts and swaps by code, deliveries, the MOON cap, the bot market, quarter-end closing, retired runs).
+  - In Chromium with that Worker: a find, a swap, the stash, a withdraw and the other side's delivery.
+  - The dead-end screen and window opening.
+  - Live pings with a fake clock.
+  - Not checked: the bots' trading against a real Worker, other browsers, a full run.
+- **Known softness:** the page still decides what a find is; the Worker only decides whether it counts (forged finds are capped by the limits, not stopped). Worker-rolled finds are planned for v1.01. A cheater's save can still use a thing locally and keep it locally; nothing in the ledger is created or doubled.
+
 ## v0.99.4 - One Line for the Moon - Oct 11 2026, 13:45 HST
 
 ![v0.99.4](screenshots/v0.99.4.png)
