@@ -1,6 +1,6 @@
 # Daily Dungeon — Design Doc
 
-How the game plays and why. Current as of **v0.99.1**: wing-based levels, a climb out of a pit on the moon's clock, breath, and a title screen that shows who else is in there.
+How the game plays and why. Current as of **v1.02**: wing-based levels, a climb out of a pit on the moon's clock, breath, live presence, and the exchange (a player economy, traded at a screen in every dead end).
 
 One file, no version suffix; git history is the version history. Ideas that are not built and not yet settled live in `theorycrafting-notes.md`. Exact per-release detail lives in `CHANGELOG.md`.
 
@@ -18,12 +18,13 @@ One file, no version suffix; git history is the version history. Ideas that are 
 
 Unlocking only opens the door; she walks through when the player chooses, and open doors stay walkable. Everything else is free of the key: searching, turning, walking between rooms already open, looking up, talking to the party or to demons, using items, the altar, scrying the moon. The gate is a single boolean, `today(st).stepped`. (The key was called a "charge" from v0.70 to v0.81; it is "key" and "unlock" everywhere again since v0.82.)
 
-**Breath (v0.83).** What limits how fast she acts within a day. Six breaths (`BREATH_MAX`), shown as the moon strip under the map, which closes in from both sides as they are spent and is gone at zero.
+**Breath (v0.83).** What limits how fast she acts within a day. Six breaths (`BREATH_MAX`), shown as the bar under the map, which closes in from both sides as they are spent and is gone at zero.
 - **Costs:** a search (walls, doors, archways, a terminal, a fixture) and a scry take one; using an item from the bag takes one; a step into another room or up the stairs takes half (`STEP_BREATH`). Turning, looking up, unlocking, talking and fighting take none.
 - **At zero** she can't search, use an item (except in a fight, where it is never refused) or step (except when running from a demon). "KURA is out of breath."
 - **Pressing on makes the wait longer (v0.98).** Each refused try (a search, a step, the bag) pushes the recovery back half a second, to at most ten seconds past the usual wait. A held key counts once; clicks always count.
 - **It comes back in real time,** starting 2 seconds after the last one spent, slower the emptier it got: climbing from n to n+1 takes `[10, 8, 6, 4, 3, 2]` seconds, so about 35 seconds from empty and a few seconds from a small dip. It follows KURA from room to room and refills while the page is closed.
-- **On screen:** a `>` and a `<` press on the strip for one second whenever a breath is spent; while she is out, a countdown beside it shows the seconds until she can act again. The marker above the strip counts the other way from the breath: one dot when rested (over 4), two in between, three when out (under 1).
+- **On screen (v1.01-v1.02):** the bar is one white run with a dark square at each end, 20 columns, closing in up to 10 a side; what is left keeps its dark ends. It is nudged about two thirds of a column on the page so it sits in the middle of its panel. A `>` and a `<` press on it for one second whenever a breath is spent; while she is out, a countdown beside it shows the seconds until she can act again.
+- **The dots over it** count the other way from the bar: one when rested, one more for each breath spent, seven when out, three columns apart and centered over the bar (they grow from the middle as the bar closes), drawn half again as big. (Until v1.01 the bar was drawn from the moon's phase shapes and a dot marked today's phase.)
 - Heat (Part 3) is separate and is what total searching costs; breath caps the rate.
 
 **STANDBY** spends the day's key without moving (blocked while a demon is in the room). On the *following* rollover a STANDBY night triggers "camp" effects:
@@ -44,7 +45,14 @@ Every action runs `sync()` first, which also: halves every room's heat overnight
 
 **The three log lines** (v0.89 on). Top: the flavor line (the place, the party, a demon's words, and a question with its `[Y]ES [N]O [S]ILENT`). Middle: what KURA just did. Bottom: a line typed out as if at a terminal (Part 11).
 
-**How a search plays out** (page-side, v0.92.1). The middle line shows the lead-in ("KURA searches the WEST wall...", "KURA listens at the door", "KURA scries the moon...") and the three dots (no spaces, since v0.98) appear one at a time; only then does the search happen, so a demon, a find or the terminal never appears the instant the key is pressed. With nothing else opening, the result follows on the same line a sentence at a time, in a color for what it is: grey for nothing or a common or uncommon thing, silver for SILVER, blue for rare, bright gold for mythic and the deep find, lavender for a moon thing. A real find still opens its "KURA FOUND" box. There are no glows, dimming or other effects anywhere: a standing rule.
+**How a search plays out** (page-side, v1.02 "Hold Your Breath"). Each of the three log lines has its own voice: line 1 the party, line 2 KURA, line 3 the rest of the pit.
+- **Line 2:** the lead-in ("KURA searches the WEST wall...", "KURA listens at the door", "KURA scries the moon...", "KURA reaches for the screen") and three dots, one at a time; only then does the search happen, so a demon, a find or a terminal never appears the instant the key is pressed.
+- **A good find waits longer:** a RARE thing or the stairs gets three more dots, a MYTHIC or MOON thing five.
+- **Line 1, good finds only:** while those dots run, someone standing in the party reacts ("PIXIE leans closer.", "ELF goes quiet."; "KURA holds her breath." with nobody). It lasts until her next action. The party only reacts when something good is coming, so the reaction is the tell.
+- **The result is typed** a letter at a time (30 ms), a sentence at a time with a one-second beat between, in a color for what it is: grey for nothing or a common or uncommon thing, silver for SILVER, blue for rare, bright gold for mythic and the deep find, lavender for a moon thing.
+- **Line 3** goes quiet (a bare `>`) for every search. After a good find it says one whole line from the pit, held six seconds: others on her level right now hear it ("On this level, someone else stops to listen."), or the dark does ("Somewhere above, the dark shifts."); the moon and the stairs have their own lines. Then it goes back to its round.
+- **The "KURA FOUND" box** opens only for good finds (RARE, MYTHIC, MOON, the stairs), after the typing. Lesser things go into the bag on line 2 alone.
+- There are no glows, dimming or other effects anywhere: a standing rule.
 
 ---
 
@@ -55,6 +63,7 @@ Every action runs `sync()` first, which also: halves every room's heat overnight
 - **The deck:** the six kinds are shuffled twice and concatenated, retried until no pair repeats a kind, then dealt two at a time, one offer per wing. **The last offer is a wildcard:** one door of a kind rolled from the private seed, never part of the shared deck.
 - **Wings:** every wing is exactly three spaces: K (the room entered), P (a passage) and X (a dead end), as a chain (K, P, X) or a star (K to P, K to X). Every wing but the last hangs **two locked doors** off K or P. Unlocking one seals the other for good.
 - **The last wing** has one door (the wildcard's) and hides the stairs up in its passage or dead end. The stairs are found by searching their wall, then walked through like a door.
+- **The dead end is the exchange room (v1.00).** Every dead end with no other kind has the exchange's screen in one wall (Part 12), the same for everyone on the level, and is named for it: Exchange, Xchange, Trade floor, Market end, Ticker room, Trading gap, Swap room.
 - **Painted doors:** some walls carry a false door. Trying it costs nothing and keeps the key.
 - **Lure room:** about 60% of levels hide one locker (`?`) in a wing's dead end.
 - **Two seeds:** the shared `seed` (from the lunar epoch and the level's height) picks wing shapes and which two kinds are offered together; the private `pseed` (re-rolled every level) picks which kind is behind which door, where things hide, the wildcard's kind, and bonus/void placement.
@@ -77,9 +86,9 @@ Each kind-room (den/bay/relay/vault/forge) hides a **fixture** behind one wall, 
 
 Room type names are never shown. Each room has a flavor name in the slot under the map ("Soft room", "Walkway", "Dead end"); while she looks up the slot reads THE SKY or THE MOON.
 
-**Archive** (bonus room, at most one a level): a locker, two items and silver, no demons; items roll RARE 35% / UNCOMMON 65%; silver doubled; entering yields a friendly PROGRAM. **Void:** two demons, nothing else; entering spawns a hostile demon, corrupted unless it is a program or a unique. Both are placed by the daily roll in Part 8.
+**Archive** (bonus room, at most one a level): a locker, two items and silver, no demons; items roll RARE 35% / UNCOMMON 65%; silver doubled; entering yields a friendly PROGRAM. **Void:** two demons, nothing else; entering spawns a hostile demon, corrupted unless it is a program or a unique. Both are placed by the daily roll in Part 8, and since v1.00 always in a wing's passage (never the dead end, never the stairs wing).
 
-**Where things hide:** behind the walls with no door (never a door, never the altar's terminal wall). There is no floor or ceiling to search. Ordinary rooms hide a shuffled mix of demons, items and silver; a passage only items or silver; a dead end also holds the scrap that names one of the wing's two doors (never which).
+**Where things hide:** behind the walls with no door (never a door, never the altar's terminal wall, never the exchange screen's wall). There is no floor or ceiling to search. Ordinary rooms hide a shuffled mix of demons, items and silver; a passage only items or silver; a dead end also holds the scrap that names one of the wing's two doors (never which).
 
 **Searching** is NetHack-style: each hidden thing needs `5–10` base search-points, scaled **×1.5 per prior find on that wall**. Each search adds up to about 1.9 points, scaled by the day's omen, the room's heat tier (calm rooms yield more), a rested-day bonus (×1.25 the day after a STANDBY night), and moon fullness (up to ×1.35 at full). About a third of rooms hide a much deeper MYTHIC find (20–50 points).
 
@@ -225,7 +234,7 @@ Demons talk most easily at new moon and hit hardest at full moon — opposite cu
 
 **Scrying the moon (v0.72; `[S]CRY` since v0.87).** `[M]OON` looks up at the night sky with the real moon at today's phase. Scrying her asks, once a night; it costs a breath, no heat, and nothing wanders in. With probability `[0, .15, .5, .85, 1, .85, .5, .15]` by phase she shows what one of the still-locked doors hides (this room's, or failing that any seen on the level), never which door; otherwise she keeps her counsel. A new moon never answers and doesn't use the night's ask.
 
-**Bonus room and THE VOID are live again (v0.80).** They take over a wing's passage or dead end, as before v0.70; the streak trigger and the moon-weighted roll above place them.
+**Bonus room and THE VOID are live again (v0.80).** Since v1.00 they take over a wing's passage only (the dead end holds the exchange), never in the stairs wing; the streak trigger and the moon-weighted roll above place them. Their placement is private per account.
 
 **Omen banking** (Hold/Release, its cap of 1 and the 7-day cooldown) is described in Part 1.
 
@@ -275,9 +284,11 @@ Everyone feels like they're in the same place, without players being able to spo
 | Daily presence: who is in the pit, by level (`/here`) | Shipped v0.85 |
 | Events that say where and who (`news`) | Shipped v0.90 |
 | Bots: ten scripted players, daily | Running since Oct 11 (dungeon-notes `bots/`) |
+| Live presence (right now, by level; counts only) | Shipped v1.00 (polling; Durable Objects deferred) |
+| The exchange: player economy, offers, codes, stash | Shipped v1.00; the Worker picks the thing since v1.01 |
+| Admin presence (`[H]ERE` in the X-mode board) | Shipped v1.02 |
 | Things left for other players (notes, bones, wards) | Designed, not built |
 | Monthly and all-time boards, the finish at the surface | Decided, not built |
-| Live presence (minutes, not days), player economy | Accepted, not built |
 
 ## What is shared, what is private
 
@@ -288,11 +299,16 @@ Everyone feels like they're in the same place, without players being able to spo
 
 **The minimap** is the room map: visited rooms outlined, `#` a locked door, an arrow for her facing, `[v]` where she came up and `[^]` found stairs. Each player's is rotated or mirrored by one of eight private transforms (`floor.sym`), so "the east door" means nothing to another player. The compass in the game is each player's own.
 
-## Presence (v0.85)
+## Presence (v0.85, live since v1.00)
 
-Once a day, a device with a living run POSTs `/here` `{ id, level }`. The id is 24 random hex characters kept in the browser (nothing personal); one row a device in `present`, overwritten. The feed returns how many devices were seen this moon, how many in the last 24 hours, and how many on each level. "Players seen" on the title is this count; "Names carved on the board" is the separate count of names on finished runs.
-
-Live presence later is the same ping on a shorter interval plus a "last five minutes" count. It would only be shown above zero.
+A device with a living run POSTs `/here` `{ id, level }`. The id is 24 random hex characters kept in the browser (nothing personal); one row a device in `present`, overwritten. Bots' ids start `bot` (a page's never can).
+- **Daily:** the first save of each day, as before. The feed returns how many devices were seen this moon, how many in the last 24 hours, and how many on each level (bots counted). "Players seen" on the title is this count; "Names carved on the board" is the separate count of names on finished runs.
+- **Live (v1.00):** while a run is on screen, the tab is visible and a key or click came in the last 10 minutes, a ping every 3 minutes. A known device costs the Worker one row read and is rewritten at most every 2 minutes (or when its level changes); only a new id pays for the sender limit and the 60-day cleanup.
+- **Right now** = seen in the last 5 minutes, bots left out, worked out at most once a minute per Worker instance and returned by every `/here` reply and by `/feed`. Counts only, never who or where.
+- **Shown:** title cards `In the pit right now: N` and `On B3F right now: N` (plain, like the other numbers); in a run the typed line says it in sentences ("Three others are on this level with you."), her own device not counted. Nothing shows at zero.
+- **Admin (v1.02):** `GET /admin/here` with the admin key lists every device seen this moon (a short piece of its id, level, how long ago, bot or not) and the counts; never the sender hash. In the game: X-mode board, `[H]ERE`.
+- **Why polling, not Durable Objects:** for counts, Durable Objects add only seconds of freshness, at several times the work and a less predictable free-tier cost. They are kept for when something needs two players at the same moment (live trade handshakes).
+- **Free tier:** an active player sends about 20 pings an hour; about 1,000 daily players fit the 100,000 writes a day.
 
 ## Events (v0.74, located since v0.90)
 
@@ -300,7 +316,9 @@ When one of thirteen moments happens (a gift thrown back, a demon's first questi
 
 ## Bots
 
-Ten scripted players (HAL, R2D2, C3PO, DATA, MARVIN, BENDER, GORT, TARS, WALLE, ROSIE, each with "-bot") take one day's turn each in the real rules, from a GitHub Actions timer in dungeon-notes, three sittings a day. Each has a temperament and a way of handling breath; some skip days. Seven play a pinned build (`bots/roster.json`), three canaries play the latest. They post scores, events and the presence ping like any player, and keep a save, a diary and a shared `SUMMARY.md`. They count on the board for now; it can be reset when real players arrive.
+Ten scripted players (HAL, R2D2, C3PO, DATA, MARVIN, BENDER, GORT, TARS, WALLE, ROSIE, each with "-bot") take one day's turn each in the real rules, from a GitHub Actions timer in dungeon-notes, three sittings a day. Each has a temperament and a way of handling breath; some skip days. Seven play a pinned build (`bots/roster.json`), three canaries play the latest. They post scores, events and the presence ping like any player, and keep a save, a diary and a shared `SUMMARY.md` (whose header names the pinned and latest versions and the newest real turn on file).
+- **Kept off the leaderboards** (names ending `-bot`), but counted in the feed's totals, season tallies and daily presence; left out of the live count.
+- **At the exchange (v1.00):** each has a key, reports its finds and trades by temperament (`TRADE` in `bot.js`: some give things away, some hoard, one takes everything). The Worker's `BOTS_PUBLIC` switch (`wrangler.toml`, "1" since v1.00) puts their trades in the live market with players, anonymously, to populate it; "0" keeps them to a market only the admin key can see.
 
 
 ## Faction seasons
@@ -335,11 +353,26 @@ Ten scripted players (HAL, R2D2, C3PO, DATA, MARVIN, BENDER, GORT, TARS, WALLE, 
 ## Harder ideas considered, and the calls made
 
 - **Ghost replays** — rejected. Recording a full run as a canonical-shape action sequence and replaying it as an AI party member/rival in someone else's run, translated through their private transform. Interesting but heavy and redundant with the notes/demon-echo ideas already in scope. (A lighter cousin — passive route *traces*, not full replays — is noted under Notes/leavings below.)
-- **Live presence** — accepted. A signal that another player is active on the same floor depth right now (not location). Needs something beyond simple request/response Workers; landed on **Cloudflare Durable Objects**, which has a genuine free tier (100,000 requests/day, 5GB SQLite storage) — fits the existing Cloudflare-only stack with no separate server needed.
-- **Player-to-player economy (items/silver)** — accepted, favorite piece of the whole design. See below.
+- **Live presence** — built in v1.00 with plain polling (see Presence above). Durable Objects (free tier 100,000 requests/day, 5GB SQLite storage) stay the plan for anything that needs two players at the same moment.
+- **Player-to-player economy** — built in v1.00, the favorite piece of the whole design. See below. Silver is not traded.
 - **Full server-authoritative gameplay / real accounts** — rejected for now. Would solve cheating cleanly but means every action round-trips to a server and the game stops being a static client — too big a shift from the low-friction, mostly-client-side feel wanted. There's also a hard technical reason: Cloudflare Workers' free tier caps CPU time at 10ms per request, nowhere near enough to replay a whole run server-side to verify a submission. That's part of why the hybrid/event-sourced trust model below is the right fit, not just a scope preference.
 
-## Player identity & economy
+## Player identity & economy (the exchange, v1.00)
+
+**As built:**
+- **What trades:** only RARE, MYTHIC and MOON things. Silver does not trade, and is run-only.
+- **The key is in the password.** A long random key (48 hex) kept in the browser and copied into every run, so the password carries it; the `[P]ASS` box warns that whoever has the password has the stash. Loading a password with another key switches the browser to it (the replace prompt says so). The Worker keeps only the key's SHA-256.
+- **Finds are witnessed.** When a tradeable thing lands in the bag, the page tells the Worker at once (`/eco/find`); a thing only exists in the ledger if the Worker saw it found. The page decides *that* something of a tier turned up; since v1.01 the Worker rolls its own dice for *which* thing of that tier it is, and the page renames its copy (the found box waits up to 1.2 s for it).
+- **Limits:** per key a day RARE 3, MYTHIC 2, MOON 1; per sender (hashed address) a day 6/3/2; MOON finds at most 2 a lunar month per key (3 per sender), and only from waxing gibbous to waning gibbous; at most 5 new keys a day per sender. A refused or offline find stays an ordinary item in the bag.
+- **Where things are:** RARE and MYTHIC are run-only: in a living run's bag, and they die with the run like everything else. A MOON thing the Worker counts goes straight to the **stash**, which keeps between runs.
+- **Taking a MOON thing into a run** is a one-way door: it leaves the stash and the economy for good, so using one can't be undone by editing a save. At most one MOON thing a quarter that someone *else* found (bought, or given); your own finds are not capped.
+- **Offers:** one thing, asking for nothing (a gift), any thing of a tier, or one named thing; public (in the market and the title feed) or private (by code only). A code is `XXX-XXX`. At most 3 open per key. Every offer closes, strictly, when the moon's quarter ends: the thing goes back (MOON to the stash, the rest to the run's bag if that run still lives). An offer dies with its run, like the bag. Taking one moves the thing to the taker (MOON to the stash, else into the bag) and the payment to the maker (a delivery their run picks up).
+- **One run at a time** per key: a request from a new run retires the old one (its bag things and offers end). A retired run can't come back.
+- **Anonymous:** offers, trades and the feed never say who.
+- **Known softness:** the Worker can't see inside a run, so a cheater can still claim that a find of a tier happened (capped by the limits, never more than an honest player's daily best), and can use a thing locally and keep it locally. Nothing in the ledger is ever created or doubled. Making it impossible would take the server running the game (ruled out; the free tier's 10 ms CPU cap alone forbids it). A middle step, the Worker secretly deciding what each player's level holds, was discussed and not taken.
+- **Tables:** `eco_owners`, `eco_items` (`bag`, `stash`, `escrow`, `gone`, `dead`), `eco_offers` (`open`, `taken`, `cancelled`, `closed`, `dead`), `eco_retired`. Endpoints: `/eco/find`, `/eco/mine`, `/eco/market`, `/eco/peek`, `/eco/offer`, `/eco/cancel`, `/eco/take`, `/eco/withdraw`, `/eco/end`.
+
+**The thinking behind it (pre-v1.00), kept for reference:**
 
 **Identity: a self-custodied secret key, not an account.** A long random key generated client-side the first time a player touches the economy — conceptually the same pattern as the existing `[P]ASS` run-password system, just longer-lived and higher-entropy. No email, no login screen, no password reset flow. Losing the key loses the economy identity, same tradeoff as losing a run password today; acceptable for a low-friction solo project. (Considered and set aside: social login — still "an account," just outsourced. Device-bound-only identity — breaks cross-device trading. Blockchain — the only useful piece it offers is a public/private keypair for self-custodied identity, which can be had directly via ordinary browser crypto with none of the fees, wallet-UX friction, or NFT/crypto-asset regulatory baggage a real chain would drag in.)
 
@@ -390,32 +423,54 @@ Not urgent at current scale, but cheap to build in from the start:
 
 **Testing cheats and hosting (v0.95).** `X` (infinite steps) and `Shift+X` (the clock a day ahead) ask the Worker's `/admin` for the admin key; a cheated run can't post a score. The itch.io build is a separate zip of the same files with VT323 loaded by the FontFace API and the cheats blocked outright; every itch zip needs that lock. The Worker allows the GitHub Pages and itch.io origins, and bot names (ending `-bot`) are hidden from the board.
 
-**Number cards.** Exact, anonymous counts for the lunar month: last fall, runs ended, players seen, in the pit today, on each level today, names carved on the board, turns, pacts and the share that lasted, demons beaten / spoken to / joined, the demon with the most falls, doors unlocked, STANDBY nights, levels climbed, the moon asked and answered, times out of breath, SILVER and rare finds, wall searches, gifts refused, silent answers. With no network: the moon's week and the days to the next, when the dark takes the level, days to the full moon, the new-moon line, omen streaks. A card shows only above zero.
+**Number cards.** Exact, anonymous counts for the lunar month: last fall, runs ended, in the pit right now and on each level right now (v1.00; no bots), players seen, in the pit today, on each level today, names carved on the board, turns, pacts and the share that lasted, demons beaten / spoken to / joined, the demon with the most falls, doors unlocked, STANDBY nights, levels climbed, the moon asked and answered, times out of breath, SILVER and rare finds, wall searches, gifts refused, silent answers. With no network: the moon's week and the days to the next, when the dark takes the level, days to the full moon, the new-moon line, omen streaks. A card shows only above zero.
 
 **Rumor cards.** One vague line per recent event, never quoting the game except a demon's last words, which are quoted and never attributed.
+
+**Market cards (v1.00).** The newest public offers and the latest trades, nobody named: `MARKET: a moonstone, for any RARE. Code K7Q-2MX`, `Traded: x, for y`, `Given away: x`. They also ride the typed line's news of everyone else.
 
 **One request:** the title reads everything from `GET /feed`.
 
 **The typed line** (the bottom log line in a run, v0.91). A `>` and then a sentence typed a letter at a time (about eight a second, a breath at punctuation); it holds five seconds with the `_` blinking, is deleted a letter at a time, waits two seconds, and the next is typed. It carries the run's status reports as they change, and otherwise two lines about this run to one about everyone else:
 - **This run** (about thirty, each only when it applies): rooms of the level walked, days before the dark takes it, today's key, who walks with her, who has fallen or is hurt or is running out of patience, pacts, demons met and beaten, talks, gifts, silences, searches and finds, longest stay at one wall, rare finds, things broken, doors, levels, STANDBY nights, a held omen, the moon, times out of breath.
-- **Everyone else:** how many others are on her level today, then the located rumors, her own level first ("On this level, day 2: A CHROME ONI struck a traveler down.").
+- **Everyone else:** how many others are on her level right now and today, in sentences that rotate every ten minutes ("Three others are on this level with you.", "You are not alone down here. Two others on this level."; v1.00), then the market and the located rumors, her own level first ("On this level, day 2: A CHROME ONI struck a traveler down.").
+- **During a search** it goes quiet, and after a good find it says one whole line from the pit (Part 1, v1.02).
 - It never says KURA (that name belongs to the action line), ends every line with a full stop or a trailing ` . . .`, and is fed from the last title-screen load.
 - It replaced a scrolling ticker (v0.89, v0.90.1) that the dev tried and dropped.
 
 **The fight screens** unfold a beat at a time and can't be skipped: the opening (art, name, lines, `[ OK ]`, 0.45 s apart) and the ending (0.7 s apart).
 
-# Part 12: Open questions
+# Part 12: The exchange room
+
+Every dead end has the exchange's screen in one wall (`exchDir`: never a door wall or the stairs wall; nothing hides behind it). The room is named for it (Part 2). A dead end laid out before v1.00 that still hides something behind that wall searches normally until it is empty.
+
+- **The wall screen** is a size up from the altar's terminal, with two slots under it. It reads `EXCHANGE ^ 3 ON OFFER` over a moving market line. The arrow follows the line's trend, looking again about every 1.5 seconds. The line is a random walk, decoration rather than prices; the page repaints only those cells (the rules draw them as U+2800 blanks).
+- **Using it:** SEARCH or `[^]` at it, free and even out of breath ("KURA touches the screen. The market wakes.").
+- **The window,** over the view like INVOKE's:
+  - **Header:** "EXCHANGE   Offers close end of quarter (5d)".
+  - **Screen:** a ticker of the market's offers, right to left a letter at a time, over the same moving line.
+  - **MARKET:** public offers; ENTER takes one, paying with a matching thing when it asks for one.
+  - **YOURS:** your open offers (ENTER cancels) and MAKE AN OFFER: a thing, what it asks for, public or private.
+  - **STASH:** "Special things go here." ENTER takes one into the run, for good.
+  - **CODE:** type an offer's code to see it and take it.
+  - "..." shows until the market first answers. [ESC] leaves.
+- **No button.** The exchange is only reachable from a dead end (no `[E]XCHANGE` on the bar; it had one briefly before v1.00 shipped).
+- **The admin** (X inside the window asks for the admin key, without the testing cheats) sees the bots' offers when `BOTS_PUBLIC` is off.
+- The rules are Part 10's "Player identity & economy".
+
+# Part 13: Open questions
 
 - **Balance, unplayed by a human since the rollback:** breath shared between searching, items, scrying and walking; heat with breath capping the search rate; quarter-length levels on the wing floors. The bots' first day suggested breath, not heat, is now the limit on searching, and that fights are rare.
 - **The finish at the surface, the endgame and the two boards** (Part 9): decided, not built. What is at the top is open.
-- **Things left for others:** dead ends as a signal room (fixed-phrase notes, tallies of which door people took, bones) was discussed; nothing chosen. Cosmetic-only or functional is still open.
+- **Things left for others:** dead ends as a signal room (fixed-phrase notes, tallies of which door people took, bones) was discussed; nothing chosen. Since v1.00 the dead end holds the exchange, so a signal room would share it. Cosmetic-only or functional is still open.
 - **A shared map of the level** beyond the title's line: a readout and a tree were mocked up and set aside; the line of days is what shipped.
 - **Player names in events:** stored, unused. Whether the feed ever shows them.
-- **Live presence** and whether to show it.
+- **More from live presence:** a listening-post room, something small when several players are on a level at once; to decide once there are real numbers.
+- **The exchange:** prices and balance unknown until people trade; whether the bots stay in the live market (`BOTS_PUBLIC`) once people play; Durable Objects if trades ever need two players at once; a full server-run game is the only way to make forged finds impossible (ruled out).
 - **Dissonance** (Part 5): the Give action, the omen tie-in, combo skills.
 - **Alignment tag naming** (Part 6): no decision.
 - **Omen banking** (Part 1): whether Hold should cost something; a named buff for the day after a held day.
 - **The moon's odds** (Part 8): first guesses, kept "for now".
 - **The countdown beside the breath bar** is rarely seen; kept.
-- **Bots:** whether they keep counting on the board once people play.
+- **Bots** on the leaderboards: settled, they are hidden (names ending `-bot`).
 - **Faction season reward**, the rumor wordings (the dev means to rewrite them), KURA's own last words.

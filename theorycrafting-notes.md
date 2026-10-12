@@ -1,7 +1,9 @@
 # Daily Dungeon — Theorycrafting Notes
-**v9 — Oct 11 2026**
+**v10 — Oct 11 2026**
 
-Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v0.94** (wing-based levels again since v0.80, a climb out of a pit on the moon's quarters, breath, a title screen with a live feed, and ten bots playing daily).
+Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v1.02** (wing-based levels again since v0.80, a climb out of a pit on the moon's quarters, breath, a title screen with a live feed, live presence, the exchange in every dead end, and ten bots playing and trading daily).
+
+Moved out in v10 (shipped in v1.00-v1.02, now in the design doc): live presence and the admin view (Part 10), the player economy and the exchange room (Parts 10 and 12), the search cadence (Part 1).
 
 Moved out since v6, because they shipped or were settled: faction seasons (design doc Part 10), the title screen including its unbuilt stages 4–5 (Part 11), Dissonance and its open pieces (Part 5), alignment tag renames (Part 6), and the Hold/Release Omen consolidation (Part 1). The read-budget rules for any async feature are in the design doc's Part 10 as well.
 
@@ -155,7 +157,7 @@ Deferred and deliberately undesigned. There is already a real mechanic the playe
 
 ## 6. Dead ends as a place for other players (discussed, nothing chosen)
 
-Every wing has a dead end; today it holds the scrap that names one of the wing's two doors. Because wing shapes are shared, "the dead end of day 3's wing" is the same place for everyone on a level, which makes it a natural mailbox. Ideas floated:
+Every wing has a dead end; it holds the scrap that names one of the wing's two doors, and since v1.00 the exchange's screen (design doc Part 12), so any of the ideas below would share the room with it. Because wing shapes are shared, "the dead end of day 3's wing" is the same place for everyone on a level, which makes it a natural mailbox. Ideas floated:
 - **A message wall:** fixed-phrase notes, picked from a list, never typed.
 - **Bones:** a marker when a run ends on that level (a name, a day, last words), searchable for a small find.
 - **Tallies:** scratches for how many took each of that day's two doors. Popular, not which is which.
@@ -196,7 +198,7 @@ Things learned: every wing has exactly three rooms, so "size" can't be shown hon
 ## 9. Other ideas from the same session
 
 - **What could take `[F]IGHT`'s old slot on the bar** (left empty): `[W]AIT` for STANDBY (the day's other big choice, currently buried in the bag), `[G]IVE`, `[R]EST` (get breath back faster at a cost such as heat), `[L]ISTEN` (a quieter, less informative search).
-- **Live presence:** the daily ping on a few-minute interval and a "last five minutes" count. Cheap; only worth showing above zero.
+- **Live presence:** built in v1.00 (design doc Part 10). Still open: a listening-post room, something small when several players are on a level at once.
 - **Names in the feed:** events now store the run's name. "HAL-BOT fell on B4F to a CHROME ONI" would make the typed line a world of people; it ends anonymity and needs the board's name filter.
 - **Per-level counts on the title** beyond presence (falls on B3F this moon).
 - **Breath levers:** a bigger bar, a faster refill, search time that grows as she tires (built in v0.84, removed), a `[R]EST` action.
