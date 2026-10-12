@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.00.1 - Where the Moon Things Go - Oct 11 2026, 16:55 HST
+
+![v1.00.1](screenshots/v1.00.1.png)
+
+- **The stash line** (`ecoScan`, when the Worker counts a MOON find and it leaves the bag) read "... goes to the stash. [E]XCHANGE keeps it." from before the exchange moved into the dead ends and lost its button. It now reads "... goes to the stash. The exchange screens keep it." (76 columns at the longest name, "A shard of pale moonlight"). A stale `[E]XCHANGE` code comment renamed too. Commit `384721a`. No Worker change.
+- **`VERSION`** to v1.00.1. **Testing (light):** the line on the run screen in Chromium, no page errors.
+
 ## v1.00 - 100 - Oct 11 2026, 16:42 HST
 
 ![v1.00](screenshots/v1.00.png)
