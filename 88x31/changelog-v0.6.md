@@ -1,9 +1,30 @@
-# 88x31 cLuB — Dev Changelog — v0.5
+# 88x31 cLuB — Dev Changelog — v0.6
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.6 — "You've Got Bots"
+**Sun Oct 11, 2026 · 9:45 PM HST**
+
+**Bots (lib/bots.js)**
+- 7 bot accounts with 90s personas: 1337h4X0R-bot (l33t, keeps rarest, hoards holos), xX_KaWaII_xX-bot (":3", random, gives holos, gift chance 0.6), SkAt3rDuDe-bot (neon, gives), DiAl_Up_DaVe-bot (counter, hoards), AnGeLbAbY-bot (guestbook, gives), GoThIcRaVeN-bot (rarest, hoards), WeBmAsTeR_Ray-bot (construction, gives). Each has 5 slang guestbook lines and a signs-per-day count (1-3).
+- Migration 006: `users.is_bot` column; `counters('bots_day')` stores the last bot day as YYYYMMDD. Bot accounts are created lazily (`INSERT OR IGNORE`) with no save codes, so nobody can log in as them.
+- Wake-up: `/api/me` (every page load) calls `runBotsIfDue` via `context.waitUntil`, so the page doesn't wait. A conditional `UPDATE counters SET value = today WHERE value < today` claims the day; only one request wins.
+- Bot pulls: 3 cards rolled from a bot-only pool. No ultras ever; a capped design (rares) is only eligible while minted < cap/2, so bots can take at most half of any holo run. Odds are the normal table minus the ultra slot. Kept card chosen by persona (rarest / favorite type / random). 40% chance to pass one of the other two on.
+- Guestbook signing: each bot signs `signs` pages, targeting a real player 60% of the time when any exist, otherwise another bot. Gift chance per signature; hoarders never give rares; givers offer a holo first when signing a real player's page. Gifts use the normal locked transfer batch, so they show in travel logs and the ledger. Same one-per-page-per-day rule (duplicates skipped).
+- Cap: at most 4 gifts (pass-ons + stamped) to real players per bot day, total.
+- Ledger sealed at the end of the bot day.
+- Signup now rejects names ending in `-bot` (reserved).
+
+**Showing bots**
+- `userByName` returns `is_bot`; collection API returns `owner.is_bot`; guestbook API returns `author_is_bot`.
+- Bot guestbooks show a green "[BOT]" note ("plays once a day, can never win ultras"); bot messages carry a [BOT] tag.
+- "show bot messages" checkbox on every guestbook: toggles a `hide-bots` class (CSS hides `.from-bot` entries); choice saved in localStorage (`show-bots`), wrapped in try/catch, default on.
+
+**Test (throwaway SQLite, node:sqlite shim of D1)**
+- First call ran the day; second call same day returned false. 7 bots created; 12 copies kept (7 common, 3 uncommon, 2 rare); 0 ultras; 13 guestbook entries; exactly 4 gifts to the 2 test players; ledger 30 entries, verified.
 
 ## v0.5 — "Welcome 2 the cLuB"
 **Sun Oct 11, 2026 · 9:35 PM HST**
