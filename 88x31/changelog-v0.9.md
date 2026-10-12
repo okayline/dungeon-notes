@@ -1,9 +1,36 @@
-# 88x31 cLuB — Dev Changelog — v0.8
+# 88x31 cLuB — Dev Changelog — v0.9
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.9 — "Will Trade 4 Holos"
+**Sun Oct 11, 2026 · 10:23 PM HST**
+
+**Trading (lib/trades.js, /api/trades, /api/trades/act; migration 008)**
+- `trades` gains `lock_token` and `expires_at` (7 days). Up to 3 buttons per side; both sides required (gifts are for one-sided giving); ultras excluded on both sides.
+- Propose: one batch locks each offered button with the trade's token (`locked = token WHERE owner AND locked = 0`), inserts the trade only if all N got locked, inserts trade_items via the token, and releases partial locks if the trade wasn't created.
+- Only the offerer's buttons are locked; the receiver's aren't (prevents griefing by spamming offers). Accept re-checks them atomically.
+- Accept (one batch): lock the wanted buttons with a second token (still owned, free, not ultra); flip status to accepted only if both lock counts match; write ownership_history rows (reason `trade`, ref_id = trade id) guarded on `accepted`; swap owners and unlock by token; release token-2 locks if it didn't go through. If it fails, the trade is closed as cancelled and the offer's locks released.
+- Decline (receiver) / cancel (offerer) close and unlock; `expireTrades()` runs before reads and on accept.
+- Account deletion now unlocks buttons held by the player's open trades (both directions) before deleting trades.
+- Collection API returns `locked`; the gift picker hides locked buttons; the trade builder greys them out.
+- `/api/me` returns `trades_waiting`; nav shows "Trades (n)" in yellow. Guestbook API returns accepted trades for the page owner, rendered as "⇄ TRADE" entries merged with messages by time.
+- Tests (13 checks, throwaway SQLite): one-sided/ultra/other's-button/double-locked offers refused; offerer can't accept; swap + unlock correct; double accept refused; moved-button accept closes cleanly and unlocks; cancel permissions; expiry unlocks; ledger verifies.
+
+**Bots and trades**
+- Each persona has a `trades` style; value = common 1 / uncommon 3 / rare 10 (+2 favorite type): greedy (h4x0r, dave: only if strictly ahead, never give rares), fair (skater, webmaster: get ≥ give), soft (kawaii, angel: get ≥ ½·give, 90%), rares-only (goth). `botLikes` exported for testing; matrix verified.
+- Bots answer during `check` visits; `replyChance` decides whether they look at offers that visit (forgetful bots can take days).
+
+**Packs**
+- `PULLS_PER_DAY = 2` (lib/game.js). Pack keys: "YYYY-MM-DD", "YYYY-MM-DD#2"; one open at a time. Pull page shows "Pack n of 2 today". Bots get `pull2` actions too.
+- Bonus packs: `BONUS_CHANCE = 0.05` per regular pack; one slot becomes the `BONUS` marker (-1). Picking it closes the pack and creates "YYYY-MM-DD#bN" right away (not counted toward the daily limit, never contains another bonus). Can't be gifted. Bots don't get bonus cards. Tested with Math.random forced.
+
+**UI**
+- In-game dialog window (`ask()` / `askText()`, navy title bar, gray beveled body, no dimming, Enter/Escape) replaces every confirm()/prompt(): gift stamping (shows the button at 2x), trade accept, remove save code, name a new code, delete account.
+- Ledger timestamps (`toLocaleString`) on the About page, banner travel logs and "Design recorded". About ledger list is now two lines per entry (small time + fingerprint, then the description at 14px) with wrapping.
+- Footer version v0.9.
 
 ## v0.8 — "Be Kind, Rewind"
 **Sun Oct 11, 2026 · 10:11 PM HST**
