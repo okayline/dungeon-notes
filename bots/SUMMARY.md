@@ -1,6 +1,8 @@
 # Bots: where everyone is
 
-Updated 2026-10-11 (Honolulu). Pinned build: `0ab1a92`. Canaries play the latest code.
+Updated 2026-10-11 (Honolulu). Pinned build: `0ab1a92` (v0.94). Canaries play the latest code (v0.99.4 today).
+
+Each row is that bot's last real turn, and the Build column is the build it played then. All ten played together on the morning of Oct 11 (a manual run, 07:05 HST) on v0.86; the pin and the game have moved on since, so the rows below still read v0.86. A bot plays once a day, so the later sittings that day skipped, and the next real turn (Oct 12) plays the newer builds. Bots (names ending `-bot`) are kept off the leaderboards but still count in the feed's totals, season tallies and presence.
 
 | Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Last line |
 |---|---|---|---|---|---|---|---|---|---|---|---|
