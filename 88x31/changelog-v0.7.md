@@ -1,9 +1,36 @@
-# 88x31 cLuB — Dev Changelog — v0.6
+# 88x31 cLuB — Dev Changelog — v0.7
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.7 — "brb mom needs the phone"
+**Sun Oct 11, 2026 · 9:53 PM HST**
+
+**Staggered bots**
+- Replaced the once-a-day `bots_day` claim with per-action scheduling. Each bot has `hours` (HST, end may pass midnight): 1337h4X0R 20-27, xX_KaWaII_xX 15-22, SkAt3rDuDe 10-18, DiAl_Up_DaVe 19-25, AnGeLbAbY 14-21, GoThIcRaVeN 22-28, WeBmAsTeR_Ray 7-17.
+- `schedule(bot, day, dayStart)`: seeded RNG (FNV-1a hash of name|day → xorshift-style mixer) picks due times inside the window for `pull`, `sign1..N`, and `check`. Same schedule on every request.
+- Bot day runs on Hawaii time (`botDay()`); each call also evaluates the previous bot day so actions scheduled past midnight still run.
+- Migration 007: `bot_runs(bot_id, day, action, done_at, PK(bot_id, day, action))`; each due action is claimed with `INSERT OR IGNORE` before running, so concurrent requests can't double-run it. `counters('bots_day')` is now unused.
+- Gift cap (4/day to real players) now counted from ownership_history since the bot day started (`giftsToRealToday`), since actions are spread over many requests.
+- Actions only run when someone visits, so a quiet stretch means a small catch-up burst on the next visit.
+
+**Check-messages visit (`check` action)**
+- Reads entries on the bot's guestbook since its previous check (or the last ~day). For each new author (max 5 messages): signs back with chance `replyChance` using persona `replies` lines. Reply rates: kawaii 0.95, angel 0.9, skater 0.7, webmaster 0.6, h4x0r 0.5, dave 0.35 ("modem died"), goth 0.3.
+- Replies use the day key `"<date>:reply"` so a bot can both sign and answer the same page on one day (bug found in testing: same-day signatures were blocking replies).
+- Thank-you gift: if the incoming message carried a gift, chance `thankGiftChance` to stamp one back (givers prefer holos for real players; hoarders never give rares), within the daily cap.
+- Spare swap: 50% chance to give a duplicate copy (never ultra; hoarders keep rares) to a random other bot (reason `gift`).
+- Migration 007 also adds `users.last_seen`; updated after every bot action. Bot guestbooks show "<bot> was last online N hours ago" (`ago()` helper). Only bots expose last_seen in the API.
+
+**UI**
+- "Stamp a Gift!" button next to "Sign Guestbook!" opens a grid of your buttons; picking one shows "Stamping: [img] name #n [remove]" and the button becomes "Change Gift". Replaces the dropdown.
+- Banner page ownership line: "Owned by X · received from Y as a guestbook gift on DATE" (or "found in a daily pull", "in their welcome pack", "from a former player").
+
+**Tests (throwaway SQLite, fake clock stepping 30 min over 26 h)**
+- Actions spread through the day (7:30, 8:30, 11:00 ... 00:30, 03:00 HST), 0 duplicate claims, 28 actions per bot day.
+- With a player signing kawaii (with gift), goth and dave: kawaii replied 3/3 runs, goth 1/3, dave 0/3.
+- Today (Oct 11) the bots already ran under the v0.6 system, so they get one extra round on deploy day.
 
 ## v0.6 — "You've Got Bots"
 **Sun Oct 11, 2026 · 9:45 PM HST**
