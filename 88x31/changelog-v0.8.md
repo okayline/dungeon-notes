@@ -1,9 +1,31 @@
-# 88x31 cLuB — Dev Changelog — v0.7
+# 88x31 cLuB — Dev Changelog — v0.8
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.8 — "Be Kind, Rewind"
+**Sun Oct 11, 2026 · 10:11 PM HST**
+
+**Buttons (8 new; 25 designs total)**
+- From public-domain Openclipart art by j4p4n (`tools/remix_batch3.py`, sources in `sources/openclipart/`):
+  - Synthwave (/detail/301642, common, neon): crop on the striped sun + script; magenta grid pixels (r>150, b>150, g<120) brightness-pulsed over 8 frames (0.75-1.25x).
+  - Synthwave Holo (rare 25): same pulse + rainbow foil sweep, 12 frames.
+  - Island Life (/detail/302821, common, divider): 1640px-wide center crop of the sunset and palms, static.
+  - Island Life Moonlight (rare 25): full-res recolor by hue class: white stripes → (40,44,90), blue-violet palms → (14,12,34), ocean → (20,50,80), pixels inside the sun circle → pale moon gradient, warm sky → night gradient; 14 twinkling stars in the upper band, 8 frames.
+- Original art drawn in Pillow (`tools/make_originals.py`, license "Original", author 88x31), all common:
+  - Mix Tape (neon): cassette with reels rotating 60° per frame, scribbled label.
+  - Y2K Ready (counter): LCD clock 11:59 1999 → 12:00 2000, READY lights up, blinking check.
+  - Save Often (construction): floppy + 8-step progress bar. (Text overflowed twice; final is DejaVu Bold 8, measured and centered.)
+  - Aliens Welcome (webring): saucer bobbing ±2px, beam on alternate frames, twinkling stars.
+- All added via `tools/add_banner.py` (credits in GIF comment); `seed_new_banners.sql` now has 15 INSERT OR IGNORE lines (safe to re-run).
+
+**Other**
+- Footer shows the version (`<span id="version">v0.8</span>`); bump it on every release.
+- `/api/players`: all users (real first, then bots) with button counts, limit 500. Shown as a filterable, clickable list under "Visit a guestbook" (filters on input), plus a `<datalist id="player-names">` used by the visit box and the daily-pull "Send it to" box.
+- Bots count on the visitor counter: each bot action increments `counters('visits')` in the same batch as `last_seen`.
+- Discussed: no formal friend system for now; clickable names + gifts are the social graph. Link exchange is the planned friends feature.
 
 ## v0.7 — "brb mom needs the phone"
 **Sun Oct 11, 2026 · 9:53 PM HST**
