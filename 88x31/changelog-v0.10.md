@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.9
+# 88x31 cLuB — Dev Changelog — v0.10
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.10 — "Breaking News"
+**Sun Oct 11, 2026 · 10:32 PM HST**
+
+- `/api/feed`: last 25 ownership_history rows that are gifts (`guestbook`, `pass_on`, `gift`) or ultra finds (`daily`/`welcome` with rarity ultra), plus the last 10 accepted trades (one line per trade, both sides from trade_items), merged by time, top 20.
+- Front-page ticker ("~ Recent Trades & Gifts ~", above the button strip): yellow-on-black scrolling crawl, items joined with "***", animation duration scaled to text length (≥20s), refreshes every 3 min; static/wrapping under reduce-motion. Visible logged out.
+- Player search: removed the always-visible player list box (it also had a bug printing "null" after real players' names, from passing null to DOM `append`). Briefly built a custom type-ahead dropdown, then removed it: the browser's native `<datalist>` suggestions were already what was wanted. `loadPlayers()` now only fills the datalist.
+- Hit Counter card showed no image in a screenshot; the GIF is valid (8 frames, deltas) and unchanged since v0.2. Probably still loading; user had left the page. Watch for it.
+- Footer v0.10.
 
 ## v0.9 — "Will Trade 4 Holos"
 **Sun Oct 11, 2026 · 10:23 PM HST**
