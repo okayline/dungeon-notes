@@ -1,9 +1,20 @@
-# 88x31 cLuB — Dev Changelog — v0.18.1
+# 88x31 cLuB — Dev Changelog — v0.18.2
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.18.2 — "Point and Click"
+**Mon Oct 12, 2026 · 11:20 PM HST**
+
+- New standing rule from the user: never build or push without an explicit go-ahead each time (v0.18.1 was pushed without one, which the user called out).
+- **Wall clicks**: the hashchange handler skips scrollTo(0,0) and the full route() when going from #wall or #wall/N to #wall/N (only openInfo runs) or back to #wall (closeInfo). Verified in Chromium: scrollY unchanged after a click.
+- **Info window**: content split into `.info-cols`, two columns at ≥700px (button, stats, credits, archive note, webmaster box | ledger, owners). Owners capped at 12 (2 columns wide) + "...and N more!" from minted; ledger/artwork fingerprints shortened to 12 chars with the full hash on hover. Fixed `.info-body` height measured with the tallest mock (archive button + set line + foil counts + webmaster box + 12 bot owners): 543px wide → 560px; 928px single column → 940px. overflow-y auto kept only as a safety net.
+- **Found a Button**: no fields at all; upload starts on pick or drop (busy state, inline status, dupes jump to the existing button). Server: name = file name minus .gif (cleaned, 40 chars, "untitled" fallback), type `found` (new kind; bots with favorite kinds don't target it yet), credit "Origin unknown, found in the wild". Finder's copy #1 rolls with `FINDER_FOILS = { holo: 200, clear: 800 }` via new `opts.weights` on mintStatements/rollFoil (per-design caps still apply). Test: 54/300 = 18% holo. Response includes `holo` for a special message.
+- **Ledger list fix**: /api/ledger now joins foil (instances) and admin (admin_actions) entries; shows "FOIL X #n came wrapped in a clear/HOLO foil" and "WEBMASTER ..." in plain words with no names (ADMIN_SAYS). Removed designs show as "a removed button" in every row. `?limit=` 1–200 (default 15); About fetches 100, shows 15, rest in a `<details>` "Show more of the ledger".
+- **About**: intro says "Keep an eye out for shiny ones"; new Foils section (light: most clear, some shimmer, First Prints) and Found a Button section (bring 'em in, finder's name forever, makers can ask for credit/takedown via the webmaster's guestbook). User asked not to explain the foil-vs-art ownership model or describe game design explicitly. "Take Buttons Home" removed entirely (last player-facing CC0 text); public key + one-line explanation moved under Ledger Status with a Check a Button link. Signed downloads still exist on button pages for original-tier art.
+- Cache tags app.js/style.css ?v=0.18.2. Footer v0.18.2.
 
 ## v0.18.1 — "Hold Still"
 **Mon Oct 12, 2026 · 11:00 PM HST**
