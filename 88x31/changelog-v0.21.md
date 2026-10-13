@@ -1,12 +1,25 @@
-# 88x31 cLuB — Dev Changelog — v0.20
+# 88x31 cLuB — Dev Changelog — v0.21
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.21 — "Surf's Up"
+**Tue Oct 13, 2026 · 12:50 AM HST** (no migration)
+
+Decisions this stretch: the release unit is called **Series** (buttons belong to a series; a series arrives as a drop; season-only stuff maybe later). Series will contain only the cLuB's **original** buttons; found buttons are a separate stream. A set number of series in rotation at once, older ones at lower odds; release timing decided later. Player uploads: uploader keeps copy #1. Webmaster bulk imports: no copy #1, straight into packs, "Found on the internets".
+
+- **Packs = 1 found + 2 originals** (`FOUND_PER_PACK = 1`). `availableDesigns` splits active designs into originals by rarity and a found pool (tier 'archive'). The found card goes in a random unpinned slot and skips the rarity roll (found are commons); rares/ultras only from originals. No found buttons → all originals. Welcome pack's pinned uncommon stays an original. Bots' packs split the same way. Tested 2000 packs: always exactly 1 found, position spread 680/664/656.
+- **Webmaster batch uploads**: same Found a Button box; webmasters get `multiple`, folder drops (webkitGetAsEntry, recursive), and a "Batch mode" checkbox (default on). Batch → `batch=1` → `source_author 'Found on the internets'`, `found_by NULL`, no mint (copy #1 to whoever pulls it first). Players sending batch=1 are ignored. Running tally + list of skipped files (dupes / not 88x31 / failed). Batch off with one file = normal finder upload.
+- **Bots fuse** (`maybeFuse` in lib/bots.js, runs right after a bot keeps its pull): chance by personality (hoard 0.8, give 0.15), max 1 fusion per bot per bots'-day (counts `fusions` since dayStart), only designs with `max_editions IS NULL` and rarity common/uncommon, 3 lowest-finish copies (by foil tier, then no pattern/effect, newest editions). Tested: 1 fusion out of 10 tries, capped design untouched.
+- **Logged-out front page**: `showFront()` shows #out plus the #wall section under it and loads the Wall; `#wall` links while logged out land there. Top bar and footer for logged-out = Join · About (Wall link wrapped in only-in). hashchange treats the front page as "on the Wall" so tile clicks don't jump (tested scrollY unchanged).
+- Footer: Trades removed (logged in: My Page · Daily Pull · Wall of Buttons · About · Log Out).
+- Cleanups: homepage leftovers removed (Cool Links tiles link to cLuB pages, useBox has no homepage option; the checker still shows a homepage from old certificates). Info box lists 6 owners under 700px wide; phone height measured 733px → 760px (was 940). "...and N more" counts copies left.
+- Footer/cache tag v0.21.
+
 ## v0.20 — "Trophy Case"
-**Tue Oct 13, 2026 · 12:25 AM HST** (built, NOT pushed; migration 015 must run first)
+**Tue Oct 13, 2026 · 12:25 AM HST** (pushed after migration 015 ran)
 
 - **Wall info box, two views**: design view (default) and copy view. "Who has one" rows: tiny half-size preview in the copy's actual finish, "#n · owner [BOT]" on one line (ellipsis, full name on hover), finish name below (purple when special, "First Print" for null). Clicking a copy → `#wall/<design>/c/<copy>`, rendered in the box (big preview, finish + foil ledger entry, owned line, last 8 travel steps, link to the full page) with "« back to <button>". hashchange keeps these in-box, no scroll. Equal columns forced (`minmax(0,1fr)` x2); measured tallest design view fits 560px.
 - **Rares hidden for everyone** until owned once (HIDDEN = rare/ultra/special; uncovered() includes rare). Admins see all. Includes the 4 frozen holo rares.
