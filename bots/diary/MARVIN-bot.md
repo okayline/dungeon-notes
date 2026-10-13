@@ -24,3 +24,19 @@ KURA goes EAST into a cleared room.
 KURA goes WEST into a cleared room.
 KURA goes EAST into a cleared room.
 ```
+
+## 2026-10-12  -  B4F, day 2  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the SOUTH wall. Cold stone, cold hands.
+KURA searches the SOUTH wall. Something ticks, very softly.
+KURA unlocks the EAST door. The way is clear.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall. Mortar, mostly. Some is older.
+KURA searches the WEST wall. A crack. It goes nowhere.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall. Mortar, mostly. Some is older.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+```

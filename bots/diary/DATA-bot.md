@@ -98,3 +98,40 @@ KURA goes EAST into a cleared room.
 KURA goes WEST into a cleared room.
 KURA goes SOUTH into a cleared room.
 ```
+
+## 2026-10-12  -  B4F, day 2  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA goes NORTH into a cleared room.
+KURA plugs in. No one needs it.
+KURA searches the WEST wall. Nothing.
+KURA searches the WEST wall. A dead cable runs in and stops.
+KURA searches the WEST wall. Only stone.
+KURA searches the WEST wall. Mortar, mostly. Some is older.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall. Faded paint. A number, or a sigil.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall. A low sound. KURA holds her breath.
+KURA goes SOUTH into a cleared room.
+KURA searches the EAST wall. Only stone.
+KURA searches the EAST wall. Nothing yet.
+KURA searches the EAST wall. A crack. It goes nowhere.
+KURA searches the EAST wall. A dead cable runs in and stops.
+KURA searches the EAST wall. Faded paint. A number, or a sigil.
+A locked door. Tiny ticks, like metal cooling.
+A locked door. Warm air breathes along the bottom of the door.
+KURA unlocks the WEST door. The way is clear.
+KURA goes NORTH into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+```

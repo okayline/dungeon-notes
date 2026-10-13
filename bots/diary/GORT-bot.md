@@ -61,3 +61,51 @@ KURA goes NORTH into a new room.
 KURA goes SOUTH into a cleared room.
 KURA goes NORTH into a cleared room.
 ```
+
+## 2026-10-12  -  B4F, day 2  (latest v1.02)
+
+```
+KURA wakes on B4F.
+KURA searches the NORTH wall... Nothing but dust.
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall... Nothing.
+KURA searches the WEST wall... The wall gives nothing away.
+KURA goes EAST into a cleared room.
+KURA searches the SOUTH wall... Old tally marks, in groups of five.
+KURA searches the SOUTH wall... Nothing yet.
+KURA searches the SOUTH wall... A low sound. KURA holds her breath.
+KURA searches the SOUTH wall... A faint scrape, and then quiet.
+KURA searches the SOUTH wall... Mortar, mostly. Some is older.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall... 60 SILVER, loose in the rubble. Two doors.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA goes EAST into a cleared room.
+KURA searches the SOUTH wall... ATOM SLASHER wanders in!
+  ATOM SLASHER strikes ELF. -7 HP
+  The party strikes. -9
+  ATOM SLASHER strikes KURA. -9 HP
+  The party strikes. -8
+  ATOM SLASHER strikes CU SITH. -4 HP
+  The party strikes. -7
+  ATOM SLASHER strikes KURA. -14 HP
+  The party strikes. -12
+  ATOM SLASHER strikes PIXIE. -4 HP
+  The party strikes. -10
+  ATOM SLASHER strikes CU SITH. -3 HP
+  The party strikes. -7
+  The party strikes. -8
+  ATOM SLASHER falls.  +11 ICHOR
+KURA goes EAST into a cleared room.
+KURA touches the terminal. The screen wakes.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+```

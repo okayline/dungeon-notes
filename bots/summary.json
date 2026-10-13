@@ -96,66 +96,68 @@
   "eco": "nothing"
  },
  "DATA-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "pinned",
-  "version": "v0.86",
+  "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 96,
+   "day": 2,
+   "turns": 142,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face EAST. Cracked stone, nothing more."
+   "last": "KURA turns to face WEST. An opening in the stone, the dark past it."
   },
   "n": {
-   "searches": 17,
+   "searches": 14,
    "blocked": 0,
    "waited": 75,
-   "fights": 1,
-   "talks": 3,
+   "fights": 0,
+   "talks": 0,
    "runs": 0,
-   "unlocks": 0,
-   "moves": 12,
+   "unlocks": 1,
+   "moves": 10,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "3/3 sent: asked, silent, asked; here: ok"
+  "events": "none; here: ok",
+  "eco": "nothing"
  },
  "GORT-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "latest",
-  "version": "v0.86",
+  "version": "v1.02",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 109,
+   "day": 2,
+   "turns": 150,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA goes NORTH into a cleared room."
+   "last": "KURA needs a moment before she moves on."
   },
   "n": {
-   "searches": 18,
+   "searches": 15,
    "blocked": 0,
    "waited": 75,
-   "fights": 4,
+   "fights": 7,
    "talks": 0,
    "runs": 0,
    "unlocks": 0,
-   "moves": 8,
+   "moves": 5,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "1/1 sent: words; here: ok"
+  "events": "1/1 sent: words; here: ok",
+  "eco": "nothing"
  },
  "BENDER-bot": {
   "date": "2026-10-12",
@@ -286,34 +288,35 @@
   "eco": "nothing"
  },
  "MARVIN-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "pinned",
-  "version": "v0.86",
+  "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 26,
+   "day": 2,
+   "turns": 36,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face EAST. A door, its handle worn smooth."
+   "last": "KURA needs a moment before she moves on."
   },
   "n": {
-   "searches": 6,
+   "searches": 5,
    "blocked": 0,
    "waited": 0,
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 0,
-   "moves": 12,
+   "unlocks": 1,
+   "moves": 2,
    "moon": 0,
-   "holds": 1,
+   "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok"
+  "events": "none; here: ok",
+  "eco": "nothing"
  }
 }
