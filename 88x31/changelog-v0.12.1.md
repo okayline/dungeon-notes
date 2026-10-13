@@ -1,9 +1,17 @@
-# 88x31 cLuB — Dev Changelog — v0.12
+# 88x31 cLuB — Dev Changelog — v0.12.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.12.1 — "Plug It Back In"
+**Mon Oct 12, 2026 · 6:02 PM HST**
+
+- After setting `SIGNING_KEY` (PowerShell pipe, then re-set via `cmd /c "node make_key.mjs | npx wrangler pages secret put ..."`) and a successful redeploy, `/api/pubkey` still returned `{"key":null}`. Secret shows in dashboard as Secret / Value encrypted.
+- `privateJwk` now tolerates mangled input: strips NULs (UTF-16 piped as bytes) and BOM, trims, falls back to extracting the first `{...}`, then to regex-picking `d` and `x` (handles PowerShell stripping quotes). Tested: clean, BOM, CRLF, single-quoted, quotes stripped, UTF-16 all sign + verify.
+- `keyStatus(env)` → "missing" | "unreadable" | "ok"; `/api/pubkey` returns `{ key, status }` for diagnosis.
+- Footer v0.12.1.
 
 ## v0.12 — "Take Me Home"
 **Mon Oct 12, 2026 · 5:50 PM HST**
