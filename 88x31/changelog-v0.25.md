@@ -11,6 +11,9 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 - **Fix**: v0.25's showWall rewrite cut out `OWNERS_SHOWN` (sat between showWall and openWallHash), so clicking any button threw "OWNERS_SHOWN is not defined". Restored.
 - Wall Show/Order controls moved into the panel's top-right corner (absolute, 10px, two stacked rows; centered under the title below 700px), hidden when logged out (and logged out always uses the default shuffle/all view).
 - Upload box: "Add as" series picker + rarity/kind removed from the page (user: not needed). /api/upload still accepts `series`, `rarity`, `kind` for webmasters.
+- **Cool Links removed** (user: "unnecessary and too much for now", webrings soon): links panel + My Button picker off the page, renderLinks/cardImg gone, /api/links and lib/links.js deleted, guestbook API no longer returns links/my_card/link_state/link_requests, summary drops link_requests (Hi! box line gone), bots stop accepting link requests and lost their "link exchange" replies. `link_exchanges` table and `users.my_button` left in the database untouched.
+- **Series panel**: no Retire/Hide (user doesn't want that power on the panel); "Look" toggles the series' buttons open/closed (highlighted while open, switching series swaps it); "Release" only shows on upcoming series. /api/series status action still exists.
+- **Public key** moved from under "Raw data" up to right after "Latest fingerprint" in Ledger Status, with clearer text (signs every downloaded button's certificate; anyone can check one is real). It's live (`/api/pubkey` status ok) and is what Check a Button verifies against.
 - Footer/cache tag v0.25.1.
 
 ## v0.25 — "Hack the Planet"
