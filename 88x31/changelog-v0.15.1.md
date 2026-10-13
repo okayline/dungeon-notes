@@ -1,9 +1,16 @@
-# 88x31 cLuB — Dev Changelog — v0.15
+# 88x31 cLuB — Dev Changelog — v0.15.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.15.1 — "Window Shopping"
+**Mon Oct 12, 2026 · 7:18 PM HST**
+
+- Wall info window is no longer a modal: `aside#info-win` lives in the Wall panel. Tried a 2/3 + 1/3 layout with a sticky side window, then settled (user's pick) on full width below the grid. Empty state "↑ Click any button above…"; selected tile gets a yellow outline; clicking scrolls the window into view (`block: nearest`); x resets it. Owners list in 3 columns (2 on phones). Big image scales to fit (`max-width: 100%`), long links/hashes wrap.
+- Fix: `.dialog-window`'s 340px max-width overrode the info window; now `#info-win.info-window { width: 100%; max-width: none }`.
+- Footer v0.15.1.
 
 ## v0.15 — "Wall of Fame"
 **Mon Oct 12, 2026 · 7:10 PM HST**
