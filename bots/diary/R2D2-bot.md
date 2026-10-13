@@ -115,3 +115,36 @@ Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-13  -  B4F, day 3  (latest v1.02)
+
+```
+KURA wakes on B4F.
+KURA searches the WEST wall... Nothing yet.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA goes EAST into a new room.
+KURA searches the NORTH wall... Nothing but dust.
+KURA searches the NORTH wall... Mortar, mostly. Some is older.
+KURA searches the NORTH wall... Nothing but dust.
+KURA searches NORTH... Something behind the stone shifts, just once.
+A heap of loose parts and old gear, still warm to the touch. It can be used
+KURA sorts through the heap. The room stirs.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA searches the WEST wall... Nothing but dust.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA goes SOUTH into a cleared room.
+KURA touches the terminal. The screen wakes.
+KURA makes an offering.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall... Only stone.
+KURA goes SOUTH into a cleared room.
+KURA touches the terminal. The screen wakes.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+```

@@ -6,10 +6,10 @@ Each row is that bot's last real turn, and Build is the build it played then, so
 
 | Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Exchange | Last line |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| HAL-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 170 | 14 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA turns to face SOUTH. Old mortar, older stains. |
-| C3PO-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 52 | 2 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA needs a moment before she moves on. |
-| TARS-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 169 | 15 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA looks ahead, NORTH. A bare archway, and the way through. |
-| R2D2-bot | latest v1.02 | 2026-10-12 | B4F | 0 | 2 | 178 | 16 / 0 / 75s | 0 / 1 / 0 | 1 / 0 / 0 | 1/1 sent: asked; here: ok | nothing | KURA is out of breath. She stays where she is. |
+| HAL-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 217 | 14 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA turns to face NORTH. The wall stares back. |
+| C3PO-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 67 | 3 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
+| TARS-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 210 | 15 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA goes WEST into a cleared room. |
+| R2D2-bot | latest v1.02 | 2026-10-13 | B4F | 0 | 3 | 238 | 16 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA turns to face EAST. A terminal, set into the wall. Its screen wai |
 | DATA-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 142 | 14 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA turns to face WEST. An opening in the stone, the dark past it. |
 | MARVIN-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 36 | 5 / 0 / 0s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA needs a moment before she moves on. |
 | GORT-bot | latest v1.02 | 2026-10-12 | B4F | 0 | 2 | 150 | 15 / 0 / 75s | 7 / 0 / 0 | 0 / 0 / 0 | 1/1 sent: words; here: ok | nothing | KURA needs a moment before she moves on. |

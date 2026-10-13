@@ -106,3 +106,31 @@ KURA goes SOUTH into a cleared room.
 KURA scries the sky. No moon tonight. No one to ask.
 Wings beat once, close by.
 ```
+
+## 2026-10-13  -  B4F, day 3  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the EAST wall. The wall gives nothing away.
+KURA searches the EAST wall. Only stone.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA searches the EAST wall. Someone has looked here before.
+KURA searches the EAST wall. Mortar, mostly. Some is older.
+KURA searches the EAST wall. Fingers come away gray.
+KURA searches the EAST wall. Nothing.
+KURA searches the EAST wall. Faded paint. A number, or a sigil.
+KURA searches the EAST wall. Nothing.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall. Fingers come away gray.
+A cradle of cables, humming softly in the wall. It can be used. Two doors.
+KURA plugs in. No one needs it.
+KURA searches the NORTH wall. Old tally marks, in groups of five.
+KURA goes WEST into a cleared room.
+KURA searches the SOUTH wall. A crack. It goes nowhere.
+KURA unlocks the WEST door. The way is clear.
+KURA searches the SOUTH wall. The wall gives nothing away.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+```

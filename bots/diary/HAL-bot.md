@@ -101,3 +101,42 @@ KURA scries the sky. Only the dark, a long way up.
 A low laugh echoes, then stops.
 KURA goes WEST into a cleared room.
 ```
+
+## 2026-10-13  -  B4F, day 3  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the SOUTH wall. Mortar, mostly. Some is older.
+KURA searches the SOUTH wall. Faded paint. A number, or a sigil.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall. Only stone.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA searches the EAST wall. A crack. It goes nowhere.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall. Fingers come away gray.
+KURA searches the SOUTH wall. Salt along the base, in a line.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall. A dead cable runs in and stops.
+KURA searches the SOUTH wall. Damp. The smell of old pipes.
+KURA goes NORTH into a cleared room.
+KURA searches the EAST wall. The wall gives nothing away.
+KURA searches the EAST wall. Faded paint. A number, or a sigil.
+KURA goes SOUTH into a cleared room.
+KURA searches the EAST wall. Fingers come away gray.
+KURA searches the WEST wall. Faded paint. A number, or a sigil.
+KURA goes NORTH into a cleared room.
+KURA goes WEST into a cleared room.
+KURA scries the moon.
+Moonlight shows a warm room, heaped with things left behind.
+KURA goes WEST into a cleared room.
+KURA looks to the moon again. She has nothing more tonight.
+ELF: "A passage. Let us not linger in it."
+A locked door. Warm air breathes along the bottom of the door.
+Not yet. KURA catches her breath.
+KURA unlocks the WEST door. The way is clear.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+```
