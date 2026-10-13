@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.18
+# 88x31 cLuB — Dev Changelog — v0.18.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.18.1 — "Hold Still"
+**Mon Oct 12, 2026 · 11:00 PM HST**
+
+- User report: picking a GIF in Found a Button "did nothing". Local Chromium test showed the picker/preview working, so likely causes: messages (e.g. wrong-size warning) went to #msg at the top of the page, out of view; and/or a cached old app.js with the new index.html.
+- Fixes: inline `#add-status` line in the form for every upload message (loading, wrong size, unreadable, adding, server errors); `app.js?v=0.18.1` / `style.css?v=0.18.1` cache-busting (bump the tag on future releases); listener via addEventListener.
+- Layout: form moved out of the left wall column to below the info window (single-column layout, so info now sits above upload). Info body fixed height 360px (300px under 560px wide), scrolls inside.
+- Preview centered; auto-suggested name follows the picked file until the user types (`data-auto`).
+- Footer v0.18.1.
 
 ## v0.18 — "Shiny Happy Buttons"
 **Mon Oct 12, 2026 · 10:47 PM HST**
