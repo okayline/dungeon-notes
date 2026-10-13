@@ -1,9 +1,31 @@
-# 88x31 cLuB — Dev Changelog — v0.14
+# 88x31 cLuB — Dev Changelog — v0.15
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.15 — "Wall of Fame"
+**Mon Oct 12, 2026 · 7:10 PM HST**
+
+**Wall of Buttons** (`#wall`, public)
+- `/api/designs` (all active + reward designs with minted counts) and `/api/designs?id=N` (design row, its ledger 'design' entry, sets it's part of / reward for, with secret sets named "a secret set", and up to 60 copies by edition with owners).
+- Grid sorted common → uncommon → rare → ultra → special, with a border legend (special = orange). Clicking opens a gray "info window" (`#info-win`, title bar + x, Escape/backdrop click closes, deep link `#wall/ID` via replaceState on close): 3x image, variant line, rarity/type, copies "n of cap", reward-only note, sets, credits + original link + CC0 download, ledger entry + fingerprints, "Who has one" list.
+- About's credits list removed (points to the Wall); `/api/credits` now unused by the UI.
+
+**My Page**
+- Nav renamed My Guestbook → My Page; title "Welcome 2 X's Page"; guestbook panel titled "» Guestbook «".
+- Top bar restyled to match the footer (transparent, site font, 13px) and links: My Page - Daily Pull - Trades - Wall of Buttons - About - Log Out (`.only-in`); logged out: Join the cLuB! - Wall of Buttons - About (`.only-out`). Footer has the same links; old placeholder footer links (Sign/View my Guestbook, Email Me) removed; `.logout-link` / `.my-page-link` wired by class.
+- Hi box: only on your own page (shown by showPage when mine); two-column grid (news left; Save Codes / Check a Button / Visit a page right, bold to match), stacks on phones; last gift got/given show the button image (summary API returns image_key + rarity). Daily Pull removed from the box (it's in the top bar).
+
+**Public pages**
+- `#u/NAME` and `#banner/ID` render for logged-out visitors (APIs were already public). Visitors get "Join the cLuB" prompts instead of the sign form, trade panel and link swap; owner-only bits hidden; link requests only rendered for the owner.
+- Public/other-player view is pared down via `body.on-page` (`setPageMode` on route/hashchange: hash `#u/x` where x isn't you, or logged out): hides `.site-extra` (green marquee, under-construction block, news ticker, button strip, visitor counter, webring); shows `.page-banner` "~*~ Welcome 2 X's Page ~*~" between the rainbow bars; collection before the homepage link (flex order). Your own logged-in page is unchanged (verified identical render height).
+
+**Fixes**
+- Stray "null" text: `Element.prototype.append` patched to skip null/undefined/false, so optional pieces never print (seen on banner pages before).
+- Secret-set wording in info window.
+- Footer v0.15.
 
 ## v0.14 — "Gotta Link 'Em All"
 **Mon Oct 12, 2026 · 6:48 PM HST**
