@@ -1,9 +1,23 @@
-# 88x31 cLuB — Dev Changelog — v0.21
+# 88x31 cLuB — Dev Changelog — v0.22
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.22 — "Series Alpha"
+**Tue Oct 13, 2026 · 1:20 AM HST** (pushed after migration 016 ran)
+
+Decisions: Greek-letter series, everything until now = **Series Alpha**; series contain only the cLuB's originals (found buttons are their own stream, 1 per pack); 3 series in rotation, odds 60/25/15 newest first (one mixed daily pack, option A; chase a series by trading); series are defined by their own ultras and sets; release timing decided later. Sealed packs are items: made when earned, contents rolled at opening, earned packs keep 2 of 3, bots get packs too. Pack sources now: webmaster gifts (player or everyone), visitor milestones, finishing a set; request board (release #2) and webrings later. Print runs per series were floated, not decided.
+
+- **Migration 016**: `series` (Alpha active), `designs.series_id` / `sets.series_id` = Alpha for all non-archive designs and all sets; `packs`, `pack_history`, `pack_openings`; image_key renames hit-counter.gif → tally-88.gif and 1-000-000th-visitor.gif → big-milestone.gif (ad blockers hide those names; old files kept in public/ so nothing broke between migration and push).
+- **Series odds** (lib/game.js): `availableDesigns` groups active-series originals by series and rarity; `pickSeries` uses SERIES_WEIGHTS [60,25,15] for the up-to-3 active series (newest by sort first); upcoming/retired excluded; designs with no series count as the newest. `rollDesigns(..., { series })` = series pack. Tested 3000 packs with 3 active + 1 upcoming: 60.0/25.1/14.9%, upcoming never; Beta pack only Beta.
+- **Sealed packs** (lib/packs.js, /api/packs): `givePacks` (batched), `openPack` (rolls on first open, stores the 3 in pack_openings, locks the pack so a revealed pack can't be given away; reopening shows the same 3), `keepFromPack` (exactly `keep` picks, claim-first against double clicks, mints with reason `pack` + ref_id pack id), `givePack` (sealed + unrevealed only), `packStory`, `botOpenPacks` (bots skip ultras even if they keep fewer). Ledger kinds `pack` (pack_history rows) and `pack_open` (finished openings; found by NOT EXISTS since openings finish out of order). mintStatements gained `opts.refId`.
+- **Sources**: admin action `give_packs` (name or everyone incl. bots, 1–10, optional series, note; logged as admin action); visitor milestones 1000/2500/5000/10000/25000/50000/100000/250000/500000/1000000 in hit.js (once each via meta key `milestone_N`); claimSet gives a pack of the set's series ("for finishing <set>").
+- **UI**: Unopened Packs shelf above the collection (own page); `#pack/N` page (open → pick 2 of 3 → story; give sealed pack by name; public story with history, what it held, what was kept, ledger hashes); give-packs form in the Hi! box for admins (series list from /api/series); ledger list shows PACK / PACK OPENED with links; travel logs link copies to their pack; "Series Alpha ·" on info box and copy pages.
+- **Small items**: Who has one #number → copy's full page (tiny picture still opens in-box); logged-out Wall pictures only (no info box, tiles are spans, intro line hidden); live "Buttons you can collect" strip (16 random visible incl. found + up to 3 [ ? ] tiles, doubled for the loop); menus say "<name>'s Page" (trimmed at 16 chars); uploads accept 87–89 × 30–32 (user's Internet 6.01 button is 88x32).
+- Bots pull only active-series originals.
+- Footer/cache tag v0.22. Next: request board (release #2).
 
 ## v0.21 — "Surf's Up"
 **Tue Oct 13, 2026 · 12:50 AM HST** (no migration)
