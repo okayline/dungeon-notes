@@ -1,9 +1,37 @@
-# 88x31 cLuB — Dev Changelog — v0.11
+# 88x31 cLuB — Dev Changelog — v0.12
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.12 — "Take Me Home"
+**Mon Oct 12, 2026 · 5:50 PM HST**
+
+**Decisions**
+- All cLuB art is CC0 (no forced attribution; let it spread organically).
+- Option A: owners get a signed, stamped download; anyone can download the plain CC0 picture. Right-click/screenshot always works anyway; a screenshot strips the hidden block and is just the free picture.
+- The file is a dated certificate, not the asset: copies are byte-identical, so "the one" is the ledger entry. Only the owning account can gift/trade/stamp/download-signed. The secret key is never in the file, only the signature.
+- Planned next: upload-as-seed ("Barcode Battler") generated buttons; image hashed in the browser, never uploaded or shown.
+
+**Certificates (lib/cert.js)**
+- Ed25519 via WebCrypto. Secret `SIGNING_KEY` (private JWK) set as a Pages secret; made by `tools/make_key.mjs` piped into `wrangler pages secret put` so it's never displayed. Public key = JWK `x`, shown on About and at `/api/pubkey`.
+- Stamp: "88x31 cLuB certificate v1" + `key: value` lines (copy, button "#n of cap", issued_to, homepage, ledger "#id hash" of the transfer that gave the current owner the copy, issued_at ISO, page URL, art credit, license CC0) + `sig: base64` over everything above it.
+- `addGifComment` inserts a comment extension (0x21 0xFE, 255-byte sub-blocks) right after header + LSD + global color table, sets GIF89a; existing credit comment kept. `readGifComments` parses extensions and image descriptors.
+- `/api/download?id=N` (owner only, 403 otherwise; 503 if no key): seals the ledger, builds the stamp, fetches the static GIF via `env.ASSETS.fetch`, returns attachment `<image-file>-<edition>.gif`.
+- `/api/verify {stamp}`: checks signature, returns fields, the copy's current owner, and whether the stamped ledger entry id+hash still matches.
+- Checker page `#check` (public): reads the GIF in the browser (duplicate of readGifComments in app.js), sends only the stamp text. Messages for no certificate / not genuine / genuine (issued to X, owned now by Y, ledger ok).
+- Tests: stamped GIFs identical in frames and pixels to originals (+~218 bytes), identify OK; editing issued_to fails; stamp signed with another key fails; non-owner download 403; after gifting, verify shows issued_to space / owner sam.
+
+**Homepage + wall**
+- Migration 010: `users.homepage`; `idx_wall_instance`. `/api/profile {homepage}`: http/https only, adds https:// if missing, needs a dotted host, ≤200 chars. Shown on guestbooks as "★ Visit my homepage ★" (rel noopener nofollow ugc).
+- `/api/wall {order}`: rewrites wall_slots for owned copies. Collection API orders by slot then newest. Transfers and accepted trades delete the moved copy's wall slot.
+- Arrange mode: pointer events (mouse + touch), elementFromPoint to reorder, links disabled while arranging, Save/Cancel.
+
+**UI / copy**
+- "Use this button" box on banner pages: owner signed download, plain download, copy-paste snippet (owner can link to homepage or the copy page; owner snippet references their own `name-edition.gif`).
+- About page rewritten in a light 90s voice; new "Take Buttons Home" section; ledger text updated for daily full checks. Nav + footer "Check a Button". Pull text "Each pack has 3 buttons".
+- Footer v0.12.
 
 ## v0.11 — "Defrag"
 **Mon Oct 12, 2026 · 5:20 PM HST**
