@@ -1,21 +1,21 @@
 {
  "HAL-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "pinned",
-  "version": "v0.86",
+  "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 118,
+   "day": 2,
+   "turns": 170,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face EAST. The wall stares back."
+   "last": "KURA turns to face SOUTH. Old mortar, older stains."
   },
   "n": {
-   "searches": 17,
+   "searches": 14,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
@@ -23,74 +23,77 @@
    "runs": 0,
    "unlocks": 0,
    "moves": 12,
-   "moon": 0,
+   "moon": 3,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok"
+  "events": "none; here: ok",
+  "eco": "nothing"
  },
  "TARS-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "pinned",
-  "version": "v0.86",
+  "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 111,
+   "day": 2,
+   "turns": 169,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA goes NORTH into a cleared room."
+   "last": "KURA looks ahead, NORTH. A bare archway, and the way through."
   },
   "n": {
-   "searches": 17,
+   "searches": 15,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
    "talks": 0,
-   "runs": 1,
+   "runs": 0,
    "unlocks": 0,
-   "moves": 12,
-   "moon": 1,
+   "moves": 6,
+   "moon": 2,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok"
+  "events": "none; here: ok",
+  "eco": "nothing"
  },
  "R2D2-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "latest",
-  "version": "v0.86",
+  "version": "v1.02",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 140,
+   "day": 2,
+   "turns": 178,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face EAST. Bare stone."
+   "last": "KURA is out of breath. She stays where she is."
   },
   "n": {
-   "searches": 18,
+   "searches": 16,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
    "talks": 1,
    "runs": 0,
-   "unlocks": 0,
-   "moves": 12,
-   "moon": 1,
+   "unlocks": 1,
+   "moves": 4,
+   "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "1/1 sent: asked; here: ok"
+  "events": "1/1 sent: asked; here: ok",
+  "eco": "nothing"
  },
  "DATA-bot": {
   "date": "2026-10-11",
@@ -251,35 +254,36 @@
   "eco": "nothing"
  },
  "C3PO-bot": {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "build": "pinned",
-  "version": "v0.86",
+  "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 42,
+   "day": 2,
+   "turns": 52,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face NORTH. A bare archway, and the way through."
+   "last": "KURA needs a moment before she moves on."
   },
   "n": {
-   "searches": 3,
+   "searches": 2,
    "blocked": 0,
    "waited": 0,
    "fights": 0,
-   "talks": 1,
+   "talks": 0,
    "runs": 0,
-   "unlocks": 1,
-   "moves": 12,
+   "unlocks": 0,
+   "moves": 8,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "3/3 sent: asked, silent, silent; here: ok"
+  "events": "none; here: ok",
+  "eco": "nothing"
  },
  "MARVIN-bot": {
   "date": "2026-10-11",

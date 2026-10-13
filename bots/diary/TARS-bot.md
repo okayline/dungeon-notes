@@ -75,3 +75,34 @@ KURA goes WEST into a cleared room.
 KURA goes SOUTH into a new room.
 KURA goes NORTH into a cleared room.
 ```
+
+## 2026-10-12  -  B4F, day 2  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the NORTH wall. Damp. The smell of old pipes.
+KURA searches the NORTH wall. A crack. It goes nowhere.
+KURA searches the NORTH wall. Someone has looked here before.
+KURA goes WEST into a new room.
+KURA searches the SOUTH wall. Salt along the base, in a line.
+KURA searches the SOUTH wall. Damp. The smell of old pipes.
+KURA searches the SOUTH wall. Nothing yet.
+KURA searches the SOUTH wall. Someone has looked here before.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall. A crack. It goes nowhere.
+KURA searches the NORTH wall. Someone has looked here before.
+KURA searches the NORTH wall. A warmth comes through, here and only here.
+KURA searches the NORTH wall. Damp. The smell of old pipes.
+KURA goes EAST into a cleared room.
+KURA searches the SOUTH wall. Mortar, mostly. Some is older.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall. Fingers come away gray.
+KURA searches the EAST wall. Nothing but dust.
+KURA searches the EAST wall. Faded paint. A number, or a sigil.
+KURA goes NORTH into a cleared room.
+KURA scries the sky. Only the dark, a long way up.
+The silence presses close.
+KURA goes SOUTH into a cleared room.
+KURA scries the sky. No moon tonight. No one to ask.
+Wings beat once, close by.
+```
