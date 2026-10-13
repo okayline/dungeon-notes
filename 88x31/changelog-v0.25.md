@@ -5,6 +5,14 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 
 ---
 
+## v0.25.1 — "Clean Desk"
+**Tue Oct 13, 2026 · 4:50 AM HST** (no migration)
+
+- **Fix**: v0.25's showWall rewrite cut out `OWNERS_SHOWN` (sat between showWall and openWallHash), so clicking any button threw "OWNERS_SHOWN is not defined". Restored.
+- Wall Show/Order controls moved into the panel's top-right corner (absolute, 10px, two stacked rows; centered under the title below 700px), hidden when logged out (and logged out always uses the default shuffle/all view).
+- Upload box: "Add as" series picker + rarity/kind removed from the page (user: not needed). /api/upload still accepts `series`, `rarity`, `kind` for webmasters.
+- Footer/cache tag v0.25.1.
+
 ## v0.25 — "Hack the Planet"
 **Tue Oct 13, 2026 · 4:45 AM HST** (pushed after migration 019 ran)
 
