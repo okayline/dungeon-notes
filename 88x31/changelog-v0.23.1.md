@@ -1,9 +1,17 @@
-# 88x31 cLuB — Dev Changelog — v0.23
+# 88x31 cLuB — Dev Changelog — v0.23.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.23.1 — "Rip It Open"
+**Tue Oct 13, 2026 · 1:50 AM HST** (no migration)
+
+- **Packs section** on your own page, above the "Welcome 2 X's Page" + collection panel: daily pack tiles (orange "DAILY", "pack N of 2", grey "back tomorrow!" once used, from /api/summary packs_left) next to sealed pack tiles (/api/packs). Clicking opens in `#pack-open` inside the section: daily = the old pull flow (keep 1, pass-on gift, bonus pack), sealed = openPackCards (keep 2). `afterOpening()` refreshes the tiles and the page. The old `view-pull` view is gone; `#pull` redirects to your page; the Hi! box "Open them »" scrolls to the section. User loves the pack tiles' shimmer animation.
+- Menus: Daily Pull removed; "Wall of Buttons" → "Buttons" (top bar and footer); footer now matches the top bar (My Page · Trades · Buttons · About · Log Out).
+- **Upcoming series hidden**: /api/designs (list and ?id) excludes designs whose series is `upcoming` unless the viewer is a webmaster (Wall, collect strip and board pickers all read it); board.js treats upcoming designs as nonexistent for requests/open trades. Tested: hidden for player and logged out, visible to webmaster, appears once the series is active.
+- Footer/cache tag v0.23.1.
 
 ## v0.23 — "Wanted: Kewl Buttons"
 **Tue Oct 13, 2026 · 1:40 AM HST** (pushed after migration 017 ran)
