@@ -1,9 +1,21 @@
-# 88x31 cLuB — Dev Changelog — v0.16
+# 88x31 cLuB — Dev Changelog — v0.17
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.17 — "56K of Pure Fun"
+**Mon Oct 12, 2026 · 7:27 PM HST**
+
+- 20 original buttons (`tools/make_batch5.py`, license Original, author 88x31), added via add_banner (seed_new_banners.sql now 40 rows; 50 designs total):
+  - Common (10): Cyber Cafe (webring), New Mail! (guestbook), 56K Modem (webring), HTML 4 Life (construction), Virtual Pet (guestbook), CD-ROM (counter), Lava Lamp (neon), Have a Nice Day (guestbook; file have-a-nice-day.gif), MIDI On (neon), Cool Site! (neon).
+  - Uncommon (3): Ink Pen (guestbook, writes "sign my book!"), Webring Hub (webring), 1,000,000th Visitor (counter, red/yellow flashing).
+  - Rare, cap 25, variants: Lava Lamp Blacklight, CD-ROM Rainbow, Have a Nice Day Gold, Virtual Pet Golden Egg, Cool Site! Holo (shared `foil()` sweep + rainbow double border).
+  - Ultra, cap 1: Millennium Fireworks (divider; 6 seeded bursts over a gold "* 2000 *", 16f), The Golden Floppy (construction; variant of Save Often, "Gold"; gold foil sweep, 14f). Hidden on the Wall until owned (v0.16 rule).
+- Odds unchanged; with 2 more ultras in the pool, the 0.1% ultra roll now picks among up to 4 unclaimed ultras.
+- Not yet in any set (possible future sets: "Dial-Up Days", "Desk Toys").
+- Footer v0.17.
 
 ## v0.16 — "???"
 **Mon Oct 12, 2026 · 7:23 PM HST**
