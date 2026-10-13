@@ -1,9 +1,22 @@
-# 88x31 cLuB — Dev Changelog — v0.22
+# 88x31 cLuB — Dev Changelog — v0.23
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.23 — "Wanted: Kewl Buttons"
+**Tue Oct 13, 2026 · 1:40 AM HST** (pushed after migration 017 ran)
+
+Decisions: a request is just a wish with a system reward (pack to the filler), new-player friendly; anything beyond that is a trade. Requests only for commons/uncommons (rares and up trade-only, since a pack-for-rare swap would drain rares cheaply; ultras never). Optional specific finish. Max 3 open, 7 days. Bots fill and post requests "for now". Open trades added alongside (public offers anyone can accept). Wishlist later. Trades back in the top bar (also stays in the Hi! box). Give packs: "everyone" as the last datalist entry instead of a checkbox; name reserved.
+
+- **Migration 017**: `requests`, `open_trades` (lock_token for offered copies), `open_trade_items`.
+- **lib/board.js**: expireBoard (requests expire; open trades expire and unlock); postRequest (common/uncommon, foil must be a real kind-'foil', max 3, no duplicate open request per design); fillRequest (lock token, atomic transfer reason `request` ref request id, wall slot cleared; thank-you pack if the filler has had < 1 `request` pack today, UTC day, note "thanks for helping <name>!"); postOpenTrade (1–3 copies, not ultras, locks them, want design not ultra); acceptOpenTrade (accepter's copy must match design + foil; all-or-nothing batch like acceptTrade; reason `open_trade`; closes cleanly if an offered copy moved); boardFor (open lists + can_fill / can_give for the viewer, plain/newest copies first); wantedOf.
+- **API** /api/board (GET board, GET ?user= wanted, POST actions request/cancel_request/fill/trade/cancel_trade/accept). Ledger kind `request` (posting).
+- **Bots** (`botBoard`, after the daily pull): fill one request (0.6 for givers, 0.2 others; real players first), accept up to one open trade they like via botLikes + replyChance, 20% post a request for a missing common/uncommon, 10% post an open trade of a spare duplicate.
+- **UI**: Trades page gets Open Trades and Request Board panels (collapsible post forms with button/finish selects; own listings first; Fill it! / Accept! with a copy picker; in-game confirms). "★ Wanted:" line on player pages. `.trades-link` in the top bar and Hi! box both get the count. Give-packs datalist has every player then "everyone"; signup refuses everyone/nobody/webmaster.
+- Tests: rare request refused, fill → copy moved + 1 pack, second fill same day no pack, 4th request blocked, ultra trade refused, open trade swap both ways + unlock, cancel unlocks, re-accept refused, "everyone" by name, reserved signup, ledger verifies; bot filled a request and posted a request and a trade.
+- Footer/cache tag v0.23.
 
 ## v0.22 — "Series Alpha"
 **Tue Oct 13, 2026 · 1:20 AM HST** (pushed after migration 016 ran)
