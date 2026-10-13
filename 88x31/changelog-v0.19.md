@@ -1,9 +1,27 @@
-# 88x31 cLuB — Dev Changelog — v0.18.2
+# 88x31 cLuB — Dev Changelog — v0.19
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.19 — "Totally Fused"
+**Mon Oct 12, 2026 · 11:58 PM HST** (built, NOT pushed yet; migration 014 must run before the code goes live)
+
+Design settled this session, then built:
+- **Three layers per copy**, rolled separately at mint and carried separately through fusion:
+  - **Foil** (material, a ladder): base tier 0 Clear 76% / Glitter 7.5% / Sheen 7.5%; tier 1 Holo, Galaxy, Ripple (8% total); tier 2 Chrome, Gold, Oil Slick (0.9%); tier 3 Prismatic, Double Rainbow, Liquid Metal (0.1%). Weights out of 10000 in `foils` (kind 'foil', new `tier` column). Holo moved to tier 1 (was the only foil), its per-design cap of 25 removed. User: tiers 0 and 1 merged so even plain cards can get "a little something"; no plain color foils (too hard to tell apart); patterns over colors.
+  - **Pattern** (cuts a real foil's shine): Fracture (cracked-ice shards), Etched (fine lines), Surge (rainbow bursts). 5% of tier 1+ copies (~0.4% of all). Any tier 1-3 foil can have one: user specifically wanted a Fracture Holo possible (pack-only, since fusing up leaves Holo).
+  - **Effect** (how the whole button plays): Dial-Up, Marquee, CRT, VHS, 10% of copies (weights 400/400/150/50), plus fusion-only CRT+VHS. No effect tiers (flat kinds like patterns). Cut by the user: Blink, Degauss, Interlace; no color effects at all (Phosphor/Web-Safe/Negative rejected). Effects apply to the foiled button as one picture.
+  - Nothing is drawn on the art (user dislikes graphics on graphics): Glitter = sparse twinkling pixels via overlay blend, Galaxy = sparse specks.
+- **Fusion** (lib/fusion.js, POST /api/fuse, fuse box on your own copy page when you own 3+ of a button): 3 copies of one design (not ultras, not locked in trades) → lowest edition survives (keeps number + travel log), other 2 consumed (owner NULL, consumed=1, wall slot cleared) and vanish from play. Foil = best going in + 1 guaranteed tier (random sibling); at tier 3: keep material, add pattern if none; with pattern: add effect if none; with an effect: CRT+VHS; already CRT+VHS = maxed. Patterns/effects inherited (random pick if different); no effect going in → 10% surprise effect. Flat 3 copies per step (user: exponential is hard enough: 3/9/27 to tier 1/2/3, 81 for pattern...). Caps count every copy ever made → capped buttons get scarcer for good. First Print warning in the confirm window. Atomic batch with a lock token; history rows reason `fusion` (used-up copies to NULL, survivor to self), `fusions` row with foil/pattern/effect/prev_foil.
+- **Ledger**: new kind `fusion`; foil records for copies made after V19 (1791882000) append pattern + effect. Ledger list shows FUSION / finish names. Tested: chain verifies.
+- **Display**: bannerImg layers `.fx` (effect) > `.foil-wrap.foil-X.pat-Y` > img, seeded vars; marquee duplicates the layer in a track (`--w` includes the 2px border). "Finish: VHS Fracture Holo · tier 1 foil" on copy pages; copies-left counts; travel log "fusion by X: came out shinier" / "→ used up". Reduced-motion stops everything.
+- Finder copy #1: 20% tier 1 foil (FINDER_FOILS rescaled to /10000); upload reply now `foiled`.
+- Logged-out Wall hides rares too (HIDDEN_OUT).
+- About: one-liners about shimmer/sparkle/strange things and "Got extras? Fuse three..." (kept vague on purpose).
+- Tests (throwaway DB): 20k rolls → tiers 90.9/8.0/0.94/0.13%, patterns 0.42%, effects 10.2%; every fusion rule case; real fuse (First Print survivor → Ripple, 2 consumed, wall slot cleared, re-fuse refused, made 4 / left 2).
+- Ideas parked: seasons/drops (designs.status pending/frozen already help; needs a drop label + release time), season-only foils/effects, Finder's foil.
 
 ## v0.18.2 — "Point and Click"
 **Mon Oct 12, 2026 · 11:20 PM HST**
