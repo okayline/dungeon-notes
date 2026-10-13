@@ -1,9 +1,36 @@
-# 88x31 cLuB — Dev Changelog — v0.13
+# 88x31 cLuB — Dev Changelog — v0.14
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.14 — "Gotta Link 'Em All"
+**Mon Oct 12, 2026 · 6:48 PM HST**
+
+**Domain**
+- 88x31.app live on Cloudflare (zone + Pages custom domain), confirmed serving v0.13. Old `88x31-d65.pages.dev` forwards client-side (`location.replace` when hostname matches exactly; preview hosts unaffected; zero Function cost) + `<link rel="canonical">`. Cloudflare Bulk Redirects would be the server-side alternative.
+
+**Sets (lib/sets.js, migration 012, seed_sets.sql)**
+- `sets` gains slug (unique), secret, reward_design_id, sort. `set_claims(user_id, set_id, instance_id, claimed_at)` PK(user, set).
+- Sets: Webmaster Starter Kit (5: Sign My Guestbook, Webring Member, Hit Counter, Email Me!!, Best Viewed 800x600), Neon Lights (6: Neon Nite, Surf the Web, Bodacious, Radical!, Synthwave, Mix Tape), Under Construction (3: Under Construction, Made with Notepad, Save Often), Island Time (2: Island Life, Island Life Moonlight), Holo Hunter SECRET (3 holos). Seed matches designs by name.
+- Rule: own every design in the set at once (unconsumed copies); claim once; keep the buttons; bots refused. Claim batch: INSERT OR IGNORE set_claims guarded by an owns-all count → mint reward (`changes() = 1` chain) → history reason `set_reward` → backfill set_claims.instance_id. Editions = finishing order.
+- Secret sets hidden from `setsFor` until complete or claimed; API returns `secrets_left` for the hint.
+- Reward designs: rarity `special`, status `reward` (excluded from pulls and bot pools by `status = 'active'` filters). `add_banner.py` gained `--status` and the `special` rarity. 1200 test pulls rolled 0 reward designs.
+- Reward art (`tools/make_rewards.py`, original): Island Time Complete (sun setting, 6f), We Built It! (hard hat + blinking check, 2f), Neon Master (neon flicker, 10f), Certified Webmaster (spinning wireframe globe, rainbow WEBMASTER, scrolling marquee, sparkles, gold shimmer frame, 16f; the "cool" one), Holo Hunter (trophy + rainbow holo sweep, 12f).
+- UI simplified at the user's request (to revisit later): one `<details>` line per set ("Name have/total" + Claim reward! / ★ done!), expand to see buttons (missing ones grayscale) and the reward name. Dashboard line when sets are ready.
+
+**Link exchange (lib/links.js, /api/links)**
+- `users.my_button`; `link_exchanges(from_user, to_user, status pending|accepted)`. Actions request/accept/decline/remove; requesting someone who already asked you = accept.
+- Card = My Button if still owned, else first arranged wall button, else newest (`cardSql`, correlated per row). Cool Links show cards linking to homepage (or guestbook). Owner: My Button chooser, pending requests (Swap!/No thanks), unlink (in-game confirm). Visitors: Swap links! / sent / accept / linked + unlink.
+- Bots accept link requests on `check` visits with their replyChance.
+- Guestbook API now reads the viewer (link_state, link_requests for owner, my_card). Summary: sets_ready, link_requests.
+
+**Home**
+- Logged-in default route is your own guestbook; [Home] removed from the top bar (My Guestbook - Trades - About - Log Out); Daily Pull via the dashboard and #pull.
+
+**Ideas noted for set rewards beyond buttons:** unlockable guestbook themes, name badges/titles, bonus packs, guestbook decorations (sparkle cursor, animated frames, MIDI player icon), first-finisher hall of fame.
+- Footer v0.14.
 
 ## v0.13 — "Hi, Welcome Back!"
 **Mon Oct 12, 2026 · 6:26 PM HST**
