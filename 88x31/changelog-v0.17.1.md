@@ -1,9 +1,17 @@
-# 88x31 cLuB — Dev Changelog — v0.17
+# 88x31 cLuB — Dev Changelog — v0.17.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.17.1 — "Webmaster Mode"
+**Mon Oct 12, 2026 · 7:28 PM HST**
+
+- Admins see every hidden button: `uncovered()` in /api/designs returns an always-true set when `viewer.is_admin` (currentUser already selects is_admin).
+- To make an account admin: `npx wrangler d1 execute 88x31-db --remote --command="UPDATE users SET is_admin = 1 WHERE name = 'kura'"` (user's kura account).
+- is_admin could later gate a private admin page.
+- Footer v0.17.1.
 
 ## v0.17 — "56K of Pure Fun"
 **Mon Oct 12, 2026 · 7:27 PM HST**
