@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.15.1
+# 88x31 cLuB — Dev Changelog — v0.16
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.16 — "???"
+**Mon Oct 12, 2026 · 7:23 PM HST**
+
+- Hidden buttons on the Wall: rarities `ultra` and `special` (set rewards) = 7 designs. `/api/designs` reads the viewer and returns `{ id, hidden: true }` (no name/image/rarity) unless the viewer has ever been on the receiving end of an ownership_history row for a copy of that design ("uncovered"; stays uncovered after giving it away). `?id=` returns `{ hidden: true }` for those. Holos stay visible.
+- Wall: mystery tiles ("?" on dark stripes, dashed border) sorted last; info window shows "A mystery button!" + one of 8 random teaser lines (MYSTERY_LINES). Count line is just "N buttons and counting!" (mystery count removed at the user's request). Wall cache reset on login/logout.
+- News ticker no longer names ultras ("found a one-of-a-kind ULTRA button!").
+- Decided: owners' pages still show their ultras/rewards publicly, so you can discover secrets through friends.
+- Tested (throwaway DB): logged out 7/30 hidden with no names leaked; after space finds Sakura it's visible to space (6 hidden); still visible after gifting it away; holos visible to all.
+- Footer v0.16.
 
 ## v0.15.1 — "Window Shopping"
 **Mon Oct 12, 2026 · 7:18 PM HST**
