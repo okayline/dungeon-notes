@@ -1,9 +1,26 @@
-# 88x31 cLuB — Dev Changelog — v0.25
+# 88x31 cLuB — Dev Changelog — v0.26
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.26 — "Limited Edition"
+**Tue Oct 13, 2026 · 5:45 AM HST** (pushed after migration 021 ran)
+
+Decisions this round: found cards stop being guaranteed (people always keep them out of nostalgia): 1 in 5 daily packs (first 1/3, then lowered because crawler bots bring lots of found buttons in); none in series or special packs. Bargain Bin ("leave one, take one": trade a spare common/uncommon for 1 of 2 found buttons, ~3/day, a tile in the Packs section) **saved for later**. Print runs: low, sized to the tiny user base: Beta 500, Alpha 84 + 150 = 234; a series total (not per-button caps), rares 25 / ultras 1 stay; when out of print it just stops (option B), stays active until the user asks me to retire it (no Retire button: "couldn't i just ask you"); sealed packs already out still open with it; fusion doesn't count. Limited packs = the existing special packs, 25 numbered per series, each series names its own ("Beta Gold Master Pack #7 of 25", "Alpha Cool Site of the Day Pack"); other names saved for future series: Big Box Edition, Turbo Pack, Registered Version, CD-ROM Edition, Collector's Edition. Handing them out is admin-only for now. Bots: web crawlers with a 10% series chance (instead of stopping at 50%). Free pack: normal odds minus ultras, held 2 days. Email: Cloudflare Email Service exists (public beta, needs Workers Paid $5/mo, 3,000/mo included, domain on Cloudflare DNS), but the user picked **passkeys** instead (uses them a lot); save code stays as the backup.
+
+- **Migration 021**: series.print_run, special_name, special_limit (25); packs.special_no (+ unique index per series); Beta 500 / Gold Master; Alpha run = its copies + 150 / Cool Site of the Day; `passkeys` (cred_id, JWK, alg, sign_count, label) and `passkey_challenges`.
+- **game.js**: `seriesPrinted()` (printed = all instances of the series' designs); `availableDesigns(env, onlySeries, {ignoreRun})` skips out-of-print series (weights shift to the rest), counts unsigned free-pack cards against caps (`HELD_FREE`, `FREE_HOLD` = 2 days, moved here); `rollDesigns` opts `found` (default `FOUND_CHANCE` 0.2; 0 for series packs), `crawler` (all found, `CRAWLER_SERIES_CHANCE` 0.1 one series card, ultra rolls become rare), `ignoreRun`. FOUND_PER_PACK gone.
+- **packs.js**: openPack passes series/special rules (no found, `ignoreRun` for series packs) and `crawler` for bots (not for special packs); `specialRun()`; givePacks numbers special packs per series and throws when not enough are left; packsOf/packStory return special_no/special_name/special_limit.
+- **admin give_packs**: special needs a series; refuses out-of-print series; refuses bots by name; "everyone" special = people only; admin note "10 Beta Gold Master packs".
+- **bots.js**: doPull = 3 distinct found + 10% one series card (rollFor originals); botPool skips out-of-print series; bots open sealed packs crawler-style.
+- **freepack.js**: rolls from availableDesigns (found + in-print series) at 699/250/50; replacement card if theirs is gone at signing.
+- **/api/series**: printed/print_run/out_of_print (public too), special_name/limit/made (admin); actions `print_run` (raise/set, never below printed, admin_action `series_run`), `special_name`, create takes special_name/print_run. **/api/designs?id** adds series_printed/run/out. **/api/ledger** pack rows carry the limited pack name/number.
+- **Passkeys**: lib/passkeys.js (tiny CBOR reader, authData parser, COSE→JWK for ES256/RS256, DER→raw ECDSA sigs, WebCrypto verify; challenges single-use via DELETE…RETURNING, 5 min; origin/rpId from the request URL; sign-count regression refused; attestation not verified) + /api/passkey (GET list, register_options/register (max 10), login_options/login (rate limited) → session, remove). Account deletion removes passkeys.
+- **UI**: limited pack tiles (series in the top line, special name, "#N of 25", long names smaller), titles everywhere via packTitle ("Beta Gold Master Pack #1 of 25"), ledger PACK lines name them; Give packs hint "Gold Master Packs: 22 of 25 left", series dropdown marks out of print, inline messages (no more off-screen say()); Series panel rows with print-run bar, Run / Pack name buttons, red "out of print" chip, new-series form takes special name + run; info box "Series Beta print run: 23 of 500 printed"; login box "🔑 Log in with a passkey" + inline errors; code card "Also add a passkey on this device"; Save Codes page → "Save Codes & Passkeys" with the passkey list.
+- Tests: daily packs 21% with a found card (never 2); series packs 0 found; crawler 10.2% series, 0 ultras; out-of-print Beta absent from daily packs, sealed Beta pack still Beta; give-packs refusals; numbering 1..16 then "Only 9 left"; special pack opens all Beta with foils; print_run can't go below printed; free pack 71/24/5%; held rare out of pools; a full bot day: 12 found + 2 series kept, 0 ultras; passkeys with a simulated authenticator (register, replay refused, login, copied-counter refused, tampered refused, wrong origin/challenge refused, remove) and in Chromium with a virtual authenticator (sign free pack → add passkey → log out → log in with passkey); ledger verifies.
+- Footer/cache tag v0.26.
 
 ## v0.25.1 — "Clean Desk"
 **Tue Oct 13, 2026 · 4:50 AM HST** (code first, then migration 020)
