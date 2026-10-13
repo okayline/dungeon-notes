@@ -1,9 +1,20 @@
-# 88x31 cLuB — Dev Changelog — v0.10
+# 88x31 cLuB — Dev Changelog — v0.11
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.11 — "Defrag"
+**Mon Oct 12, 2026 · 5:20 PM HST**
+
+D1 usage review (Oct 11): well under 1% of free limits (5M rows read/day, 100k written/day, 5 GB; 100k Functions requests/day shared with Daily Dungeon's Worker; static assets free). Fixed the three things that would grow:
+
+- **Incremental ledger verification.** Migration 009 adds `meta(key, value, updated_at)`. `verifyLedger` stores a checkpoint `{id, hash, full_at}` and normally only verifies entries with `id > checkpoint` (after confirming the checkpoint row's hash is unchanged; if not, falls back to a full walk). A full walk from genesis runs when the last one is >24h old (first visitor of the day pays it) or on `{ full: true }`. Test (325 entries): first check full; repeat reads 0 new rows; an edit to entry 50 is missed by the quick check and caught by the next full check; tampering with the checkpoint entry is caught immediately.
+- **Ticker.** Migration 009 adds `idx_history_reason(reason, id)`. `/api/feed` now runs one indexed query per reason (guestbook, pass_on, gift; LIMIT 10 each, confirmed `SEARCH ... USING COVERING INDEX idx_history_reason`) and finds ultra finds starting from ultra designs (a handful of rows). The JSON response is cached in `meta('feed')` for 60s.
+- **Bot accounts.** `ensureBots` does one `SELECT ... WHERE name IN (7 names)`; writes only if a bot is missing or not flagged. Saves ~14 writes per bot action (~400-500/day).
+- Bot simulation re-run: 35 actions per bot day (2 pulls each), 0 duplicate claims.
+- Footer v0.11.
 
 ## v0.10 — "Breaking News"
 **Sun Oct 11, 2026 · 10:32 PM HST**
