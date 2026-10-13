@@ -6,8 +6,9 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 ---
 
 ## v0.25.1 — "Clean Desk"
-**Tue Oct 13, 2026 · 4:50 AM HST** (no migration)
+**Tue Oct 13, 2026 · 4:50 AM HST** (code first, then migration 020)
 
+- **10 tape-era Beta buttons** (user asked for 80s cassette / VHS era tech; on seeing them: "those should be rares!!", so all 10 are rares, 25 copies each): Blinking 12:00 (VCR VFD clock blinking), REC (camcorder viewfinder, REC blinking, timecode), Be Kind Rewind (rental tape sticker, reels rewinding), Side A (the whole button is a smoky purple C-90), Fast Forward (VCR OSD over streaking color bars), Hi-Fi Stereo (silver badge, LED meters, glint), Tracking (color bars with a noise band until the tracking bar fixes it), Hi-Speed Dubbing (double deck A→B), Boom Box (speakers thumping, EQ), Press Play on Tape (home-computer tape load: PRESS PLAY ON TAPE → OK → SEARCHING → FOUND 88X31 → striped loading border while a synthwave sunset loads line by line → READY.). **Migration 020** inserts them into Beta by series name (INSERT OR IGNORE, re-runnable); also appended to schema.sql. Beta is now 12 common / 6 uncommon / 16 rare / 2 ultra. Generator: scratchpad beta/retro_batch.py (reuses hacker_batch helpers; adds 7-segment digits, reels, chunky badge letters).
 - **Fix**: v0.25's showWall rewrite cut out `OWNERS_SHOWN` (sat between showWall and openWallHash), so clicking any button threw "OWNERS_SHOWN is not defined". Restored.
 - Wall Show/Order controls moved into the panel's top-right corner (absolute, 10px, two stacked rows; centered under the title below 700px), hidden when logged out (and logged out always uses the default shuffle/all view).
 - Upload box: "Add as" series picker + rarity/kind removed from the page (user: not needed). /api/upload still accepts `series`, `rarity`, `kind` for webmasters.
