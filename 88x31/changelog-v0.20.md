@@ -1,12 +1,23 @@
-# 88x31 cLuB — Dev Changelog — v0.19
+# 88x31 cLuB — Dev Changelog — v0.20
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.20 — "Trophy Case"
+**Tue Oct 13, 2026 · 12:25 AM HST** (built, NOT pushed; migration 015 must run first)
+
+- **Wall info box, two views**: design view (default) and copy view. "Who has one" rows: tiny half-size preview in the copy's actual finish, "#n · owner [BOT]" on one line (ellipsis, full name on hover), finish name below (purple when special, "First Print" for null). Clicking a copy → `#wall/<design>/c/<copy>`, rendered in the box (big preview, finish + foil ledger entry, owned line, last 8 travel steps, link to the full page) with "« back to <button>". hashchange keeps these in-box, no scroll. Equal columns forced (`minmax(0,1fr)` x2); measured tallest design view fits 560px.
+- **Rares hidden for everyone** until owned once (HIDDEN = rare/ultra/special; uncovered() includes rare). Admins see all. Includes the 4 frozen holo rares.
+- **Sets private** (lib/sets.js setsFor visitor option): own view lists only sets with ≥1 owned button or claimed; unowned buttons come back as `{hidden:true}` ("?" tiles); unclaimed reward `{hidden:true}` ("Reward: ???"). Visitors get only claimed sets with `set_claims.showcase = 1` (migration 015); secret ones as just "a secret set" (no buttons). Panel titled "X's Trophies" and hidden when empty. "Show on my page" checkbox on claimed sets → POST /api/sets {set_id, show}. Completed = claimed (trophies survive trading buttons away). secrets_left hint only on your own page. Claim message no longer names the reward.
+- **Homepages removed**: no form/link on pages, collection/banner/links stop returning them, profile POST refuses homepage, certificates drop the homepage line. Column kept. Cool Links tiles go to cLuB pages. (Dead homepage branches in useBox left harmlessly.)
+- **Webmasters**: no per-IP or 10/day upload limit (tested 14/14; players still stop at 10).
+- **Layout**: top bar 18px (15px on phones), Trades moved from the top bar to the Hi! box above Save Codes (keeps id nav-trades for the count). Removing the homepage box puts My Button Collection right under the page title. Rarity legend on the Wall removed (user request; it also gave away rarities).
+- Footer/cache tag v0.20.
+
 ## v0.19 — "Totally Fused"
-**Mon Oct 12, 2026 · 11:58 PM HST** (built, NOT pushed yet; migration 014 must run before the code goes live)
+**Mon Oct 12, 2026 · 11:58 PM HST** (pushed after migration 014 ran; live ~11:59 PM)
 
 Design settled this session, then built:
 - **Three layers per copy**, rolled separately at mint and carried separately through fusion:
