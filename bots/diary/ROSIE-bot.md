@@ -178,3 +178,55 @@ KURA is out of breath.
 KURA needs a moment.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-13  -  B4F, day 3  (latest v1.02)
+
+```
+KURA wakes on B4F.
+KURA plugs in. No one needs it.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall... Nothing but dust.
+KURA searches the WEST wall... KURA hears something. Then nothing.
+KURA goes SOUTH into a cleared room.
+KURA searches the EAST wall... Nothing yet.
+KURA searches the EAST wall... KURA finds a strip of prayer cloth.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall... The wall gives nothing away.
+KURA searches the NORTH wall... Old tally marks, in groups of five.
+KURA searches the NORTH wall... Faded paint. A number, or a sigil.
+KURA searches the NORTH wall... A crack. It goes nowhere.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA goes WEST into a cleared room.
+KURA touches the screen. The market wakes.
+KURA needs a moment before she moves on.
+KURA is out of breath.
+KURA searches the SOUTH wall... Salt along the base, in a line.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall... A dead cable runs in and stops.
+KURA searches the NORTH wall... Salt along the base, in a line.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall... Nothing yet.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA needs a moment before she moves on.
+KURA needs a moment.
+```

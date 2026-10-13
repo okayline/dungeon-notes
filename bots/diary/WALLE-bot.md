@@ -140,3 +140,40 @@ KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 Not yet. KURA catches her breath.
 ```
+
+## 2026-10-13  -  B4F, day 3  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the WEST wall. Nothing yet.
+KURA searches the WEST wall. A crack. It goes nowhere.
+KURA searches the WEST wall. Old tally marks, in groups of five.
+KURA goes EAST into a new room.
+KURA searches the NORTH wall. A dead cable runs in and stops.
+KURA goes EAST into a new room.
+KURA searches the SOUTH wall. Nothing but dust.
+KURA searches the SOUTH wall. A crack. It goes nowhere.
+KURA searches the SOUTH wall. Nothing.
+KURA searches the SOUTH wall. KURA hears something. Then nothing.
+KURA searches the SOUTH wall. Nothing.
+KURA searches the SOUTH wall. A small sound, there and gone.
+KURA searches the SOUTH wall. KURA finds a black pearl. Two doors.
+KURA searches the SOUTH wall. Cold stone, cold hands.
+KURA searches the SOUTH wall. Someone has looked here before.
+KURA searches the SOUTH wall. Cold stone, cold hands.
+KURA searches the SOUTH wall. Mortar, mostly. Some is older.
+KURA unlocks the EAST door. The way is clear.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+```
