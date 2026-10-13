@@ -1,9 +1,23 @@
-# 88x31 cLuB — Dev Changelog — v0.27.1
+# 88x31 cLuB — Dev Changelog — v0.28
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.28 — "Read Me First"
+**Tue Oct 13, 2026 · 7:03 AM HST** (no migration)
+
+Decisions: the user first asked about a GitHub wiki (wikis follow repo visibility, so a private repo means a private wiki; they chose to put the guide **on the site itself**). "About" becomes **How to Play**, plus a separate **Fair Play** page with "pack %'s and hard numbers for transparency and fairness". **Trades taken off the top menu.** Built without a mockup at the user's request. First version was "waay too long": How to Play must be **newbie-friendly, hit every part of the game, no technical/mechanical detail**; Fair Play should **just lightly say "here's the chances and how many cards"** (fusion rules, limits and the long fairness list were cut). User also decided to **take out open trading** ("random but"). Last tweak: the Alpha pack gets the white gleam **plus** its twinkle.
+
+- **/api/odds** (new, functions/api/odds.js, 60s `meta` cache key `odds`): reads ODDS_PER_1000 / SPECIAL_ODDS_PER_1000 / PULLS_PER_DAY / BONUS_CHANCE / FOUND_CHANCE / CRAWLER_SERIES_CHANCE / SERIES_WEIGHTS / PATTERN_CHANCE / EFFECT_CHANCE / FUSE_EFFECT_CHANCE / TOP_EFFECT / FREE_HOLD (lib/game.js), EARNED_KEEP, board + trade limits, MILESTONES (hit.js), FINDER_FOILS + UPLOADS_PER_DAY (upload.js), and the live foil registry (`finishes`). Returns rarity % (normal, special, free = normal without ultras renormalised: 69.97/25.03/5.01), pack facts, foil spreads by tier and per foil (normal, special ×2.5/×3 like specialFinishes, finder override, free ≤ tier 1; signature foils counted, never named), series (print run, printed, left, out of print, special packs made/left, buttons per rarity with caps, `pack_share` = SERIES_WEIGHTS over the in-print active series in order, normalised like pickSeries: Beta 70.59% / Alpha 29.41% with two), found button count. Spoiler-safe: counts only. Tested against an in-memory SQLite built from schema.sql + seeds through a D1-style wrapper (node:sqlite).
+- **Pages** (index.html): `#about` → `#howto` (old hash redirects), new `#fair`. How to Play: intro, Joining, Packs, Buttons, Trading & Gifting, More Fun Stuff (fusion, sets, found buttons, your page, bots), FAQ; `<b data-n="packs.daily.per_day">` filled from /api/odds. Fair Play: Rarity Chances (most / limited / free), Packs (cards, keep, good-to-know), Foils by tier (+ pattern/effect/finder line), Print Runs (live bars + limited packs left), The Ledger (short blurb) + the existing Ledger Status panel moved from About. `#howto/<part>` and `#fair/<part>` jump to `ht-<part>` / `fp-<part>`. Old About panels (Foils, Found a Button?, long Ledger text) folded in or dropped.
+- **app.js**: TOP gains `howto`/`fair` (drops `about`); route handles both pages; `showAbout` → `showLedger`; `getOdds` (cached per visit), `fillNumbers`, `pctTxt`, `table()`, `showHowto`, `showFair`. Ledger "how this works" link → `#fair/ledger`. Styles: `.toc`, `.odds-table`, `.fair-bar`, `.fair-series`, wide tables scroll on phones.
+- **Menus**: top bar My Page · Buttons · How to Play · Fair Play · Log Out (logged out: Home · How to Play · Fair Play); footer same plus Trades.
+- **Open trades removed**: Open Trades panel gone (index.html), renderBoard only draws requests; lib/board.js `postOpenTrade` / `cancelOpenTrade` / `acceptOpenTrade` deleted, `boardFor` returns `{ requests }` only; `expireBoard` now cancels every still-open open trade and unlocks its lock_token copies (tested: status cancelled, copy unlocked); /api/board answers trade / cancel_trade / accept with "Open trades are closed..."; bots no longer accept or post them. History kept: tables untouched, `open_trade` reason labels stay in travel logs. "already in another open trade" wording → "another trade" (trades.js, app.js).
+- **Pack art**: `.th-alpha` packTile adds the `.gleam` before its sparks.
+- Checked in headless Chromium against the real site with stubbed API answers (both pages, phone width without sideways scroll, menus, `#about` redirect, no console errors); every changed module imports cleanly. Not run against the live database.
+- Footer/cache tag v0.28.
 
 ## v0.27.1 — "House Special"
 **Tue Oct 13, 2026 · 6:43 AM HST** (no migration)
