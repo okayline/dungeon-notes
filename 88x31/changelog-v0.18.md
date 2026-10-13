@@ -1,9 +1,35 @@
-# 88x31 cLuB — Dev Changelog — v0.17.1
+# 88x31 cLuB — Dev Changelog — v0.18
 
-Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
+Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.18 — "Shiny Happy Buttons"
+**Mon Oct 12, 2026 · 10:47 PM HST**
+
+Big model change: the art is a shared design nobody owns; the **foil** is the owned layer on each copy. Lets the cLuB carry real GeoCities-era buttons (archive tier) without claiming the art. Only moves forward: no existing copy or ledger entry was rewritten.
+
+- **Migration 013_foils_uploads.sql** (must run on live D1; additive only):
+  - `foils` registry: id, name, effect, params JSON, weight (/1000), max_per_design, design_id (signature foil), rarities JSON, status, sort. Seeded: clear (920), holo (80, cap 25 per design).
+  - `instances.foil`, `instances.foil_seed`. NULL foil = **First Print** (every pre-v0.18 copy).
+  - `designs.tier` (original | permissioned | archive; existing = original), `designs.found_by`, `designs.original_image_key` (kept while removed).
+  - `design_images` (uploaded GIF bytes in D1), `users.upload_blocked`, `admin_actions`.
+  - Froze the 4 baked holo designs (`status = 'frozen'`: Bodacious/Cool Site!/Radical!/Synthwave Holo). Not in pulls (pull/mint require `active`), still on the Wall with a "❄ Frozen" note. Gold/Rainbow/Moonlight/Blacklight/Golden Egg/Golden Floppy/Kimono art variants untouched.
+- **Foil roll** (`rollFoil` in lib/game.js): weighted over active foils allowed for the design (signature lock, rarity list, per-design cap); falls back to clear. `mintStatements` is now async and rolls the foil + a random 31-bit seed; callers in pull, bots, welcome pack updated. Set rewards get clear. Tested: 300 mints on one design → 25 holo (cap hit), rest clear.
+- **Ledger**: two new kinds, sealed from tables like the others: `foil` (["foil", instance, design, edition, foil, seed, at]) and `admin` (["admin", id, admin, action, design, user, note, at]). Design records for designs created after V18 (1791878400 = Oct 12 2026 10 PM HST) append `tier, found_by`; older records keep their shape. Full chain verify OK in test (736 entries across all 4 kinds).
+- **Found a Button** (POST /api/upload, multipart): real GIF87a/89a with an 88x31 logical screen, ≤100 KB, SHA-256 dedupe against designs.image_hash (dupe → link to existing; removed dupes stay out), 10/day per player + 30/day per IP. Lands as tier archive, rarity common (never ultra), license "Not relicensed", author "Origin unknown, found in the wild" unless given; optional source URL. Finder gets copy #1 (reason `found`) with a rolled foil. Image served by GET /api/img?d=N (removed → 302 to the tombstone). Form lives on the Wall of Buttons (members only), with preview + size warning.
+- **Webmaster kill switch** (POST /api/admin, is_admin only; box on the Wall info window and button pages):
+  - remove_design: status `removed`, image_key → banners/removed.gif (new 88x31 tombstone), original key saved. Leaves pulls at once; copies stay with owners and show "Removed by request" with credits hidden. Admins still see the real name.
+  - restore_design: back to active (old holo designs go back to frozen).
+  - block_uploader / unblock_uploader: `users.upload_blocked`; typing "all" in the block window also removes every archive design they found.
+  - Everything goes in admin_actions → sealed as kind `admin`. /api/me now returns is_admin.
+- **No more CC0 billing**: CC0 lines removed from the info window, "Use this button" box, button checker, README; the certificate no longer has a license line. "Use this button" + signed downloads only for tier original (server enforces in /api/download).
+- Archive buttons show an "From the archive" note: found by X, not relicensed, "Is this yours? Sign <webmaster>'s guestbook" (webmaster = first non-bot admin, i.e. kura).
+- **Display**: `bannerImg` wraps foiled copies in `.foil-wrap.foil-<effect>`, with `--foil-angle`/`--foil-delay` from the seed so each copy shimmers differently. Only effects in FOIL_EFFECTS are drawn (holo for now); unknown effects show clear, so new foil rows can be added before their look exists. Holo = rainbow gradient sweep, screen blend, respects reduced motion. Button page shows "★ First Print ★" or "Foil: X" with its ledger fingerprint; info window lists special copies by foil.
+- Endpoints now returning foil/foil_seed: collection, banner, guestbook gifts, summary, trades, links. designs?id returns tier, found_by, foil counts, webmaster.
+- Decisions this session: drop CC0 as a headline; archive tier allowed (Netscape Now! included, user's call); uploads free/open for now, obscene-upload handling later (CSAM scanning tool on Cloudflare suggested); foil kinds/effects to decide later; sets + foils deferred.
+- Footer v0.18. Public changelog renamed changelog-v0.18.md.
 
 ## v0.17.1 — "Webmaster Mode"
 **Mon Oct 12, 2026 · 7:28 PM HST**
