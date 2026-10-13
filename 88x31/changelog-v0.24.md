@@ -6,15 +6,15 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 ---
 
 ## v0.24 — "First One's On Us"
-**Tue Oct 13, 2026 · 3:45 AM HST** (built locally, NOT pushed; migration 018 must run first)
+**Tue Oct 13, 2026 · 3:45 AM HST** (pushed after migration 018 ran)
 
 From the onboarding doc (88x31-club-onboarding-v1.md, Door 1). Decisions: server rolls the card; free card is common/uncommon with foils up to tier 1 (no tier 2/3, patterns or effects); email is skippable when they have the save code, and the email reminder will live on the profile page (not at signing); the free pack **replaces the "New Here?" join box** (login box stays); tile looks like the normal pack tiles with a soft glow; signature line has no button, a ✓ appears at the end once they type (Enter/Go also signs); full disclosure line "(This also creates your account)". Also settled for later: friend-link thank-you = guestbook note + max 1 pack/week; pending pack links cap ~3, return after 7 days unclaimed / 1 day opened-unsigned; pack party after basic links. Turnstile explained and OK'd (user will add keys).
 
 - **Migration 018**: `free_packs` (token_hash of an anonymous `fp` cookie, design, foil, seed, created_at, claimed_by, instance_id, claimed_at).
 - **lib/freepack.js**: freePackState (none / waiting / claimed; unsigned > 1 day = none); openFreePack (returns the same card for the same cookie; 3 opens per connection per day; rolls rarity common 699 : uncommon 250 from active-series originals + found, uncapped-or-not-sold-out; finish via rollFoil with tier 2+ weights zeroed; pattern/effect dropped; occasional cleanup of stale unsigned rows); signFreePack (Turnstile check if TURNSTILE_SECRET set, signup rate limit, createAccount, claim-once, mint with `opts.finish` = exactly the shown foil/seed, reason `free_pack`, start session). Nothing is minted or sealed before signing.
-- **lib/accounts.js** `createAccount` shared by /api/signup and signing. **Free-pack sign-ups do NOT get the 3-button welcome pack** (the free card replaces it; old /api/signup still gives it). mintStatements accepts `opts.finish`.
+- **lib/accounts.js** `createAccount` shared by /api/signup and signing. Free-pack sign-ups get a **sealed WELCOME pack** (pink tile, source `welcome`, keep 2 of 3, user's choice) waiting in their Packs section instead of the old instant 3-button welcome pack (old /api/signup still gives the instant one). Packs where keep ≥ 3 come pre-picked ("They're all yours!"). mintStatements accepts `opts.finish`.
 - **/api/freepack** GET (state + sitekey; "member" if logged in), POST open / sign.
-- **UI**: "» Free Pack! «" box (teal/blue/purple pack tile with glow) → card (normal card look) + disclosure + signature line (`.sig-input` underline, cursive) with ✓ → save code card (now with "Print it", print CSS shows only the card) → their page. Turnstile widget rendered explicitly when a sitekey exists. "free pack" labels in travel logs.
+- **UI**: "» Free Pack! «" box (teal/blue/purple pack tile with glow) → card (normal card look) + "This one's yours to keep. Sign it to make it official!" + signature line, with "(This also creates your account)" in small text under it, (`.sig-input` underline, cursive) with ✓ → save code card (now with "Print it", print CSS shows only the card) → their page. Turnstile widget rendered explicitly when a sitekey exists. "free pack" labels in travel logs.
 - Tests: same card on reopen, 0 copies before signing, bad/reserved names refused, sign → account + copy matching the shown card + session, claimed state afterwards, 600 opens 448 common / 152 uncommon, foil tiers 548/52/0/0, 3 opens per connection, ledger verifies.
 - Footer/cache tag v0.24.
 
