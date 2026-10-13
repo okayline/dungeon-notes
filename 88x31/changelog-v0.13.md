@@ -1,9 +1,24 @@
-# 88x31 cLuB — Dev Changelog — v0.12.1
+# 88x31 cLuB — Dev Changelog — v0.13
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31-d65.pages.dev).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.13 — "Hi, Welcome Back!"
+**Mon Oct 12, 2026 · 6:26 PM HST**
+
+- v0.12.1 result: `/api/pubkey` → `status: "ok"` (user's browser; my fetch tool showed stale responses for several minutes, so trust the user's browser for live checks). Signed download verified end to end; user opened the GIF in Notepad and saw the stamp (the stray char after "art:" is the 255-byte sub-block length marker).
+- Layout: logged-in menu split in two. Top: slim one-line `nav.top-bar` [Home] - [My Guestbook] - [Trades (n)] - [About] - [Log Out]. Under the second rainbow hr: `section#dash` "Hi, name!" with summary list, [Daily Pull] [Save Codes] [Check a Button], and the visit search. Both shown by `showTop` whenever logged in (hidden on the save-code card).
+- `/api/summary`: packs left today (regular packs only, bonus `#b` excluded), open trade offers, last gift received / given (reasons guestbook, pass_on, gift, trade), guestbook messages today, button count. Refreshed on login, on returning Home, and after keeping a pack.
+- News ticker tried at the top of the page, then moved back above "Buttons you can collect" (kept the yellow "NEWS:" tag).
+- Guestbook themes (migration 011 `users.theme`): starry (default), geo (classic gray, Times), hacker, bubblegum, ocean, goth, construction (dashed borders), vapor. CSS custom properties `--gb-panel/text/ink/link/edge` applied as `.gb-<name>` on `#view-page`. Swatch picker under your own collection; saved via `/api/profile {theme}` (whitelisted). Bots get persona themes (h4x0r hacker, kawaii bubblegum, skater construction, dave geo, angel vapor, goth goth, webmaster ocean), filled by `ensureBots` when theme is null.
+- "Arrange my wall" moved to the bottom right of the collection panel.
+- Pull form: gift options first, "No thanks" last (still default); button reads "Keep <name>!" or "Keep <name> & send the gift!", updating live.
+- Stale-content fix: `loadSeq` counter in showPage/showBanner; content cleared to "Loading..." immediately, late responses discarded. hashchange scrolls to top.
+- [Home] added.
+- Domain: user registered **88x31.app** (Oct 12). Plan: add zone to Cloudflare, point registrar nameservers at Cloudflare, then Pages → Custom domains. pages.dev keeps working; sessions are per-host so players log in once on the new domain. Certificates embed the request origin, so new ones will say 88x31.app.
+- Footer v0.13.
 
 ## v0.12.1 — "Plug It Back In"
 **Mon Oct 12, 2026 · 6:02 PM HST**
