@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.27
+# 88x31 cLuB — Dev Changelog — v0.27.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.27.1 — "House Special"
+**Tue Oct 13, 2026 · 6:43 AM HST** (no migration)
+
+Decisions: "Mixed" pack renamed (user: "could we redesign that one haha"). Name options offered (~*~ 88x31 cLuB ~*~ Pack, Grab Bag, Mystery Pack, Surprise/Goodie Bag, Fan Mail); user picked the cLuB pack, saw three mockups (A Starry Logo, B The cLuB's Button, C Homepage Window) and said "let's put all 3 in!", every one labelled "~*~cLuB~*~ pack" + "Sealed Pack" for consistency. User asked whether opened packs stay on the shelf (no: packsOf only lists opened_at IS NULL; the faded "opened!" tile shows on the pack's own page and for packs opened but not picked from yet); didn't know each pack has its own page ("kinda cool").
+
+- **app.js** `packTile`: no-series, non-special, non-welcome packs → theme `club-a|b|c` = "abc"[p.id % 3] (stable per pack). Parts: A sticker "NEW!" + rainbow `.logo` "88x31"; B `.club-btn` (bevelled 88×31 "~*~ cLuB ~*~" with a glint) + "★★★"; C `.win95` (title bar "~*~ cLuB ~*~" + x, address "88x31.app", starry page "Welcome 2 / ~*~ 88x31 cLuB ~*~" with an under-construction strip). All: `.club-name` "~*~cLuB~*~ pack" + `.pack-sub` "Sealed Pack" ("opened!" when revealed). `packLabel` no-series → "~*~ cLuB ~*~" (titles "~*~ cLuB ~*~ Pack #12", "Special ~*~ cLuB ~*~ Pack #3"; ledger pack lines follow). Webmaster Give packs dropdown (index.html + setupGivePacks) "mixed" → "~*~ cLuB ~*~ pack".
+- **style.css**: `.th-mixed` / `.minis` removed; `.th-club-a/b/c` added (`.club-name` 10px, `.logo` rainbow text with scrolling gradient, `.sticker` blinking, `.club-btn` + glint, `.stars3`, `.win95` parts). Still the flat shelf shape, still opens with the reveal (glow → deal & flip).
+- Tested in headless Chromium with the real style.css and functions from app.js (ids 12/13/14 → a/b/c, opened variant, titles). No console errors.
+- Footer/cache tag v0.27.1.
 
 ## v0.27 — "Fresh Packs"
 **Tue Oct 13, 2026 · 6:33 AM HST** (no migration; pushed together with the v0.26.1 changelogs)
