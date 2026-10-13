@@ -1,9 +1,24 @@
-# 88x31 cLuB — Dev Changelog — v0.24
+# 88x31 cLuB — Dev Changelog — v0.25
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.25 — "Hack the Planet"
+**Tue Oct 13, 2026 · 4:45 AM HST** (pushed after migration 019 ran)
+
+Decisions: Beta released immediately (no #3 admin stuff); 90s techy/hacker theme for the commons/uncommons after the first batch was "too simplistic"; ultras inspired by the Commons GIF "Locomotive BASIC loading a picture from disk" (CC0), split into a terminal ultra (20 GOTO 20) and a fractal ultra (FRAKTAL.PIC), with the fractal views as rares; rare cap 25 (briefly 50); signature foils for the ultras; credit line in the info box Credits and on copy pages. Special packs now; print runs and limited packs later. Wording: "~*~ tHe cLuB ~*~" in running sentences, "~*~ 88x31 cLuB ~*~" in names/titles; pack tiles and certificate text stay plain. Still later: wishlist, webrings, pack links (door 2), pack party, link-giver thank-you (guestbook note + max 1 pack/week), email reminder on the profile page.
+
+- **Migration 019**: `packs.special`, `pack_openings.finishes`; series 2 Beta (active, sort 2); 26 designs (tier original, series 2; ultras source_title "Inspired by: Locomotive BASIC loading a picture from disk", author "Wikimedia Commons (CC0)", Commons URL); foils `phosphor` "Phosphor Glow" → FRAKTAL.PIC and `scanline` "Scanline Shimmer" → 20 GOTO 20 (kind foil, tier 3, weight 1,000,000, design_id by name). Same SQL appended to schema.sql. Art in public/banners/beta/ (beta-*.gif, fraktal-*.gif, ultra-*.gif).
+- **Special packs**: game.js `SPECIAL_ODDS_PER_1000` (rare/ultra doubled, taken from commons), `rollRarity(boost)`, rollDesigns `opts.boost`; packs.js pins one random slot to uncommon, rolls finishes at open (`specialFinishes`: non-signature foils weighted tier 1 ×2.5, tier 2–3 ×3; if none ≥ tier 1, one card re-rolled foil-only), stores them in pack_openings.finishes, merges into options; keepFromPack mints with `finish`. Admin give_packs `special`. UI: "special" checkbox, silver/rainbow SPECIAL tile ("★ foils inside! ★" or "★ series x ★"), "Special … Pack" title + line, "✦ <finish>" on cards. Tested 60 packs: always ≥1 foil, some with 2, finishes kept match what was shown.
+- **Signature foil CSS**: `.foil-phosphor` (breathing green glow + halo), `.foil-scanline` (fine scanlines + bright line rolling down); added to DRAWN; reduced-motion stops them.
+- **Series**: /api/series GET (counts; admins also `loose` originals and `max_active`; `?id=` designs), POST create (upcoming, admin_action series_create) / status (released_at, warning when >3 active) / assign. Buttons page **Series panel** (admins): table with status chips, Release / Retire / Hide, Look (grid), new series form, loose originals with a series select; inline messages. Upload: "Add as" select (found button / "a cLuB original → Series X") + rarity + kind; originals go in with max_editions (rare 25, ultra 1), no copy #1.
+- **Wall**: shuffled per load (random key per design), mystery tiles always last; Show All / cLuB Originals / Found and Order Shuffle / Rarity, remembered in localStorage (`wall-show`, `wall-order`). Hidden entries from /api/designs carry `tier` so filters work.
+- **Ledger**: 90s rewrite starting "Every button in ~*~ 88x31 cLuB ~*~"; About loads 15, "Show older entries" pages 100 at a time with `before` until "★ That's the very beginning! ★". Names link to the copy (#banner/id) or, for designs, the Wall when logged in. Server-side spoilers: non-admins get `design:"a mystery button", mystery:true`, ids nulled, for rare/ultra/special designs they've never owned and anything in an upcoming series ("NEW DESIGN a mystery button joined ~*~ tHe cLuB ~*~"). Tested: ultra name absent for a player and logged out, visible to webmaster; paging reaches #1 with no duplicates.
+- **Signing**: accounts.js `nameProblem` (format, -bot, reserved, taken, case-insensitive) → "Name already taken!"; signFreePack checks it before Turnstile so a taken name doesn't burn the token. Errors show inline under the signature line (`.sig-oops`), ✓ greys out ("…") while signing; free-pack open errors inline too.
+- **Menus**: logged out top bar "Home · About", footer "Home · About". ~*~ wording across running text and the dialog title.
+- Footer/cache tag v0.25.
 
 ## v0.24 — "First One's On Us"
 **Tue Oct 13, 2026 · 3:45 AM HST** (pushed after migration 018 ran)
