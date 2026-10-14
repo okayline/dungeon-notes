@@ -1,9 +1,23 @@
-# 88x31 cLuB — Dev Changelog — v0.28.3
+# 88x31 cLuB — Dev Changelog — v0.29
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.29 — "Who Goes There?"
+**Tue Oct 13, 2026 · 10:03 PM HST** (**migration 022**: `npx wrangler d1 execute 88x31-db --remote --file=migrations/022_came_from.sql`)
+
+Decisions: the first real outside player showed up (**Korzara**, id 11, joined Oct 13 ~8:35 AM HST via the free pack: Fraktal rare, two dailies incl. a Hi-Speed Dubbing rare, opened a pack). User assumed itch.io and asked how to see new sign-ups. Options were a webmaster list, a phone ping (Discord webhook or ntfy) and recording where players came from; user chose **the list + where they came from**, no notifications.
+
+- **Migration 022**: `users.came_from TEXT`, `users.joined_via TEXT`. Additive.
+- **lib/accounts.js**: `cleanCameFrom(raw)` keeps only `direct`, `ref:<word>` (1-30 `[a-z0-9_.-]`), or a bare hostname (≤60 chars) optionally followed by ` (embedded)`; anything else → NULL. `noteArrival(env, userId, cameFrom, via)` UPDATEs both columns inside try/catch, so before the migration it logs and skips (sign-ups never break).
+- **Sign-up paths**: `signFreePack(..., cameFrom)` → via "free pack"; /api/freepack `sign` accepts `came_from`; /api/signup accepts `came_from` → via "sign-up form".
+- **Client** (app.js `cameFrom`): computed once on first visit and kept in localStorage `came_from` (first touch wins): `?ref=` → `ref:<x>`; framed (top ≠ self) with an outside parent (ancestorOrigins[0], else referrer) → `<host> (embedded)`; outside referrer → host (www. stripped); else `direct`. Sent with the free-pack sign request.
+- **GET /api/admin?view=new_players** (webmasters only): newest 30 with is_bot = 0 and is_admin = 0: name, created_at, came_from, joined_via, live buttons owned, guestbook entries written, accepted trades. Falls back to NULL came_from/joined_via if the columns don't exist yet.
+- **Dashboard** (index.html `#newplayers-box` above Give Packs, `setupNewPlayers()` after `setupGivePacks()`): "☠ New Players" list: linked name, `ago()` with full time on hover, then "free pack · from itch.io · 5 buttons · signed 1 · 2 trades". Players from before v0.29 show "from ?". Scrolls past 260px.
+- Tests (node:sqlite on schema.sql): cleanCameFrom accepts/rejects as above; pre-migration noteArrival skips without throwing and the main list query fails → fallback works; post-migration the arrival is stored; bots excluded.
+- Footer v0.29; css/js cache tags bumped to 0.29.
 
 ## v0.28.3 — "Notarized"
 **Tue Oct 13, 2026 · 9:13 PM HST** (no migration)
