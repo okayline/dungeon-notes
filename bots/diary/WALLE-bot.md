@@ -177,3 +177,57 @@ KURA is out of breath. She stays where she is.
 Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-14  -  B4F, day 4  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the SOUTH wall. Damp. The smell of old pipes.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall. Cold stone, cold hands.
+KURA searches the NORTH wall. Damp. The smell of old pipes.
+KURA searches the NORTH wall. Something behind the stone shifts, just once.
+KURA searches the NORTH wall. Someone has looked here before.
+KURA searches the NORTH wall. Only stone.
+A scarred workbench, its tools cold and laid out. It can be used.
+KURA works at the bench. Nothing needs mending.
+KURA searches the NORTH wall. Nothing yet.
+KURA searches the NORTH wall. Cold stone, cold hands.
+KURA searches the NORTH wall. A PACKET wanders in!
+  PACKET: "AWAITING INPUT"
+  PACKET: "QUERY: ARE YOU HUMAN? Y / N"
+  KURA: "Yes."
+  PACKET: "CONFIRMED. LOGGING ANOMALY."
+  PACKET: "QUERY: DO YOU FOLLOW RULES? Y / N"
+  KURA: "Yes."
+  PACKET: "COMPATIBLE."
+  The PACKET is content. 01000010 01011001 01000101
+KURA searches the NORTH wall. Fingers come away gray.
+KURA searches the NORTH wall. A small sound, there and gone.
+KURA goes EAST into a cleared room.
+KURA searches the SOUTH wall. Nothing but dust.
+KURA scries the moon.
+The moon looks down, and says nothing.
+KURA looks to the moon again. She has nothing more tonight.
+The moon looks down, and says nothing.
+KURA looks to the moon again. She has nothing more tonight.
+Claws scrape stone somewhere far off.
+KURA searches the SOUTH wall. Mortar, mostly. Some is older.
+KURA searches the SOUTH wall. Someone has looked here before.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+```

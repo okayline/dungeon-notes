@@ -230,3 +230,57 @@ KURA needs a moment.
 KURA needs a moment before she moves on.
 KURA needs a moment.
 ```
+
+## 2026-10-14  -  B4F, day 4  (latest v1.03)
+
+```
+KURA wakes on B4F.
+KURA goes WEST into a cleared room.
+KURA touches the screen. The market wakes.
+KURA searches the SOUTH wall... A CRON wanders in!
+  The CRON strikes ELF. -4 HP
+  The party strikes. -11
+  KURA runs EAST and leaves the CRON behind.
+KURA searches the NORTH wall... Old tally marks, in groups of five.
+KURA searches the NORTH wall... A dead cable runs in and stops.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall... Something ticks, very softly.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall... Nothing but dust.
+KURA searches the NORTH wall... Fingers come away gray.
+KURA searches the NORTH wall... Nothing.
+KURA goes EAST into a cleared room.
+KURA plugs in. The party mends a little.
+KURA searches the EAST wall... Only stone.
+KURA needs a moment.
+KURA searches the EAST wall... Only stone.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA searches the EAST wall... Someone has looked here before.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment before she moves on.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment.
+```
