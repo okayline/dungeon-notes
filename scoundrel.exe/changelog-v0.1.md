@@ -6,6 +6,19 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.8.5 — "Battle Log"
+**Wed Oct 14, 2026 · 6:44 AM HST** (no migration)
+
+Decisions: user asked for SLAIN under CAN HIT, admins to see every ledger entry, and the header as `SCOUNDREL.EXE // NAME // SCREEN` with `DATE // TIME UTC` on the right (then tightened: two spaces around the left //, one around the right). Discussed free play vs the daily (user worried free play would be played instead): kept as built; Claude argued against a harder learning run and suggested teaching instead (first-time tips in the learning run, a one-line cause of death); not built. User asked for a fight history built from the share marks: marks under ROOMS plus a detailed line at the bottom right. The per-room card line was hard to read, so it became the last action in words, then the last two actions, newest next to LAST, with move numbers. Right panel lines fixed by the user: 7 = SLAIN (blank until a kill), 8 open, HEAL on 9.
+
+- Engine: `roomHistory(seed, actions, rules)` → `[{ turn, mark, steps, done }]`, steps `{ type: skip | fight | heal | potion_wasted | equip, card?, armed? }` (only cards the player saw; skipped cards aren't listed). `shareMarks` now = `roomHistory(...).filter(done).map(mark)` (same output; tests unchanged).
+- Worker: `runView` adds `history: G.roomHistory(game.seed, game.log)` (the seed itself is never sent). Ledger: a move is shown in full if it's yours, the day is over, or `player.admin`.
+- Free play: `freeView` adds the same `history`.
+- UI left: `HISTORY  ↷ ⚔ ⚔ ‼` under the ROOMS bar after a blank line (done rooms only; spaces dropped past 18 rooms).
+- UI right, 17 lines: HP / – / HP bar / – / BLADE ... hits up to N / CAN HIT / SLAIN (or blank) / – / HEAL / SKIP / – / IN DECK ×3 / – / `LAST #14 ⚔ slew 7♠` / `     #13 ♥ healed with 4♥`. Words: ⚔ slew X, ‼ fought X bare, ♥ healed with X, wasted X, picked up X, skipped the room. Move number = place in the flattened steps (one step per move).
+- Header (title, game, end): `header()` splits the left on 3+ spaces and joins `[SCOUNDREL.EXE, NAME|GUEST, screen]` with `  //  `; right is `nowStamp()` = `WED OCT 14 2026 // 16:32 UTC` (the NEXT DEAL countdown is gone from game/end; the title still has NEXT DEAL IN). If too wide (long names), the left separators squeeze to ` // `. Other screens keep their own headers.
+- Footer v0.8.5, app.js cache tag 0.8.5. Tests 39/39; roomHistory smoke-tested. Not browser-checked.
+
 ## v0.8.4 — "Free Play"
 **Wed Oct 14, 2026 · 6:35 AM HST** (no migration)
 
