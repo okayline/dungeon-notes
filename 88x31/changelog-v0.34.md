@@ -5,6 +5,17 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 
 ---
 
+## v0.34.11 — "What's Limited?"
+**Wed Oct 14, 2026 · 3:20 AM HST** (no migration)
+
+Decisions: user found "Limited" confusing on Fair Play, since the odds tables say "Limited packs" while Print Runs only names them by special_name ("Cool Site of the Day Pack") and nothing links the two. User suggested naming it like "Cool Site of the Day Limited Pack". Claude suggested keeping "Limited" as the category and special_name as the brand, always shown together; user agreed.
+
+- app.js Fair Play loader: `named` = series with a special_name; `limitedNote` (small p): "Limited packs: every series has one Limited pack, a numbered run of N, with a guaranteed rare and better foils." + "Series Alpha: Cool Site of the Day Pack · Series Beta: Gold Master Pack" (live from /api/odds). Shown under the rarity table and (cloned) under the foils table.
+- Packs table row "Limited" → "Limited (Cool Site of the Day, Gold Master)", note adds "numbered".
+- Print Runs: limited pack figcaption gets `.limited-tag` "LIMITED · only N ever"; bar line "Limited packs (<name>): X of N left"; explainer "Its Limited pack, the <name> Pack: …".
+- style.css `.limited-tag` (boxed small caps-ish label). `node --check` passes; not rendered in a browser.
+- Footer v0.34.11; css/js cache tags 0.34.11.
+
 ## v0.34.6 to v0.34.10 — "Keep It Up"
 **Wed Oct 14, 2026 · 2:05 AM HST** (no migration)
 
