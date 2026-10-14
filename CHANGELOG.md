@@ -3,6 +3,18 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.03 - A Name Over the Gate - Oct 13 2026, 20:31 HST
+
+![v1.03](screenshots/v1.03.png)
+
+Game commit `8464e35`. Page-only, no Worker change.
+
+- **Title logo is an image now:** `title-logo.png` (2828x1411, about 2:1, transparent; white `#e4e4df` letters), cut from the dev's own `#`/`/` ascii-art lettering, two lines ("Daily Digital" over "Demon Dungeon"). The strokes were thickened (a 7 px max filter) so they don't fade to gray when shrunk.
+  - **Placement:** `<img id="logo" class="titlelogo">` right after `#screen` in `.frame`, sized in the screen's own units (`.titlelogo` uses the pre's font-size clamp): top 6.5 rows (half a row into the banner), 8 rows tall, left at frame column `1 + SMT.LOGO.col` (27) and centered in `SMT.LOGO.cols` (42). Shown by `drawTitle`, hidden by `leaveTitle`. Dialogs sit later in `.frame`, so they still cover it.
+  - **The old block-letter `MARK` is gone** from `renderTitle`; the banner rows carry only the crescent.
+- **Crescent:** redrawn 15 columns wide (was 13) and 8 rows tall (was 7), then shifted half a row up with the half blocks, so `CRESCENT` is 9 rows from banner row 0 (`CRES_ROW = 0`, `CRES_COL = 8`). Moon, 4-column gap and logo are centered as a group. `colorizeTitle` boxes banner rows 6 to 14 (was 13) to cover the crescent's ninth row.
+- **`VERSION`** to v1.03.
+
 ## v1.02 - Hold Your Breath - Oct 11 2026, 17:37 HST
 
 ![v1.02](screenshots/v1.02.png)
