@@ -1,10 +1,23 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.4
+# scoundrel.exe — Dev Changelog — v0.1–v0.5
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.5.0 — "Take It With You"
+**Wed Oct 14, 2026 · 4:33 AM HST** (migrations 003_admin.sql and 004_saves.sql: need running, then `UPDATE players SET admin = 1 WHERE name_key = 'kura'`)
+
+Decisions: user wanted an in-game tester switch instead of wrangler commands ("can you give me an in game switch please"). Claude: only admins see it (else anyone gets unlimited plays), admin set once by command, each switch sealed on the ledger. User asked how the server knows who's kura ("cant anyone put 'kura' in?"): identity is the cookie token, names are unique labels; the one-time command finds the row by name. Catch: admin lives in one browser's cookie, so the user asked for save codes and passkeys (ported from 88x31).
+
+- **Admin** (migration 003): `players.admin`. POST /api/tester {on} (403 unless admin): batch `UPDATE players SET tester = ? WHERE id = ? AND tester = ?` + ledger `tester` entry `{kind, day, player, on, t}` guarded `EXISTS(player has the new value)`; no-op if already that value. /api/today and /api/start return `admin`. Title bar: `[T]EST ON/OFF` (inverted when on); "[H]OW TO PLAY" → "[H]ELP" for room. Ledger text "switched tester ON/OFF".
+- **Saves** (migration 004): `sessions (token_hash PK, player_id, created_at, seen_at)` = extra devices (the first device keeps players.token_hash); `save_codes (id, player_id, code_hash UNIQUE, created_at, last_used_at)`, max 5; `passkeys (id, player_id, cred_id UNIQUE, public_key JWK, alg, sign_count, label, created_at, last_used_at)`; `passkey_challenges (challenge PK, player_id, kind, expires_at)`; `rate_limits (key, window_start, count)`. findPlayer checks players.token_hash then sessions.
+- src/saves.js (from 88x31 lib/auth.js): codes 20 chars from 23456789ABCDEFGHJKMNPQRSTUVWXYZ (rejection sampling), grouped by 4, hash = SHA-256("code:" + normalized); `newSession` (new cookie token row); `rateLimit` fixed window per hashed IP.
+- src/passkeys.js: 88x31 lib/passkeys.js with user_id → player_id, rp name "scoundrel.exe", user handle "scoundrel:<id>", label name or "player <id>". rpId/origin from the request URL.
+- Routes: GET /api/account (codes/passkeys metadata, devices = 1 + sessions); POST /api/codes {new|remove}; POST /api/load {code} (10 / 15 min, sets a new session cookie); POST /api/passkey {register_options, register (≤ 10), login_options, login (20 / 15 min, new session cookie), remove}. Library errors become 400s.
+- UI: [A]CCOUNT replaces [N]AME on title and end. Screens account (stats, numbered codes then passkeys, [N]AME [S]AVE CODE [P]ASSKEY [L]OAD [F]ORGET+number [ESC]), newcode (shown once, [C]OPY), load ([C]ODE / [K]EY, key off if no WebAuthn), loadcode (in-game input, maxlength 29). After loading, /api/today reloads and the title says "Loaded X on this browser." Input text survives redraws only on the same screen (`drawnMode`). WebAuthn glue copied from 88x31 public/app.js (fromB64/toB64/deviceName/pkOops).
+- Tests 37/37 (new: code load on a 2nd device continues the same run, flags follow, 5-code cap, removed code fails, codes never in /api/account; guessing hits 429 on the 11th try; a software ES256 authenticator in the test (hand-built CBOR + DER signature): register, load on another browser, replayed answer refused, forged signature refused; admin switch seals on/off). Browser-checked: save code across two Chromium contexts, and passkey add + load with Chrome's CDP virtual authenticator (credential copied to a second context).
 
 ## v0.4.0 — "Again!"
 **Wed Oct 14, 2026 · 4:25 AM HST** (migration migrations/002_tester.sql: needs running, then `UPDATE players SET tester = 1 WHERE name_key = 'kura'`)
