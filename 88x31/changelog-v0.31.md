@@ -1,9 +1,24 @@
-# 88x31 cLuB — Dev Changelog — v0.30.2
+# 88x31 cLuB — Dev Changelog — v0.31
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.31 — "Rough Drafts" (includes v0.30.3)
+**Wed Oct 14, 2026 · 12:16 AM HST** (**migration 024**: inserts the 8 prototype designs and clears the cached odds)
+
+Decisions: user asked whether 1-of-1 ultras are good design; kept them, and added a tier below. Chose **Prototypes** (unfinished drafts of ultras), **4 copies each**. Claude drew 8 (v1 all pencil, v2 one style per lady after the user asked for a pencil sketch on one): Kimono Lady 1-4 = pencil sketch / blueprint / flat color test / 1-bit dither (one lady from the original panel each, Alpha); Fraktal = pink neon test (user asked for at least one pink neon), green wireframe, chunky 12-iteration low-res render, and a buggy BASIC "10 LAOD / ?SYNTAX ERROR / 20 GOTO 10" (prototype of the 20 GOTO 20 ultra) (Beta). Looking at real numbers showed print runs, not caps, decide supply: at 5% rares, Beta's 500 run makes ~25 rares (~2 per design, cap 25 never binds) and ~0.5 ultras. So: **only prototypes and ultras are capped; rares are just a rarity** (existing rares keep "of 25" as a quirk). New odds per card: daily/sealed common 62 / uncommon 28 / rare 8 / prototype 1.5 / ultra 0.5; limited common 60 / uncommon 25 / rare 11 / prototype 3 / ultra 1. Prototypes: not requestable, not trade-in, not fusable; tradable and giftable (to bots too), but bots never pull them. Label: a white pencil-y PROTOTYPE tag. Bots no longer favour rares (they still get some).
+
+- **v0.30.3** (shipped together): /api/guestbook refuses an ultra gift to a bot's page; the gift picker leaves ultras out on bot pages.
+- lib/game.js: `ODDS_PER_1000` = { common 620, uncommon 280, rare 80, prototype 15, ultra 5 }; `SPECIAL_ODDS_PER_1000` = { common 600, uncommon 250, rare 110, prototype 30, ultra 10 }; `RARITY_STEPS` gains prototype (ultra → prototype → rare → …); crawler rolls turn ultra/prototype into uncommon; the last-resort fallbacks in rollDesigns skip capped designs (`capped(pool, id)`: in the pool's ultra/prototype lists) so an empty rarity never hands out a prototype/ultra by accident (found in testing when a series' pool had only prototypes).
+- lib/bots.js: botPool excludes ultra and prototype; rollFor skips both; RANK gains prototype 3 / ultra 4. The "capped rares only while half left" rule only affects old capped rares. lib/packs.js botOpenPacks skips prototypes too.
+- lib/fusion.js: "Prototypes can't be fused. Only 4 of each exist!". upload.js: max_editions by rarity = ultra 1, prototype 4, else NULL (rares uncapped from now on); prototype allowed as a series-upload rarity.
+- Hiding: logged-out HIDDEN_OUT and ledger MYSTERY include prototype. /api/odds `requestable` now comes from lib/board.js REQUESTABLE (common/uncommon/rare); Fair Play's tables pick up the prototype row automatically; Free pack row says "No prototypes or ultras".
+- Client: `rarityTag()` shows a white, slightly rotated, hand-drawn-border PROTOTYPE tag (.proto-tag) on pull cards, the info window, copy pages and the request picker; prototype copies get "✎ Pencil sketch prototype of Four Kimono Ladies ✎" from stats.prototype_of/variant; img.rarity-prototype pale dashed border; rank orders gain prototype; pull odds line mentions prototypes; How to Play rarity sentence updated.
+- **Migration 024** (migrations/024_prototypes.sql): 8 designs, rarity 'prototype', max_editions 4, tier original, series Alpha (Kimono, type guestbook) / Beta (Fraktal, type neon), images in public/banners/proto/*-v2.gif with SHA-256 hashes, stats { prototype_of, variant }; `DELETE FROM meta WHERE key = 'odds'`.
+- Tests (node:sqlite with seeds + all migrations + a filled-in Beta): 8 prototypes at 4 copies, 4 per series; 12,000 rolled cards ≈ common 62.1 / uncommon 27.9 / rare 7.8 / prototype 1.7 / ultra 0.6; 6,000 crawler cards had no prototypes or ultras; a prototype with 4 copies drops out of the pool; fusion refuses prototypes.
+- Footer v0.31; css/js cache tags 0.31. Merged cleanly over the user's own index.html text edits (52c6db1).
 
 ## v0.30.2 — "Little Packs" (includes v0.30.1)
 **Tue Oct 13, 2026 · 11:39 PM HST** (no migration)
