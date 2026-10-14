@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.30
+# 88x31 cLuB — Dev Changelog — v0.30.2
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.30.2 — "Little Packs" (includes v0.30.1)
+**Tue Oct 13, 2026 · 11:39 PM HST** (no migration)
+
+Decisions: user asked for one empty line under "Hi, kura!" and a little chart above the streak line showing day 1-7 with each day's packs ("[pack]-[pack]-[ ]-[] [two packs]"). v0.30.1 used text symbols; user asked for real pack pictures, tiny, with day 7 as the current series' pack (Beta).
+
+- index.html: `.dash-gap` (1em) after the dashboard h2.
+- app.js `streakChart(n)` prepended to the streak li: 7 `.sk-day` cells (week 1 = days 1-7; later the current 7-day block, start = n - ((n-1) % 7)); each shows its reward above the day number. `streakDay(d)` mirrors lib/progress.js streakReward. Rewards drawn with `packTile` inside `.sk-mini` (22×30, tile scaled 0.22 from top-left, pointer-events off): cLuB pack (look a, id 0) for club, two for club2, `{ series: STREAK_SERIES }` = "Beta" for series. Past days dimmed with ✓, today outlined yellow, dashed connectors between days, hover titles name the reward.
+- Not visually checked (no headless browser in the workspace).
+- Footer v0.30.2; css/js cache tags 0.30.2.
 
 ## v0.30 — "Come Back Tomorrow!"
 **Tue Oct 13, 2026 · 11:42 PM HST** (**migration 023**: `npx wrangler d1 execute 88x31-db --remote --file=migrations/023_quests_streaks_seen.sql`; everything degrades safely until it runs)
