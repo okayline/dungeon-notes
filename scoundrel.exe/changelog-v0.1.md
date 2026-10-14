@@ -1,10 +1,26 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.7
+# scoundrel.exe — Dev Changelog — v0.1–v0.8
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.8.1 — "Name Tag"
+**Wed Oct 14, 2026 · 5:59 AM HST** (no migration)
+
+Decisions: user wanted the player name visible somewhere (top header) and a way to see the board and ledger from the play screen. Claude first added [TAB] BOARD and [L]EDGER to the game bar; user said the ledger should just live inside the board, and ESC needs no "TITLE" label. User asked for both changelogs (public CHANGELOG.md and this one) and the in-game version to be updated on every push.
+
+- UI: `header()` shows `<screen title>   <NAME>` (uppercased, or GUEST) on every screen that uses it. Game bar: `[1-4] TAKE  [B]ARE HANDS  [S]KIP ROOM  [TAB] BOARD  [?]  [ESC]`. Tab key mapped (`KEYS.Tab = "tab"`); in a run, tab → `go("board")` + `loadBoard(run.day)`; board's [L]EDGER and ESC work as before (ESC returns to the run via `back`).
+- Footer v0.8.1 (v0.8.0 shipped with the footer still saying v0.7.3 and the cache tag 0.7.3, fixed here), app.js cache tag 0.8.1. Tests 39/39.
+
+## v0.8.0 — "Fewer Doors"
+**Wed Oct 14, 2026 · 5:55 AM HST** (no migration)
+
+Decisions: user came back from the break with friction complaints: too many menus, 3 clicks to log in with a passkey (front page → PLAYER → LOG IN → PASSKEY), no way out of a run to the main menu. Asked to remove the WHO'S PLAYING? box; wanted [P]LAY instead of [ENTER] PLAY, PLAYER → [U]SER, [H]ELP → [?], and fewer options overall. Agreed mockup: front page 4 options; LEDGER moves inside BOARD; guest [L]OG IN opens the passkey prompt directly with the save code box as fallback; the PLAYER/USER page is only for managing a logged-in account. User also asked Claude to check the previous bot's recent code: server side of v0.7.x looked fine; leftovers noted (unused `whoRows`/`whoOk`; the workers.dev redirect only covers /api/ since `run_worker_first` is /api/* only).
+
+- UI: `guestBox()` → always false (name box off; `whoRows`/`whoOk` left in, unused). Title bar logged in: `[P]LAY|[P] CONTINUE|[P] YOUR RUN  [B]OARD  [U]SER  [?]`; guest: `[P]LAY  [L]OG IN  [B]OARD  [?]`. Keys on title: p/enter → `jackIn()`, b → board, l (guest only) → `quickLogIn()`, u (named only) → account. `quickLogIn()`: sets `loginBack = "title"`; no WebAuthn → loadcode screen; else `loadWithPasskey()` (now returns true/false), and on failure/cancel → loadcode screen. Loadcode ESC → `loginBack` (title or the load screen). Game bar gained [?] and [ESC] TITLE; ESC in a run (when not in bare-hands mode) → title, run resumes with [P] CONTINUE. Help closes with ? as well as h.
+- Tests 39/39. Not browser-checked.
 
 ## v0.7.3 — "Brackets Back"
 **Wed Oct 14, 2026 · 5:42 AM HST** (no migration)
