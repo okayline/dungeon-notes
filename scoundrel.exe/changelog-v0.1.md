@@ -6,6 +6,19 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.8.2 — "Click Means Click"
+**Wed Oct 14, 2026 · 6:12 AM HST** (no migration)
+
+Decisions: user asked for a [B]OARD button on the ledger, a pause between rooms ("Next room...."), and the blade's KILLS list moved away from under BLADE and renamed (Claude picked SLAIN over "slayed"). Then: HP bar down one line, LEFT counts into the right panel. Claude explained a blade's strength never drops (only its reach), and proposed `hits up to N`; user picked it. For the dungeon bar (counted cards seen out of 44), Claude offered ROOMS or DEMONS; user picked ROOMS. User reported clicks on cards (and SKIP ROOM) sometimes not registering and asked for a visual click confirmation.
+
+- Missed clicks, cause: `$screen.innerHTML` is rebuilt every second (the clock) and on card hover, so mousedown and mouseup could land on different elements and the browser never fired `click`. Fix: `pointerdown` records the `data-k` under the pointer, `pointerup` fires `key(k)` if it's the same key. Applies to every button and card.
+- Card squeeze: `take()` sets `pulseK = String(k + 1)` for 250 ms; `draw()` adds `.pulse` to every `[data-k=pulseK]` span (inline-block, scale 1 → 0.85 → 1 over 0.25 s). Keyboard 1–4 too.
+- Next room pause: in `act()`, if the reply is still playing and `view.turn` changed, `between = true`, draw (cards blank, `NEXT ROOM...` on the pick row), wait 900 ms, then apply the reply. Still `busy` during the pause.
+- ROOMS bar replaces DUNGEON: rooms ≈ `turn + ceil(deckCount / 3)` (skips can add one), 18-wide bar, `room 05 of ~14`.
+- Right panel: HP, blank, HP bar; `BLADE  9♦  hits up to 6` (anything / nothing when dull); CAN HIT line kept (now says the same; user may drop it); KILLS line removed, `SLAIN  <last 5>` after SKIP only once the blade has a kill; `LEFT` demons / blades / health, one per line, at the bottom. The LEFT line under the ROOMS bar is gone.
+- Ledger bar: `[B]OARD` → `go("board")` + `loadBoard(boardDay || T.day)`.
+- Footer v0.8.2, app.js cache tag 0.8.2. Tests 39/39. Not browser-checked.
+
 ## v0.8.1 — "Name Tag"
 **Wed Oct 14, 2026 · 5:59 AM HST** (no migration)
 
