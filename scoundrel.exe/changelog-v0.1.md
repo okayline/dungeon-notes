@@ -6,6 +6,18 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.8.3 — "Sign Here"
+**Wed Oct 14, 2026 · 6:20 AM HST** (no migration)
+
+Decisions: user wanted the click to push in on press and pop out on release (instead of the squeeze after), the cards centered between the panel's two sides, and more flavor lines in the DDDD tone (dark, cyberpunk). Flavor count was 33 (Claude first said 35). User's guest run didn't show on the board: by design the board needs a name, but since v0.8.0 guests had no way to set one ([U]SER is hidden for guests). User chose a "Put your name on the board?" prompt at the end of a run. LEFT 8 HEALTH read like HP; user picked `IN DECK`, then asked for "HEALTH CARDS".
+
+- Press effect: `pointerdown` on a card (data-k 1–4) redraws with `.pressed` (inline-block, scale 0.85, 0.08 s transition) on that card's spans; `draw()` re-adds it while `downK` is held (survives the 1 s clock redraw); `pointerup` clears and redraws, then takes the card if released on the same one. The post-take `pulse` moved to keydown only (keys 1–4).
+- Cards centered: `pad = "  "` at the start of the pick row, the 5 card rows, the label row and the hint row (42 wide in the 47-wide left side).
+- Flavor: +35 lines across all 11 groups (now 68), written by Claude in the dark/cyberpunk tone (not taken from DDDD's text).
+- End of run, guest (no name, not admin): `showEnd()` opens the name screen with `back = "end"`; title `PUT YOUR NAME ON THE BOARD?`, bar `[ENTER] SAVE  [ESC] NO THANKS`; both return to the end screen (save reloads the board). Naming the guest's cookie player makes them a normal player; their run counts from then on.
+- Right panel: `IN DECK  15 DEMONS / 4 BLADES / 8 HEALTH CARDS` (numbers right-aligned, singular when 1).
+- Footer v0.8.3, app.js cache tag 0.8.3. Tests 39/39. Not browser-checked.
+
 ## v0.8.2 — "Click Means Click"
 **Wed Oct 14, 2026 · 6:12 AM HST** (no migration)
 
