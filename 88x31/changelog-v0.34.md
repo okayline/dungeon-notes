@@ -5,6 +5,18 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 
 ---
 
+## v0.34.6 to v0.34.10 — "Keep It Up"
+**Wed Oct 14, 2026 · 2:05 AM HST** (no migration)
+
+Decisions: user removed the webmaster New Players panel ("maybe i'll just ask you or look in the ledger"). Streak track: user asked for the real opened pack (b&w) on past days, clickable to its pack page, past day numbers crossed out, today circled, days evenly spaced, day 5's two packs layered. Claude first showed the daily pack on day 1 (no streak pack); user: day 1 doesn't give a streak pack, "maybe there is no day 1", so the track starts at day 2. User asked day 5 to read "Come back in 2 days for a Beta Series pack!". User asked that batch uploads not say "uploaded by kura"; agreed that cLuB originals show no name either.
+
+- **v0.34.6**: removed `#newplayers-box`, `setupNewPlayers()` and its CSS. `/api/admin?view=new_players` and `came_from` tracking stay.
+- **v0.34.7**: `streakDays(env, userId, n)` in lib/progress.js; /api/summary adds `streak.days`: for each day of the current streak week up to today, the streak packs made for the player that UTC day (`pack_history` reason 'made', `packs.source = 'streak'`, created that day), with pack look fields, `opened` and `revealed`. `streakChart(st)` is a 7-column grid; past/today days show the real packs (`.sk-real`, a 0.28-scale packTile linking to #pack/ID, `.spent` gray when opened); more than one pack = `.sk-stack` (second offset −14px/+8px); past numbers get a red diagonal slash (`::after`, rotated −35°); today's number is in a yellow circle. A daily-pack fallback for days without a streak pack was in v0.34.7 and taken out in v0.34.8.
+- **v0.34.8**: week 1 shows days 2–7 (6 columns, grid columns set inline); later weeks 7. Day 1 dashboard line: "Start a visit streak!" + the next reward. streakDays starts at 2 in week 1. Server streak counting unchanged.
+- **v0.34.9**: `streakSeries(env)` = newest active, in-print series; the streak's day-7/weekly series pack now always uses it (was `seriesForPack` weighted random); falls back to `seriesPack` if none. `touchStreak` returns `series` (name). Client: `wait = next.day − max(1, streak)` → "tomorrow" / "in N days"; series reward → "a <Series> Series pack"; the track's series picture uses `st.series`.
+- **v0.34.10**: ledger `who` for kind 'design' = `designs.found_by` (players' own finds only) instead of `creator_id`; text "found by". Batch imports (found_by NULL, "Found on the internets") and cLuB originals show no name.
+- Streak track rendered with Playwright (mock summary) at day 1 and day 5. Footer v0.34.10; css/js cache tags 0.34.10.
+
 ## v0.34.1 to v0.34.5 — "Fine Print"
 **Wed Oct 14, 2026 · 1:52 AM HST** (no migration)
 
