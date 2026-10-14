@@ -6,6 +6,13 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.7.3 — "Brackets Back"
+**Wed Oct 14, 2026 · 5:42 AM HST** (no migration)
+
+Decisions: user hadn't asked for the brackets to be dropped from the guest front-page menu in v0.7.2 ("stop doing things i dont ask you to do"); restored. User also reported typing "kura" in the front-page box didn't work: most likely "That name is taken" (the old KURA player still exists); fix is deleting it or logging in from PLAYER. The game is on a break after this push.
+
+- UI: guest bar back to `[ENTER] PLAY  [ESC] PLAY AS GUEST  [B]OARD  [L]EDGER  [H]ELP  [P]LAYER` (the last four still click-only while the name box has the keyboard). Footer v0.7.3, app.js cache tag 0.7.3. Tests 39/39.
+
 ## v0.7.2 — "Who's Playing?"
 **Wed Oct 14, 2026 · 5:38 AM HST** (no migration)
 
