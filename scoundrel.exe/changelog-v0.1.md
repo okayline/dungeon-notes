@@ -6,6 +6,14 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.8.6 — "Countdown"
+**Wed Oct 14, 2026 · 6:47 AM HST** (no migration)
+
+Decisions: user wanted the top right back to the countdown it showed before v0.8.5, labeled NEXT DECK DEALT IN.
+
+- `header()` right side: `NEXT DECK DEALT IN ${countdown()}` on the title, game and end screens (was `nowStamp()`; before v0.8.5 the title showed the date and other screens `NEXT DEAL hh:mm:ss`). `nowStamp()` still exists but `header()` no longer uses it.
+- Footer v0.8.6, app.js cache tag 0.8.6. Tests 39/39.
+
 ## v0.8.5 — "Battle Log"
 **Wed Oct 14, 2026 · 6:44 AM HST** (no migration)
 
