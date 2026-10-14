@@ -6,6 +6,17 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.8.4 — "Free Play"
+**Wed Oct 14, 2026 · 6:35 AM HST** (no migration)
+
+Decisions: user asked how hard a non-ranked free mode with random seeds would be (Claude: easy, the engine already runs in the browser). User: local "best free score" is fine, it must never touch anything else, admin restart keeps replaying the daily. Claude recommended unlocking free play after the daily (keeps the daily the main event, keeps the front page short), with one free run for brand-new players to learn the rules; user agreed.
+
+- Engine moved: `engine/scoundrel.js` → `public/engine/scoundrel.js` (served as a static asset); `engine/scoundrel.js` is now `export * from "../public/engine/scoundrel.js"`, so the Worker, ledger, tests and play.mjs import paths are unchanged.
+- Free play is client-only: `startFree()` dynamic-imports the engine (`./engine/scoundrel.js?v=<version>`), seeds `G.newGame` with 64 random bits (`crypto.getRandomValues`), and keeps the run in `freeRun` = `{ free: true, state, day, n, status, score, view, marks }` (same shape as the server's `runView`). `act()` uses `freeMove()` (`G.apply` locally) instead of POST /api/move; never writes `T.run`. Nothing is sent to the server.
+- Availability: `canFree()` = today's ranked run is done, OR (no finished ranked run in /api/history, no run today or unfinished, and localStorage `scoundrel.learned` unset). Starting a free run before the daily sets `scoundrel.learned`. `freeOpen()` also allows picking a left free run back up. `everPlayed` comes from GET /api/history at startup. (A new browser with no localStorage on an account that has finished runs is covered by history; a guest who clears storage before their first daily could get the learning run again: harmless.)
+- UI: title bar gains `[F]REE PLAY` when open. Header `SCOUNDREL.EXE   FREE PLAY` on game and end screens. In a free run ESC → title (`leaveFree()` restores `run = T.unfinished || T.run`); [R]ESTART ignored. Free end screen: `BEST FREE <n>` instead of RANK; bar `[F]REE PLAY AGAIN` (when open) `[ESC] TITLE`; no share, no board, no name prompt. Best score in localStorage `scoundrel.bestFree` (try/catch).
+- README: file list and a free play note. Footer v0.8.4, app.js cache tag 0.8.4. Tests 39/39; engine smoke-tested from public/. Not browser-checked.
+
 ## v0.8.3 — "Sign Here"
 **Wed Oct 14, 2026 · 6:20 AM HST** (no migration)
 
