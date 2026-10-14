@@ -1,10 +1,22 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.3
+# scoundrel.exe — Dev Changelog — v0.1–v0.4
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.4.0 — "Again!"
+**Wed Oct 14, 2026 · 4:25 AM HST** (migration migrations/002_tester.sql: needs running, then `UPDATE players SET tester = 1 WHERE name_key = 'kura'`)
+
+Decisions: user asked for "a flag to be able to play unlimited times". Claude made it a per-player tester flag rather than a global switch: unlimited restarts on today's deck, testers left off the leaderboard (they'd know the deck), restarts sealed on the ledger. R must be pressed twice. Heads-up given: flagging kura also drops run #1 (-117) off the board.
+
+- Migration 002: `players.tester INTEGER NOT NULL DEFAULT 0` (also in schema.sql).
+- Worker: findPlayer/needPlayer select `tester`; /api/today and /api/start return `tester`. **POST /api/restart** (403 unless tester): batch `DELETE runs WHERE id = ? AND moves = ?` + ledger `void` entry guarded `NOT EXISTS (run)`, prev_hash retry ≤ 8, then `start()`. Leaderboard top, counts and your rank exclude `p.tester = 1`; `you.tester` flag.
+- Run ids are never reused: /api/start inserts `id = MAX(MAX(runs.id), MAX(ledger.run_id)) + 1` (SQLite would otherwise reuse a deleted max rowid and collide with the old run's sealed (run_id, n)).
+- Ledger: kind `void` `{kind, day, player, run, moves, status, t}`, always open; shown as "TESTER RESTART · threw away a run (N moves)".
+- UI: `[R]ESTART` on game and end bars for testers (armed = inverted; any other key disarms), title "PLAYING AS KURA (TESTER)", end "RANK TESTER RUN (not ranked)". `showEnd` skips if the run is playing again (restart during the 1.4 s death pause).
+- Tests 33/33 (new: 403 for non-testers, same deck after restart, mid-run restart, 2 voids, chain verifies, 3 distinct run ids, testers off the board and the count). Browser-checked locally. Footer v0.4.0, app.js cache tag 0.4.0.
 
 ## v0.3.0 — "Paper Trail"
 **Wed Oct 14, 2026 · 4:20 AM HST** (migration migrations/001_ledger.sql: needs running right after the push)
