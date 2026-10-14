@@ -1,9 +1,27 @@
-# 88x31 cLuB — Dev Changelog — v0.29
+# 88x31 cLuB — Dev Changelog — v0.30
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.30 — "Come Back Tomorrow!"
+**Tue Oct 13, 2026 · 11:42 PM HST** (**migration 023**: `npx wrangler d1 execute 88x31-db --remote --file=migrations/023_quests_streaks_seen.sql`; everything degrades safely until it runs)
+
+Decisions: Korzara opened their packs and had nothing left to do. Webrings + surfing were designed then parked (rings full of bots would feel hollow; too much for new players). Chosen instead: **starter quests (3 max)**, **more ways to get packs** (visit streaks + trade-in), plus requested changes: **hidden until seen everywhere**, a **picture picker** on the Request Board, **rare requests** (series pack thanks, one a day), **tradable ultras** (never to bots). Bulk drop of the user's own banner collection dropped (hand-curating uploads instead). Fusion: no fusions in the recent ledger yet.
+
+- **Migration 023**: `seen_designs(user_id, design_id)`, `rewards(user_id, kind, key, created_at)` PK on all three (one-time grants: `quest/starter`, `streak/<UTC day>`, `rare_fill/<UTC day>`), `visits(user_id, last_day, streak)`. Also added to schema.sql (with v0.29's users.came_from/joined_via).
+- **lib/progress.js** (new): `seenSet(env, viewer)` = union of owned (ownership_history.to_user), daily_pulls options and pack_openings options (json_each), claimed free pack, and seen_designs; admin → everything; logged-out → null (callers keep the old rares-and-up rule). Falls back without seen_designs pre-migration. `markSeen(env, viewer, ids)` INSERT OR IGNORE, never throws, skips admins/bots. `rewardOnce` claims the rewards row then gives packs only if it claimed (race-safe). `seriesForPack(env, prefer)`: prefer the given series if active and in print, else weighted pick over active in-print series (SERIES_WEIGHTS, newest first), null → cLuB pack.
+- **Hidden until seen**: /api/designs (Wall + info window) and /api/ledger use seenSet; logged-out visitors unchanged (rares/ultras/set rewards hidden). Seen gets recorded on: someone else's page (/api/collection?user), guestbook gifts + trade notes (/api/guestbook), /api/trades items (listTrades now returns design_id), /api/board requests. Requests can only be posted for seen designs (bots bypass). Sets unchanged (already hide unowned).
+- **Starter quests**: steps computed from data (any done daily_pull, any guestbook entry authored, any request posted); when all three are done, `/api/summary` grants one cLuB pack (source `quest`). Shown as a checklist at the top of the dashboard until claimed; applies to existing players too (bots never).
+- **Visit streaks**: `/api/summary` calls `touchStreak` (UTC days like dailies): same day keeps, yesterday +1, else resets to 1. Rewards: day 2 cLuB, 3 cLuB, 5 two cLuB, 7 series; after that each 7-day week gives cLuB on its 3rd and 5th day and a series pack on its 7th. Dashboard line "🔥 Day N visit streak!" with what you got and the next payout. Packs source `streak`.
+- **Trade-in**: POST /api/tradein `{ copies }`: multiples of 5 (max 50), commons/uncommons only, must be yours/unlocked. Each batch of 5 is all-or-nothing (lock with a token, every step checks all 5 hold it): ownership_history rows reason `trade_in` (to_user NULL, so it's on the Ledger), wall slots cleared, copies consumed with owner NULL, then one sealed cLuB pack (source `trade_in`). Packs box gets a "♻ Trade in buttons for a pack" picker. Consumed copies say "Traded in for a sealed pack"; Ledger/travel log show "traded in … for a sealed pack".
+- **Requests**: REQUESTABLE = common/uncommon/rare (ultras error). Filling a rare: `rareFillPack` series pack (prefers the rare's series), one per filler per UTC day; past that it falls back to the normal cLuB thank-you (still 1/day; the daily count now only counts series_id IS NULL request packs). fillRequest returns `pack: 'series' | 'club' | false`. Bots can fill rare requests (they already fill anything they can).
+- **Request picker** (app.js `designPicker`): search box + scrollable grid of pictures/names/rarity from the viewer's non-hidden designs (common/uncommon/rare).
+- **Ultras tradable**: removed both ultra checks in lib/trades.js and the client trade picker filter; proposeTrade refuses ultras going to a bot ("Bots can't take ultras!"). Fusion still never takes ultras.
+- How to Play: new "Come Back Tomorrow!" panel (streaks, trade-in), mystery note, rare wishes, tradable ultras.
+- Tests (node:sqlite, schema + all migrations, FKs on, D1-style batches): streak schedule weeks 1-2; day 1 none, day 2 one pack exactly once, missed day resets, day 7 series pack; quests grant once; seen from pulls, markSeen, logged-out null; trade-in refuses 4 and rares, 5 → 1 pack with 5 consumed + 5 history rows, no double trade-in; rare requestable, ultra not; three rare fills → series, club, none; ultra to bot refused, ultra trade between players accepted.
+- Footer v0.30; css/js cache tags 0.30.
 
 ## v0.29 — "Who Goes There?"
 **Tue Oct 13, 2026 · 10:03 PM HST** (**migration 022**: `npx wrangler d1 execute 88x31-db --remote --file=migrations/022_came_from.sql`)
