@@ -6,6 +6,15 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.6.1 — "Stay Put"
+**Wed Oct 14, 2026 · 4:51 AM HST** (no migration)
+
+Decisions: user: when cards are taken, the rest shouldn't move left and become the new 1 and 2; they should stay in place and keep their number. Claude put the slots in the engine (derived state, so layout survives reloads and devices) instead of the UI only. Also answered a rules question mid-build: room with 2 blades after taking 2 cards and a used skip means you must equip one (5♦ over 4♦); mentioned a possible "discard a blade" house rule, not built.
+
+- engine: state `slots` (4 card codes or null). `deal()` fills empty slots left to right with drawn cards; a take nulls that card's slot; a skip clears all 4 before the new deal. publicView `slots`: per slot an index into `room` or null. Actions still index `room[]`, so stored runs, replays and the ledger are unchanged.
+- UI: game screen draws slots 0–3 (empty slot = 9 blank columns, no label, no hover v); keys/clicks 1–4 are slots, mapped to the room index in `take()`; bar always "[1-4] TAKE".
+- Tests 37/37 (new engine test: take 3S then 5S leaves 2S _ 4S _, third take refills to 6S 7S 4S 8S; new game and skip give [0,1,2,3]). Browser-checked. Footer v0.6.1, app.js cache tag 0.6.1.
+
 ## v0.6.0 — "Off the Record"
 **Wed Oct 14, 2026 · 4:44 AM HST** (no migration; ledger wipe `DELETE FROM ledger` to run after deploy)
 
