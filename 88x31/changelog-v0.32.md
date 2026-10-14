@@ -1,9 +1,21 @@
-# 88x31 cLuB — Dev Changelog — v0.31
+# 88x31 cLuB — Dev Changelog — v0.32
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.32 — "Please Wait..." (includes v0.31.1 and v0.31.2)
+**Wed Oct 14, 2026 · 12:45 AM HST** (no migration)
+
+Decisions: clicking a pack opened it instantly; user wanted an "ultra confirm". Options discussed: tear the top, peel a seal, pull-tab, hold-to-open progress bar, scratch-off, shake. Chosen: **tear for crimped pouches**, **90s hold-to-open loading bars for flat shelf packs**, and **hold-to-open for everyone** (also the way to open pouches without tearing). Designed in a demo artifact ("Hold to Open", v1-v7): daily = dial-up, ~*~cLuB~*~ = download, welcome = "~*~cLuB~*~ Pack Setup", Alpha and limited = MS-DOS prompt, Beta = a whole cassette (the first tape-loader design, C64-style border stripes, was rejected). Copy made button-themed ("Dialing https://88x31.app...", "Verifying buttons and foiling...", "Setup is copying your buttons...", "Checking for holos..."), cut to 3 lines each; hold time kept at 1.6 s (2.6 s was tried and reverted: the user liked the old timing, only the text was too fast). Button text: "Open Pack". Front-page free pack uses Setup.
+
+- **v0.32** (app.js): `holdToOpen(p)` → Promise<boolean>; a modal Win95 window (`.ho-*`), kind from `loaderKind(p)`: daily → dialup, free or welcome → setup, special (limited) → dos (gold variant, titled "<Series> <Special> Pack #N", unzipping e.g. GOLDMSTR.ZIP), series beta → tape, other series → dos, else download. HOLD_MS 1600 / DRAIN_MS 500; pointer capture, Space/Enter hold, Escape or the x or clicking the shade cancels. Cassette = inline SVG whose reel radii trade area as v rises (sqrt keeps total tape constant), hubs spin forward while held and backward while draining, counter 000-030, label PRESS PLAY → PLAYING... → 3 BUTTONS ON SIDE A → PACK OPENED!. Wired into: daily tiles, shelf packs (skipped when re-entering a revealed pack), the pack page's Open it! button, and the front-page free pack.
+- `addTear(tile, onTorn)` for `.pouch` tiles: press in the top 30%, drag sideways; a dotted cut grows; past 70% of the width the tile goes `.torn` (jagged clip-path, top strip flies off) and opens after 450 ms; letting go early resets; a drag suppresses the following click. "✂ - - - -" hint on hover. Shelf packs and the pack-page tile.
+- **v0.31.2**: `allPacks()` + GET /api/packs?all=1 (newest first, owner, opened_at, revealed); public `#packs` section "All the Packs" (Still Sealed / Opened, linked from Fair Play's Packs table; judged public since the Ledger already shows it and sealed packs have no contents yet); pack page GET marks the opened pack's held designs as seen; `.pack-tile.spent` (opened_at) = grayscale, dimmer, no animations or gleams; Fair Play remembers scroll (`fairScroll` saved on hashchange away from #fair) and `showLedger()` keeps its DOM (older pages) for 10 minutes.
+- **v0.31.1**: trade-in box moved to a "» Trade In «" panel on the Trades page (`setupTradeIn()` on showTrades); last gift got/given moved to `#dash-gifts` in the dashboard's right column; folding panels: any `.panel > h2` starting with » toggles `.folded` (hides the rest), remembered per heading in localStorage, ▾/▸ marker; Request Board blurb mentions rares + series pack.
+- Not clicked through in a real browser (no browser in the workspace); syntax-checked only.
+- Footer v0.32; css/js cache tags 0.32.
 
 ## v0.31 — "Rough Drafts" (includes v0.30.3)
 **Wed Oct 14, 2026 · 12:16 AM HST** (**migration 024**: inserts the 8 prototype designs and clears the cached odds)
