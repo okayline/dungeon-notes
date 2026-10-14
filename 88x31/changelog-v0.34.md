@@ -1,9 +1,32 @@
-# 88x31 cLuB — Dev Changelog — v0.33
+# 88x31 cLuB — Dev Changelog — v0.34
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.34 — "Swap Meet"
+**Wed Oct 14, 2026 · 1:24 AM HST** (migration 025_pack_trades.sql: needs running)
+
+Decisions: user: "packs are items right? they should be giftable and movable like buttons". Agreed: **only sealed packs move** (not opened, not revealed/mid-pick); **limited (numbered special) packs are tradable and giftable**, but never to a bot; each side of a trade holds **up to 3 buttons and up to 3 packs**, at least one item per side (packs-only sides fine); guestbook "Stamp a Gift!" can stamp a sealed pack and the entry shows it. Bots: take regular packs, **don't always open them** (some keep trade fodder, hoarders sit on them), give their packs when asked in a trade, weigh packs in trade value, and **never send offers** (only answer).
+
+- **Migration 025**: `trade_packs (trade_id → trades ON DELETE CASCADE, pack_id → packs, side give|want, PK(trade_id, pack_id))`; `ALTER TABLE guestbook_entries ADD COLUMN pack_id`. Also appended to schema.sql. Guestbook GET and account delete need it; trades/expiry degrade gracefully before it (listTrades/loadTrade catch; expireTrades falls back to the old batch).
+- **lib/trades.js**: `proposeTrade(env, from, to, give, want, message, givePacks = [], wantPacks = [])`. `packsCheck()` checks owner + sealed (`opened_at IS NULL AND NOT EXISTS pack_openings`); "Limited packs are for people, not bots!" both directions. The offerer's packs lock with the trade token (`UPDATE packs SET locked = token ... AND locked = 0 AND sealed`); the trade row inserts only if both the instance and pack lock counts match; trade_packs rows inserted by lock_token; partial pack locks released if no trade. Tokens are ≥ 2, revealed packs are locked = 1, so the two never clash. `acceptTrade` locks wanted packs with tok2, acceptance also requires both pack counts, then pack_history 'trade' rows (sealed as ledger kind 'pack'), owners swapped + unlocked, tok2 released. `closeTrade` and `expireTrades` unlock packs (`locked > 1`). `listTrades` adds `give_packs` / `want_packs` (pack id, source, note, keep, special, special_no, special_name, special_limit, series).
+- **lib/packs.js**: `openPack` race fix: the opening row inserts only `WHERE EXISTS (pack mine AND locked = 0)` and locked = 1 is set only if the opening exists, so a pack can't be revealed while a trade offer holds it. `packsOf` returns `in_trade` (locked > 1). `botOpenPacks(env, bot, choose, { spare, chance })`: skips packs in trades, finishes revealed ones, keeps `spare` fresh ones sealed, opens the rest each with probability `chance` (max 3 a visit).
+- **lib/bots.js**: `botLikes(bot, getting, giving, getPacks, givePacks)`; pack worth 4 (cLuB/welcome), 6 (series), 25 (special), ×1.25 for hoarders; rares-only bots also accept when they come out ≥ 6 ahead. `answerTrades` passes packs and no longer builds an empty `IN ()` when no buttons are in the trade. Daily visit pack habits: hoard bots `{ spare: 3, chance: 0.3 }`, soft `{ spare: 1, chance: 0.7 }`, others `{ spare: 2, chance: 0.7 }`. Bots still never propose to players.
+- **API**: POST /api/trades takes `give_packs` / `want_packs`; GET /api/packs?user=NAME lists that player's sealed unrevealed packs (with in_trade) for the trade builder. POST /api/guestbook takes `pack_id`: one batch inserts the entry only if the pack is mine, sealed and unlocked, then pack_history 'guestbook' (`WHERE changes() = 1`), then moves the owner; refuses special packs to bots. GET includes the pack's fields (`gift_pack`, `pack_*`, `pack_opened`); guestbook trade notes carry pack lists.
+- **lib/accounts.js** deleteAccount: unlocks packs held by the player's open trades and deletes their trade_packs rows.
+- **Client**: trade builder has "your packs" / "their packs" grids under the button grids (half-size `.pk-mini` pack tiles, max 3 each, packs in other trades and limited packs to bots disabled); send needs ≥ 1 item per side; panel text updated (dropped "Ultras can't be traded"). Trade cards, trade notes and history show pack tiles via `smallList(list, packs)`. Gift picker lists sealed packs after buttons; `chooseGift({ pack })`; confirm shows the pack. Guestbook entries show "stamped a sealed <packTitle>" (+ "opened since!"). Shelf: packs in a trade are dimmed, can't be opened or torn, link to Trades. Pack story / Ledger say "traded by" / "stamped by ... into the guestbook of".
+- Tests (node:sqlite + migrations + D1 shim, scratchpad v34.mjs), all pass: packs-for-button offer + locks; can't open a pack in a trade; same pack can't be in two trades; listTrades packs; accept moves packs + button and logs pack_history; wanted packs only lock on accept; a wanted pack revealed meanwhile kills the trade cleanly with all locks released; can't ask for a revealed pack; expiry and cancel unlock; something-on-each-side, 3-pack and limited-to-bot refusals; bot valuation; guestbook stamp SQL; bot keeps 2 spare sealed; deleting the other player unlocks offered packs. Not clicked through in a real browser.
+- Footer v0.34; css/js cache tags 0.34.
+
+## v0.33.1 to v0.33.9 — "Rip It" (tear fixes)
+**Wed Oct 14, 2026 · 1:13 AM HST** (no migration)
+
+Decisions: user found the tear ripped too early (yellow before the edge, with a screenshot) and a tear opened the Open Pack popup. Iterated in a "Tear Test" artifact (v1-v8) before pushing. User asked: harder end with a shake; only start at a corner ("dont let me grab it in the middle"); flap should curl up, then "could you just make top part disappear" as a gradient; then "top part lags", so the fade was shortened.
+
+- `addTear`: rips only on release once the cut reaches LINE = 1 (all the way across); resistance `f = raw < 0.6 ? raw : 0.6 + (raw - 0.6) * 0.7`; tear-ready = yellow cut + shake + `navigator.vibrate(30)`; start only in the top 22% at a corner (x ≤ 25% or ≥ 75%), direction toward the other side; any drag sets `dataset.tore` ("1" or "skip") so the following click never opens the popup.
+- Torn top fades with a CSS mask over the top STRIP = 15%: `linear-gradient(to right|left, transparent soft%, #000 tip%)`, tip = f·100, soft = max(0, tip − 7); `.tear-cut` at top 15%; the flap element was removed.
 
 ## v0.33 — "Bling Bling" (includes v0.32.1 and v0.32.2)
 **Wed Oct 14, 2026 · 1:00 AM HST** (no migration)
