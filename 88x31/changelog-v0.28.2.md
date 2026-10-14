@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.28.1
+# 88x31 cLuB — Dev Changelog — v0.28.2
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.28.2 — "Show and Tell"
+**Tue Oct 13, 2026 · 8:37 PM HST** (no migration)
+
+Decisions: user moved their Neocities page to okayline.dev (Cloudflare, repo okayline/dot.dev) and asked for its 88x31 button grid to show the buttons they own on 88x31, side by side in the same grid. Account: **kura**. Foils/effects not shown "for now" (plain art only).
+
+- **/api/collection** (functions/api/collection.js): `SHOW_ON` = `https://okayline.dev`, `https://www.okayline.dev`. When `?user=` is given and the request's Origin is in the list, the response carries `access-control-allow-origin: <origin>`; every response sends `vary: Origin`. Only the public `?user=` view is opened up (same data guestbooks already show); the logged-in "your own collection" form never gets the header. GET only, no credentials, so no preflight.
+- **okayline.dev side** (dot.dev index.html): fetches `https://88x31.app/api/collection?user=kura`, renders each banner as `https://88x31.app/<image_key>` linking to `https://88x31.app/#banner/<instance id>`, 4 per row in wall-slot order; keeps the old static Neocities buttons as a fallback if the fetch fails or the list is empty. Tested the render with sample data (relative and `api/img?d=` keys); not tested against the live API from the dev workspace.
+- Footer tag v0.28.2 (css/js cache tags left at 0.28.1, files unchanged).
 
 ## v0.28.1 — "Squishy"
 **Tue Oct 13, 2026 · 7:21 AM HST** (no migration)
