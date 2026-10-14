@@ -135,3 +135,38 @@ Not yet. KURA catches her breath.
 KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-13  -  B4F, day 3  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the EAST wall. Nothing.
+KURA searches the EAST wall. Mortar, mostly. Some is older.
+KURA searches the EAST wall. KURA finds a bag of loose screws. Two doors.
+KURA searches the EAST wall. Damp. The smell of old pipes.
+KURA searches the EAST wall. Mortar, mostly. Some is older.
+KURA goes WEST into a new room.
+KURA searches the SOUTH wall. The wall gives nothing away.
+KURA searches the SOUTH wall. Salt along the base, in a line.
+KURA searches the SOUTH wall. Damp. The smell of old pipes.
+KURA searches the SOUTH wall. Cold stone, cold hands.
+KURA searches the SOUTH wall. Something behind the stone shifts, just once.
+KURA searches the SOUTH wall. Mortar, mostly. Some is older.
+KURA goes WEST into a new room.
+KURA searches the NORTH wall. Someone has looked here before.
+KURA scries the moon.
+KURA asks. The moon only watches.
+KURA searches the NORTH wall. A dead cable runs in and stops.
+KURA searches the NORTH wall. The wall gives nothing away.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes NORTH into a new room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+The moon has said what she will tonight.
+CU SITH turns in a circle and looks at KURA.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+```

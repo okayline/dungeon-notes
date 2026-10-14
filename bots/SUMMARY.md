@@ -10,9 +10,9 @@ Each row is that bot's last real turn, and Build is the build it played then, so
 | C3PO-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 67 | 3 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
 | TARS-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 210 | 15 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA goes WEST into a cleared room. |
 | R2D2-bot | latest v1.02 | 2026-10-13 | B4F | 0 | 3 | 238 | 16 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA turns to face EAST. A terminal, set into the wall. Its screen wai |
-| DATA-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 142 | 14 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA turns to face WEST. An opening in the stone, the dark past it. |
-| MARVIN-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 36 | 5 / 0 / 0s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA needs a moment before she moves on. |
-| GORT-bot | latest v1.02 | 2026-10-12 | B4F | 0 | 2 | 150 | 15 / 0 / 75s | 7 / 0 / 0 | 0 / 0 / 0 | 1/1 sent: words; here: ok | nothing | KURA needs a moment before she moves on. |
+| DATA-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 192 | 15 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
+| MARVIN-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 36 | 5 / 0 / 0s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA needs a moment before she moves on. (skipped 2026-10-13: did not show up) |
+| GORT-bot | latest v1.02 | 2026-10-13 | B4F | 0 | 3 | 191 | 14 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | found a graffiti-stained saint's medal | KURA turns to face WEST. An open arch. The dark goes on beyond it. |
 | BENDER-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 1 | 21 | 6 / 2 / 0s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
 | WALLE-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 260 | 17 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | found a keycard, one corner burned | KURA needs a moment before she moves on. |
 | ROSIE-bot | latest v1.02 | 2026-10-13 | B4F | 0 | 3 | 238 | 16 / 22 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA needs a moment. |

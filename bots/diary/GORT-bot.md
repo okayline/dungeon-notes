@@ -109,3 +109,36 @@ KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-13  -  B4F, day 3  (latest v1.02)
+
+```
+KURA wakes on B4F.
+KURA goes WEST into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA searches the WEST wall... Someone has looked here before.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall... Fingers come away gray.
+KURA goes SOUTH into a cleared room.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA searches the WEST wall... Someone has looked here before.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA searches the WEST wall... Nothing.
+KURA searches the WEST wall... Salt along the base, in a line.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA searches the WEST wall... Only stone.
+KURA goes EAST into a cleared room.
+KURA searches the SOUTH wall... A crack. It goes nowhere.
+KURA searches the SOUTH wall... A small sound, there and gone.
+KURA searches the SOUTH wall... KURA finds a sealed jar, humming faintly.
+KURA searches the SOUTH wall... Cold stone, cold hands.
+KURA goes EAST into a cleared room.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+```

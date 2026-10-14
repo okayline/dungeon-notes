@@ -96,30 +96,30 @@
   "eco": "nothing"
  },
  "DATA-bot": {
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 2,
-   "turns": 142,
+   "day": 3,
+   "turns": 192,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face WEST. An opening in the stone, the dark past it."
+   "last": "KURA is out of breath. She stays where she is."
   },
   "n": {
-   "searches": 14,
+   "searches": 15,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 1,
+   "unlocks": 0,
    "moves": 10,
-   "moon": 0,
+   "moon": 2,
    "holds": 0,
    "climbs": 0
   },
@@ -128,36 +128,36 @@
   "eco": "nothing"
  },
  "GORT-bot": {
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "build": "latest",
   "version": "v1.02",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 2,
-   "turns": 150,
+   "day": 3,
+   "turns": 191,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA needs a moment before she moves on."
+   "last": "KURA turns to face WEST. An open arch. The dark goes on beyond it."
   },
   "n": {
-   "searches": 15,
+   "searches": 14,
    "blocked": 0,
    "waited": 75,
-   "fights": 7,
+   "fights": 0,
    "talks": 0,
    "runs": 0,
    "unlocks": 0,
-   "moves": 5,
+   "moves": 8,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "1/1 sent: words; here: ok",
-  "eco": "nothing"
+  "events": "none; here: ok",
+  "eco": "found a graffiti-stained saint's medal"
  },
  "BENDER-bot": {
   "date": "2026-10-13",
@@ -317,6 +317,7 @@
   },
   "posted": null,
   "events": "none; here: ok",
-  "eco": "nothing"
+  "eco": "nothing",
+  "skipped": "2026-10-13: did not show up"
  }
 }
