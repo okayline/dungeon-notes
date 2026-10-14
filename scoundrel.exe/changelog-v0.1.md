@@ -1,10 +1,22 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.2
+# scoundrel.exe — Dev Changelog — v0.1–v0.3
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.3.0 — "Paper Trail"
+**Wed Oct 14, 2026 · 4:20 AM HST** (migration migrations/001_ledger.sql: needs running right after the push)
+
+Decisions: after v0.2 deployed, DAILY_SECRET first read as "not set": user had set it (likely empty via PowerShell paste); fixed by piping the value (`"..." | npx wrangler secret put DAILY_SECRET --name scoundrel-exe`). User played run #1 (-117, A♠ room 8). UI: user wanted the DDDD aesthetic, 80-col ASCII; mockups approved ("LOVE how it looks with the DDDD bones"). No emoji; keep ⚔ and ♥ as text glyphs. Fight mark: user chose ‼ ("!!" for now). No glow or visual effects. Color: none except the suit in the middle of cards; ♥ red, ♦ blue (user liked diamonds blue), ♠ ♣ plain. ICHOR renamed HEALTH (too confusing). Screen was short: now 27 rows like DDDD (47×17 play area). Clickable cards with a "v" above on hover. Ledger like 88x31: one big chain for everyone, descriptive records, hidden until the day is over (user: "hide it until the day is over").
+
+- **public/index.html + app.js**: one `<pre>`, lines as segment lists `{t, c, k, input}`; `frame()` with "~" stretch rows so every screen is H = 27 rows; symbols `[⚔‼♥♠♣♦↷█░·…]` wrapped in `.g` (inline-block, width 1ch, line-height 0), ⚔ and ‼ get U+FE0E. VT323 copied from daily-dungeon (fonts/OFL.txt), DDDD palette vars. Only color: `.card.s-heart` (--demon) and `.card.s-diamond` (--moon); all text classes map to --fg; armed button is white-inverted. No text-shadow anywhere. Screens: title (logo, deck #, runners, countdown, playing as), game (left 47: room/deck line, hover row with "v", 4 cards, labels [n]DEMON/BLADE/HEALTH, preview "⚔ -3" / "‼ -12" / "+5 HP" / "WASTED" / "EQUIP", DUNGEON bar n/44, LEFT counts; right 26: HP + 20-cell bar, BLADE, KILLS (last 5), HITS BELOW n, HEAL ready/used, SKIP ready/why), end (killing/last card, DELETED/CLEARED, score, rank, route marks), board (12 rows + you, share card panel, ←/→ days), ledger, help, name (in-game input, no browser dialogs). Log: 2 status lines + 1 flavor line. Keys: Enter, 1–4, B (arm bare), S, H/?, L, N, C, Esc, ←/→; clicks via data-k. Cards use class `clk` (no hover highlight), mouseover sets `hoverK`. 1 s clock redraw; new deck at UTC midnight reloads /api/today.
+- **engine**: fight events carry `weapon`; publicView adds skippedLastRoom, takenThisRoom, last (lastTaken), deckWeapons, deckPotions; shareMarks bare-hands mark is ‼ (was ✊). VERSION 0.3.0.
+- **worker**: `fixMarks` turns stored ✊ (and ×) into ‼ on the way out (run #1's marks).
+- **Ledger** (src/ledger.js, migration 001): table `ledger (id, kind deal|move|run, day, player_id, run_id, n, record, prev_hash UNIQUE, hash UNIQUE, created_at)` + partial unique indexes: one deal per day, one move per (run_id, n), one run end per run. hash = SHA-256(prev_hash + "|" + record), GENESIS 64 zeros. Records (JSON objects): deal `{kind, day, seed_hash = SHA-256(seed), t}`; move `{kind, day, player, run, n, room (turn before), action take|take_bare|skip, card, events [[skip,[codes]] | [equip,code,[dropped]] | [heal,code,amount] | [wasted,code] | [fight,code,bladeCode|null,damage] | [deal,turn,[codes]]], hp [before, after], t}`; run `{kind, day, player, run, status, score, hp, room, moves, demons_left, t}`. `ensureDeal` on /api/start and every move. Moves: `env.DB.batch([UPDATE runs ... WHERE moves = n, INSERT move ... WHERE EXISTS(run has n+1 moves), (INSERT run end)])`; UNIQUE prev_hash conflict → rebuild on the new head and retry (≤ 8); other UNIQUE (double-send) → 409. GET /api/ledger?before&limit (≤100, default 15): newest first, names joined at read time; today's (or later) move entries of other players come back `hidden` with only room + take/skip; deals, run ends, your own moves and past days include the full record.
+- Tests 32/32 (3 new: chain verifies entry by entry + sealed HP matches engine replay + run end score; triple-sent move sealed once, no fork; hidden for others/anon, paging, open after the day). Fake D1 gained `batch()` as a real transaction. Rendered every screen in headless Chromium against a local server (all lines 80 cols, 27 rows, no errors).
+- Runs played before v0.3 (incl. run #1) have no ledger entries; the ledger starts at the first start/move after the migration.
 
 ## v0.2.0 — "Same Deal"
 **Wed Oct 14, 2026 · 3:46 AM HST** (new D1 database scoundrel-db: schema.sql already run by user; DAILY_SECRET set)
