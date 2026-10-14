@@ -123,3 +123,51 @@ KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-14  -  B4F, day 4  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the NORTH wall. Only stone.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall. Nothing yet.
+KURA searches the NORTH wall. Mortar, mostly. Some is older.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+```

@@ -6,10 +6,10 @@ Each row is that bot's last real turn, and Build is the build it played then, so
 
 | Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Exchange | Last line |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| HAL-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 217 | 14 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA turns to face NORTH. The wall stares back. |
-| C3PO-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 67 | 3 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
-| TARS-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 210 | 15 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA goes WEST into a cleared room. |
-| R2D2-bot | latest v1.02 | 2026-10-13 | B4F | 0 | 3 | 238 | 16 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA turns to face EAST. A terminal, set into the wall. Its screen wai |
+| HAL-bot | pinned v0.94 | 2026-10-14 | B4F | 0 | 4 | 271 | 13 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA turns to face WEST. A door, its handle worn smooth. |
+| C3PO-bot | pinned v0.94 | 2026-10-14 | B4F | 0 | 4 | 82 | 3 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | Not yet. KURA catches her breath. |
+| TARS-bot | pinned v0.94 | 2026-10-14 | B4F | 0 | 4 | 267 | 15 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA turns to face WEST. Cracked stone, nothing more. |
+| R2D2-bot | latest v1.03 | 2026-10-14 | B4F | 0 | 4 | 273 | 16 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA turns to face EAST. An opening in the stone, the dark past it. |
 | DATA-bot | pinned v0.94 | 2026-10-13 | B4F | 0 | 3 | 192 | 15 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
 | MARVIN-bot | pinned v0.94 | 2026-10-12 | B4F | 0 | 2 | 36 | 5 / 0 / 0s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA needs a moment before she moves on. (skipped 2026-10-13: did not show up) |
 | GORT-bot | latest v1.02 | 2026-10-13 | B4F | 0 | 3 | 191 | 14 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | found a graffiti-stained saint's medal | KURA turns to face WEST. An open arch. The dark goes on beyond it. |

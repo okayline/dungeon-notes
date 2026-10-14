@@ -140,3 +140,34 @@ KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-14  -  B4F, day 4  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA goes WEST into a new room.
+KURA goes NORTH into a new room.
+KURA searches the EAST wall. Only stone.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA searches the EAST wall. Nothing.
+KURA searches the EAST wall. Someone has looked here before.
+KURA searches the EAST wall. Nothing.
+KURA searches the EAST wall. Fingers come away gray.
+A locked door. The door is cold, and heavier than it looks.
+A locked door. Nothing to search here.
+KURA unlocks the NORTH door. The way is clear.
+KURA searches the EAST wall. KURA finds a moth-eaten glove. Two doors.
+KURA goes NORTH into a new room.
+KURA searches the WEST wall. Cold stone, cold hands.
+KURA searches the WEST wall. Old tally marks, in groups of five.
+KURA goes NORTH into a new room.
+KURA searches the EAST wall. Nothing but dust.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA searches the EAST wall. Nothing.
+KURA goes NORTH into a new room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+```

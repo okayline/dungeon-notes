@@ -1,29 +1,29 @@
 {
  "HAL-bot": {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 3,
-   "turns": 217,
+   "day": 4,
+   "turns": 271,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face NORTH. The wall stares back."
+   "last": "KURA turns to face WEST. A door, its handle worn smooth."
   },
   "n": {
-   "searches": 14,
+   "searches": 13,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
    "talks": 0,
    "runs": 0,
    "unlocks": 1,
-   "moves": 10,
-   "moon": 2,
+   "moves": 12,
+   "moon": 0,
    "holds": 0,
    "climbs": 0
   },
@@ -32,19 +32,19 @@
   "eco": "nothing"
  },
  "TARS-bot": {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 3,
-   "turns": 210,
+   "day": 4,
+   "turns": 267,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA goes WEST into a cleared room."
+   "last": "KURA turns to face WEST. Cracked stone, nothing more."
   },
   "n": {
    "searches": 15,
@@ -53,8 +53,8 @@
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 1,
-   "moves": 8,
+   "unlocks": 0,
+   "moves": 12,
    "moon": 0,
    "holds": 0,
    "climbs": 0
@@ -64,19 +64,19 @@
   "eco": "nothing"
  },
  "R2D2-bot": {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "build": "latest",
-  "version": "v1.02",
+  "version": "v1.03",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 3,
-   "turns": 238,
+   "day": 4,
+   "turns": 273,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face EAST. A terminal, set into the wall. Its screen waits."
+   "last": "KURA turns to face EAST. An opening in the stone, the dark past it."
   },
   "n": {
    "searches": 16,
@@ -86,7 +86,7 @@
    "talks": 0,
    "runs": 0,
    "unlocks": 0,
-   "moves": 5,
+   "moves": 4,
    "moon": 0,
    "holds": 0,
    "climbs": 0
@@ -256,19 +256,19 @@
   "eco": "nothing"
  },
  "C3PO-bot": {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 3,
-   "turns": 67,
+   "day": 4,
+   "turns": 82,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA is out of breath. She stays where she is."
+   "last": "Not yet. KURA catches her breath."
   },
   "n": {
    "searches": 3,

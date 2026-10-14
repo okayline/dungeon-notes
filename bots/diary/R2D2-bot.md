@@ -148,3 +148,39 @@ Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-14  -  B4F, day 4  (latest v1.03)
+
+```
+KURA wakes on B4F.
+KURA touches the terminal. The screen wakes.
+KURA makes an offering.
+KURA touches the terminal. The screen wakes.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall... Salt along the base, in a line.
+KURA searches the SOUTH wall... A dead cable runs in and stops.
+KURA searches the SOUTH wall... Nothing but dust.
+KURA searches the SOUTH wall... Faded paint. A number, or a sigil.
+KURA searches the SOUTH wall... Nothing but dust.
+KURA searches the SOUTH wall... Cold stone, cold hands.
+KURA searches the SOUTH wall... Nothing yet.
+KURA searches the SOUTH wall... A crack. It goes nowhere.
+KURA searches the SOUTH wall... Faded paint. A number, or a sigil.
+KURA searches the SOUTH wall... Nothing.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA searches the SOUTH wall... Damp. The smell of old pipes.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+```
