@@ -1,10 +1,20 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.6
+# scoundrel.exe — Dev Changelog — v0.1–v0.7
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.7.0 — "Who Goes There?" (includes v0.6.2, never pushed on its own)
+**Wed Oct 14, 2026 · 5:10 AM HST** (no migration)
+
+Decisions: user got tangled in admin setup: had made KURA admin (all runs uncounted), made "Dev" in a private window and then couldn't take "dev" in a real window (gave `DELETE FROM players WHERE name_key = 'dev'`). User was frustrated ("we should be working on the game right now"); Claude kept admin as-is (no new modes). User now has an admin account and wanted to log out and back in. User: [ENTER] JACK BACK IN + [A]CCOUNT confusing ("you can start a game without having an account?") and naming on the account screen awkward. Agreed mockups: name prompt on the title when a guest presses ENTER, PLAYING AS on the title, ENTER = PLAY / CONTINUE / YOUR RUN, [P]LAYER screen with [L]OG OUT / [L]OG IN (user's pick over [O]UT), passkey key becomes [K]EY. No separate logout button elsewhere. From v0.6.2: admin tag, CAN HIT wording, [D]ELETE (user's pick over [X]/[F]ORGET).
+
+- **v0.6.2** (UI): `frame()` puts " ADMIN · DOESN'T COUNT " (`.admintag`, inverted white) in the top border of every screen when `T.admin`. Blade panel: `CAN HIT anything` (no kills) / `CAN HIT 2 to <rank(ceiling − 1)>` / `CAN HIT nothing (dull)` when ceiling ≤ 2 (strict rule). Account [F]ORGET → [D]ELETE.
+- **POST /api/logout**: refuses (400) unless the player has a save code or passkey. Deletes this cookie's `sessions` row; if the cookie was the first device's `players.token_hash`, that's replaced with the hash of a fresh random token. Clears the cookie (Max-Age=0). No player: just clears the cookie.
+- UI: mode `who` (title screen with the log rows replaced by `WHO'S PLAYING? NAME:` input + hint; [ENTER] OK saves the name then starts, empty name or [ESC] PLAY AS GUEST starts as a guest). `jackIn()` asks only when `!T.name` and no run exists yet; the rest moved to `startRun()`. Title: PLAYING AS name / "guest"; ENTER label PLAY / CONTINUE / YOUR RUN; [P]LAYER (A still works). Account screen titled PLAYER: bar [N]AME [S]AVE CODE [K]EY [D]ELETE [L]OG OUT|IN [ESC]; `loggedIn()` = player with a name, code or passkey; log out needs L twice and a code/passkey; after log out `/api/today` reloads as a guest. Load screens renamed LOG IN; messages "Logged in as X."
+- Tests 38/38 (new: logout refused without a code, logout of the first device and of a second device, other device stays in, log back in with the code). Browser-checked: guest title, who prompt → game, logout refused → code → logout → guest → log in. Footer v0.7.0, app.js cache tag 0.7.0.
 
 ## v0.6.1 — "Stay Put"
 **Wed Oct 14, 2026 · 4:51 AM HST** (no migration)
