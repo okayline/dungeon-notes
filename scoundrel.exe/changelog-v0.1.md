@@ -1,10 +1,21 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.5
+# scoundrel.exe — Dev Changelog — v0.1–v0.6
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.6.0 — "Off the Record"
+**Wed Oct 14, 2026 · 4:44 AM HST** (no migration; ledger wipe `DELETE FROM ledger` to run after deploy)
+
+Decisions: user didn't like tester switches being sealed on the ledger; Claude proposed practice/dev modes, user found it all too complicated ("we've already made way too many modes... it's been ok in every other game so far"). Claude owned the overcomplication (it came from trying to keep admin play "fair" on the ledger). Final: admin mode only, admin runs don't count (never on the ledger or leaderboard), tester removed entirely, ledger reset. Practice and dev modes were never built.
+
+- Worker: tester removed (no /api/tester, no tester in queries or responses). POST /api/restart is admin-only and just deletes today's run and calls start() (no void entry). In /api/move, admins get no ledger entries (batch is only the UPDATE). Leaderboard top, counts and rank exclude `p.admin = 1`; `you.admin`. Run-id-never-reused insert kept (an admin's deleted run may have been sealed before they were admin).
+- src/ledger.js: voidRecord/testerRecord and their kinds removed; note that admin runs are never sealed.
+- UI: no [T]EST; `[R]ESTART` for admins on game and end bars, single press; title "KURA (ADMIN)", end "RANK ADMIN RUN (doesn't count)"; account flags show ADMIN only. Ledger text for void/tester removed (wiped anyway).
+- players.tester stays in the database unused (002 already ran).
+- Tests 36/36: tester tests replaced by one admin test (403 for non-admins, 3 restarts with the same deck, no ledger rows for the admin, chain verifies, admin off the board and the count). Browser-checked admin restart from the end screen and mid-run.
 
 ## v0.5.0 — "Take It With You"
 **Wed Oct 14, 2026 · 4:33 AM HST** (migrations 003_admin.sql and 004_saves.sql: need running, then `UPDATE players SET admin = 1 WHERE name_key = 'kura'`)
