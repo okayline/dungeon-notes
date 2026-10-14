@@ -6,6 +6,15 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.7.1 — "New Address"
+**Wed Oct 14, 2026 · 5:27 AM HST** (no migration)
+
+Decisions: user asked for a .txt download of the save code, [K]EY → PASS[K]EY, a shorter end-of-run menu (no LEDGER or PLAYER, keep the leaderboard), [S]HARE instead of "[C]OPY SHARE". Website: Claude advised against hosting on itch.io (iframe on itch's domain makes the player cookie third-party and passkeys awkward); own domain + an itch page as a shopfront. User chose a subdomain of 88x31.app because of passkeys (they're bound to the address; if the domain is lost they all stop working, save codes are the fallback; Related Origins only helps while you still own the old domain). User set up https://scoundrel.88x31.app in the dashboard (checked live: page + /api/today). User chose to make fresh KURA/dev players on the new domain instead of carrying save codes over (`DELETE FROM players WHERE name_key IN ('kura','dev')`, then admin on the new dev).
+
+- wrangler.jsonc: `routes: [{ pattern: "scoundrel.88x31.app", custom_domain: true }]`, var `CANONICAL_HOST`. Worker: any `*.workers.dev` request → 301 to `https://CANONICAL_HOST` + path + query.
+- UI: newcode screen `[D]OWNLOAD .TXT` → Blob download `scoundrel-save-code[-name].txt` (CRLF; code, the site origin, how to log in P/L/C, keep it private, date). PASS[K]EY on the player and log-in screens. End bar `[S]HARE [B]OARD [ESC] TITLE` (+ [R]ESTART for admins); board `[S]HARE`. After adding a passkey with no save codes: "Make a [S]AVE CODE too, as a backup."
+- Tests 39/39 (new: workers.dev → 301 with path and query kept; the real host is served). Download checked in Chromium. Footer v0.7.1, app.js cache tag 0.7.1.
+
 ## v0.7.0 — "Who Goes There?" (includes v0.6.2, never pushed on its own)
 **Wed Oct 14, 2026 · 5:10 AM HST** (no migration)
 
