@@ -6,6 +6,14 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.7.2 — "Who's Playing?"
+**Wed Oct 14, 2026 · 5:38 AM HST** (no migration)
+
+Decisions: user asked whether the logged-out ENTER page could also be a log-in screen; Claude mocked "name or save code" + TAB passkey, then a click-to-focus box on the front page. User: no clicking, no friction; the separate who's-playing page is unnecessary; the front page's third log line should be "Who's playing?" with the already-open name box. A first version with save-code/passkey log-in in the box was stopped by the user ("no,") and simplified to just the name box, as asked.
+
+- UI: mode `who` removed. `guestBox()` = title screen and no name: the log area shows log lines 1–2 (or the name error in red on line 2) and line 3 `WHO'S PLAYING?   NAME: [input w16]`, focused on every draw. ENTER: name → POST /api/name → `jackIn()` (start, continue or end); empty → `jackIn()` as a guest. ESC → `jackIn()` as a guest. Typing passes through to the box (only Enter/Escape are caught); the bar is `[ENTER] PLAY  [ESC] PLAY AS GUEST  BOARD  LEDGER  HELP  PLAYER` with the last four click-only. `jackIn()` no longer asks for a name. The 1 s clock skips redrawing the title while the box has text. `logRow(i)` helper.
+- Tests 39/39 (no server change). Browser-checked: typing right away across a clock tick → game as KURA; ESC → game as a guest. Footer v0.7.2, app.js cache tag 0.7.2.
+
 ## v0.7.1 — "New Address"
 **Wed Oct 14, 2026 · 5:27 AM HST** (no migration)
 
