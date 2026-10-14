@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.32
+# 88x31 cLuB — Dev Changelog — v0.33
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.33 — "Bling Bling" (includes v0.32.1 and v0.32.2)
+**Wed Oct 14, 2026 · 1:00 AM HST** (no migration)
+
+Decisions: user asked for 3 more cLuB pack covers, "kawaii or 90's bling-ee cute blinged out". Previewed in a "cLuB Pack Covers" artifact (v1) using the game's real pack CSS; user loved all three. Claude proposed keeping existing packs on their old look; **user said existing packs can change their looks**, so it's simply id % 6.
+
+- **v0.33** (app.js packTile + style.css): cLuB look = "abcdef"[id % 6]. **D kawaii**: pastel pink→lavender, a `.hearts` text pattern, a white `.kitty` (=^･ω･^=) with CSS ears and blush, three `.twinkle` sparkles (scale/opacity loop), sub "Sealed Pack ♡". **E bling**: purple velvet radial gradient, `.gems` rhinestone border (four repeating radial-gradient rows/columns), chrome-to-gold `BLiNG` text (background-clip text), a pulsing `.gem` diamond, star-shaped `.sparkle`s (clip-path), sub "$ealed Pack". **F holo heart stickers**: 300%-size pastel holographic gradient shifting, a `.holo-heart` (clip-path path) with "88x31", `.stk` stickers "xoxo" and "QT ♡" at angles, gold `.star`s. Spent (opened) packs also hide `.sparkle`/`.twinkle`; reduced motion stops the new animations.
+- **v0.32.2**: folding generalized: any h2 whose text starts with » and ends with « (outside the loader window) is a fold heading; it folds its following siblings up to the next fold heading (`.fold-away`); the leading » becomes `.fold-arrow` (rotated 90° = open/down, flat = folded/right), ▾/▸ marker removed; keyboard (Enter/Space) and aria-expanded; a MutationObserver prepares headings drawn later and re-tucks content redrawn under a folded heading. localStorage keys unchanged.
+- **v0.32.1**: `holdToOpen(p, anchor)` positions the window over the clicked pack (fixed, clamped to the viewport); window ~250px with smaller type; no page dimming (shade transparent, still catches outside clicks to close). Dashboard: `.dash-gap-after` on the quests and streak items.
+- Footer v0.33; css/js cache tags 0.33.
 
 ## v0.32 — "Please Wait..." (includes v0.31.1 and v0.31.2)
 **Wed Oct 14, 2026 · 12:45 AM HST** (no migration)
