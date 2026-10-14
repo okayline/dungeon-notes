@@ -5,6 +5,18 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 
 ---
 
+## v0.34.1 to v0.34.5 — "Fine Print"
+**Wed Oct 14, 2026 · 1:52 AM HST** (no migration)
+
+Decisions: user asked whether the Ledger always says "someone"; Claude listed what's anonymous (requests, fusions, foils, pack openings, design finders; webmaster entries vague; deleted = "a former player") and suggested naming players except for unseen buttons, deleted players and moderation actions. User agreed. Print Runs: user asked for "at least a picture of the card packs for each series", then the date each came out. User also asked for collapsible webmaster panels and reported the Under Construction bar "only sometimes" animating.
+
+- **v0.34.1** (app.js): `route(clicked)`; hashchange calls `route(true)`, page load `route()`. `showWall(openId, scroll)` passes scroll to `openWallHash`, so arriving at #wall/ID from a link (the Ledger) scrolls the info window into view; page loads and reloads still don't.
+- **v0.34.2** (functions/api/ledger.js + app.js): ledger query joins `requests rq` (kind 'request') and its design `d5` (now part of the design/design_id/rarity/series COALESCEs, so unseen wished-for buttons stay mysteries), adds `request_foil` and a `who` column: request → rq.user_id, fusion → fusions.user_id, design → designs.creator_id, pack_open → pack_openings.user_id, foil → the copy's first ownership_history to_user. Names are read at query time, not part of the hashed records (no chain change). Client `ledWho(h)` links the name or says "a former player"; FOIL and NEW DESIGN only add the name when there is one. Webmaster entries unchanged.
+- **v0.34.3** (app.js + style.css): Print Runs rows are `.fair-series` flex rows: `.fs-packs` with two `.still` pack tiles (regular pouch `{ series }`, limited `{ series, special: 1, special_no: 1, special_name, special_limit }` with the sub text replaced by "only N ever"; no link, no hover move, no tear), and `.fs-info`: in print / out of print tag, copies-left bar (or "N printed · no print run limit"), limited-packs-left bar, per-rarity counts (prototypes "(N copies each)", ultras "(1 of 1)"), pack share, and a one-line explainer. Stacks on phones. Rendered with Playwright against a local DB at 1000px and 400px.
+- **v0.34.4**: `seriesPrinted` returns `released_at` and `first_copy` (MIN instance created_at); /api/odds `released_at` = the earlier of the two (Alpha's copies predate its series row). Shown as "Came out Oct 14, 2026".
+- **v0.34.5**: the Under Construction GIF (2 frames × 200 ms, comment "Made by Rose Mar. 26, 1996") had a NETSCAPE2.0 loop count of 1000, so it stopped after ~400 s; the two loop-count bytes set to 0 (forever), nothing else changed. Scanned all deco GIFs: it was the only one with a finite loop. Webmaster boxes fold: `.admin-head` on ☠ New Players, ☠ Give packs, ☠ Series and both ☠ Webmaster boxes (button info, player page); the fold code accepts `.admin-head` as a fold heading (folds the rest of its box), adds the » arrow, remembers per heading; click/keydown/MutationObserver selectors widened from `h2.fold-head` to `.fold-head`. Not clicked through as a webmaster in a browser.
+- Footer v0.34.5; css/js cache tags 0.34.5.
+
 ## v0.34 — "Swap Meet"
 **Wed Oct 14, 2026 · 1:24 AM HST** (migration 025_pack_trades.sql: needs running)
 
