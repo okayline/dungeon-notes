@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.28.2
+# 88x31 cLuB — Dev Changelog — v0.28.3
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.28.3 — "Notarized"
+**Tue Oct 13, 2026 · 9:13 PM HST** (no migration)
+
+Decisions: came out of a devlog-title chat ("Using blockchain for fun, Not crypto!"). The nitpick that a one-server hash chain can be rewritten by its owner led to anchoring the head externally. Archive.org ruled out; **OpenTimestamps via a GitHub Action, hourly**, in a new public repo **okayline/88x31-anchors** (separate repo so receipt commits never trigger a Pages rebuild). Fair Play gets a light, friendly, 90s-voiced explainer.
+
+- **okayline/88x31-anchors** (pushed Oct 13): `.github/workflows/stamp.yml` runs at :17 every hour plus a manual "Run workflow" button; installs `opentimestamps-client`, runs `stamp.py`, commits as github-actions[bot] only if something changed. `stamp.py` GETs `https://88x31.app/api/ledger?limit=1`; if `ok` is false it exits non-zero with no receipt (GitHub emails the owner on a failed scheduled run); validates `head` as 64 hex; skips if unchanged from `last-head.txt`; else writes `receipts/<UTC time with seconds>.txt` (time, entries, head, "chain ok"), runs `ots stamp`, appends a row to `log.md`; then `ots upgrade` on proofs from the last 3 days (a pending proof fails upgrade, which is expected) and removes `.bak` files. Tested locally with a fake ledger and fake `ots`; first real manual run succeeded (entry 536, head b14b8798…deada85, proof pending).
+- **Fair Play** (public/index.html): new `#fp-receipts` panel "Bitcoin Receipts" after the Ledger explainer: hourly robot + OpenTimestamps bundling into Bitcoin, "no crypto here", how to verify (receipt + .ots on opentimestamps.org, compare with the live fingerprint in Ledger Status), and the honest limit (proves no change since stamping, not honest recording). Static HTML, no JS.
+- Footer tag v0.28.3. Housekeeping later: GitHub warns checkout@v4/setup-python@v5 target Node 20.
 
 ## v0.28.2 — "Show and Tell"
 **Tue Oct 13, 2026 · 8:37 PM HST** (no migration)
