@@ -8,7 +8,7 @@ Newest first. Times are Hawaii time (HST).
 ---
 
 ## v0.6 — "One of a Kind"
-**Thu Oct 15, 2026 · (not pushed yet)** (no migration)
+**Thu Oct 15, 2026 · 1:33 PM HST** (migration `005_band_sky.sql`, applied to the live database through the Cloudflare connector at about 1:31 PM, before the push)
 
 Decisions: the user did not want numbers on duplicate names ("just reroll the name"), and said crowding can be dealt with when it happens. The user asked for a version number on the site and for two changelogs kept up to date on every push, and asked that Claude push only when told (the user talks a lot, then builds): Claude builds locally as asked and commits, and pushes (and writes the changelog entries) only on an explicit say.
 
@@ -19,7 +19,17 @@ Decisions: the user did not want numbers on duplicate names ("just reroll the na
 - Version: `engine/version.js` exports `VERSION` ("0.6"). `/api/today` returns `version`; `catchScreen` writes "Dawn Baton v0.6" into the footer. Footer has bottom padding so the admin bar doesn't cover it.
 - New test: `today` reports `VERSION`, and the newest `## v…` heading in `CHANGELOG.md` equals it, so the two can't drift.
 - `CLAUDE.md` in the repo records the push routine (bump `VERSION`, add the public entry, add this entry, push both).
-- Tests 31/31. The reroll UI (selects switching to the suggestion) is not browser-checked.
+- Tests 31/31 at this point. The reroll UI (selects switching to the suggestion) is not browser-checked.
+
+Later in the same batch (decisions: the user wanted hidden-then-shown previous-band info with no captions, "I just don't like explicitly labeling everything"; fixed questions per slot with a weekly rotating question still to come; empty lap cells transparent over stars after pastel, stripes and dark fills were rejected; the tune stays in the previous-band section because it is part of what that player left):
+
+- Stamp slots: `ASK` in `index.html` gives each slot a question and hint; "Start the strand." when you're first. Choosing Resolve/Tension calls `tone()`.
+- Audio: one shared `AudioContext`, `live` oscillator set, `stopSound()`. The Catch ▶ plays `heard` (last 3 notes, 0.9 s apart, null = rest) and toggles to ■; the Yesterday "Play the tune"/"Stop the tune" toggle does the same for the lap.
+- `today.heard` = notes of the last 3 earlier stamps (oldest first). `today.prev` = color, note, phrase, feeling, gesture, signoff, sky, plus `offset` (band number, no label) and `ago` ("just now" under 15 min, "a while ago" under 3 h, else "hours ago"). Never band label, name, exact time, hash, player or bot flag. Two existing tests updated for the new fields.
+- Yesterday: `lapN` navigation (◀ ▶, bounded by `first`/`lastClosedLap`), missed-lap message with `next` window, strand entries numbered `#N · label · name`, quote on top with a 30px weather icon on the right, time to the second plus minutes into the window, color swatch (dashed box if none), chips for note/feeling/gesture/sign-off.
+- Lap bar: `.sky` starry background with twinkle (reduced motion respected), 24 cells at hsl 62%/60% (frost unchanged), empty cells transparent, a weather icon row (gaps get a dimmed `fillSky` icon), a note-symbol row, a key. Counts and caption lines removed.
+- `band_sky` table (migration 005, `schema.sql`): one Open-Meteo request for a stand-in city per band (`BAND_CITIES`), cached per (lap, band), never in the ledger. Real Open-Meteo calls are untested (the sandbox can't reach it); failures fall back to "unknown".
+- Tests 38/38. Browser checks done with Playwright and a stubbed API; the "+9 · a while ago" line is not checked at phone width.
 
 ## v0.5 — "Two Words"
 **Thu Oct 15, 2026 · 12:33 PM HST** (migration `004_names.sql`, applied to the live database through the Cloudflare connector at about 12:32 PM, before the push)
