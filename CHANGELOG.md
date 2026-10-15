@@ -3,6 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.04.3 - Don't Mind Me - Oct 14 2026, 19:02 HST
+
+![v1.04.3](screenshots/v1.04.3.png)
+
+Game commit `f6e65cd`. Page-only.
+
+- **`typeHush()` no longer clears line 3;** it only sets `typeQuiet`. `typeStep` checks `typeQuiet` / `searchBeat` only in the gap, so a line being typed, held or deleted carries on through a search; a new line waits until the beat ends plus 3 s (`line3Calm`). A demon's arrival still cuts the line off.
+- **`VERSION`** to v1.04.3.
+
 ## v1.04.2 - A Moment's Peace - Oct 14 2026, 18:55 HST
 
 ![v1.04.2](screenshots/v1.04.2.png)
