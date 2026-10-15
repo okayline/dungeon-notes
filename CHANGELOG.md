@@ -3,6 +3,22 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.07 - Look Up - Oct 15 2026, 00:18 HST
+
+![v1.07](screenshots/v1.07.png)
+
+Game commit `eb33ca4`. New file `sky.js`, plus rules, screen and page.
+
+- **`sky.js` (`window.SKY`)**: `render(date, tz, facing, moonIdx)` draws a 47x15 box (rows 1-11 sky, row 12 rule, row 13 guide, row 14 bottom) over the turn controls. 21 named stars (mag < 1.6, `★` under 0.5, `✦` otherwise) with pastel guide colors; 385 catalog stars from d3-celestial `stars.6.json` (BSD), mag 1.6-3.8, `*` under 2.8, `.` otherwise. Alt/az from GMST/LST; moon from the low-precision L/M/F series; sun alt > -6 is day (no stars, "Daylight. No stars."). Projection: zenith-centered, horizon at 85 deg out, radii 22x1.35 by 5.6x1.35 so the corners have sky; stars under 5 deg alt are dropped. Top of the box is KURA's facing, with east and west mirrored (looking up). Moon disc 3 rows at her real alt/az. Location: `PLACES` table of ~70 zones, else lon = UTC offset x 15 and lat 35 N (or -33 for southern zones). `moonPos(date, tz)` for the rules. About 0.25 ms per render.
+- **Screen**: `renderScreen` uses `SKY.render` when looking up and stores it on `SMT.lastSky`; the old broken-rim sky is the fallback.
+- **Page**: `skyLeft()` colors the view columns of the run screen while looking up: named stars inline color (pastel x1.6 toward full, `strong()`) with a 6 px glow, `.sky-mid` #8a9196, `.sky-far` #4d5357, `.sky-moon` #ece6cc; guide names in their pastels with no glow; a 0.6 em place-and-time stamp at the bottom-right of the sky. Redraws every 30 s while looking up. `sky.js` loads before `screen.js`.
+- **Rules**: turning while looking up keeps looking up (no breath) and turns the sky; `sight()` says "The moon has set." / "The moon hasn't risen yet." when she's below the horizon for the player.
+- **Fight box and APPEARS**: 2 lines (was 3), new lines at the bottom; `rollUp()` slides kept rows up by the dropped rows and fades new rows up from one row below, 420 ms. APPEARS beat 1100 ms (was 450), no blank lines between lines, one blank above the stance row.
+- **INVOKE**: ICHOR always listed (0 at none; using it at 0 says so); empty bag shows `1  The bag is empty` and the foot comes up; blank above the item rule unless its description is 2+ rows; 0-9 uses at once; "Enter: choose who gets it." removed.
+- **Line 1**: `act()` no longer blanks a party member's `talkLine`.
+- **`VERSION`** to v1.07. README credits d3-celestial.
+- Sheet: moon sight lines added.
+
 ## v1.06 - A Word With the Moon - Oct 14 2026, 23:35 HST
 
 ![v1.06](screenshots/v1.06.png)
