@@ -166,3 +166,34 @@ KURA goes SOUTH into a cleared room.
 KURA goes NORTH into a cleared room.
 KURA goes WEST into a cleared room.
 ```
+
+## 2026-10-15  -  B4F, day 5  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the WEST wall. A crack. It goes nowhere.
+KURA searches the WEST wall. Faded paint. A number, or a sigil.
+KURA goes EAST into a cleared room.
+KURA searches the SOUTH wall. Only stone.
+KURA goes EAST into a cleared room.
+KURA plugs in. No one needs it.
+KURA searches the NORTH wall. Damp. The smell of old pipes.
+KURA goes WEST into a cleared room.
+KURA searches the SOUTH wall. Salt along the base, in a line.
+KURA searches the SOUTH wall. A crack. It goes nowhere.
+KURA searches the SOUTH wall. Cold stone, cold hands.
+KURA searches the SOUTH wall. Mortar, mostly. Some is older.
+KURA searches the SOUTH wall. Nothing.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall. Salt along the base, in a line.
+KURA searches the NORTH wall. KURA finds a burned-out circuit board.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall. Someone has looked here before.
+KURA searches the WEST wall. Nothing yet.
+KURA goes SOUTH into a new room.
+KURA unlocks the SOUTH door. The way is clear.
+KURA goes NORTH into a cleared room.
+KURA goes NORTH into a new room.
+KURA goes SOUTH into a cleared room.
+KURA goes SOUTH into a new room.
+```

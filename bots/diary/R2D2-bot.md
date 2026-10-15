@@ -184,3 +184,68 @@ Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 Not yet. KURA catches her breath.
 ```
+
+## 2026-10-15  -  B4F, day 5  (latest v1.12.1)
+
+```
+KURA searches the SOUTH wall... Nothing yet.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall... Only stone.
+KURA goes WEST into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA searches the EAST wall... The wall gives nothing away.
+KURA searches the EAST wall... A TRACER wanders in!
+  The TRACER strikes CU SITH. -4 HP
+  The party strikes. -9 HP
+  TRACER: "AWAITING INPUT"
+  The TRACER goes its way. 01000010 01011001 01000101
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA searches the WEST wall... A PACKET appears! Two doors.
+  PACKET: "0000000000000000"
+  The PACKET strikes PIXIE. -3 HP
+  The PACKET strikes KURA. -2 HP
+  The party strikes. -7 HP
+  PACKET: "0000000000000000"
+  The PACKET strikes KURA. -5 HP
+  The PACKET strikes CU SITH. -4 HP
+  The party strikes. -9 HP
+  The party strikes. -14 HP
+  The PACKET falls.  +20 ICHOR
+  It drops a coil of copper wire.
+KURA searches the WEST wall... Only stone.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA searches the WEST wall... A DAEMON wanders in!
+  DAEMON: "0000000000000000"
+  The DAEMON strikes KURA. -8 HP
+  The DAEMON strikes KURA. -4 HP
+  The party strikes. -11 HP
+  KURA holds up a tangle of fiber cable.
+  DAEMON: "INPUT LOGGED. THREAT UNCHANGED."
+  The DAEMON strikes KURA. -3 HP
+  The DAEMON strikes KURA. -4 HP
+  The party strikes. -14 HP
+  KURA holds up a tangle of fiber cable.
+  DAEMON: "THANK YOU. CONTINUING."
+  The DAEMON strikes ELF. -6 HP
+  The party strikes. -11 HP
+  The DAEMON falls.  +33 ICHOR
+  It drops a vending machine coin.
+KURA searches the WEST wall... KURA hears a soft knock. Or her own pulse.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Nothing.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+```
