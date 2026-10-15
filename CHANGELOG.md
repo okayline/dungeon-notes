@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.05.3 - True Colors - Oct 14 2026, 20:33 HST
+
+![v1.05.3](screenshots/v1.05.3.png)
+
+Game commit `9baaaad`. Page-only.
+
+- **`auraColor()`:** the `.q-aura` result on line 2 gets an inline color from `save.alignScore`, which runs -6 (LAW) to +6 (CHAOS). It's a straight blend between `#a990f5` (violet) at -6, `#e3a6c4` (soft pink) at 0, and `#ff7aa8` (hot pink) at +6. It stays clear of demon red. The LAW end is close to the moon item lavender `#c9b6ff`, and the moon color may get tweaked later.
+- **Intro unfold fix:** `introShown` now counts the groups above the stance row that are already on screen, and it grows as each one unfolds. A redraw of the same demon (after AURA, or mid-unfold) keeps those, clears the old timer, and unfolds the rest at 450 ms each, ending with the stance row. Before, any second `encounterBox` call rebuilt the box fully visible.
+- **`VERSION`** to v1.05.3.
+- No creature lines changed.
+
 ## v1.05.2 - Reading the Room - Oct 14 2026, 20:26 HST
 
 ![v1.05.2](screenshots/v1.05.2.png)
