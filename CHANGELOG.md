@@ -3,6 +3,33 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.04 - Read the Room - Oct 14 2026, 18:30 HST
+
+![v1.04](screenshots/v1.04.png)
+
+Game commit `b76d3bf`. Page-only, no Worker change.
+
+- **Every item has an alignment and a nature** (`ITEM_ALIGN`, `ITEM_NATURE` in rules.js). COMMON and UNCOMMON are 4 LAW / 4 NEUTRAL / 4 CHAOS each; RARE and up keep their old values. Nature is `tech` / `spirit` / `both` (`plain` is gone: matches and medicine are spirit, fiber cable tech, cassette both). `BOTH_NAME` overrides the pair for the circuit board (STRAY STATIC) and the cassette (FERAL HUM).
+  - **Relics:** only RARE+ move the lean (`relicAlign`): finding, giving, altar offerings and breaking behave exactly as before. Gift worth's alignment bonus is relic-only too.
+- **Names:** `MACH` SIGNAL/HUM/STATIC (data, hardware, programs, tech items), `NAT` KEPT/STRAY/FERAL (folklore, spirit items, KURA's lean); hybrids and both-items take `NAT MACH` (both tidy LAW, both wild CHAOS, else NEUTRAL). 3-letter: SIG HUM STC KPT STR FRL. Codex shows `alignment: NAME (VALUE)`; item and demon tags use the name.
+- **Aura** (`aura(st)`): piles per alignment = 2 for KURA's lean + item strength by tier (COMMON 1, UNCOMMON 2, RARE 3, MYTHIC 5, MOON 8). Machine half = biggest pile (any tie = HUM); natural half = her lean. Bands by total: QUIET 0-5, NOTICED 6-11, LOUD 12+. Shown in the bag header (`STRAY HUM  LOUD`) and each item's box tag.
+  - **Noticed effects:** encounter chance x1.15 NOTICED / x1.35 LOUD; `pickDemon` rerolls a non-matching demon toward her dominant pile 30% / 50% of the time; moon answer odds x1.3 when LOUD (cap 0.95).
+  - **Remarks:** on a demon's arrival, 60% NOTICED / 90% LOUD chance of a family-voice remark (`AURA_REMARK`); carrying a MOON thing, half of those are the MOON line (`MOON_ITEM_REMARK`). Never programs or ATOM SLASHER.
+  - **Demon loudness** (`demonBand`): corrupted or unique LOUD, programs QUIET, else floor 1 QUIET, 2-3 NOTICED, 4+ LOUD.
+- **`[A]URA`** (`readAura`, key A in the fight box, replacing `[G]IVE` on the stance row): free, no demon turn. Three lines in KURA's voice: what she does, `NAME. loudness`, personality hint. Each pool is 80% jokey / 20% plain (`pickMix`). CU SITH and ATOM SLASHER have their own hint lines. Tallies `auraReads`, codex notes `read`.
+- **Talk rows.** Chat stage shows `[Y]ES [N]O [S]ILENT` over `[G]IVE [B]EHOLD [P]EACE`.
+  - **GIVE mid-question** (`talkGive`): opens the gift list with `e.fromChat`; `[B]ACK`/N/Esc returns to the question for free. From a hostile demon it's the old mid-fight GIVE (`offer`).
+  - **Hostile stage:** TALK on an angered demon (not ATOM SLASHER) opens `stage: "hostile"` for free: words dimmed, item moves live, Esc backs out (`hostileBack`).
+  - **BEHOLD / PEACE** (`itemMove` -> `stage: "pick"` -> `movePick`): list of carried things with name tag and one dot per aura point. Score (`affinity`): alignment gap 0/1/2 = +2/0/-2; family taste hated -2, loved +1; GRUFF +1 COMMON/UNCOMMON else -1; HAUGHTY COMMON -1, RARE +1, MYTHIC/MOON +2; SLY +1 both-nature or MOON; PRIM +1 same / -1 opposite; DREAMY +1 non-tech and a random +-1. Good >= 2 (PEACE on GRUFF >= 3), bad <= -1.
+    - **Hostile:** spends the round. BEHOLD good: no blow, then 40% (GRUFF 20%) it calms (`angered` off). PEACE good: item spent, calms, no blow. PEACE bad: insult, two blows. Else one blow.
+    - **Talking:** answers the question (`afterAnswer`, split out of `demonHears`). BEHOLD mood +1 / 0 / -1. PEACE good: item spent, mood +2; bad: mood -2; meh nothing.
+- **Moon moods** (`moonLine`): phases 0, 1, 7 solemn; 3-5 sassy; 2 and 6 coin flip. New pools `MOON_QUIET_SASS`, `MOON_AGAIN_SASS`.
+- **KURA's tag** is her natural half: KPT / STR / FRL (screen.js; the pull-arrow regex in index.html and the flip lines in `lean` follow).
+- **Disguise** is built and switched off (`DISGUISE_ON = false`, `wear()`): mirror reads SIGNAL, VR visor STATIC, glove HUM, for one encounter; `stance` and `aura` honor it.
+- **Exchange parked** (`EXCHANGE_ON = false`): `exchDir` returns null (dead ends are plain, plain names), `ecoScan` stops reporting finds (no Worker rolls, MOON things stay in the bag), market lines leave the title feed. Worker, D1 tables and stashes untouched.
+- **Hold Omen hidden** (`HOLD_OMEN_ON = false` in index.html): no button, no H, gone from help. The rules still have it; a banked omen can't be released while it's off.
+- **`VERSION`** to v1.04.
+
 ## v1.03 - A Name Over the Gate - Oct 13 2026, 20:31 HST
 
 ![v1.03](screenshots/v1.03.png)
