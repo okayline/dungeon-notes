@@ -6,6 +6,17 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.8.8 — "Steady Screen"
+**Thu Oct 15, 2026 · 10:25 AM HST** (no migration)
+
+Decisions: after v0.8.7 the user said clicks still felt awkward, the cursor sometimes turned from a hand to an arrow over a card, hovers sometimes didn't register, and the squeeze animation stalled. Claude traced it to `draw()` rebuilding the whole `<pre>` via `innerHTML` every second (the countdown) and on every hover change (the little v), which replaces every element under the pointer. The old pointerdown/pointerup `draw()` calls (and the `.pressed` class, removed in v0.8.7) were a workaround for that same cause. The user approved fixing the redraw itself; the reprint-everything design is kept. The 900 ms NEXT ROOM pause is deliberate and was left alone.
+
+- `html()` now returns one html string per line. `draw()` wraps each line in `<span class="ln">` and, when the mode and line count are unchanged, rewrites only the lines whose html differs from `shown` (the countdown line, the v row). Everything else stays the same DOM element. Mode change or a different line count still does a full rewrite. The name-box value/focus restore is unchanged.
+- Squeeze: `pulseK` and its `draw()` hook are gone. `squeeze(k)` adds `.pulse` straight to the `[data-k]` elements on a registered click or key (1–4, not busy) and removes it after 260 ms, so it plays at once instead of after the server answers, and a redraw can't cut it short.
+- The preview line under each card (`hint` row) now carries the slot key and the class `dim clk`; `html()` treats `clk` like `card` (pointer cursor, no button highlight, stays dim).
+- `index.html` app.js cache tag 0.8.6 → 0.8.8 (it had been stale since v0.8.6). Footer v0.8.8.
+- Checked in headless Chromium with the server mocked and a free-play run: old v0.8.6 removed 708 DOM nodes in 3 s idle and replaced the hovered card; v0.8.8 removed 9 and kept the card. 0 non-pointer samples over a card plus its preview line. Click took the card, squeeze class applied. Tests 39/39.
+
 ## v0.8.7 — "Click Through"
 **Thu Oct 15, 2026 · 10:20 AM HST** (no migration)
 
@@ -14,7 +25,7 @@ Decisions: user reported clicking a card sometimes does nothing and needing 2–
 - Cause 1: `pointerdown` called `draw()` and `draw()` added `.pressed` (`display: inline-block; transform: scale(0.85)`) to the held card. Pressing near an edge could leave the cursor outside the shrunken card at `pointerup`, so `closest("[data-k]")` found nothing and `key()` never ran. The 1s redraw and hover redraw swapping the node mid-press made it worse. Fix: removed the `draw()` calls on pointerdown/pointerup, the `.pressed` line in `draw()` and the `.pressed` CSS rule. Press is still tracked with `downK`; the click still needs press and release over the same key.
 - Click feedback: on a registered 1–4 click (not busy) `pointerup` sets `pulseK` for 250 ms, same as the keyboard path (the `.pulse` squeeze after the pick).
 - Cause 2: `take()` returned at once when `busy` (the server call plus the 900 ms NEXT ROOM pause). Fix: `queued = { slot, turn }` holds one click made while busy; `act()` plays it after `busy = false; draw()` only if still playing, mode is game and `run.view.turn` equals the queued turn (a slot means a different card in the next room). Cleared on a fresh `take()`, on error and on run end. A second click on a card already taken is a no-op (empty slot). Clicks during the NEXT ROOM pause hit no card (cards are hidden), so they are not queued.
-- Footer v0.8.7, app.js cache tag 0.8.7. Tests 39/39. Not browser-checked.
+- Footer v0.8.7. (The app.js cache tag in index.html was NOT bumped in this version and stayed 0.8.6 until v0.8.8.) Tests 39/39. Not browser-checked.
 
 ## v0.8.6 — "Countdown"
 **Wed Oct 14, 2026 · 6:47 AM HST** (no migration)
