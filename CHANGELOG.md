@@ -3,6 +3,34 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.05 - Aura Farming - Oct 14 2026, 19:42 HST
+
+![v1.05](screenshots/v1.05.png)
+
+Game commit `ac8fa23`. Rules and page; no Worker or database changes.
+
+Terms (decided this build): **AURA** is the party's and KURA's temperament. **VIBES** is the dungeon's temperament (the heat), which TALK's party lines carry. TALK out of a fight is unchanged.
+
+- **`[A]URA` out of a fight:** `readAura` now calls `auraOut` when there's no encounter. In a fight it's unchanged.
+  - **Facing a door** (`dir in room.doors`, not looking up): `auraDoor`. It costs 1 breath (`spendBreath`) and counts `auraReads`. Out of breath, it gets the usual refusal and `nudgeBreath`. The hunch comes from `AURA_DOOR[kind]`, where kind is the open room's `kind` / `hall` / `dead` / `plain`, or `FLOOR.kindBehind` for a locked door. It's stored in `RS(d).auraDoors[dir]`, so a repeat read replays it free, and a reroll is impossible. A sealed door gives a fixed line, free. The pairs overlap on purpose: den/forge are "warm", bay/altar "soft", vault/relay "cold". It's always given, unlike searching a locked door (55% for a `KIND_HINT`), but vaguer than a dead-end scrap or SCAN.
+  - **Anything else:** `auraOut` aura-farms. Line 2 is from `AURA_FARM`, and it costs no breath. Line 1 rolls `r`:
+    - r < 0.2, or no party and QUIET: self-reflection (`AURA_SELF_TALK`, 1 in 5 plain).
+    - Band > 0 and r < 0.4, or band > 0 with no party: the dungeon notices, from the `NOTICE_LINE` up1 / up2 pools (dry voice).
+    - Otherwise: a random living party member reacts. It's `AURA_PARTY[name]` for ELF, PIXIE, CU SITH and the five programs, or the `AURA_FAMILY` fallback by family. Pool index 1 is LOUD, 0 is QUIET or NOTICED.
+  - **Line 3:** the rules set `st.line3 = "She reads as {aura().name}. Quiet./Noticed./Loud."`. `act()` moves it into `line3Next`, so it's the next line typed.
+  - Bottom bar: `[T]ALK [A]URA [I]NVOKE ...`, with key `a` out of a fight. There's a help row for "[A]URA otherwise".
+- **Names:** `needName` is gone.
+  - `reset` calls `named(st, true)`: a chosen name carries over, and a placeholder rerolls (never the same one twice in a row). The placeholders are `AUTO_NAMES` (UNTITLED NEWFOLDR TEMPFILE GUEST NO NAME DRAFT 2 READONLY DEFAULT BADSECTR ORPHAN STALE PENDING REDACTED), checked against in-game demons and programs. NULL, DEADLINK, CACHED, LOSTPKT, LOWBATT, UNSAVED and NO SIGNAL were left out. They aren't checked against the Worker's BLOCKLIST, which lives in env.
+  - `start()` runs `RULES.named(s)`, so an old save waiting on a name keeps its last one.
+  - The "WHO ARE YOU?" box (`nameBox`, `confirmName`, the `name` mode of #found) is deleted. Clicking `.pname` (row 8, columns 50-58) puts the `#pnamefield` input over the name and level. Enter keeps a valid name, an invalid one gets `.bad` (a red border), and Esc or blur drops it. It works in a fight too.
+  - The post row is `POST AS [#postname] [P]OST`. `submitScore` runs `setName` on the field first.
+  - Name inputs stop key propagation, so letters never fire commands.
+- **Board:** a row whose name `isAutoName` gets `#board .auto` (var(--trail)). `boardHead` now takes nodes.
+- **`.q-plain`** is `#b4b4b0`, light grey. It was sand `#cbbf9f`.
+- **Line 3 hold** after typing is 4000 ms, was 5000. `typeSay` is still 6000.
+- **`VERSION`** to v1.05.
+- The sheet has the new lines: Party & programs, Enemies (by family), KURA aura reads, Dungeon.
+
 ## v1.04.4 - Sand and Moonlight - Oct 14 2026, 19:10 HST
 
 ![v1.04.4](screenshots/v1.04.4.png)
