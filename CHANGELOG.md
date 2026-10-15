@@ -3,6 +3,26 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.09 - A Light Left On - Oct 15 2026, 06:15 HST
+
+![v1.09](screenshots/v1.09.png)
+
+Game commit `c83147f`. Rules, page, Worker (the Worker needs one redeploy for the new keys).
+
+- **Dead-end names (`NAMES_BY_KIND.dead`)**: "Dead end" and "Sealed end" are now Beacon, Lamp room, Uplink, Waystation, Signal room, Comms nook (11 characters at most). "Lamp room" is also in the plain list; the no-repeat rule means a floor never shows it twice. `roomName()` renames a dead end that was saved as "Dead end" or "Sealed end" (`oldDead`, no kind) on its next look; every other saved name stays. The exchange list stays, still off (`EXCHANGE_ON = false`).
+- **Party lines on entering a dead end (`ENTER_BY_KIND.dead`)**: ELF `"Others have stood here. You can feel it."` / `"The way ends here, and it is not unkind."`; PIXIE `"Ooh, cozy! Somebody was here before us. Hi, somebody!"` / `"Nobody's chasing us in here. I like it."`; CU SITH circles once and lies down by the wall / noses the end wall, tail slowly wagging.
+- **AURA door read (`AURA_DOOR.dead`)**: `"Small vibes, the good kind. Someone saved me a seat."` / `"It's giving cozy corner. Lowkey a hug of a room."`
+- **Arch description (`ARCH_DESC.dead`)**: "is small and snug, with a light left on" / "feels lived in, and quietly glad of company".
+- **Demon drops (`win()`)**: a beaten demon drops `R(1, 2)` of its pocket items (was `R(1, 3)`).
+- **Party offers (`wordParty`)**: the offer roll is now `offerOdds = p.words >= 2 ? 0.12 * y : 0`. The first WORD with a member never offers; the second is 12%, the third 6%, the fourth 3% (`WORD_YIELD = [1, 1, 0.5, 0.25]`). Was `0.3 * y` from the first WORD. The confide window is unchanged (`[0.3y, 0.3y + 0.12)`); rolls below it that no longer make an offer fall through to banter. Checked in Node over 4,000 runs: no offer on a member's first WORD, about 9% on the second.
+- **Title feed**: the rumors `refused`, `asked` and `silent` and the "Gifts refused" card are gone (nothing fires them since v1.06; the Worker still accepts the keys). "Answered [S]ILENT" stays: the party's yes/no/silent banter question still fires it. An `ago(ts)` helper now serves "Last fall" and the new "Last climb out".
+- **New cards**: Average run (turns / runs), Demons beaten per run (beaten / runs, one decimal), Doors per player (unlocks / players, one decimal), The moon's answer rate (moonYes / moon, capped at 100%). These four need no Worker change. Last climb out (`lastOut`), Things traded, Demons that went their own way and Moon offers taken need the redeployed Worker.
+- **New counters** (`tally`, posted in `summary().stats`): `traded` (`offerDone`, party and demon offers, swaps included), `peace` (`departs`, a demon leaving after a WORD, with or without a gift), `moonTook` (`moonTake`). Worker `STAT_CAPS`: traded 300, peace 300, moonTook 100 a run.
+- **New events** (`ev`): `traded` (`offerDone`), `parted` (`departs`), `moonpick` (`moonTake`). Worker `EVENT_TAGS` gets all three; the page has three wordings each in `RUMORS`. An old Worker answers 400 to the new tags and ignores the new stat keys, so nothing breaks before the redeploy.
+- **Worker `/feed`**: new `lastOut` (the newest `news` row of type `out`). Redeploy with `npx wrangler deploy`; no schema change.
+- **`VERSION`** to v1.09. README screenshot to v1.09.
+- Sheet: the two dead-end door reads replaced.
+
 ## v1.08.1 - Full Stop - Oct 15 2026, 00:47 HST
 
 ![v1.08.1](screenshots/v1.08.1.png)
