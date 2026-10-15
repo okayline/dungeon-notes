@@ -3,6 +3,23 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.05.2 - Reading the Room - Oct 14 2026, 20:26 HST
+
+![v1.05.2](screenshots/v1.05.2.png)
+
+Game commit `727f26d`. Rules and page.
+
+- **AURA out of a fight is one line 2**, built by `auraLine(lead, result)`: `> {lead}... {result}`. If that runs past 77 columns, the lead becomes `KURA reads`, and every result fits after that (checked against the longest demon name, STATIC BANSHEE). `st.extra` is no longer set, so line 1 stays ambient.
+  - Room: the lead is from `AURA_FARM` (now without a period). "KURA checks her aura. And everyone else's." became "KURA checks everyone's aura", since the old one almost always fell back. The result is the party, dungeon or self line.
+  - Door: the lead is `KURA reads the {DIR} door` (`... again` on a repeat). The result is the quoted hunch. `RS(d).auraDoors[dir]` now stores the bare hunch, and `said()` strips the old `> KURA: "..."` form from v1.05 saves.
+  - The self lines lost their `KURA: ` prefix (it's her line), and the plain one starts with "She".
+- **Page beat:** `act("aura")` runs the read at once (`auraGo`), then holds line 2 back. The head shows with 3 dots, 200 ms apart, then the result is typed at 30 ms a character.
+  - It uses `searchBeat`, so `act()` ignores everything until it ends (mashing A runs exactly one read). `typeHush()` keeps line 3 waiting until it's done.
+  - The v1.05.1 line-1 beat (800 ms `auraBeat`) is gone.
+- **Color:** `.q-aura` is `#e3a6c4`, soft pink. The colorizer matches `KURA (aura-farms|checks everyone|takes a read|vibe-checks|reads)...` on line 2.
+- **`VERSION`** to v1.05.2.
+- Sheet: the KURA aura reads rows are updated (the lead lines, self lines and door lines are now line 2, without `KURA:`), and a row for the `KURA reads` fallback is added.
+
 ## v1.05.1 - Pack Light - Oct 14 2026, 20:16 HST
 
 ![v1.05.1](screenshots/v1.05.1.png)
