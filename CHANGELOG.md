@@ -3,6 +3,20 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.04.4 - Sand and Moonlight - Oct 14 2026, 19:10 HST
+
+![v1.04.4](screenshots/v1.04.4.png)
+
+Game commit `f4cbaef`. Page-only.
+
+- **`.q-plain`** (nothing, COMMON, UNCOMMON search results on line 2) is `#cbbf9f` sand, was `var(--trail)` grey.
+- **Flavor moved to line 1** (`save.extra`), line 3 is status only:
+  - `moonChatter` left the ticker's round; `flavor()` now returns a moon chatter line for r in [0.55, 0.64).
+  - `line3After` puts the `noticeLine` (aura band change) and the post-fight `moonReact` (35%) into `save.extra`.
+  - After a good find, `searchEcho` goes to `save.extra` instead of `typeSay` on line 3.
+- **`OW` removed** (and the KURA-hit check). In a fight, line 3 stays quiet.
+- **`VERSION`** to v1.04.4.
+
 ## v1.04.3 - Don't Mind Me - Oct 14 2026, 19:02 HST
 
 ![v1.04.3](screenshots/v1.04.3.png)
