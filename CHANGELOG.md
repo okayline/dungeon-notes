@@ -3,6 +3,18 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.08 - Say It Slowly - Oct 15 2026, 00:45 HST
+
+![v1.08](screenshots/v1.08.png)
+
+Game commit `785b71f`. Page, rules, screen and sky.
+
+- **Voices (`speak`, `voiceOf`, page)**: each fight-box and APPEARS line is spoken into its row elements. Head = `NAME: ` or a leading name (demon, `The DEMON`, `DEMON's`, KURA, members); shown at once, then `NAME_BEAT` 450 ms. Kinds: `dm` demon speech/actions decode (scramble from `#%@!&$*?/\\<>=+~`, 0.6 chars per 40 ms tick); `dhit` demon line with `-N` decodes at 0.35, then `.flash` (white to normal, no glow); `ku` KURA and other lines type at 30 ms; `pt` party speech types at 42 ms; `hit` (`The party strikes.` or a non-demon `-N` line) shows the action whole, waits (1 s if it ends in a period, else 450 ms), types the damage at 170 ms a char, flashes. Every period not followed by another is a 1000 ms stop (`PERIOD_STOP`), mid-line. After a line: `lineBeat` = 600 + 35 ms per char, at least 1 s if it ends in a period. Click/Enter finishes the line (`speaking`), or brings the next in. AURA reads: rules set `st.roundVoice = "KURA"` (cleared by `act()`), so every read line types in KURA's voice with the demon name as head.
+- **Fight replay**: auto-advances (was click-to-advance), every line including the last and single-line rounds; `replayToken` guards stale timers; no `_` cursor anywhere in the fight box. APPEARS: `introNext` lets a click bring the next line in; clicks elsewhere on the box only finish/advance while unfolding.
+- **Rules**: party strike line is `The party strikes. -N HP`.
+- **Sky**: no box; rows 0-11 sky (radii 23x1.3 by 6.5x1.3, x 0-46), row 12 a dim dotted rule (`.sky-rule` #2c3236), rows 13-14 the key: up to six named stars, brightest first, three columns of 15. Named stars drawn at 72% scale (`.skystar .g`). No N/E/S/W on the sky; the turn controls show `[ < ]  N  [ > ]` (the facing letter, looking up or not). The breath-dots row (screen row 20) now runs through `skyLeft` too, for the key's second row.
+- **`VERSION`** to v1.08.
+
 ## v1.07.1 - Clear Skies - Oct 15 2026, 00:20 HST
 
 ![v1.07.1](screenshots/v1.07.1.png)
