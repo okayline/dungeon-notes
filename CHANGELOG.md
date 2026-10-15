@@ -3,6 +3,20 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.08.1 - Full Stop - Oct 15 2026, 00:47 HST
+
+![v1.08.1](screenshots/v1.08.1.png)
+
+Game commit `1fd71e0`. Page only.
+
+- **`PERIOD_STOP = 1000`** is now a top-level `var` (used by the ticker before the rest of the script runs).
+- **Ticker (line 3)**: a period not followed by another waits `PERIOD_STOP` (other punctuation still 420 ms).
+- **Line 2 AURA beat**: the third dot waits `PERIOD_STOP`, and each period in the typed result does too.
+- **Line 2 search beat**: after the dots (or the last extra "good find" dot) waits `PERIOD_STOP` before the result types; sentences still get `BEAT_MS` (1000) between them.
+- **Altar terminal**: typing (not the scroll-in) freezes about 1 s (18 ticks at 55 ms) at each period.
+- **End-of-fight screen**: a revealed line ending in a period waits `PERIOD_STOP` instead of 700 ms.
+- **`VERSION`** to v1.08.1.
+
 ## v1.08 - Say It Slowly - Oct 15 2026, 00:45 HST
 
 ![v1.08](screenshots/v1.08.png)
