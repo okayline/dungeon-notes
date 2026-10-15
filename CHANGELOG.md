@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.11 - Room to Breathe - Oct 15 2026, 07:31 HST
+
+- `BREATH_BACK` [4, 3.5, 3, 2.5, 2, 1.5, 1.5, 1.5] (was [7, 6, 5, 4, 3, 2, 2, 2]); `BREATH_WAIT` 1000 (was 1500).
+- `STEP_BREATH` 0.25 (was 0.5); `WORD_BREATH` 0.5 (was 1). Search 1 and `AURA_BREATH` 4 unchanged.
+- `SIGNIFICANT` in index.html matched "KURA falls" and so popped the TALK opener "KURA falls into step with X"; now `KURA falls (?!into)`.
+- Checked the live gift box in D1: two gifts stored (vending machine coin, dead pager), tallies empty.
+
 ## v1.10 - A Box in the Corner - Oct 15 2026, 07:10 HST
 
 ![v1.10](screenshots/v1.10.png)
