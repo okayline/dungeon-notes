@@ -3,6 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.07.1 - Clear Skies - Oct 15 2026, 00:20 HST
+
+![v1.07.1](screenshots/v1.07.1.png)
+
+Game commit `53be89e`. Page only.
+
+- **Sky stamp removed**: `skyLeft()` no longer adds the `.skystamp` (the header has the time). `SKY.render` still returns `stamp`, unused; the CSS stays for now.
+- **`VERSION`** to v1.07.1.
+
 ## v1.07 - Look Up - Oct 15 2026, 00:18 HST
 
 ![v1.07](screenshots/v1.07.png)
