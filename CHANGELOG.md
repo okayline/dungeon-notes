@@ -3,6 +3,23 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.12 - A Warm Little Room - Oct 15 2026, 09:34 HST
+
+![v1.12](screenshots/v1.12.png)
+
+Game only (the Worker is unchanged). Notes: `daily-dungeon-heat-notes.md`.
+
+- **Breath:** `BREATH_BACK` [4, 3.5, 3, 2.5, 2, 1.5, 1.5, 1.5], `BREATH_WAIT` 1000, `STEP_BREATH` 0.25, `WORD_BREATH` 0.5. Search 1 and `AURA_BREATH` 4 unchanged.
+- **TALK popup fix:** `SIGNIFICANT` now `KURA falls (?!into)`, so "KURA falls into step with X" stays on line 2.
+- **Cooling (`coolOff`):** heat `floor(heat * 2/3)` when a demon dies, is recruited, leaves, or KURA runs past it.
+- **Patience:** the only wear is a room first reaching heat 12 (tier 2): -1 for each demon member (`heatUp`). `wearTension` returns at once, `snap` always returns false, and the costs for nagging, fiddling, breaking, grief, tripping and ICHOR are removed. `PARTY_TIRED` / `FAMILY_TIRED` rewritten as content lines; check-in lines softened. `PARTY_TENSE`, `SNAP` and `QUIT` are now unreachable.
+- **Hot-room gamble (`hotGamble`):** after a miss, heat 12+ asks 1 in 6, heat 18+ asks 1 in 3. Question pool `HOT`: `[1] LOOSE` +2 breath, `[2] DIG` 50% an UNCOMMON (25% RARE) item, else a `FIZZLE_DIG` line. +1 patience for the asker.
+- **Worn-wall gamble (`wornGamble`):** the wall still hides something and `prog >= 3`; chance 1/12 + (1/3 - 1/12) * heat/20. Pool `WORN`: `[1] STEADY` +1.5 progress, `[2] DIG` heat +2, 50% progress set to the next need, else a fizzle.
+- **Moon gamble:** `fullness / 3` of offers (`fullness = (1 - cos) / 2`: 1/3 at full, 0 at new) pair "her light, for breath" with a gamble moon item that lands 50%.
+- **Offer gamble (`wrapOne`):** on a "give" offer (members and demons) the higher-tier item is replaced by a wrapped name; `GAMBLE_ODDS` SLY 1/4, DREAMY 1/6, HAUGHTY 1/8, GRUFF 1/10, PRIM 1/12; 50% real item, else `FIZZLE_WRAP` (`o.fizzleLine`, `h.fizzle`).
+- **Heat color:** `st.heatSense = {until: steps + 20}` is set by the AURA room read. `show()` builds `st.mapHeat` (`FLOOR.heatMap`: char 48 + heat under each bracket; this room exact, door-linked rooms by tier 0/6/12/18) and `st.heatFade` (full, dims over the last 6 steps). `colorize` tints brackets hsl(62 to 0) from heat 2 to 20; no glow.
+- Checked the live gift box in D1 before release: two gifts stored. `tallies` empty at that point.
+
 ## v1.11 - Room to Breathe - Oct 15 2026, 07:31 HST
 
 - `BREATH_BACK` [4, 3.5, 3, 2.5, 2, 1.5, 1.5, 1.5] (was [7, 6, 5, 4, 3, 2, 2, 2]); `BREATH_WAIT` 1000 (was 1500).
