@@ -3,6 +3,34 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.05.1 - Pack Light - Oct 14 2026, 20:16 HST
+
+![v1.05.1](screenshots/v1.05.1.png)
+
+Game commit `b349828`. Rules and page. Also carries the README fix (renaming is only at post time now).
+
+- **Bag cap:** `BAG_MAX = 9` (ICHOR isn't a thing).
+  - `gain()` into a full bag pushes onto `st.overflow` instead, with no tally, codex note or alignment lean until the thing is kept.
+  - `keepItem(st, drop)` resolves the first waiting thing: `drop` is an index in `st.items` to leave behind, and `null` leaves the new thing. Leaving the last copy of a thing clears its `wear`.
+  - On the page, `bagBox()` runs at the end of every `draw()`. It opens the `bag` mode of #found only when #found and the inv/log/board/codex/about/exch windows are all closed, so it waits behind a fight's end screen or a find box. Keys 1-9 leave that thing, N leaves the new one.
+  - `overflow` and `hollow` are cleared on a new run.
+- **INVOKE compact:** one line per thing (the page un-groups `inventory()`). The header is `INVOKE   BAG n/9` plus KURA's aura. ICHOR is row 0, chosen with key 0. Empty slots show as dim dots. The bordered card became a dim rule (`-- name ---- tag`) with the wrapped description below it. The "No use here. Something down here might want it." line is gone (it pointed at BEHOLD). 16 rows with a full bag plus ICHOR; the longest description is 2 lines, so it never overflows.
+- **Fiddle reveal:** `REVEAL_AT = { COMMON: 5, UNCOMMON: 6, RARE: 10, MYTHIC: 20, MOON: never }` tries, about half of `BREAK_MIN`.
+  - At the first try at or past that, `st.hollow[name]` is rolled with `insideOdds(tier, moon)`: COMMON 10%, UNCOMMON 1/12, x1.5 at the new moon, RARE and up never.
+  - It's kept, and the break uses it instead of rolling, then clears it. So the reveal is always true for the copy that breaks.
+  - `inventory()` exposes `hollow`, and INVOKE shows "Something rattles inside." or "Solid, all the way through."
+  - The random fiddle line "Something rattles." became "Nothing new.", so it can't fake a reveal.
+- **AURA on the APPEARS screen:** `introGo("aura")` runs `act("aura")` without setting `seen`, so `encounterBox` redraws the intro with `save.round` (the read) under what was already there.
+  - Only the new groups unfold: `introShown` and a key from `e.introAt` (the step it appeared at), which no longer changes with each step.
+  - AURA dims once used (`auraUsed`), and FIGHT/TALK/RUN go on as before.
+- **AURA beat out of a fight:** `act()` holds back `save.extra` for 800 ms, so line 2 shows alone first. If another step happens before then, the held line is dropped.
+- **KURA always:** `screen.js` no longer swaps `playerName` into party row 1. The in-panel name field (`editName`, `.pname`, `#pnamefield`) is removed, and the post row is the only place to type a name.
+- **BEHOLD pick list:** the alignment tag is dropped, the loudness dots stay.
+- **Line 3 after a fight:** `typeStep` waits in its gap while #found is in `done` mode, refreshing `line3Calm`, so the 3 s count starts at `[ OK ]`.
+- **`.q-plain`** is `#a3a3a3`, neutral grey; it was `#b4b4b0`.
+- **`VERSION`** to v1.05.1.
+- No creature lines changed, so the sheet is unchanged.
+
 ## v1.05 - Aura Farming - Oct 14 2026, 19:42 HST
 
 ![v1.05](screenshots/v1.05.png)
