@@ -3,6 +3,36 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.04.2 - A Moment's Peace - Oct 14 2026, 18:55 HST
+
+![v1.04.2](screenshots/v1.04.2.png)
+
+Game commit `ebfdaf3`. Page-only.
+
+- **Line 3 waits:** `line3Calm` is set at the top of `act()`; `typeStep` won't leave a gap until 3000 ms after it. While a search beat runs (`typeQuiet` or `searchBeat`), `line3Calm` keeps refreshing, so the 3 s count from the end of the typed result. A line already being typed when an action comes in finishes as usual.
+- **`VERSION`** to v1.04.2.
+
+## v1.04.1 - Show, Don't Tell - Oct 14 2026, 18:50 HST
+
+![v1.04.1](screenshots/v1.04.1.png)
+
+Game commit `0853936`. Page-only, no Worker change.
+
+- **BEHOLD is the only item move.** `GIVE` and `PEACE` are gone from fights (`talkGive`, `hostileBack`, the `hostile` stage removed). `[G]IVE` at the altar and the demon-asked gift list (`stage: "gift"`) stay.
+  - `itemMove(st)` opens `stage: "pick"` from `chat` (calm, answering its question) or from no stage when `e.angered`. `movePick` scores with `affinity` (unchanged); `verdict` good >= 2 (an angry GRUFF >= 3), bad <= -1.
+  - **Good:** `stage: "want"` with `e.wantItem`; the demon asks in its family's way (`WANT_ASK`). `answer()` routes to `wantAnswer`.
+    - YES: the item goes (relic lean as a gift, tallied `gifts`). Calm: "love" line, mood +2, then `afterAnswer`. Angry: "accept" line, `angered` off, it will talk.
+    - NO: KURA keeps it. SLY 40% snatches it anyway. Angry: "ignore" line and a blow. Calm: mood -1 then `afterAnswer`; a GRUFF one (20%) hits her first.
+  - **Angry, not good:** "insult" (bad) or "ignore" (meh) and one blow (the old double blow is gone). **Calm, not good:** "insult" mood -1, or a shrug, then `afterAnswer`.
+- **Rows** (one line each): calm stance `[F]IGHT [T]ALK [A]URA [R]UN`; angry `[F]IGHT [A]URA [R]UN [B]EHOLD` (TALK on an angry demon just says it won't hear words, free); chat `[Y]ES [N]O [S]ILENT [B]EHOLD`; want `[Y]ES [N]O`. Keys follow; B on the stance row only when angry.
+- **AURA once a round:** `e.auraRound = e.round`; a second read says "KURA already read X." and the button dims (`RULES.auraUsed`). Talking doesn't advance `e.round`, so it stays dim through a talk until a blow or a BEHOLD.
+- **AURA lines name the demon:** hints all start with `{n}`; the loudness line is `{n} reads as NAME. ...`; CU SITH's lines say CU SITH; ATOM SLASHER "{n}? Nope. Nope nope nope."
+- **Intro screen:** the stance row replaces `[ OK ]` and shows last, once the intro has unfolded. `introGo(name)` (click or F/T/A/R) needs the same 400 ms and no running unfold as `[ OK ]`, sets `seen`, then acts. Enter still just closes it. The art slot now counts its blank row (`iArt` -1), and a crowded intro drops the blanks between lines (`tight`).
+- **Fight box shows 3 lines** (`maxLines` 3, was 2).
+- **Line 3 in fights:** a new demon cuts off whatever was being typed; while `save.encounter`, the gap only types `line3Next`, which is set to an `OW` line ("Ow...", "That hurt.", "Rude."...) when KURA's HP dropped on that action.
+- **Line 3 out of fights:** `line3Next` jumps the queue. `save.auraBand` tracks KURA's band; a change sets a `noticeLine` (`NOTICE_LINE` up1 / up2 / down). After a fight ends, 35% a `moonReact` line ("fight", or "run" when she left through a door). `tickerFeed` adds `moonChatter` (one phase line from `MOON_CHAT` bright / dim / none, plus 50% a `loud` line when LOUD) to the others' round.
+- **`VERSION`** to v1.04.1.
+
 ## v1.04 - Read the Room - Oct 14 2026, 18:30 HST
 
 ![v1.04](screenshots/v1.04.png)
