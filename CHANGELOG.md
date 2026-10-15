@@ -3,6 +3,18 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.12.1 - Softer Edges - Oct 15 2026, 09:48 HST
+
+![v1.12.1](screenshots/v1.12.1.png)
+
+Game only (the Worker is unchanged).
+
+- **Questions:** `p.talks` counts every talk ever with a member (kept across nights). `ask` fires only when `p.talks >= 10`, `p.words >= 2` (the 2nd talk of the day, since `WORD_YIELD` is 1 only for talks 1 and 2) and `y >= 1`, at 15%.
+- **Answer log:** `ASK_DID[pool][k][answer]` gives the log line as an action; fallback is the old "KURA answers X: label". "KURA declines." on a join is now "KURA shakes her head."
+- **Gift box:** `boxArrive` sets `st.box = {k, state: "hidden", n: 0, done}` (a settled room goes straight to "ask"). `act` counts `search:` keys while hidden; `BOX_SEARCHES` = 3 flips it to "ask" (the page then looks in the box), with a tell at the 2nd. `go()` clears any old `st.box` before `boxArrive`.
+- **Moon view:** `screen.js` skips the `[  ^  ]` overlay when `st.look === "U"`.
+- **Heat color:** hue 55 to 0, saturation 45 to 95, lightness 88 to 58, over heat 2 to 20 (`t = (heat - 1) / 19`); same 20-action life and fade as v1.12.
+
 ## v1.12 - A Warm Little Room - Oct 15 2026, 09:34 HST
 
 ![v1.12](screenshots/v1.12.png)
