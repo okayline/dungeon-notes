@@ -170,3 +170,41 @@ KURA goes NORTH into a cleared room.
 Not yet. KURA catches her breath.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-14  -  B4F, day 4, the run ended  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the NORTH wall. Nothing yet.
+KURA searches the NORTH wall. Mortar, mostly. Some is older.
+KURA searches the WEST wall. Nothing.
+KURA searches the WEST wall. Cold stone, cold hands.
+KURA searches the NORTH wall. A LOOP SHADE wanders in!
+  LOOP SHADE: "ACCESS DENIED. go away"
+  The LOOP SHADE strikes KURA. -9 HP
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes KURA. -6 HP
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes CU SITH. -3 HP
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes KURA. -2 HP
+  Something is pulling at you.
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes KURA. -5 HP
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes PIXIE. -2 HP
+  The LOOP SHADE strikes CU SITH. -4 HP
+  The party strikes. -11
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes CU SITH. -5 HP
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes KURA. -2 HP
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes KURA. -3 HP
+  The LOOP SHADE won't listen.
+  The LOOP SHADE strikes KURA. -3 HP. FALLS
+  KURA falls. The run is over.
+The LOOP SHADE strikes KURA down.
+
+posted, rank 2
+```

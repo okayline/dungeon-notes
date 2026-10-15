@@ -142,3 +142,21 @@ KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-14  -  B4F, day 4, the run ended  (latest v1.04.2)
+
+```
+KURA wakes on B4F.
+KURA touches the terminal. The screen wakes.
+KURA goes WEST into a cleared room.
+KURA searches the SOUTH wall... A LOOP SHADE wanders in!
+  The LOOP SHADE strikes KURA. -8 HP
+  The party strikes. -12
+  Something is pulling at you.
+  The LOOP SHADE strikes KURA. -5 HP. FALLS
+  KURA falls. The run is over.
+  The party strikes. -8
+The LOOP SHADE strikes KURA down.
+
+posted, rank 2
+```

@@ -40,3 +40,40 @@ KURA searches the WEST wall. Mortar, mostly. Some is older.
 Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-14  -  B4F, day 4  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the EAST wall. Mortar, mostly. Some is older.
+KURA searches the EAST wall. A DEADLINK wanders in!
+  KURA runs SOUTH. The DEADLINK blocks the door.
+  The DEADLINK strikes KURA. -6 HP
+  DEADLINK: "ERROR 404: owner not found"
+  DEADLINK: "is it still raining up there?"
+  KURA says nothing.
+  The DEADLINK grunts. It seems to approve.
+  DEADLINK: "are you here to fix me?"
+  KURA: "No."
+  DEADLINK: "oh. ok. sure."
+  The DEADLINK loses interest. SHUTTING DOWN. bye
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall. The wall gives nothing away.
+KURA searches the WEST wall. A crack. It goes nowhere.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+```

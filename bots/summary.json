@@ -96,68 +96,68 @@
   "eco": "nothing"
  },
  "DATA-bot": {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 3,
-   "turns": 192,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
+   "day": 4,
+   "turns": 212,
+   "alive": false,
+   "party": "",
    "align": "NEUTRAL",
-   "last": "KURA is out of breath. She stays where she is."
+   "last": "The LOOP SHADE strikes KURA down."
   },
   "n": {
-   "searches": 15,
+   "searches": 5,
    "blocked": 0,
-   "waited": 75,
-   "fights": 0,
-   "talks": 0,
+   "waited": 15,
+   "fights": 1,
+   "talks": 10,
    "runs": 0,
    "unlocks": 0,
-   "moves": 10,
-   "moon": 2,
-   "holds": 0,
-   "climbs": 0
-  },
-  "posted": null,
-  "events": "none; here: ok",
-  "eco": "nothing"
- },
- "GORT-bot": {
-  "date": "2026-10-13",
-  "build": "latest",
-  "version": "v1.02",
-  "crashed": null,
-  "row": {
-   "level": "B4F",
-   "climbed": 0,
-   "day": 3,
-   "turns": 191,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "NEUTRAL",
-   "last": "KURA turns to face WEST. An open arch. The dark goes on beyond it."
-  },
-  "n": {
-   "searches": 14,
-   "blocked": 0,
-   "waited": 75,
-   "fights": 0,
-   "talks": 0,
-   "runs": 0,
-   "unlocks": 0,
-   "moves": 8,
+   "moves": 0,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null,
-  "events": "none; here: ok",
-  "eco": "found a graffiti-stained saint's medal"
+  "posted": "posted, rank 2",
+  "events": "1/1 sent: fall",
+  "eco": ""
+ },
+ "GORT-bot": {
+  "date": "2026-10-14",
+  "build": "latest",
+  "version": "v1.04.2",
+  "crashed": null,
+  "row": {
+   "level": "B4F",
+   "climbed": 0,
+   "day": 4,
+   "turns": 206,
+   "alive": false,
+   "party": "",
+   "align": "NEUTRAL",
+   "last": "The LOOP SHADE strikes KURA down."
+  },
+  "n": {
+   "searches": 8,
+   "blocked": 0,
+   "waited": 35,
+   "fights": 2,
+   "talks": 0,
+   "runs": 0,
+   "unlocks": 0,
+   "moves": 1,
+   "moon": 0,
+   "holds": 0,
+   "climbs": 0
+  },
+  "posted": "posted, rank 2",
+  "events": "1/1 sent: fall",
+  "eco": ""
  },
  "BENDER-bot": {
   "date": "2026-10-14",
@@ -288,36 +288,35 @@
   "eco": "nothing"
  },
  "MARVIN-bot": {
-  "date": "2026-10-12",
+  "date": "2026-10-14",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 2,
-   "turns": 36,
+   "day": 4,
+   "turns": 50,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA needs a moment before she moves on."
+   "last": "KURA is out of breath. She stays where she is."
   },
   "n": {
-   "searches": 5,
+   "searches": 4,
    "blocked": 0,
    "waited": 0,
    "fights": 0,
-   "talks": 0,
-   "runs": 0,
-   "unlocks": 1,
-   "moves": 2,
+   "talks": 1,
+   "runs": 1,
+   "unlocks": 0,
+   "moves": 4,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok",
-  "eco": "nothing",
-  "skipped": "2026-10-13: did not show up"
+  "events": "2/2 sent: asked, silent; here: ok",
+  "eco": "nothing"
  }
 }
