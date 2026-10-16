@@ -17,8 +17,9 @@ Written Thu Oct 15, 2026 (HST) from what the code does today, so each rule can b
   created and last-seen times.
 - **sessions, save codes, passkeys:** hashes of tokens and codes, a passkey's public key and label, created/used times.
 - **rate limits:** a hash of IP plus the action, with a count. Rows older than a day are swept out. The IP itself is not kept.
-- **ledger:** every stamp and gap: lap, band, the picked indices, sky, the exact time it was sealed, and a player id
-  (a number, not a name). It is append-only and permanent.
+- **ledger:** every stamp and gap: lap, band, the picked indices, sky, and the exact time it was sealed. The sealed record
+  holds no player id (from v0.15; earlier stamps still do). Who stamped is kept only in the table's own `player_id`
+  column, which no endpoint publishes. It is append-only and permanent.
 - **band_sky:** weather for empty bands. Not about any player.
 
 ## What is used but not kept
@@ -49,12 +50,10 @@ Written Thu Oct 15, 2026 (HST) from what the code does today, so each rule can b
 
 ## Known gaps (found while writing this)
 
-1. **A player's stamps can be linked across laps.** `/api/ledger` returns the whole sealed record for finished laps, and
-   each stamp record holds the player's id. Anyone can follow one id over time: which band, what time each lap, and when
-   they moved bands, even when that player has chosen not to show their name. No names or locations leak, but it is a
-   history per player. Fix options: leave the id out of the sealed record (the chain still works going forward, old
-   entries stay as they are), or seal a salted hash that changes each lap. The "mine" marker would need another way to
-   find your own stamp. Not changed yet; needs a decision.
+1. **A player's stamps could be linked across laps.** (Fixed for new stamps in v0.15.) Sealed records used to hold the
+   player's id, and `/api/ledger` publishes finished records, so anyone could follow one id over time. New stamps no longer
+   carry it, and a test checks the public ledger shows no id. Stamps sealed before v0.15 keep their ids forever, since
+   changing them would break the chain, so the old laps stay linkable.
 2. **Exact seal times are public**, including for a lap in progress. Rounding them to the hour would be enough for
    the game's needs. Not changed yet; needs a decision.
 3. **Thin bands.** With few players, "a stamp in band -7 at 6 AM" can be one person. Hiding contents until the lap is
