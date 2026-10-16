@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01
+# irl-dungeon — Dev Changelog — v0.01–v0.02
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -6,6 +6,16 @@ minimap. Live at irl.88x31.app (also irl-dungeon.ddddungeon.workers.dev). Compan
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.02 — "Way Back"
+**Thu Oct 15, 2026 · 6:14 PM HST** (no migration)
+
+Decisions: the user asked for the account screen to copy 4Dungeon, as a menu button in the bottom bar ([S]AVE, so U stays free for [U]NLOCK), then for it to pop up inside the 3D view, then to drop the explaining lines to make room, and to include a download-as-text-file option with the shown save code. 4Dungeon itself saves with a text PASSWORD, a different system, so the look and in-view panel are 4Dungeon's (the bag's `placeInView` arithmetic: one column in, six rows down, 47 by 17) and the logic is Dawn Baton's account screen. Also discussed, not built: one public ledger chain plus ordinary private tables (recommended) instead of two chains; first finder as "first person to walk every tile of a wing" (needs the server to record visits).
+
+- `public/account.js` (new): `openSave(root, {onChange, onClose, fetchApi})` draws the panel: save codes (make; shown once with `DOWNLOAD AS A TEXT FILE`; list with Forget, up to 5), passkeys (add, list, forget), log in with a code or a passkey, log out. Title row sticky at the top, message row sticky at the foot; the rest scrolls. `b64`/`unb64` are Dawn Baton's.
+- `public/index.html`: `#save` panel (`.viewpop`), `placeInView`, `S` key and the `[S]AVE` button; while it is open the game keys are ignored and Esc closes it. `public/screen.js`: keys line now `[L]OCATE   [S]AVE`.
+- Checked in a real browser (`test/e2e/save.py`, by hand: needs python3 playwright) against the real Worker with SQLite for D1 and a Chromium virtual authenticator: code made, listed, forgotten; second browser logs in with the code (2 devices); wrong code refused; passkey added, cookies cleared, passkey login; fresh player has no log out; Esc closes; game keys ignored while open; no page errors. The download file was read back and contains the code. Not tried on a real phone. Tests 97/97 (one new: the byte helpers against Node's base64url).
+- Not done: the first phone still could not find its location (the second phone worked, so it is that phone's settings). A location test page was built and dropped at the user's request.
 
 ## v0.01 — "First Steps"
 **Thu Oct 15, 2026 · 5:58 PM HST** (new database `irl-dungeon-db`, `schema.sql` loaded once; no migrations yet)
