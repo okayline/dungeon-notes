@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.06
+# irl-dungeon — Dev Changelog — v0.01–v0.07
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -6,6 +6,16 @@ minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.07 — "Sandbox"
+**Thu Oct 15, 2026 · 8:00 PM HST** (migration 004: `players.admin`, `players.test_mode`, `players.test_from`, `test_unlocks`; run on the live DB through the Cloudflare connector before the push; then `admin = 1` set for player 1, checked)
+
+Decisions (the user's): make the owner's account the admin. Asked whether ignoring the travel check breaks the game: it would let an admin claim permanent first finds anywhere, so admin powers became a test mode where nothing counts, which the user wanted ("can the admin mode actions be completely ignored?"). Moderation: players can't type anything, so the only real cases are taking a name off a find and voiding a cheated first find; the user wants no buttons for these ("ill just ask you"), and a voided wing should open up again for the next honest player (recorded in DESIGN, not built). Switching test mode off should return to where it was switched on.
+
+- `src/worker.js`: `testing(me)` = admin and test_mode. In test mode `theRun` reads `test_unlocks`, skips the travel check and never touches `places`; `/api/run` answers `test: true`, `keyReady: true`, no completions/unsigned/signed (firsts still shown); `/api/unlock` writes `test_unlocks` only (no key, no day); `/api/walk` validates the walk like a real one and records nothing; `/api/sign` is refused. `POST /api/admin {action:"test", on, cell?}` (admins only; switching on keeps the first `test_from` if already on; off answers `back`). `/api/account` returns `admin`/`test` only to admins.
+- Page: `[TEST MODE]` beside THIS CELL; log lines "(Test mode: no key used.)" and "(Test mode: not recorded.)"; ADMIN section at the top of [S]AVE with TURN ON/OFF; switching rebuilds the cell, and off goes to `back`.
+- Tests 161 (`test/admin.test.mjs`, 7). Mutations, each failing a test: test mode without admin, anyone can switch, test unlocks leaking into real unlocks, test walks recorded, signing in test mode, test mode moving the real last place, a second "on" overwriting the start, no way back. Two needed stronger tests first (signing was refused for another reason; only a far jump was tried, which is refused anyway). Checked in a browser with account/admin stubbed: switch, marker, and on → walk out → off returns to the start cell.
+- Note: the user's name went Rosy Lark → Calm Orchard → Amber Ember (rerolls before the confirmation shipped). Admin is set by player id, so names don't matter.
 
 ## v0.06 — "Second Thoughts"
 **Thu Oct 15, 2026 · 7:47 PM HST** (no migration)
