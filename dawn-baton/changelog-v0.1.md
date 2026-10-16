@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.6
+# Dawn Baton — Dev Changelog — v0.1–v0.7
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,19 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.7 — "Vibe Check"
+**Thu Oct 15, 2026 · 2:05 PM HST** (no migration)
+
+Decisions: the user wants helper text kept off the screens ("they always put extra explaining sentences in there"), so every hint line under a question and the line under the band picker were removed. Questions and answers are to be casual, a little jokey, a little gen-z but not too much, and never about leaving or goodbyes. Rejected: "Land it, or leave it hanging?" (got the user stuck; back to "Does the tune settle, or lean?"), "Any last words?", and a different question every day (a previous session found it needs too many answers to write). Direction for later, not built: mostly fixed questions plus one weekly question, cycling "What's in your bag today?", "What's your superpower today?" and "What's the small win today?" (the week would come from the lap number, so nothing extra is stored). The user likes the no-context chips on Yesterday ("mid-yawn" with no "you caught me" in front) and wants half morning and half not-morning answers.
+
+- Questions (`ASK` in `index.html`): color "What color is your morning?", note "Does the tune settle, or lean?", phrase "Morning, sunshine ☀️", feeling "Vibe check?", gesture "You caught me…", signoff "What are you bringing today?". Hints are gone; only the "You're first this lap: any line will do." line remains when nobody has stamped.
+- Answers (`engine/baton.js`): `PHRASES` (20, 10 morning and 10 not), `FEELINGS` (14), `GESTURES` (12, 6 and 6) and `SIGNOFFS` (10, "a good song", "snacks, obviously", "one (1) plan" and so on) were all rewritten in place. Positions and counts are unchanged.
+- Ledger caution: stamps store list positions, so lap 1's sealed stamps now read in the new wording. That is harmless a few hours after launch. From here on, new wording must be appended to the end of a list and existing entries left alone.
+- `NOTE_WORD` in `index.html` shows Resolve/Tension as Settle/Lean on the Catch buttons, the Yesterday chips and tooltips, and the legend. The stored and API values are still `resolve` and `tension`, so sealed stamps and sounds are unaffected.
+- Last-band card: the "+9 · a while ago" line moved to the top of the card.
+- Removed the "Every slot is optional. Your stamp seals when you pass it." line.
+- Tests 38/38. Checked in a headless browser with a stubbed API at 440px wide.
 
 ## v0.6 — "One of a Kind"
 **Thu Oct 15, 2026 · 1:33 PM HST** (migration `005_band_sky.sql`, applied to the live database through the Cloudflare connector at about 1:31 PM, before the push)
