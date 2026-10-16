@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.10
+# Dawn Baton — Dev Changelog — v0.1–v0.11
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,16 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.11 — "Slow Turn"
+**Thu Oct 15, 2026 · 3:05 PM HST** (no migration)
+
+Decisions: changing your band should update the globe at once. On Yesterday, picking a band or stamp brings that stamp to the top of the strand list (right under the player's own stamps), keeping the order after it. No dimming or lighting change on Yesterday when a band is picked (the user asked for the lighting to stay the same). The Catch globe turns slowly when untouched, first resting at the player's band (the user asked for about 3 seconds; 8 was tried first), and should redraw less (fine motion not needed).
+
+- Band change (`wireBand`): clears `G.dragged` and `G.auto`, reloads Catch and calls `refreshGlobe()`, so the globe re-centres on the new band.
+- Yesterday: `pickBand` only toggles `G.sel` (white edge) and turns the globe; the sun is no longer moved to that band's sunrise. `strandRender(sel)` rotates the list so the picked band comes first and the rest follow in order, wrapping round; `expanded` keeps the "show all" state.
+- Catch rotation: an interval every 250 ms moves `G.lam` by 0.5 degrees (about 2 degrees a second, 4 redraws a second), only on the Catch tab, with the globe on the player's point of view, the page visible, and reduced-motion off. `busyUntil` pauses it: 3 s after arriving on Catch (`refreshGlobe`), 0.5 s spin + 3 s after tapping the white dot or any `spinTo`, and 3.5 s after any drag event.
+- Tests 38/38 (none cover page code). Timing checked in a headless browser with stubbed data: 0 degrees moved in the first 2 s, turning after 3 s. Not tried on a real phone or the live site.
 
 ## v0.10 — "Look Around"
 **Thu Oct 15, 2026 · 2:55 PM HST** (no migration)
