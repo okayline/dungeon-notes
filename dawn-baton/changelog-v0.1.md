@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.11
+# Dawn Baton — Dev Changelog — v0.1–v0.12
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,16 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.12 — "How To"
+**Thu Oct 15, 2026 · 3:20 PM HST** (no migration)
+
+Decisions: the user found the game heavy and asked for a How To. It is one separate page (not a pop-up), opened from a "How to Play" link in the footer beside the version ("Dawn Baton v0.12 · How to Play"); a [ ? ] tab was tried first and moved. Wording was drafted in chat and edited by the user: the opener says it is a game about connecting with people through the Sun's real position, "band" is used everywhere (not "slice"), Settle and Lean are not explained, and "Tap Catch" was dropped. The user expects to rewrite it later. Waiting bands were mocked up in five colours and the user chose pale gray (the old dark slate read as night). The globe's sun marker is now a sun emoji so the white ring only means "you".
+
+- `helpScreen()` fills a new `#help` section with five cards (What is this?, Your band, Catch it, Yesterday, The globe). `show("help")` is reached from `#howto` in the footer; the globe panel is hidden on that screen like on Account. The footer is now `<span id="ver">` plus the link, so the version text can be set without wiping the link.
+- `GLOBE_COL.waiting` is `[120, 124, 140]` (was `[56, 60, 112]`). The sun marker is `fillText("\u2600\uFE0F")` at the sun's point (visible half only), 18 css px.
+- The "Here" ring in the strip is already 2px white in the code; the user's screenshot showed it dim, which was not reproduced. Worth checking on a phone.
+- Tests 38/38 (none cover page code). Checked in a headless browser with stubbed data; not tried on a real phone or the live site.
 
 ## v0.11 — "Slow Turn"
 **Thu Oct 15, 2026 · 3:05 PM HST** (no migration)
