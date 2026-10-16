@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.13
+# Dawn Baton — Dev Changelog — v0.1–v0.14
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,17 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.14 — "Tune Your Band"
+**Thu Oct 15, 2026 · 3:45 PM HST** (migration 006, run on the live baton-db before the push)
+
+Decisions: a player's band should follow where they are, but not be locked hard, since people travel and rough location is wrong sometimes. Chosen by the user: suggest the band from rough location (option 1) and limit changes (option 3), with extra friction on changing. Rejected: setting it automatically, a hard lock, and exact browser location. Rules: a first-time player gets their location's band preselected (not saved until they press the button); the first pick can be fixed within 1 hour; after that a change is locked for 7 days; the same band is never an error; players from before the migration get one free change. The first-join card is titled "Tune your band" (was "Find your band"); the user wants no labels and no explainer lines, so the suggestion is not labelled and the lock is not explained on first pick. A README for players (longer How to Play) sits above the developer notes.
+
+- Migration `006_band_lock.sql`: `ALTER TABLE players ADD COLUMN band_set_at INTEGER` (seconds). Run on the live database through the Cloudflare D1 tool after checking the column was missing, and the column was checked present afterwards. `schema.sql` updated.
+- Server: `bandChangeAt(me, t)` returns when a change is next allowed (null if allowed). `setBand` returns 403 "You can change your band again in N day(s)." while locked; inside the grace hour it keeps the original `band_set_at`, so the lock runs from the first pick. `/api/today` returns `suggest` (offset from rough location, first-time players only). `/api/account` returns `band: { offset, canChangeAt }`.
+- Page: `bandPicker(cur, suggest)` preselects the suggestion. Account's "Your band" card shows the band, then "Change band…" reveals the picker, whose Change button asks `confirm()` first. While locked it shows "You can change it again on <date>" with no controls.
+- Found while testing: a pure-longitude guess puts Honolulu (157.9 W) in solar UTC-11, one band west of the -10 where the user plays. Not changed yet; a Honolulu player would see -11 preselected.
+- Tests 40/40 (two new: lock timing, location suggestion). Page behavior checked in a headless browser with stubbed data (cancelling the confirm sends nothing). Not tried on a real phone or the live site.
 
 ## v0.13 — "Your Dawn"
 **Thu Oct 15, 2026 · 3:30 PM HST** (no migration)
