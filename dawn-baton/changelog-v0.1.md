@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.15
+# Dawn Baton — Dev Changelog — v0.1–v0.16
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,16 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.16 — "Next Up"
+**Thu Oct 15, 2026 · 4:22 PM HST** (no migration)
+
+Decisions: the user's swatches looked dark and dull on their screen. A palette redo was mocked up (sunrise and soft pastels) and then dropped: the cause was a dark-mode browser extension on their side, and the colors were fine. The fix is a `color-scheme: dark` declaration so dark-mode features leave the page alone; extensions such as Dark Reader may still ignore it. On Yesterday, a picked stamp takes the "Your stamp" spot at the top and the player's own stamp drops into the list at its natural place, still outlined (the proof line only shows while the player's stamp is on top). After passing the baton, and on Yesterday's "didn't catch" card, the next window shows as a live countdown with the local time (same "23h 40m" format as the other countdowns).
+
+- Page: `<meta name="color-scheme" content="dark">` in the head (also makes the browser draw the band dropdown, checkbox and scrollbar in dark style; not looked at on a real device). `cdText` gained a `"next"` kind ("Your next window is in 15h 00m at 7:18 AM."), used by the Passed state in `catchScreen` and by the didn't-catch card in `payoffScreen`; the 30 second ticker keeps both live. `nextWindow` was removed (unused). Passed card wording changed.
+- Yesterday: `#top` holds the "Your stamp" box (`myBox`) or the picked stamp; `strandRender(sel)` swaps it. With a pick from another band, the list continues after the picked stamp and wraps (the picked one is not repeated); picking your own band or nothing keeps the old behaviour.
+- Words (in place): "Fresh day, let's go!" to "New day, fresh start!", "talking to my coffee" to "sipping coffee", "waving at the sun" to "mid-workout", "a good song" to "good music", "a long walk" to "a friend".
+- Tests 41/41 (none cover page code). Checked in a headless browser with stubbed data; not tried on a real phone or the live site.
 
 ## v0.15 — "Fresh Words"
 **Thu Oct 15, 2026 · 4:00 PM HST** (no migration)
