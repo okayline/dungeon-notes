@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.05.1
+# irl-dungeon — Dev Changelog — v0.01–v0.06
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -7,7 +7,7 @@ The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times 
 
 ---
 
-## v0.05.1 — "Second Thoughts"
+## v0.06 — "Second Thoughts"
 **Thu Oct 15, 2026 · 7:47 PM HST** (no migration)
 
 Decisions: the user still saw "the horizontal black line" in [S]AVE after v0.05, and had rerolled past several names they wanted to keep (partly because the bar hid things); asked for a confirmation on reroll.
@@ -16,6 +16,7 @@ Decisions: the user still saw "the horizontal black line" in [S]AVE after v0.05,
 - Reroll asks first: REROLL → "A new name? This one can't come back." with [YES, REROLL] and [KEEP IT]; only the second tap sends the request. Checked in a browser with the account and name routes stubbed (first tap: 0 requests; KEEP IT: 0; YES, REROLL: 1).
 - The live ledger at this point: entry 1 `wing` and entry 2 `sign`, the user's first find and signature (cell 8a46494b6007fff, wing 0). The user's name went Rosy Lark → Calm Orchard by reroll. Two other live players without names (likely other browsers of the user's, unlinked).
 - Tests 154, unchanged (the panel is DOM; checked in the browser instead).
+- First pushed as "v0.05.1", which failed the version-format test (`VERSION` must be vX.YY); the push went out because my release script printed the test result instead of stopping on it. Renamed v0.06 and pushed again a minute later; the game code was the same. Release scripts now stop when a test fails.
 
 ## v0.05 — "Signed and Saved"
 **Thu Oct 15, 2026 · 7:37 PM HST** (migration 003: `players.name_a/name_b` + unique index, `wing_firsts.signed`, `saved_cells`; run on the live DB through the Cloudflare connector before the push and checked)
