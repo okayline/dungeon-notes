@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.9
+# Dawn Baton — Dev Changelog — v0.1–v0.10
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,18 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.10 — "Look Around"
+**Thu Oct 15, 2026 · 2:55 PM HST** (no migration)
+
+Decisions: one shared globe above Catch, Yesterday and Planet and none on Account, tilted 10 degrees (20 and straight-on were compared as pictures). Yesterday colours the globe from the lap that is showing, and tapping a band or a stamp turns it. For Catch the user chose the globe centred on the player over centred on the baton, wanted the baton shown when it is on the far side (edge arrow and a strip of dots were mocked up, the strip won), liked a gold outline on the baton's bands drawn dotted when they are on the far side, and asked for a slow drag. Countdown lines go in "Your dawn" (the "opens at … stays open 2 hours" wording is gone). Every dot in the strip turns the globe; the white dot is home and the gold lead dot is the baton. Words: the line "The white ring is where the sun is straight overhead." was dropped (the user dislikes explainer lines), and the "Back to my band" button was dropped once the white dot did the same job. The Planet globe is not draggable (user's call earlier); only the Catch globe is, and only sideways, so vertical swipes still scroll the page on a phone.
+
+- Structure (`index.html`): `drawGlobe(cv, g)` now takes a state `g = { cols, mine, lam, sunMs, sel, baton, pov }`. `liveState(bands)` builds today's state from `/api/planet` (colours by status, centred on the newest open band); `lapState(l)` builds a finished lap from `l.stamps` (each band in its mood colour from `palette`, blue if it has no colour, dark for gaps; the sun is drawn at the lap start, or at that band's opening time when one is picked). `G` holds what is on screen. `refreshGlobe()` runs on tab changes and every 30 seconds (not on Yesterday, where the lap is fixed). The panel is `#gw`; the old Planet-only globe panel and the sun line under it were removed.
+- Tilt 10 degrees (`phi0`). White edge for the picked band is painted about 2 screen pixels thick (`T = round(2 * dpr)`), to match the ring on the strip's "you" dot. Gold baton edges (`g.baton`, Catch only) are drawn as the two outer meridians of the open bands: solid where they face us, dotted (`setLineDash`) where they are on the far side.
+- Catch: centred on the player's band (`mine` in `/api/planet`); with no band chosen it stays on the baton. Drag moves longitude at half speed (`k * 0.5`; 100 px is about 16 degrees), `touch-action: pan-y`. A drag survives the 30 second refresh (`G.dragged`). Strip (`drawStrip`, `#strip`): 24 cells in band order, dot per band by status, the player's band ringed in white, "baton" over the newest open band and "Here" under the player's band; each cell is a tap target with `data-b`. Countdown: `cdText` and `dur`, updated every 30 seconds through `[data-cd]` without redrawing the screen.
+- Yesterday: lap-bar cells and strand entries carry `data-b`; `pickBand` turns the globe (500 ms, shortest way round, `spinTo`), edges the band in white and re-lights the sun at that band's sunrise; tapping again returns. The page scrolls the globe into view when needed.
+- Bugs found while building, all fixed: the live refresh could finish after the lap was ready and paint over it (now checked again after the request returns); the strip first assigned to the global `open` and replaced `window.open` (now a local); a stray comma after an edit broke the whole page script (caught by a syntax check, not by the test suite, which never loads `index.html`).
+- Tests 38/38 (none cover the page's drawing code). Checked in a headless browser with stubbed API data, including every strip dot, drag, refresh, tab changes and fractional pixel ratios; not tried on a real phone and not listened to or looked at on the live site.
 
 ## v0.9 — "The Big Picture"
 **Thu Oct 15, 2026 · 2:35 PM HST** (no migration)
