@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.05
+# irl-dungeon — Dev Changelog — v0.01–v0.05.1
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -6,6 +6,16 @@ minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.05.1 — "Second Thoughts"
+**Thu Oct 15, 2026 · 7:47 PM HST** (no migration)
+
+Decisions: the user still saw "the horizontal black line" in [S]AVE after v0.05, and had rerolled past several names they wanted to keep (partly because the bar hid things); asked for a confirmation on reroll.
+
+- The black line was the pinned message row: with a message in it, it sat at the foot over the list, and the panel's bottom padding let a sliver of the next line show below it. Fix: nothing is pinned at the foot. The sticky head now holds the title, the rule and the message (shown only when there is one, in gold); the panel has no top padding so the head sits flush, and a little top padding inside the head. Checked on an iPhone-sized viewport scrolled top, middle and bottom.
+- Reroll asks first: REROLL → "A new name? This one can't come back." with [YES, REROLL] and [KEEP IT]; only the second tap sends the request. Checked in a browser with the account and name routes stubbed (first tap: 0 requests; KEEP IT: 0; YES, REROLL: 1).
+- The live ledger at this point: entry 1 `wing` and entry 2 `sign`, the user's first find and signature (cell 8a46494b6007fff, wing 0). The user's name went Rosy Lark → Calm Orchard by reroll. Two other live players without names (likely other browsers of the user's, unlinked).
+- Tests 154, unchanged (the panel is DOM; checked in the browser instead).
 
 ## v0.05 — "Signed and Saved"
 **Thu Oct 15, 2026 · 7:37 PM HST** (migration 003: `players.name_a/name_b` + unique index, `wing_firsts.signed`, `saved_cells`; run on the live DB through the Cloudflare connector before the push and checked)
