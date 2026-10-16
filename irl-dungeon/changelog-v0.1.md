@@ -1,11 +1,24 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.03
+# irl-dungeon — Dev Changelog — v0.01–v0.04
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
-minimap. Live at irl.88x31.app (also irl-dungeon.ddddungeon.workers.dev). Companion to Daily Digital Demon Dungeon.
+minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.04 — "Street Door"
+**Thu Oct 15, 2026 · 7:08 PM HST** (migration 002: `places`; run on the live DB through the Cloudflare connector before the push, checked against `schema.sql`)
+
+Decisions: the user's desktop and phone both block browser location, so the game was unplayable for them, and they find the location prompt slightly invasive. Options offered: (1) a rough start from the server plus walking between cells, (2) a travel-plausibility check, (3) a home cell with movement capped over time, (4) physical markers. The user chose 1 and 2 and refused 3 ("i dont want to restrict their physical movements"). This reverses the v0.03 note that an IP-area fallback was refused: the user is now fine with the server inferring roughly where a player is, rather than asking the device. Asked and answered: cells are changed by walking out of a cell's start room (not a [M]OVE panel or typed id); the guess is ~1 km (H3 resolution 7); an implausible claim can be walked but earns no credit ("play, no credit") rather than being refused or only noted. Also this session: first finder confirmed as the first to walk a whole wing (open question removed); the live address is irl.88x31.app (open question removed); README/DESIGN/code comments brought up to v0.03 (they still described the private seed).
+
+- `public/place.js`: `guessCell(cf)` (Cloudflare's IP lat/long → res-7 area → its res-10 centre child; coordinates dropped; blank/garbage → null), `neighbour(cell, dir)` (of the six touching hexes, the one closest to the N/E/S/W bearing), `cellKm`. Found by a test: `Number("")` is 0, so a blank position landed players at 0,0 in the Gulf of Guinea; fixed.
+- `src/travel.js` (new): `travelCheck(last, cell, at)` — credited if distance ≤ 2 km slack + 150 km/h × elapsed; else `{ok:false, waitSec}`; `waitText`.
+- `src/worker.js`: `GET /api/here` (no player made, nothing stored). `theRun` runs the travel check: a credited claim overwrites the player's row in `places`, a refused one changes nothing. `/api/run` returns `credit` (and `waitSec`); `/api/unlock` and `/api/walk` refuse with 403 without credit (the key is not spent).
+- `public/walk.js`: a wall in room 0 returns `leave: <dir>`. `public/screen.js`: the ahead line says "the way out, to the next cell" for those walls. `public/index.html`: starts at `?cell=`, else the server's guess; handles `leave` by arriving in the neighbour's start room facing the same way. L (browser location) kept as optional.
+- Tests: `test/travel.test.mjs` (9, expected values from h3-js directly and a hand-written haversine/bearing) and one in `test/screen.test.mjs`. 133 pass. Mutation checks run this time, each made a test fail: no credit check on unlock / on walk, refused claims moving the last place, no speed limit, 50 km slack, guess at full precision, neighbour ignoring direction, no way out of the start room, every wall a way out.
+- Checked in a real browser (Chromium via playwright, location permission not granted) against the real Worker with SQLite and a fake `cf` position in Honolulu: started in the guessed cell, turned to a start-room wall, stepped into the next cell west.
+- Known: a start room only has walls on some sides, so a direction may need a zigzag. The page still doesn't call `/api/run`, so `places` fills only once the page uses the routes. Open: 150 km/h (a flight waits about a day for credit); whether a brand-new player's first claim should count for less.
 
 ## v0.03 — "Shared Halls"
 **Thu Oct 15, 2026 · 6:42 PM HST** (migration 001: `unlocks`, `completions`, `wing_firsts`; run on the live DB before the push)
