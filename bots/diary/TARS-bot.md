@@ -197,3 +197,35 @@ KURA goes NORTH into a new room.
 KURA goes SOUTH into a cleared room.
 KURA goes SOUTH into a new room.
 ```
+
+## 2026-10-16  -  B4F, day 6  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+A locked door. The door is cold, and heavier than it looks.
+KURA unlocks the EAST door. The way is clear.
+KURA searches the WEST wall. Old tally marks, in groups of five.
+KURA searches the WEST wall. Fingers come away gray.
+KURA searches WEST. Something ticks, deeper in the wall than the rest.
+KURA searches the WEST wall. Nothing.
+KURA searches the WEST wall. Cold stone, cold hands.
+KURA searches WEST. A hatch of heavy drawers, shut tight. It can be used.
+KURA scries the moon.
+KURA asks. The moon only watches.
+The drawers slide open. 87 SILVER.
+KURA searches the WEST wall. Only stone.
+KURA goes NORTH into a cleared room.
+KURA searches the EAST wall. Mortar, mostly. Some is older.
+KURA goes NORTH into a cleared room.
+KURA searches WEST. Something ticks, deeper in the wall than the rest.
+A scarred workbench, its tools cold and laid out. It can be used.
+KURA works at the bench. Nothing needs mending.
+KURA searches the WEST wall. Cold stone, cold hands.
+KURA searches the WEST wall. Nothing.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+```

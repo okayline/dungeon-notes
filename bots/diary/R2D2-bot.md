@@ -249,3 +249,9 @@ KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-16  -  CRASHED  (latest )
+
+```
+TypeError: R.offerGive is not a function |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:176:44) |     at async /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:262:15
+```

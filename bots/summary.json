@@ -1,28 +1,28 @@
 {
  "HAL-bot": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 5,
-   "turns": 318,
+   "day": 6,
+   "turns": 374,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face SOUTH. An open arch. The dark goes on beyond it."
+   "last": "KURA goes SOUTH into a cleared room."
   },
   "n": {
-   "searches": 14,
+   "searches": 15,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 1,
-   "moves": 7,
+   "unlocks": 0,
+   "moves": 10,
    "moon": 1,
    "holds": 0,
    "climbs": 0
@@ -32,19 +32,19 @@
   "eco": "nothing"
  },
  "TARS-bot": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 5,
-   "turns": 320,
+   "day": 6,
+   "turns": 369,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face SOUTH. An open arch. The dark goes on beyond it."
+   "last": "KURA turns to face NORTH. An opening in the stone, the dark past it."
   },
   "n": {
    "searches": 14,
@@ -54,8 +54,8 @@
    "talks": 0,
    "runs": 0,
    "unlocks": 1,
-   "moves": 12,
-   "moon": 0,
+   "moves": 9,
+   "moon": 1,
    "holds": 0,
    "climbs": 0
   },
@@ -64,36 +64,14 @@
   "eco": "nothing"
  },
  "R2D2-bot": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "build": "latest",
-  "version": "v1.12.1",
-  "crashed": null,
-  "row": {
-   "level": "B4F",
-   "climbed": 0,
-   "day": 5,
-   "turns": 365,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "NEUTRAL",
-   "last": "KURA needs a moment before she moves on."
-  },
-  "n": {
-   "searches": 35,
-   "blocked": 0,
-   "waited": 75,
-   "fights": 7,
-   "talks": 6,
-   "runs": 0,
-   "unlocks": 0,
-   "moves": 5,
-   "moon": 0,
-   "holds": 0,
-   "climbs": 0
-  },
+  "crashed": "TypeError: R.offerGive is not a function |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:176:44) |     at async /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:262:15",
+  "row": null,
+  "n": {},
   "posted": null,
-  "events": "3/3 sent: parted, words, words; here: ok",
-  "eco": "nothing"
+  "events": "none",
+  "eco": ""
  },
  "DATA-bot": {
   "date": "2026-10-15",
@@ -285,7 +263,8 @@
   },
   "posted": null,
   "events": "none; here: ok",
-  "eco": "nothing"
+  "eco": "nothing",
+  "skipped": "2026-10-16: did not show up"
  },
  "MARVIN-bot": {
   "date": "2026-10-15",
