@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.08
+# irl-dungeon — Dev Changelog — v0.01–v0.14
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -6,6 +6,132 @@ minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.14 — "Area"
+**Thu Oct 15, 2026 · 11:12 PM HST** (migration 008: `walked_rooms`; run on the live DB through the Cloudflare connector before the push, columns checked)
+
+### Decisions (the owner's)
+- "isn't everything always remembered by the server?": yes, that was the plan, and v0.11 broke it (see Findings). The rooms a player has stood in now live on the server.
+- A cell counts as *cleared* when the player has walked its first wing (a `completions` row with wing key "0"), which the game already records; *entered* when they have stood in any room of it. No new definition was needed.
+- A `+/-` button in the map panel switches between the room map (zoomed in) and an AREA map (zoomed out). North is always up; it does not turn with the player's facing.
+
+### What was built
+- `walked_rooms (player_id, cell, layer, room, created_at; PK player_id+cell+layer+room)`: private, never published, never on the ledger.
+- `POST /api/rooms {cell, room}`: keeps a room the cell really has (checked against the floor built from the player's unlocks), only where the cell earns credit; test mode keeps nothing. `POST /api/run` records room 0 when the cell earns credit (arriving is standing in the first room) and returns `rooms`. `POST /api/area {cell}` answers `{ here, N, E, S, W }`, each `new`, `entered` or `cleared`, for the cell and the neighbour each compass direction leads to (`neighbour()` in place.js, which the Worker already imports); test mode answers all `new`.
+- Client: `play.js` `load` merges `rooms` into `visited`; `forward` reports each step into a room (`ask(api, "rooms", ...)`); `loadArea`. `public/area.js` draws the 5-row AREA map: `[@]` in the middle, and only along walls of the first room with no door (those lead out; the others are doors into the wing) a hallway and the next cell as `[ ]` new, `[.]` entered, `[o]` cleared. The panel title reads ` MAP [-] ` or ` AREA [+] `; `+`, `=`, `-`, `z` and a click on the button toggle it.
+
+### Findings and shortcuts
+- v0.11 kept the walked rooms in `localStorage` because the server had no endpoint for them. That went against the earlier decision to keep the map on the server, and it would have vanished on another device. Removed here; nothing from it is read.
+- `/api/rooms` trusts the player's say-so that they walked there, the same trust as unlocking a door or searching. It does check that the room exists in their floor.
+- An area map of the neighbours is only what a wall can reach: a cell has six neighbours and four compass directions, so two are never drawn (see v0.13).
+
+### Tests
+- 224 tests. New `test/walked.test.mjs` (7): arriving records room 0 and `run` returns it; per-player, once each, only built rooms, refusals; no rooms kept for a cell reached too fast or in test mode; `/api/area` states (new, entered, cleared) and that another player's marks are theirs; the area map's layout including which sides are drawn; the title button; the page client reporting steps and getting the rooms back. No mutation pass on this change.
+
+### Open
+- Which neighbours to draw beyond the four a wall reaches; whether an AREA map should show more than one ring.
+- The AREA map only refreshes on toggle, on arriving, and after a step in AREA mode.
+
+## v0.13 — "Hallways"
+**Thu Oct 15, 2026 · 11:06 PM HST** (no migration)
+
+### Decisions (the owner's)
+- "right now it feels like I walk into a corner and I'm teleported to a different map": the way out of a cell should be a deliberate hallway. Picked options A (a hallway out of the room on every exit) and C (arriving shows the hallway you came in by).
+
+### What was built
+- `FLOOR.minimap` (floor.js, trimmed from 4Dungeon): in the first room every wall without a door draws a hallway out to the map's edge: 9 `=` sideways, 2 `:` up or down. `state.came` (N/E/S/W, the side of the first room you came in by) ends that hallway in `*`. `index.html` passes `came` as the opposite of the direction you left by.
+- Door grey for `= : *` in the page's map coloring.
+- Log line on leaving: "You walk out <dir>, along the hallway into the next cell."
+
+### Findings and shortcuts
+- How accurate are the directions? `neighbour()` takes, of a cell's six neighbours, the one whose bearing is closest to the compass direction. Measured at Honolulu, London, Tokyo and Sydney: the cell you land in is 5 to 25 degrees off true; N, E, S, W reach four different cells; walking out and back returned to the start in all 16 tries. Two of the six neighbours can never be reached by walking.
+- Walls of the first room that are doors into the wing get no hallway: pressing into them walks into the wing, not out.
+- Not checked in a browser: hallway lengths and the `*` look were only checked in the text render.
+
+### Tests
+- 217 tests. The exit-mark test from v0.12 was replaced by one for the hallways (each free side, each `came` side ending in `*`).
+
+### Open
+- Whether the hallway should be longer on the way out, or the first room drawn differently on arrival.
+
+## v0.12 — "Names and Gates"
+**Thu Oct 15, 2026 · 11:02 PM HST** (no migration)
+
+### Decisions (the owner's)
+- Room names work like 4Dungeon's: "there's a list it draws from", shown in the lower left under the map. No text tags (the cell tag I had added was removed).
+- Different symbols for the cell passages; no preference on the symbols themselves.
+
+### What was built
+- `public/roomnames.js`: 4Dungeon's name lists for passages, dead ends and plain rooms (`NAMES_BY_KIND` in rules.js; the kinds irl-dungeon doesn't have yet are left out), picked by the same hash of the floor seed and room number, never repeating a name on a floor. The first room is "The way out". Nothing stored: a room's name is worked out from the floor, and never depends on rooms built after it.
+- The panel's last line shows the name (it was `ROOM n`). First-room exits marked on the minimap (replaced in v0.13 by hallways).
+
+### Tests
+- 217 tests. New `test/roomnames.test.mjs`: unique and stable names, the passage list, the name in the panel's bottom left, the first-room exit marks.
+
+## v0.11 — "Outlines"
+**Thu Oct 15, 2026 · 10:57 PM HST** (no migration)
+
+### Decisions (the owner's)
+- The biggest problem: walking between cells over and over, with nothing on the minimap to tell them apart. Asked to expand the minimap and outline in light grey the areas visited, as in 4Dungeon. Then, twice: "use the 4Dungeon layout", "no text tags", "copy the 4Dungeon layout EXACTLY".
+
+### What was built
+- Reverted my first try (a 9-row window, a cell tag and a "been here" line) and kept 4Dungeon's exact layout: the same 5-row window and panel rows from `FLOOR.minimap`, and its coloring copied from daily-dungeon/index.html: outline `+ - |` in `--dim` at 60% opacity (`.wall`), `@` and the facing arrow bright, `#` grey, `[^]` and `[v]` left plain.
+- Rooms walked remembered per cell in `localStorage` (a shortcut, replaced in v0.14; see there).
+
+### Findings and shortcuts
+- My first colored the outline light grey (`--trail`); 4Dungeon's is the dim green-grey at 60%, which is what was meant by "like in D4".
+- Layout and map code were already 4Dungeon's, so the only difference was the coloring.
+
+### Tests
+- 214 tests (the 9-row tests I had added were removed with the 9-row window).
+
+## v0.10 — "Fuller Walls"
+**Thu Oct 15, 2026 · 10:50 PM HST** (migration 007: `search_prog` rebuilt with a `wall` column, `finds` rebuilt with `wall`, `slot` and a per-rarity deck place; run on the live DB through the Cloudflare connector before the push, columns checked)
+
+### Decisions (the owner's)
+- After searching "for literal minutes" with no drops, and noticing that 3 of 4 walls were empty with one thing hidden per room: "it should be 0-3 things for each wall maybe", and "make it a little faster too". Asked to copy 4Dungeon's search.
+
+### What was built
+- `src/search.js`: `hides(room, base)` now answers `{ N: [{ need, rarity }, ...], ... }` for each wall without a door, 0 to 3 things each (30 / 35 / 25 / 10 percent), in the order they are found. A thing's first need is 3 to 6 searches (was 5 to 10); each later thing on the wall needs `ceil(first * 1.5^k)` (4Dungeon's "a wall tires"). Each thing rolls its own rarity (60 / 30 / 10). Near-miss noise from 2 searches into the thing being worked at, 35% (was 3 and 25%).
+- `search_prog` is a running total of searches per player, cell, room, day and wall; the n-th thing turns up when the total reaches the needs of the things up to it, so a find never resets anything and a second press at the same moment can't skip a thing (the `finds` unique key on `(player, cell, layer, spot, day, wall, slot)` refuses a repeat). Searches past the last thing aren't counted. "done" now means the wall has given everything.
+- Decks are per room-day **per rarity** (`deck_pos` unique per rarity). Test mode returns the wall's first thing and saves nothing.
+
+### Findings and shortcuts
+- 4Dungeon's search was already copied faithfully in its numbers (5 to 10 points a thing, about one point a search); what felt slow was density: a 4Dungeon room hides several things across its walls and has other things going on, while a room here hid one thing behind one of four walls. 4Dungeon's own comment says 2 to 5 but its code uses 5 to 10.
+- Old progress had no wall and was dropped by the migration (`finds` was empty).
+- An interrupted mutation run left a mutation in `src/worker.js` for a moment; I checked the file against a saved copy and restored it, and re-ran the suite.
+- Mutation checks on the new rules: four of five caught. The survivor is the retry for a same-player double press clashing on the slot; the test setup can't make that race, so it is unproven.
+
+### Tests
+- 214 tests. `test/find.test.mjs` rewritten around a fixture room worked out from the rules (never from the Worker): bare walls, a wall with several things at their cumulative needs, two walls of a room, noise timing with randomness pinned, double press, the next day, per-kind decks, a second round, refusals, no credit, test mode, `/api/finds`, the page, and the raw constraints.
+
+### Open
+- Whether the first need should drop further; moon items; which rooms should hide more.
+
+## v0.09 — "Numbered"
+**Thu Oct 15, 2026 · 10:34 PM HST** (migration 006: `finds.copy` made nullable (table rebuilt); run on the live DB through the Cloudflare connector before the push, columns checked. Needs the dungeon-items Worker deployed with its `Registry` entrypoint first; checked in the deployed code.)
+
+### Decisions (the owner's)
+- One copy registry for numbered copies across all the games (repo okayline/dungeon-items; holder is the game plus that game's player id). One provenance hash chain in `items-db` for births and moves, not one per game; ledger entries hold no names, keys or player ids. Games reach it through a Workers RPC service binding to a `Registry` entrypoint ("can we do #1 please": the service binding over a direct database binding). A shared passkey is deliberately not done now.
+- "the asking rule is fine as it is now": the "ask before adding" rule in CLAUDE.md stays; only the items line was reworded.
+
+### What was built (irl-dungeon side)
+- `wrangler.jsonc`: `services: [{ binding: "REGISTRY", service: "dungeon-items", entrypoint: "Registry" }]`.
+- `src/copies.js`: `numberFind` saves nothing itself; it asks `env.REGISTRY.birth({ itemId, game: "irl-dungeon", playerId, key: "irl-find:<row id>" })` and writes the copy into the find (`UPDATE ... WHERE copy IS NULL`). `numberPending` numbers a player's waiting finds, oldest first, at most 20. Nothing throws on a registry failure; a number the database refuses (already on another find of that item) leaves the find unnumbered.
+- A find is saved first with `copy` NULL (`INSERT ... RETURNING id`), then numbered. Waiting finds are numbered on `GET /api/finds` and when the room is searched again after the find. The key holds no cell, room or day, and the same key always gives the same copy, so a retry can never make a second one.
+- The numbers are the registry's: a copy born in another game takes a number too. INVOKE and the find window print `#n` only when there is a number.
+- dungeon-items (pushed separately, acf4ff6): `copies` and `ledger` tables with triggers (copies never deleted, birth fields frozen, one move at a time, numbers count up with no gaps, retired items make no copies, ledger append-only), `src/registry.js`, `src/rpc.js` and `src/index.js`; 44 tests (43 run, 1 compares seeds with 4Dungeon only when daily-dungeon is a sibling), 30 mutations all caught.
+
+### Findings and shortcuts
+- Cross-database atomicity (the game's database and `items-db` can't share a transaction) is handled by order: find first, then an idempotent birth, then the number; a crash between leaves a waiting find that is numbered later, never an orphan copy.
+- Known limits: the chain can't show that its newest entries were dropped; the game name sent to the registry isn't authenticated; more than 8 simultaneous writers get "busy".
+- Live: the first drop wasn't seen until v0.10 because the owner's cheats (test mode) never save or number a find; and searching a wall with nothing behind it recorded nothing.
+
+### Tests
+- 208 tests. A fake registry in `test/helpers.mjs` (shared counter per item, idempotent by game and key, `down` and `refuse`): numbering by `irl-find:<id>` with no cell or day, numbers shared with another game's copies, registry down leaves the find unnumbered and the player still told, a waiting find numbered on `/api/finds` and on a repeat search with no second copy minted, refusing or unbound registry, concurrent players get distinct pairs, test mode makes no calls, the database allows many waiting finds but never a repeated number, INVOKE never prints `#null`. Mutations: five of seven caught; the two survivors are equivalent (a redundant check and a guard the idempotent birth already covers).
+
+### Open
+- Carrying items between games with transfer codes; a collection book; real-world drop rules (gate drops, moon items only under a bright moon).
 
 ## v0.08 — "Hidden Things"
 **Thu Oct 15, 2026 · 9:10 PM HST** (migration 005: `search_prog`, `finds`; run on the live DB through the Cloudflare connector before the push. Also a second D1 binding, `ITEMS` = `items-db`, the shared item table.)
