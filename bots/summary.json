@@ -96,68 +96,68 @@
   "eco": "nothing"
  },
  "DATA-bot": {
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 4,
-   "turns": 212,
-   "alive": false,
-   "party": "",
+   "day": 1,
+   "turns": 48,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "The LOOP SHADE strikes KURA down."
+   "last": "KURA is out of breath. She stays where she is."
   },
   "n": {
-   "searches": 5,
+   "searches": 15,
    "blocked": 0,
-   "waited": 15,
-   "fights": 1,
-   "talks": 10,
+   "waited": 75,
+   "fights": 0,
+   "talks": 0,
    "runs": 0,
-   "unlocks": 0,
-   "moves": 0,
-   "moon": 0,
+   "unlocks": 1,
+   "moves": 9,
+   "moon": 1,
    "holds": 0,
    "climbs": 0
   },
-  "posted": "posted, rank 2",
-  "events": "1/1 sent: fall",
-  "eco": ""
+  "posted": null,
+  "events": "none; here: ok",
+  "eco": "nothing"
  },
  "GORT-bot": {
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "build": "latest",
-  "version": "v1.04.2",
+  "version": "v1.12.1",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 4,
-   "turns": 206,
-   "alive": false,
-   "party": "",
+   "day": 1,
+   "turns": 74,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "The LOOP SHADE strikes KURA down."
+   "last": "Not yet. KURA catches her breath."
   },
   "n": {
-   "searches": 8,
+   "searches": 30,
    "blocked": 0,
-   "waited": 35,
-   "fights": 2,
+   "waited": 75,
+   "fights": 6,
    "talks": 0,
    "runs": 0,
-   "unlocks": 0,
-   "moves": 1,
+   "unlocks": 1,
+   "moves": 7,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": "posted, rank 2",
-  "events": "1/1 sent: fall",
-  "eco": ""
+  "posted": null,
+  "events": "2/2 sent: words, words; here: ok",
+  "eco": "nothing"
  },
  "BENDER-bot": {
   "date": "2026-10-14",
@@ -288,35 +288,35 @@
   "eco": "nothing"
  },
  "MARVIN-bot": {
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 4,
-   "turns": 50,
+   "day": 5,
+   "turns": 61,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA is out of breath. She stays where she is."
+   "last": "Not yet. KURA catches her breath."
   },
   "n": {
-   "searches": 4,
+   "searches": 3,
    "blocked": 0,
    "waited": 0,
    "fights": 0,
-   "talks": 1,
-   "runs": 1,
+   "talks": 0,
+   "runs": 0,
    "unlocks": 0,
-   "moves": 4,
+   "moves": 6,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "2/2 sent: asked, silent; here: ok",
+  "events": "none; here: ok",
   "eco": "nothing"
  }
 }

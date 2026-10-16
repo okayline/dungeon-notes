@@ -208,3 +208,39 @@ The LOOP SHADE strikes KURA down.
 
 posted, rank 2
 ```
+
+## 2026-10-15  -  B4F, day 1  (pinned v0.94)
+
+```
+(a new run begins)
+KURA wakes at the bottom. B4F.
+KURA searches the NORTH wall. Nothing but dust.
+KURA searches the NORTH wall. Old tally marks, in groups of five.
+KURA searches the NORTH wall. Nothing but dust.
+KURA searches the NORTH wall. Someone has looked here before.
+KURA searches the NORTH wall. Only stone.
+KURA searches the NORTH wall. Someone has looked here before.
+A locked door. Something on the other side is listening.
+KURA unlocks the WEST door. The way is clear.
+KURA searches the NORTH wall. Cold stone, cold hands.
+KURA goes WEST into a new room.
+KURA touches the terminal. The screen wakes.
+KURA makes an offering.
+KURA touches the terminal. The screen wakes.
+KURA goes WEST into a new room.
+KURA searches the SOUTH wall. Only stone.
+KURA searches the SOUTH wall. Damp. The smell of old pipes.
+KURA searches the SOUTH wall. Faded paint. A number, or a sigil.
+KURA goes EAST into a cleared room.
+KURA touches the terminal. The screen wakes.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes EAST into a new room.
+KURA scries the moon.
+Moonlight shows a warm room, heaped with things left behind.
+KURA goes NORTH into a new room.
+KURA goes SOUTH into a cleared room.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+```
