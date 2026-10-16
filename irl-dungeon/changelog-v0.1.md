@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.02
+# irl-dungeon — Dev Changelog — v0.01–v0.03
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -6,6 +6,16 @@ minimap. Live at irl.88x31.app (also irl-dungeon.ddddungeon.workers.dev). Compan
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.03 — "Shared Halls"
+**Thu Oct 15, 2026 · 6:42 PM HST** (migration 001: `unlocks`, `completions`, `wing_firsts`; run on the live DB before the push)
+
+Decisions: the key is spent by stepping into a locked door (4Dungeon's way, no button); the user said "dont add new things without asking". First finder is the first person to walk every room of a wing, sent as one request per wing (the visited set), anonymous for now; the finder's player id stays in `wing_firsts` and the ledger's private column so a name can be added later. One public ledger, private state in ordinary tables. Local-day rule for the key (browser sends its UTC offset, server uses its own clock, forward-only). Then, new this release: the user wants the dungeon the same for everyone because physical reality is shared, so the private seed (`pseed`) and the `cell_runs` table were dropped; `generate` now defaults `pseed = seed`, so the map rotation and direction labels are the same for all. A fallback start cell (random, IP area, home cell) was proposed by me and refused: location tied to a real place is the point. Admin tools were asked about, then postponed by the user.
+
+- `src/game.js` (new): `buildFloor(cell, doors)`, `wingKey`, `finishedWings` (validates the visited list: at most 200 integers, built rooms, includes the start, connected). `public/floor.js`: `lockedDoors`, `growDoor` (doors by number).
+- `src/worker.js`: `POST /api/run`, `/api/unlock` (120/h; refused tries don't spend the key; `tz_check` match/mismatch/unknown from `request.cf.timezone`, soft only), `/api/walk` (240/h; completion rows, `wing_firsts` and the ledger entry in one batch, retry on a chain clash).
+- Tests: `test/game.test.mjs` (23): cells, one key a day, sealed pair, bad offsets, the time zone check, replay, completing a wing, first finder, a six-way race giving exactly one finder and one ledger entry, refused walks. `test/helpers.mjs` `browser()` takes `cf`. 123 tests pass. Mutation checks on the new routes were not run.
+- Not done: the page client (unlock by stepping, wing completion request); the page does not use the routes yet. Open: what rooms hold, season length, layers going down, anchoring the ledger head, real-world safety wording, names for first finders, IP-versus-cell location flag (discussed, not built).
 
 ## v0.02 — "Way Back"
 **Thu Oct 15, 2026 · 6:14 PM HST** (no migration)
