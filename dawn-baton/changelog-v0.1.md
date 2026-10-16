@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.12
+# Dawn Baton — Dev Changelog — v0.1–v0.13
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,16 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.13 — "Your Dawn"
+**Thu Oct 15, 2026 · 3:30 PM HST** (no migration)
+
+Decisions: the Catch globe should turn slower (1.2 degrees a second, was 2). "Your dawn" is for information about you and your dawn, not settings, so the band picker moves to Account. The user picked local time and the streak from a list of options (other ideas not taken: who holds the baton in words, lap number, seasonal moment, neighbours, last stamp colour). Layout chosen by the user, top to bottom: countdown (bigger, bold), "SOLAR UTC-10, 15:25 local time" (24 hour clock), sunrise and sunset, day length with the change since yesterday, streak. The baton's number goes under the gold baton dot in the strip and nowhere else (replaces a "baton is in -7" line).
+
+- Rotation: `G.lam -= 0.3` degrees per 250 ms tick (was 0.5).
+- Server (`src/worker.js`): `streakOf(ctx, playerId, last)` counts consecutive laps the player stamped, back from `last`: the current lap if the window is open and they have stamped, else the lap before. It reads `ledger` (`kind = 'stamp'`), so no migration. `/api/today` returns `streak`. `/api/account` returns `band: { offset }` (null with no band) so Account can show the picker.
+- Page: `catchScreen` builds the new "Your dawn" lines; `sunLine` now emits the sunrise/sunset line and the day length line separately (also used by "Today's sun" on the no-band screen). `data-clock` spans update every 30 seconds beside the countdown ticker. The old "opens at (weekday time)" suffix on the countdown was dropped, and the separate window-times line was tried and removed. `wireBand` reloads Account when used there. Strip: `bandNo(i)` under the lead dot (row 3, or row 4 when it is also the player's band, under "Here").
+- Streak is untested against a real database. Tests 38/38 (none cover page code or the streak query). Checked in a headless browser with stubbed data; not tried on a real phone or the live site.
 
 ## v0.12 — "How To"
 **Thu Oct 15, 2026 · 3:20 PM HST** (no migration)
