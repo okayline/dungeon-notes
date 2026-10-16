@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.14
+# Dawn Baton — Dev Changelog — v0.1–v0.15
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,15 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.15 — "Fresh Words"
+**Thu Oct 15, 2026 · 4:00 PM HST** (no migration)
+
+Decisions: the user raised that players' privacy is the hardest thing to balance, so the rules were written down (`privacy-rules.md`, in this repo) and checked against the code. That found that finished stamp records, which `/api/ledger` publishes, held the player's id, so anyone could follow one id across laps (band, time, band moves) even if the player hid their name. The user had earlier asked about a public and a private ledger. The fix keeps one chain: the sealed record no longer holds the id, and who stamped lives only in the ledger table's own `player_id` column, which no endpoint publishes (a second ledger would only add a second chain to keep in sync). The user chose not to round public seal times to the hour. Words: the user reworded most replies and six vibe-check words, and asked for three more "bringing" answers. A 2 hour band grace period was tried and dropped (the user said it invites abuse); it stays 1 hour.
+
+- Privacy: `stampRecord` (`src/ledger.js`) no longer writes `player`. `parse` in `src/worker.js` takes `player` from the row's `player_id` column, so "mine", names and streaks work as before. Stamps sealed before this release keep their id in the record forever (changing them would break the chain), so the earlier laps stay linkable. Test added: the public ledger shows no player id, and your own stamp and name are still found.
+- Replies (`PHRASES`, rewritten in place, 20 entries): the last two ("Right back at you, early bird.", "Onwards!!") became "Let's goo!" and "We got this.", so every saved index still points at a reply. Vibe check (`FEELINGS`, in place): restless to excited, cranky to vibey, misty to cooked, giddy to pretty good, thankful to blessed, a bit off to chill. Bringing (`SIGNOFFS`): "one (1) plan" to "exactly (1) plan", "my comfy hoodie" to "comfy hoodie", and "blind faith", "a dollar and a dream", "a smile" appended (13 entries). Stamps already sent show the new words in the same slots.
+- Tests 41/41. The stamp panel was checked in a headless browser with stubbed data (all lists wrap fine); not tried on a real phone or the live site.
 
 ## v0.14 — "Tune Your Band"
 **Thu Oct 15, 2026 · 3:45 PM HST** (migration 006, run on the live baton-db before the push)
