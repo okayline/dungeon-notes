@@ -284,3 +284,68 @@ KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 KURA needs a moment.
 ```
+
+## 2026-10-16  -  B4F, day 6  (latest v1.12.1)
+
+```
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall... 20 SILVER, loose in the rubble. Two doors.
+KURA searches the WEST wall... Nothing yet.
+KURA searches the WEST wall... Nothing but dust.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA searches the WEST wall... Salt along the base, in a line.
+KURA searches the WEST wall... The wall gives nothing away.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA unlocks the EAST door. The way is clear.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA goes EAST into a new room.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA searches the NORTH wall... Old tally marks, in groups of five.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA searches NORTH... Something behind the stone shifts, just once.
+KURA is out of breath. She stays where she is.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment before she moves on.
+KURA is out of breath.
+KURA needs a moment.
+KURA is out of breath.
+```

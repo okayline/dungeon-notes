@@ -231,3 +231,68 @@ Not yet. KURA catches her breath.
 KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-16  -  B4F, day 6  (pinned v0.94)
+
+```
+KURA goes WEST into a cleared room.
+KURA works at the bench. Nothing needs mending.
+KURA searches the NORTH wall. Nothing.
+KURA searches the NORTH wall. Nothing yet.
+KURA searches the NORTH wall. Damp. The smell of old pipes.
+KURA searches the NORTH wall. A faint scrape, and then quiet.
+KURA searches the NORTH wall. Fingers come away gray.
+KURA searches the NORTH wall. Mortar, mostly. Some is older.
+KURA searches the NORTH wall. KURA hears something. Then nothing.
+KURA searches the NORTH wall. Old tally marks, in groups of five.
+KURA searches the NORTH wall. A crack. It goes nowhere.
+KURA searches the NORTH wall. Old tally marks, in groups of five.
+KURA searches the NORTH wall. Damp. The smell of old pipes.
+KURA searches the NORTH wall. A D@EMON appears!
+  D@EMON: "SIGNAL FOUND"
+  D@EMON: "01000110 01010010 01001001 01000101 01001110 01000100 00111111 Y / N"
+  KURA: "Yes."
+  D@EMON: "01011001 01000101 01010011"
+  D@EMON: "QUERY: ARE YOU HUMAN? Y / N"
+  KURA: "Yes."
+  D@EMON: "CONFIRMED. LOGGING ANOMALY."
+  The noise drains out of DAEMON. It is whole again.
+  The DAEMON offers to join the party.
+  The party is full. Send someone away?
+  KURA keeps the party. 01000010 01011001 01000101
+KURA searches the NORTH wall. Someone has looked here before.
+KURA searches the NORTH wall. A dead cable runs in and stops.
+KURA searches the NORTH wall. A TRACER wanders in!
+  TRACER: "INPUT REJECTED"
+  The TRACER strikes ELF. -6 HP
+  KURA runs SOUTH. The TRACER blocks the door.
+  The TRACER strikes PIXIE. -3 HP
+  TRACER: "0000000000000000"
+  The TRACER strikes KURA. -2 HP
+  The TRACER strikes KURA. -5 HP
+  The party strikes. -13
+  TRACER: "PROCESS DETECTED"
+  TRACER: "QUERY: ARE YOU LOST? Y / N"
+  KURA: "Yes."
+  TRACER: "ROUTE UNKNOWN. RELATABLE."
+  TRACER: "01000110 01010010 01001001 01000101 01001110 01000100 00111111 Y / N"
+  KURA: "Yes."
+  TRACER: "01011001 01000101 01010011"
+  The TRACER offers to join the party.
+  The party is full. Send someone away?
+  PIXIE leaves the party.
+  TRACER: "01001100 01001001 01001110 01001011"  [TRACER: "LINK"]
+  TRACER joins the party.
+KURA searches the NORTH wall. Deep in the stone, something gives.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+```
