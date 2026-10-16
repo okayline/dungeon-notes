@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.07
+# irl-dungeon — Dev Changelog — v0.01–v0.08
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -6,6 +6,34 @@ minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.08 — "Hidden Things"
+**Thu Oct 15, 2026 · 9:10 PM HST** (migration 005: `search_prog`, `finds`; run on the live DB through the Cloudflare connector before the push. Also a second D1 binding, `ITEMS` = `items-db`, the shared item table.)
+
+### Decisions (the owner's)
+- Items come from ONE table for all the games (repo okayline/dungeon-items, D1 `items-db`, id b39d9b77-fb44-4474-82b2-60252578f38a). Seeded with 4Dungeon's 46 items (read from rules.js; 4Dungeon unchanged) and 52 original-tier 88x31 buttons (36 common, 16 uncommon; no credit or license shown). Ids are append-only; the database refuses deletes and changes to id/source/key/rarity.
+- Rarities for now: common, uncommon, rare, for testing. Moon items don't drop yet. Mythic stays reserved.
+- The find mechanic is 4Dungeon's: press up into a wall to search it. Rules copied: hidden thing behind a wall with no door, needs 5 to 10 searches (one point each), never found on a first look, near-miss noise once 3 searches are in (25%), a bare wall never answers, MISSES and NOISES lines. Left out: breath, heat, demons, the moon, gambles, stairs, fixtures, deep finds. The start room's walls stay the way out to the next cell.
+- A find shows a window: "You found X!" (tone later). New bottom menu: TURN [A] [D], [I]NVOKE, [L]OCATE, [S]AVE (OR ARROWS and WALK removed). [I]NVOKE lists what you've found (nothing can be used yet).
+
+### What was built
+- `src/items.js` reads `ITEMS` (list by rarity/source, get by id, get many by id). `src/deal.js`: a deck per room-day and rarity, shuffled from the key alone (xmur3 + mulberry32, not secret); the n-th taker gets card n; after the deck is used up it reshuffles. `src/search.js`: what a room hides on a day (wall, need, rarity 60/30/10).
+- `POST /api/search`, `GET /api/finds`. One find per player per room per day. Deck place unique per room-day, copy unique per item (copy N of an item: counted when found). The room is named by wing key + room number, so different players' later wings don't share decks.
+- Test mode (admin): a search on the hidden wall shows a find at once and records nothing.
+- Needs credit like the key: a cell reached too fast earns no searches.
+
+### Findings and shortcuts
+- The server doesn't check that the player walked to the room, only that it is built (the same trust as unlocking a door from where you say you are).
+- Deck size is the pool size when the find happens; adding an item to the table mid-day can shift a deck, so a rare repeat is possible that day. Ids and copies are never reused.
+- Day for finds uses the player's offset (the same claimed-offset rule as the key), never earlier than their last find.
+- My shell can't reach 88x31.app, so the button list was read from 88x31's database with the same filter as its public catalog.
+
+### Tests
+- 198 tests. New: search rules alone, dealing (permutation, determinism, fairness over 1,200 room-days), 12 or 13 players in one room each get a different kind, second round, one find per day, refusals, no credit, test mode, /api/finds, the page's wall search, the menu, the windows. Rules broken on purpose, each failing a test: credit, start room, door, first-look find, bare wall, deck place, retired items, copy numbers, test mode, menu, wall search, finds visibility, and the three unique constraints.
+
+### Open
+- Which rooms offer which rarity; real-world links (season, time of day, moon) for what drops; the tone of a find.
+- Whether the same player should be able to find in the same room on later days (currently yes, a new thing each day).
 
 ## v0.07 — "Sandbox"
 **Thu Oct 15, 2026 · 8:00 PM HST** (migration 004: `players.admin`, `players.test_mode`, `players.test_from`, `test_unlocks`; run on the live DB through the Cloudflare connector before the push; then `admin = 1` set for player 1, checked)
