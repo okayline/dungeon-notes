@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.8
+# Dawn Baton — Dev Changelog — v0.1–v0.9
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,18 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.9 — "The Big Picture"
+**Thu Oct 15, 2026 · 2:35 PM HST** (no migration)
+
+Decisions: the user asked for a real-time globe with the bands sectioned out, liked a first draft shown in chat, then asked for it on the Planet tab, not draggable, and then a light country outline map for context. The globe is a fixed view: it follows the baton by itself and has no controls. The outline had to be shipped with the site, not loaded from another website. The user also set a rule this session: say what is about to be added and wait for a yes before adding things that were not asked for.
+
+- Globe (`drawGlobe`, `GLOBE_COL` in `index.html`): an orthographic projection on a 2D canvas, drawn per pixel. Each pixel is mapped back to a latitude and longitude, then to its band (`offset = round(lon / 15)`, with -12 folded into +12 and `index = 12 - offset`), coloured from the real status of that band in `/api/planet` (`open` gold, `stamped` and `bot` blue, `unheld` very dark, `waiting` slate; odd bands 10% lighter), then darkened by how far the pixel is from daylight (sun position from the day of the year and the UTC time; a soft edge at the terminator). Band boundaries are darkened one pixel wide. Band numbers sit on the equator, green for the player's own band. A white ring marks the point under the sun.
+- View: fixed 20 degree tilt, centred on the newest open band (or on the latest band that has been stamped or gone unheld if none are open, or band 0). Redrawn every 30 seconds while the Planet tab is showing (`globeTimer`, stopped when the tab changes). No pointer handlers and no buttons.
+- Bug found in the first draft: with a fractional device pixel ratio (such as 1.33) the canvas size was not a whole number, so most pixels were never written and the picture came out as stripes. The size is now `Math.round(360 * dpr)`. Checked at 1.33 and 2.
+- Outlines: `public/world.json`, 289 rings and 9,267 points in 95 KB, as flat `[lon, lat, lon, lat, ...]` arrays rounded to 0.1 degree with steps under 0.4 degrees dropped. The source is the public-domain (Unlicense) `johan/world.geo.json` `countries.geo.json`. `mkworld.mjs` converted it (not kept in the repo). Shared borders are drawn twice, which is not noticeable. Loaded once with `fetch("/world.json")` and drawn as a pale 1px line on the visible half only, under the band numbers. If the file does not load, the globe is drawn without it. The data is coarse: small islands and fine coastline are missing.
+- Environment notes: the npm registry could not be reached from the sandbox and `raw.githubusercontent.com` was refused (403), so the data was taken with a shallow `git clone` of the public repo instead.
+- Tests 38/38. There are no tests for the globe (it is all drawing code). Checked with Playwright and a stubbed API; not looked at on a real phone.
 
 ## v0.8 — "Moving Notes"
 **Thu Oct 15, 2026 · 2:20 PM HST** (no migration)
