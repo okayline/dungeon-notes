@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.04
+# irl-dungeon — Dev Changelog — v0.01–v0.05
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -6,6 +6,21 @@ minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.05 — "Signed and Saved"
+**Thu Oct 15, 2026 · 7:37 PM HST** (migration 003: `players.name_a/name_b` + unique index, `wing_firsts.signed`, `saved_cells`; run on the live DB through the Cloudflare connector before the push and checked)
+
+Decisions (the user's): wire the page to the v0.03 routes ("can you code that please"). Unlocking keeps 4Dungeon's ask-before-the-key-goes rule, done as a log line ("Unlock the west door? It uses today's key. Step again for yes."; any turn cancels) instead of 4Dungeon's YES/NO popup. Names: two words from dawn-baton's lists, rerollable; kept for now because "this game will be lighter". Names show on first finds only when signed, not automatically; the name is made at the moment of first signing ("that's when they make the account"). Players can unsign. Saved cells go in the [S]AVE screen (kept on the server so they follow a save code; my choice, the user didn't specify). [S]AVE cleanup asked for: slow to open, a black bar when scrolled up, no copy button and the code couldn't be selected.
+
+- `public/play.js` (new): `arrive`, `load` (POST /api/run; reopens stored doors, marks walked wings as reported, keeps firsts/unsigned/signed), `forward` (step; locked door: ask, then unlock on the second step; refuses before load and once the key is spent, without a request), `turned`, `wingHere`, `firstLine`, `signHere`, `unsignHere`, `waitText`. `public/index.html` uses it; one step at a time while waiting for the server.
+- `src/names.js` (new): dawn-baton's lists, `nameWord`, `nameText` (adjective then noun only), `freeName(db, except, rand)`.
+- `src/worker.js`: `/api/run` also returns `firsts` (wing → name only if signed), `unsigned`, `signed` (the player's own). `POST /api/sign {cell, wing, unsign?}` (finder only; makes a free name on first signing; batch with a `sign`/`unsign` ledger entry, record {cell, layer, wing}, never the name; idempotent). `POST /api/name {action:"reroll"}` (needs a name; never the same one; retries on a unique clash). `POST /api/cells {save|forget}` (20 max; forget only your own). `/api/account` returns `name` and `cells`.
+- `public/account.js`: paints at once (last answer or "Loading...") then fills in; NAME (REROLL) and SAVED CELLS (SAVE THIS CELL, GO, FORGET) sections; COPY (clipboard, falls back to selecting the code); the code is `user-select: text` (the page body blocks selection). The black bar was the empty message row pinned with `position: sticky` and a solid background; it is pinned only while it has a message now. Scroll position kept across redraws.
+- `public/place.js`: `isCell` requires lowercase, so a cell has one spelling (found by a saved-cells test: uppercase ids passed h3's check).
+- Tests 154 (was 133): `test/play.test.mjs` (9) and `test/names.test.mjs` (12). Mutation checks, each failing a test: no confirmation, no spent-key check, wings reported every step, unlock before load, stored doors not reopened, turning keeping the question, anyone can sign, names shown unsigned, signing not sealed, reroll without a name, reroll repeating, taken names handed out, no saved-cell limit, forgetting anyone's cells, uppercase cells, sign/unsign offered outside your wing, unsign sealed as sign, unsign ignored. Three got through on the first try (a finder with no name, a no-op mutation, no request check) and the tests were strengthened.
+- Checked in a real browser against the real Worker: a locked door asks, opens and stays open after a reload ("2 WINGS BUILT"); [S]AVE's title appears in ~50 ms; COPY puts the exact code on the clipboard; SAVE THIS CELL then GO from another cell arrives there; no page errors.
+- Found: the live `wing_firsts` has a `loc_check TEXT NOT NULL DEFAULT 'unknown'` column that is in no migration or `schema.sql` (added by hand earlier?). Harmless (it has a default); left alone. Worth a migration file or dropping.
+- Open: whether to say more plainly that a signed name plus its cells is a trail of places; the 150 km/h travel limit.
 
 ## v0.04 — "Street Door"
 **Thu Oct 15, 2026 · 7:08 PM HST** (migration 002: `places`; run on the live DB through the Cloudflare connector before the push, checked against `schema.sql`)
