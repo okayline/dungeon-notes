@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.7
+# Dawn Baton — Dev Changelog — v0.1–v0.8
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,19 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.8 — "Moving Notes"
+**Thu Oct 15, 2026 · 2:20 PM HST** (no migration)
+
+Decisions: the user wanted the Settle and Lean pitches to move every day, and chose the "melody that wanders" over a plain new key each day, with the pitch based only on the notes the player can hear (the last three). The quote on the last-band card stays the reply to "Morning, sunshine ☀️" and, when that was skipped, falls back to one of the player's other picks (a random-from-everything quote was considered and rejected because it stops the replies working as replies). The user wants account names to be a Shuffle button only, no dropdowns and no explainer line, and the starry background off the Yesterday lap bar with empty cells left see-through. Process note: the user said Claude must explain what it is about to add and wait for a yes. Claude had built a three-note sliding window for Yesterday's tune without being asked; it was reverted to one run through the whole lap.
+
+- Pitch (`index.html`, all client-side): `stepFrom` (Settle one step toward home, floored at home; Lean one step away; a rest holds), `walkIdx`, `freqAt(lap, i)` (home = C4 raised by `(lap * 5) % 12` semitones, steps along the scale `[0, 2, 4, 7, 9, 12, 14, 16]` and capped at its end) and `noteFreq(lap, before, note)` (null for a rest). `tone()` now takes a frequency instead of a note name.
+- Catch: the ▶ button plays `heard` (last three notes, now one every 0.55 s instead of 0.9) with each pitch following from the notes before it; Settle/Lean buttons sound one step from where `heard` ends. Yesterday: "Play the tune" walks the whole lap from home, 0.25 s per note as before.
+- Checked in a headless browser: on lap 118 with heard = settle, rest, lean, Settle lands near 294 Hz and Lean near 370 Hz; lap 119 shifts both up a fourth; three Leans climb 330, 370, 440 Hz. Not listened to by ear.
+- Last-band quote: when `phrase` is empty and any of feeling, gesture or sign-off exists, one of them (chosen from the stamp's own indices, so the same one every time) becomes the quote and is removed from the chips.
+- Account: the two selects and Save name are gone; Shuffle picks a random pair, posts it, retries with the server's `suggestion` if the pair is taken, and reloads. The "Two words, from lists…" line is removed.
+- Removed the `.sky` star CSS and the twinkle animation; the lap bar's empty cells show the panel colour.
+- Tests 38/38. There are no tests for the pitch maths because it lives in the page, not the engine.
 
 ## v0.7 — "Vibe Check"
 **Thu Oct 15, 2026 · 2:05 PM HST** (no migration)
