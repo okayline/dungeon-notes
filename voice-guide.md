@@ -14,7 +14,7 @@ Old, dry, understated. Small deadpan jokes, never loud ones. No slang, no real-w
 
 The only human down there, and the only voice from now. Modern slang, quick judgments, a little mean, mostly funny.
 
-- Used only in AURA reads (and her own thoughts, if that ever comes). Never in narration, room text, demon lines or the log's plain reports.
+- Used only in TALK reads (the solo read of a room or door, a demon coming off a certain way, and her party's remarks on her aura) and her own thoughts, if that ever comes. Never in narration, room text, demon lines or the log's plain reports.
 - About 80% jokey, 20% plain. The plain ones use the world's dry voice, not poetry: "ONI likes a matching set." not "ONI is calmed by things that belong together."
 - Examples: "KURA vibe-checks ONI." "Main character energy." "Looks like ONI only shops at Wal-Mart."
 

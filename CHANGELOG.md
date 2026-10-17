@@ -3,6 +3,21 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.16 - Flask - Oct 17 2026, 06:58 HST
+
+Page, rules, screen. No Worker or migration change. New optional save fields: none that old saves need.
+
+- **Tag lines.** `TAG_KIND` maps tag ids to six kinds (finished, ran, paid, broke, talked, restored); `TAG_SAY[kind][family]` has one line per family. `tagRemark` runs at fight start when `auraRemark` returned nothing: 25%, not for CU SITH or UNIQUE demons. `PARTY_TAG_SAY` (finished, ran, paid; ELF / PIXIE / CU SITH) can replace a party banter line, 20%, in `wordParty`.
+- **Hot room tell.** Crossing heat tier 2 with a demon in the party sets "The others go quiet." when no other tell is waiting. A hushed member now draws from all three of the family's old tired lines.
+- **Solo TALK keeps its beat.** The page routes `word` to `aura` when KURA has no standing member and no fight, so the typed-out room read still plays.
+- **ICHOR flask.** `FLASK_MAX` 60; `fillFlask(st, n)` caps and returns what went in. Fallen demon: the old 5 to 30 plus 3 per level, capped. A demon that parts in peace (`departs`): 6 to 12, "It leaves N ICHOR in the flask." Description now "A flask of demon blood and old light. Heals the party." Feeding and giving are unchanged (1 ICHOR per HP, 3 per HP for a fallen member).
+- **SILVER.** `useSilver`: costs `SILVER_COST` 40 per level (`silverCost(st)`); sets the room's heat to 0, clears the drunk and TRIP (no come-down loss), clears every `hush`. Refuses, keeping the silver, when the room is under 6 heat and nothing needs clearing. The bag's top row is `0  ICHOR  (n/60)   SILVER  (n)`; arrows left and right move the `>` when row 0 is chosen (`topSel`); Enter uses the chosen one; `0` still means ICHOR; the help line shows `[<][>] ICHOR/SILVER`. Stat `silverUsed`.
+- **TAINT is DRUNK** in the debug line and the forge hint ("BRING WHAT YOU DRANK TO BURN OUT."); the save field is still `taint`.
+- **STANDBY removed.** Gone: the camp (full heal, patience set to full, taint cleared, rooms halved and this one zeroed, loop reset), the rested search bonus (`restedDay` is no longer set), `STANDBY_LINES`, the title card and the run-summary line. Kept dormant: `hold`, `bankedOmen`, `useBankedOmen`, the Hold Omen button code (still off behind `HOLD_OMEN_ON = false`), and the "In the dark, a voice" wake line. Nothing reaches `hold` now, so no omen is banked. The popup title reads "HOLD THE OMEN?".
+- **Program jobs every night.** `campJobs` (COMPILER merges two COMMON items into an UNCOMMON; CACHE copies a COMMON) now runs in every night's rollover after `nightFinds`, not only after a STANDBY. Members' night finds are unchanged.
+- **README** rewritten for TALK, VIBES, aura and the account page. `voice-guide.md` (KURA's voice now lives in TALK reads).
+- **Test notes.** Chromium: new run, the bag row, left/right select, Enter spends 40 and clears the drunk, no page errors. Node: flask cap; SILVER with heat, drunk and a hushed member; a refusal with nothing to clear and a refusal when short; a simulated night with COMPILER in the party (two commons became a VR visor). Not run: tag lines at a real fight start (random), the signed-in account page, the hot-room tell in real play.
+
 ## v1.15 - Talk - Oct 17 2026, 06:22 HST
 
 Page, rules, screen. No Worker or migration change. Nothing is saved differently apart from new optional fields (`st.tags`, party `hush`), so old runs load.
