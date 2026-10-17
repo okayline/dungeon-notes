@@ -173,7 +173,11 @@ async function play(name, build) {
       else if (e.stage === "join") st = R.answer(st, Math.random() < k.join);
       else if (e.stage === "swap") st = R.swap(st, Math.random() < .5 ? null : 1 + Math.floor(Math.random() * (st.party.length - 1)));
       else if (e.stage === "gift") { const g = R.gifts(st), j = g.findIndex(x => x.ok); st = R.give(st, j >= 0 && Math.random() < k.gift ? j : null); }
-      else if (e.stage === "offer") st = R.offerGive(st, null);
+      // An offer is declined, as before. v1.06 renamed offerGive to offerPick (pinned builds still have the old name), and
+      // declining a demon's own offer now asks first ("leave" stage); a full bag's swap ("trade" stage) backs out the same way.
+      else if (e.stage === "offer") st = R.offerPick ? R.offerPick(st, null) : R.offerGive(st, null);
+      else if (e.stage === "leave") st = R.offerLeaveConfirm(st, true);
+      else if (e.stage === "trade") st = R.offerTrade(st, null);
       else {
         const r = Math.random(), a = R.available(st), ways = CW.filter(x => a[x]);
         if (r < k.run && ways.length && !e.ranTried) { st = R.go(st, pick(ways)); note.n.runs++; }
