@@ -296,3 +296,68 @@ KURA is out of breath. She stays where she is.
 Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-17  -  B4F, day 7  (pinned v0.94)
+
+```
+  KURA: "Yes."
+  SCRAPPER: "finally. finally."
+  SCRAPPER: "got anything? anything at all?"
+  KURA gives a wax seal, unbroken.
+  SCRAPPER: "ok. that's ok"
+  The SCRAPPER offers to join the party.
+  KURA declines. SHUTTING DOWN. bye
+KURA searches the SOUTH wall. Fingers come away gray.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall. A P!NG wanders in!
+  P!NG: "INPUT REJECTED"
+  The P!NG strikes ELF. -3 HP
+  KURA runs SOUTH. The P!NG blocks the door.
+  The P!NG strikes TRACER. -2 HP
+  P!NG: "INPUT REJECTED"
+  The P!NG strikes DEADLINK. -5 HP
+  The P!NG won't listen.
+  The P!NG strikes TRACER. -5 HP
+  The P!NG won't listen.
+  The P!NG strikes KURA. -7 HP
+  The P!NG strikes ELF. -2 HP
+  The party strikes. -11
+  The P!NG won't listen.
+  The P!NG strikes DEADLINK. -8 HP
+  The P!NG won't listen.
+  The P!NG strikes TRACER. -6 HP
+  The P!NG strikes ELF. -8 HP
+  The party strikes. -15
+  The P!NG won't listen.
+  The P!NG strikes TRACER. -5 HP
+  The P!NG won't listen.
+  The P!NG strikes KURA. -8 HP
+  The P!NG strikes KURA. -2 HP
+  The party strikes. -10
+  The party strikes. -16
+  The P!NG falls.  +29 ICHOR
+KURA searches the NORTH wall. KURA hears something. Then nothing.
+KURA searches the NORTH wall. Salt along the base, in a line.
+KURA searches the NORTH wall. KURA hears something. Then nothing.
+KURA searches the NORTH wall. Salt along the base, in a line.
+KURA searches the NORTH wall. A faint scrape, and then quiet.
+KURA searches the NORTH wall. A low sound. KURA holds her breath.
+KURA goes SOUTH. The room feels like it is holding its breath.
+KURA searches the SOUTH wall. A crack. It goes nowhere.
+KURA searches the SOUTH wall. A faint scrape, and then quiet.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall. KURA hears something. Then nothing.
+KURA searches the NORTH wall. Salt along the base, in a line.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+```

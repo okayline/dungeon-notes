@@ -138,15 +138,15 @@
   "eco": "nothing"
  },
  "BENDER-bot": {
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 4,
-   "turns": 53,
+   "day": 5,
+   "turns": 64,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
@@ -156,7 +156,7 @@
    "searches": 6,
    "blocked": 2,
    "waited": 0,
-   "fights": 0,
+   "fights": 4,
    "talks": 0,
    "runs": 0,
    "unlocks": 0,
@@ -166,71 +166,71 @@
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok",
+  "events": "1/1 sent: words; here: ok",
   "eco": "nothing"
  },
  "WALLE-bot": {
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 6,
-   "turns": 366,
+   "day": 7,
+   "turns": 423,
    "alive": true,
    "party": "KURA, ELF, DEADLINK, TRACER",
    "align": "NEUTRAL",
-   "last": "KURA needs a moment before she moves on."
+   "last": "Not yet. KURA catches her breath."
   },
   "n": {
-   "searches": 17,
+   "searches": 16,
    "blocked": 0,
    "waited": 75,
-   "fights": 1,
-   "talks": 4,
+   "fights": 4,
+   "talks": 9,
    "runs": 1,
    "unlocks": 0,
-   "moves": 1,
+   "moves": 4,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "4/4 sent: restored, asked, joined, deep; here: ok",
-  "eco": "found a wax seal, unbroken"
+  "events": "2/2 sent: asked, words; here: ok",
+  "eco": "nothing"
  },
  "ROSIE-bot": {
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "build": "latest",
   "version": "v1.12.1",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 6,
-   "turns": 351,
+   "day": 7,
+   "turns": 416,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA is out of breath."
+   "last": "The W0RM falls. 26 ICHOR."
   },
   "n": {
-   "searches": 10,
-   "blocked": 39,
-   "waited": 12,
-   "fights": 0,
-   "talks": 0,
-   "runs": 0,
+   "searches": 23,
+   "blocked": 17,
+   "waited": 75,
+   "fights": 4,
+   "talks": 7,
+   "runs": 1,
    "unlocks": 1,
-   "moves": 2,
-   "moon": 0,
+   "moves": 5,
+   "moon": 1,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok",
+  "events": "1/1 sent: words; here: ok",
   "eco": "nothing"
  },
  "C3PO-bot": {

@@ -349,3 +349,68 @@ KURA is out of breath.
 KURA needs a moment.
 KURA is out of breath.
 ```
+
+## 2026-10-17  -  B4F, day 7  (latest v1.12.1)
+
+```
+Not yet. KURA catches her breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA searches the SOUTH wall... Salt along the base, in a line.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes NORTH into a new room.
+Not yet. KURA catches her breath.
+KURA searches the EAST wall... Salt along the base, in a line.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA works the worn wall, steady.
+KURA searches EAST... A hatch of heavy drawers, shut tight. It can be used.
+The drawers slide open. 73 SILVER.
+KURA is out of breath.
+Not yet. KURA catches her breath.
+KURA searches the EAST wall... The wall gives nothing away.
+KURA searches the EAST wall... Nothing.
+KURA takes what's loose.
+KURA searches the EAST wall... Cold stone, cold hands.
+KURA searches the EAST wall... A small sound, there and gone.
+KURA searches the EAST wall... Nothing.
+KURA digs deep.
+KURA goes WEST into a new room.
+KURA searches the SOUTH wall... A crack. It goes nowhere.
+KURA searches the SOUTH wall... Only stone.
+KURA searches the SOUTH wall... A W0RM wanders in!
+  The W0RM strikes KURA. -5 HP
+  The party strikes. -11 HP
+  W0RM: "INPUT REJECTED"
+  The W0RM strikes ELF. -2 HP
+  W0RM: "0000000000000000"
+  The W0RM strikes KURA. -6 HP
+  KURA holds up a bead of smoky glass.
+  W0RM: "INPUT LOGGED. THREAT UNCHANGED."
+  The W0RM strikes PIXIE. -6 HP
+  The W0RM strikes CU SITH. -5 HP
+  The party strikes. -11 HP
+  KURA holds up a bead of smoky glass.
+  W0RM: "NOTED. NO CHANGE."
+  The W0RM strikes ELF. -6 HP
+  KURA runs EAST. The W0RM blocks the door.
+  The W0RM strikes KURA. -2 HP
+  KURA holds up a bead of smoky glass.
+  W0RM: "THANK YOU. CONTINUING."
+  The W0RM strikes KURA. -4 HP
+  KURA holds up a bead of smoky glass.
+  W0RM: "INPUT LOGGED. THREAT UNCHANGED."
+  The W0RM strikes CU SITH. -3 HP
+  The W0RM strikes KURA. -2 HP
+  The party strikes. -11 HP
+  KURA holds up a bead of smoky glass.
+  W0RM: "INPUT LOGGED. THREAT UNCHANGED."
+  The W0RM strikes ELF. -2 HP
+  The party strikes. -12 HP
+  The W0RM falls.  +26 ICHOR
+  It drops a neon tube fragment.
+```
