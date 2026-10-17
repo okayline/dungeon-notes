@@ -1,10 +1,29 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.8
+# scoundrel.exe — Dev Changelog — v0.1–v0.8.9
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.8.9 — "One Key"
+**Sat Oct 17, 2026 · 2:45 AM HST** (no migration here; migration 003 ran on the shared `items-db`)
+
+### Decisions (the owner's)
+- One passkey for all the games on `88x31.app`; accounts live in dungeon-items; "wire in the last two".
+
+### What was built
+- Save codes and passkeys moved out of this Worker into the `Accounts` entrypoint of dungeon-items (service binding `ACCOUNTS`). This game keeps its own players, cookie and sessions; the account says which player here is whose (`account_players` in `items-db`, game name `scoundrel`). `src/passkeys.js` was removed; `src/saves.js` keeps the token, session and rate-limit helpers.
+- Logging in (code or passkey) gives an account; `enter` uses the account's player here, else this browser's own player if it has no account, else makes one.
+- Players from before: their `save_codes` rows move to the account the first time the player is seen (`accountFor`), then the rows are deleted. A not-yet-moved code still logs in. Old passkey rows are left unused.
+
+### Findings and shortcuts
+- Passkeys made here before can't carry over: a passkey is bound to its exact address and the shared one is `88x31.app`. Their owners have save codes.
+- `ACCOUNTS.md` in dungeon-items has the whole design.
+
+### Tests
+- The game's own tests run against a stand-in for the accounts service (`fakeAccounts` in the test file); the real accounts code and its passkey crypto are tested in dungeon-items.
+- Added: old code moves over once; login reuses or links the right player; a passkey adds and logs in; with no `ACCOUNTS` binding the game answers 503.
 
 ## v0.8.8 — "Steady Screen"
 **Thu Oct 15, 2026 · 10:25 AM HST** (no migration)

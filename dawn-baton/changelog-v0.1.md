@@ -1,4 +1,4 @@
-# Dawn Baton — Dev Changelog — v0.1–v0.16
+# Dawn Baton — Dev Changelog — v0.1–v0.17
 
 Detailed changelog for Dawn Baton (public repo: okayline/dawn-baton): a daily check-in game synced to the real
 sun. 24 fixed solar bands, one baton that travels west once a day, one picked-from-lists stamp per player per lap,
@@ -6,6 +6,25 @@ all on one SHA-256 hash chain. Companion to Daily Digital Demon Dungeon. The pub
 Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.17 — "One Key"
+**Sat Oct 17, 2026 · 2:45 AM HST** (no migration here; migration 003 ran on the shared `items-db`)
+
+### Decisions (the owner's)
+- One passkey for all the games on `88x31.app`; accounts live in dungeon-items; "wire in the last two".
+
+### What was built
+- Save codes and passkeys moved out of this Worker into the `Accounts` entrypoint of dungeon-items (service binding `ACCOUNTS`). This game keeps its own players, cookie and sessions; the account says which player here is whose (`account_players` in `items-db`, game name `dawn-baton`). `src/passkeys.js` was removed; `src/saves.js` keeps the token, session and rate-limit helpers.
+- Logging in (code or passkey) gives an account; `enter` uses the account's player here, else this browser's own player if it has no account, else makes one.
+- Players from before: their `save_codes` rows move to the account the first time the player is seen (`accountFor`), then the rows are deleted. A not-yet-moved code still logs in. Old passkey rows are left unused.
+
+### Findings and shortcuts
+- Passkeys made here before can't carry over: a passkey is bound to its exact address and the shared one is `88x31.app`. Their owners have save codes.
+- `ACCOUNTS.md` in dungeon-items has the whole design.
+
+### Tests
+- The game's own tests run against a stand-in for the accounts service (`fakeAccounts` in the test file); the real accounts code and its passkey crypto are tested in dungeon-items.
+- Added: old code moves over once; login reuses or links the right player; a passkey adds and logs in; with no `ACCOUNTS` binding the game answers 503.
 
 ## v0.16 — "Next Up"
 **Thu Oct 15, 2026 · 4:22 PM HST** (no migration)
