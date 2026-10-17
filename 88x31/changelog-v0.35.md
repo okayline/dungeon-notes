@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.37
+# 88x31 cLuB — Dev Changelog — v0.35–v0.37.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.37.1 — "Five Mysteries"
+**Sat Oct 17, 2026 · 10:58 AM HST** (no migration)
+
+Owner, after trying v0.37: a Single given to himself opened fine; the logged-out Wall worked but "the huge blank wall seems intimidating".
+
+- **Logged-out Wall** (`renderWallGrid`, page only): the API still sends every design with the mysteries marked (v0.37's rule); with no `me` the grid keeps the known tiles and splices in 5 random mystery tiles at random places. The count line still says the full number.
+- **Packs unselectable**: `.pack-tile` and everything in it get `user-select: none` and `-webkit-touch-callout: none`.
+- **Give packs "who"**: the text box and its datalist became a `<select name="name" id="givepack-names">`: "pick a player..." (empty), "★ everyone ★", then every player from `/api/players` (people first, bots marked [bot]); `loadPlayers` keeps the current pick when it refills. The server side is unchanged (`name` or "everyone").
+- Footer v0.37.1; css/js cache tags 0.37.1. `node --check` only; not rendered in a browser.
 
 ## v0.37 — "Plain Windows"
 **Sat Oct 17, 2026 · 10:25 AM HST** (no migration)
