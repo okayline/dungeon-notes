@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.18 - Automatic Saves - Oct 17 2026, 07:50 HST
+
+Page only. No Worker change.
+
+- **Shared helpers.** `acctApi(path, body, keep)` (bearer token from `dd-token`, optional `keepalive`) and `signedIn()` are top level; the account page and the bag use them.
+- **Cloud save.** `persist()` calls `cloudSoon()`: a 2-minute timer, then `cloudPush` sends the run (history sliced to 300, skipped when the code equals the last one sent). `visibilitychange` (hidden) and `pagehide` push at once with `keepalive`. A failed push clears `cloudLast` so it retries. The Worker limit is 120 saves an hour per player.
+- **Pull.** `cloudPull` runs after `start()` and after an account sign-in (ENTER CODE, PASSKEY LOGIN). If there is no local run, or the cloud run is further along (day, then steps), it goes through `loadRunCode` (confirm box when a local run exists). Otherwise it pushes local.
+- **Account page.** SAVE RUN, GET RUN, INVENTORY and the send handlers are gone. Buttons sit in `.brow2` flex rows; the pass-mode box wraps (`pre-wrap`, max width the viewport).
+- **Bag.** The top row is two `.btn` spans (`data-top` 0 and 1): click selects, click again uses. The foot is `[1-9] use  INVENTORY  [C]LOSE` (arrows still switch ICHOR and SILVER). INVENTORY (`invReg`, `drawReg`, `regAct`) lists `/inventory` 7 a page with SEND HOME / VISIT 88x31 (`/send`, `takeAway`); Esc, C, I or Backspace go back.
+- **Test notes.** Chromium at 390x844 on a mapped dungeon.88x31.app with mocked Worker routes: account page without sideways scroll, bag clicks, inventory send, pagehide push. Not run: the real server, a real passkey login, a pull onto a second device.
+
 ## v1.17 - Visitors - Oct 17 2026, 07:35 HST
 
 Page, rules, screen, Worker (`POST /spent`, `/inventory` returns `align` and `nature`). No migration.
