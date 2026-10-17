@@ -35,7 +35,7 @@ A new `act.js`: `apply(st, action)`, where an action is `{ type, arg }` and ever
 **3. The page talks to it.** BUILT in v1.21 (server mode at dungeon.88x31.app; the page's own fields and the rules' queues are split in `adopt()`).
 The dispatcher sends the action and plays the beat it already plays (dots, typing) while it waits, then draws the answer. A failed request gets a line in the game's voice and a retry, never a browser dialog.
 
-**4. Fold in what the page does today.** 4a BUILT in v1.22 (finds, used-up items, tallies and events sent by the server after it answers). 4b next: each bag slot a registry copy.
+**4. Fold in what the page does today.** 4a BUILT in v1.22 (finds, used-up items, tallies and events sent by the server after it answers). 4b BUILT in v1.23 (`st.copies`: each find in the bag is its registry copy).
 Once the server holds the run: finds go to the registry from `/act` directly (no `st.finds` queue), and so do used-up items and visitors. The cloud save, SAVE and GET code, and the run-code loader go away, because the run already lives on the server. The gift box and tallies keep their routes. **This is also where each bag slot becomes a registry copy, which provenance needs.**
 
 **5. Later: keep secrets on the server.**

@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.23 - Numbered - Oct 17 2026, 10:35 HST
+
+Worker (`game.js`), `act.js`, page (one line). No migration. Stage 4b of `4dungeon-server-move.md`: the groundwork provenance needs.
+
+- **`st.copies`** (run state, kept on the server): item name to the bag's copies of it, oldest first, `{ k: find key, c: copy number or null, t: tries }`. Only present when non-empty, so a quiet tick is still `same`.
+- **`settleCopies(env, inner, st, a)`** runs inside `/act`, after the rules and before the save: each `st.finds` entry is added with `c: null`; every unnumbered entry (up to 5 tries each) goes to `/found` in the same move and gets its copy back (same key, same copy, so a retry never makes a second copy); each `st.gone` name pops the newest copy of that name, and the known ones are used up after the answer (`/spent` in `sendOut`). v1.22's "newest copy the registry says you hold" guess is gone (it could use up a copy from an older run).
+- **Send home.** MAIL's `takeAway` now carries `{ name, itemId, copy }`; that copy leaves `st.copies` without being used up (the registry move was `/send`).
+- **Cost.** A move that gains an item now waits for its numbering (one registry call through `/found`). A search asks during its dots (v1.21.1), so it mostly hides there; an offer or a demon's gift shows it.
+- **Not tracked:** the starting kit (never "found"), visitors (the rules' own `st.visitors`), things in party members' pockets (an item handed to a member is `gone` and used up, as since v1.17).
+- Tests: 12 Worker tests (the v1.22 queue test became: a find is numbered into `st.copies`, a gone item uses up exactly that copy, the page gets no queues). End to end in Chromium as before; no page errors.
+
 ## v1.22 - Word Gets Around - Oct 17 2026, 10:20 HST
 
 Worker (`game.js`, `worker.js`), page, `act.js`. No migration. Stage 4a of `4dungeon-server-move.md` (4b, bag slots as registry copies, is next).
