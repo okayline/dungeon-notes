@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.37.1
+# 88x31 cLuB — Dev Changelog — v0.35–v0.37.2
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.37.2 — "A Few More Mysteries"
+**Sat Oct 17, 2026 · 11:12 AM HST** (no migration)
+
+Owner: "add maybe like 20 more ? blocks" and "show a couple found buttons" on the logged-out Wall.
+
+- `functions/api/designs.js`: logged out, a design is a mystery only when it isn't common (found commons are sent with their pictures again, as before v0.37).
+- `renderWallGrid` logged out: the cLuB commons, 2 random found buttons and 25 random ? tiles (was 5), spliced in at random. The count line still says the full number.
+- Footer and cache tags 0.37.2. `node --check` only.
 
 ## v0.37.1 — "Five Mysteries"
 **Sat Oct 17, 2026 · 10:58 AM HST** (no migration)
