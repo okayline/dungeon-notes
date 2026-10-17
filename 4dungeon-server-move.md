@@ -24,7 +24,7 @@ Oct 17 2026, written at v1.18. A plan, nothing built. The redesign (provenance, 
 **1. One action list (page only, no behavior change).** BUILT in v1.19 (`act.js`).
 A new `act.js`: `apply(st, action)`, where an action is `{ type, arg }` and every rules call above becomes one entry. The page calls `apply` locally for everything. Shipping this alone proves the action list is complete before any server work.
 
-**2. The Worker runs it.**
+**2. The Worker runs it.** BUILT in v1.20 (`leaderboard/game.js`); the field split moves to stage 3, where the page switches over.
 - Table `runs (player PRIMARY KEY, state, steps, updated)` in the board's D1.
 - Players: a signed-in account's 4Dungeon player, or a guest player made on first visit (a token kept by the page, like `dd-token`), so there is still no friction at the start.
 - `POST /run`: load or start the player's run. `POST /act { n, action }`: `n` is the step count the page last saw, so a double-send is ignored (scoundrel's `n`). Both answer with the run.

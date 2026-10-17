@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.20 - The Other Side - Oct 17 2026, 09:30 HST
+
+Worker (`leaderboard/game.js`, wired in `worker.js`), schema, migration `leaderboard/migrations/001_runs.sql` (must run on the live board database before the push). The page doesn't call the new routes yet. Stage 2 of `4dungeon-server-move.md`.
+
+- **Routes.** `POST /run {}`: the player's run, a fresh one (reset, named, tick) if none; ticks a kept run to today and saves it. `POST /run {fresh: true}`: a new run. `POST /act {n, action}`: one `ACT.apply` on the kept run. `n` counts accepted actions (column `runs.n`); a stale `n` answers 409 with the real run and `n`, so a resend is never done twice. `reset` is refused on `/act` (use `/run`). Only `ACCOUNT_ORIGINS` pages; JSON only.
+- **Players.** The existing bearer-token players. `/run` makes a guest player (rate-limited `makePlayer`) when the request has none, and returns its token. Guest cleanup isn't built yet.
+- **Breath off.** `tidy()` deletes `st.breath` after every apply; with no breath record `breathNow` returns `BREATH_MAX`.
+- **Admin flag.** `players.admin` (0 by default, set by hand). Actions in `ACT.ADMIN` (`freesteps`, `next`) answer 403 without it. The page's `x-admin-key` is untouched until stage 3.
+- **Rate limit.** 3600 actions an hour per address (`acct_limits`, key `act`).
+- **Engine in the Worker.** `game.js` imports `../act.js`, which requires `rules.js` (and through it `floor.js`, `items.js`, `screen.js`, `sky.js`), the same CommonJS pattern `accounts.js` already uses for `items.js`. Node runs it in the tests; Cloudflare's bundling of `rules.js` is not checked (no wrangler here) and is the first thing to watch after the push.
+- `accounts.js` now exports `Oops`, `reply`, `body`, `limited`, `makePlayer`, `originsOf` for `game.js`.
+- **Tests.** 10 Worker tests pass (2 new: a guest's run, actions, a refused resend, breath full; admin tools need the flag).
+
 ## v1.19.1 - Admin Keys - Oct 17 2026, 09:25 HST
 
 Page only (`act.js`, `screen.js` VERSION).
