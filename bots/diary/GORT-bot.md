@@ -225,3 +225,47 @@ KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 Not yet. KURA catches her breath.
 ```
+
+## 2026-10-16  -  B4F, day 2  (latest v1.12.1)
+
+```
+KURA wakes on B4F.
+KURA plugs in. No one needs it.
+KURA searches the SOUTH wall... Nothing.
+KURA goes NORTH into a new room.
+KURA searches the WEST wall... Mortar, mostly. Some is older.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall... KURA hears something. Then nothing.
+KURA searches the SOUTH wall... KURA hears a soft knock. Or her own pulse.
+KURA searches the SOUTH wall... Only stone.
+KURA searches the SOUTH wall... Damp. The smell of old pipes.
+KURA searches the SOUTH wall... Old tally marks, in groups of five.
+KURA takes what's loose.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall... A crack. It goes nowhere.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA searches the NORTH wall... A crack. It goes nowhere.
+KURA searches the SOUTH wall... Only stone.
+KURA goes EAST into a cleared room.
+KURA searches the SOUTH wall... KURA hears something. Then nothing.
+KURA searches the SOUTH wall... Only stone.
+KURA goes EAST into a new room.
+KURA unlocks the EAST door. The way is clear.
+KURA searches the NORTH wall... The wall gives nothing away.
+KURA searches the NORTH wall... Mortar, mostly. Some is older.
+KURA searches the NORTH wall... Nothing yet.
+KURA searches the NORTH wall... Nothing.
+KURA searches the NORTH wall... Damp. The smell of old pipes.
+KURA searches the NORTH wall... Nothing yet.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA goes WEST into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall... A dead cable runs in and stops.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA searches the NORTH wall... Nothing but dust.
+KURA goes SOUTH into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+```

@@ -103,3 +103,18 @@ KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 Not yet. KURA catches her breath.
 ```
+
+## 2026-10-16  -  B4F, day 6  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the NORTH wall. The wall gives nothing away.
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall. Fingers come away gray.
+KURA searches the WEST wall. Someone has looked here before.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall. Only stone.
+KURA goes SOUTH into a cleared room.
+KURA goes EAST into a cleared room.
+KURA is out of breath. She stays where she is.
+```

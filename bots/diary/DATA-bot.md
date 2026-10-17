@@ -244,3 +244,38 @@ KURA needs a moment before she moves on.
 Not yet. KURA catches her breath.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-16  -  B4F, day 2, the run ended  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the EAST wall. Fingers come away gray.
+KURA searches the EAST wall. Only stone.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall. Fingers come away gray.
+KURA goes SOUTH into a cleared room.
+KURA searches the EAST wall. Nothing.
+KURA searches the EAST wall. Nothing but dust.
+KURA searches the EAST wall. Only stone.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall. A DAEMON wanders in!
+  DAEMON: "0000000000000000"
+  The DAEMON strikes KURA. -5 HP
+  The DAEMON won't listen.
+  The DAEMON strikes KURA. -7 HP
+  The DAEMON won't listen.
+  The DAEMON strikes KURA. -4 HP
+  The DAEMON strikes ELF. -6 HP
+  The party strikes. -7
+  The DAEMON won't listen.
+  The DAEMON strikes KURA. -7 HP
+  The DAEMON won't listen.
+  The DAEMON strikes KURA. -5 HP
+  The DAEMON won't listen.
+  The DAEMON strikes KURA. -2 HP. FALLS
+  KURA falls. The run is over.
+The DAEMON strikes KURA down.
+
+posted, rank 2
+```

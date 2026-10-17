@@ -74,67 +74,67 @@
   "eco": ""
  },
  "DATA-bot": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 48,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
+   "day": 2,
+   "turns": 77,
+   "alive": false,
+   "party": "",
    "align": "NEUTRAL",
-   "last": "KURA is out of breath. She stays where she is."
+   "last": "The DAEMON strikes KURA down."
   },
   "n": {
-   "searches": 15,
+   "searches": 8,
    "blocked": 0,
-   "waited": 75,
-   "fights": 0,
-   "talks": 0,
+   "waited": 36,
+   "fights": 1,
+   "talks": 6,
    "runs": 0,
-   "unlocks": 1,
-   "moves": 9,
-   "moon": 1,
+   "unlocks": 0,
+   "moves": 3,
+   "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null,
-  "events": "none; here: ok",
-  "eco": "nothing"
+  "posted": "posted, rank 2",
+  "events": "1/1 sent: fall",
+  "eco": ""
  },
  "GORT-bot": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "build": "latest",
   "version": "v1.12.1",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 1,
-   "turns": 74,
+   "day": 2,
+   "turns": 162,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "Not yet. KURA catches her breath."
+   "last": "KURA turns to face NORTH. A bare archway, and the way through."
   },
   "n": {
-   "searches": 30,
+   "searches": 25,
    "blocked": 0,
-   "waited": 75,
-   "fights": 6,
+   "waited": 61,
+   "fights": 0,
    "talks": 0,
    "runs": 0,
    "unlocks": 1,
-   "moves": 7,
+   "moves": 12,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "2/2 sent: words, words; here: ok",
+  "events": "none; here: ok",
   "eco": "nothing"
  },
  "BENDER-bot": {
@@ -267,29 +267,29 @@
   "skipped": "2026-10-16: did not show up"
  },
  "MARVIN-bot": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 5,
-   "turns": 61,
+   "day": 6,
+   "turns": 74,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "Not yet. KURA catches her breath."
+   "last": "KURA turns to face WEST. An open arch. The dark goes on beyond it."
   },
   "n": {
-   "searches": 3,
+   "searches": 4,
    "blocked": 0,
    "waited": 0,
    "fights": 0,
    "talks": 0,
    "runs": 0,
    "unlocks": 0,
-   "moves": 6,
+   "moves": 4,
    "moon": 0,
    "holds": 0,
    "climbs": 0
