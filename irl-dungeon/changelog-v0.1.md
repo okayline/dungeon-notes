@@ -1,4 +1,4 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.19
+# irl-dungeon — Dev Changelog — v0.01–v0.20
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
@@ -6,6 +6,25 @@ minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.20 — "One Key"
+**Sat Oct 17, 2026 · 2:30 AM HST** (no migration here; migration 003 ran on the shared `items-db`)
+
+### Decisions (the owner's)
+- "one passkey for all the games", with every game on `88x31.app`; accounts live in the dungeon-items repo (to be renamed dungeon-core); "please include [irl-dungeon]! it's a live game but nobody knows about it haha".
+
+### What was built
+- Save codes and passkeys moved out of this Worker into the `Accounts` entrypoint of dungeon-items (service binding `ACCOUNTS`). This game keeps its own players, cookie and sessions; `account_players` (in `items-db`) says which player is whose. `src/passkeys.js` and its test were removed; `src/saves.js` keeps the token, session and rate-limit helpers.
+- Logging in (code or passkey) gives an account; `enter` uses the account's player here, else this browser's own player if it has no account, else makes one.
+- Players from before: their `save_codes` rows move to the account the first time the player is seen (`accountFor`), then the rows are deleted. A not-yet-moved code still logs in. Old passkey rows are left unused.
+- `ACCOUNTS.md` in dungeon-items has the whole design; 88x31 uses the same service over HTTP (it's a Pages site).
+
+### Findings and shortcuts
+- Passkeys made on `irl.88x31.app` (one exists) can't carry over: a passkey is bound to its exact address, the shared one is `88x31.app`. Its owner has a save code.
+- Passkeys here only work on `https://*.88x31.app` pages now (the service refuses other origins), so local testing of passkeys happens in dungeon-items' tests.
+
+### Tests
+- 216 tests here with a stand-in for the accounts service (`fakeAccounts` in `test/helpers.mjs`), plus a one-off run against the real Accounts code (codes, second device, logout and back in). 51 tests in dungeon-items cover the accounts themselves, including passkeys with a software authenticator.
 
 ## v0.19 — "Quick Feet"
 **Thu Oct 15, 2026 · 11:33 PM HST** (no migration; the `walked_rooms` table from v0.14 stays)
