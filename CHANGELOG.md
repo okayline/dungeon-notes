@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.21.1 - Quicker Steps - Oct 17 2026, 10:05 HST
+
+Page, Worker (`game.js`, `accounts.js`). No migration.
+
+- **Two database trips an action** (was 5 to 7, each a round trip from the edge near the player to the D1 primary in WNAM, which from Hawaii is the lag). `act()` does one `DB.batch` to read (player by session or token, `admin`, the run, all in one `LEFT JOIN`; and the rate limit's upsert with `RETURNING count`), then one batch to write (`UPDATE runs`; `players.seen_at` only when 5 minutes stale). The `acct_limits` sweep runs on 1% of actions instead of every one. `playerOf` and `limited` are no longer used by `/act` (session `seen_at` isn't touched by it).
+- **Search prefetch.** The search beat sends `play({t: "search"})` when its dots start and keeps the promise in `prefetch`; `act("search")` at the end of the dots takes it (allowed past `waiting`). Measured locally with every `/api/act` held 400 ms: a search took 1,245 ms before and 838 ms after, which is the beat alone.
+- **Board on the same origin.** At dungeon.88x31.app `LEADERBOARD_URL` is `/api` (the same Worker), so the board, registry, gift box, tally, presence and event calls no longer need a CORS preflight before each POST and share one connection. A same-origin GET sends no `Origin`, so `accountsRoute` takes the request's own origin when `sec-fetch-site` is `same-origin`.
+- **Exchange chart.** `exTick` (every 110 ms) returns at once while `EXCHANGE_ON` is false.
+- **Audit, not changed yet:** after an action the page can still send up to four more requests (`/found`, `/spent`, `/tally`, `/event`), which stage 4 folds into `/act`; `/run` peek and fresh still use `playerOf` + `load` + `store` (3 to 5 trips, only at start); the once-a-minute tick is one read batch and no write when nothing changed; the 250 ms breath check is local only.
+- Tests: 11 Worker tests pass (the test D1's `batch` now returns `results` like D1's). End to end with a slowed server as above; no page errors.
+
 ## v1.21 - Down the Wire - Oct 17 2026, 09:55 HST
 
 Page, `act.js`, Worker (`game.js`). No migration (v1.20's `runs` table and `players.admin` are already live). Stage 3 of `4dungeon-server-move.md`.
