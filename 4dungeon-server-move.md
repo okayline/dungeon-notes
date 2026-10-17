@@ -32,7 +32,7 @@ A new `act.js`: `apply(st, action)`, where an action is `{ type, arg }` and ever
 - **Admin is a flag on the player** (`admin = 1`, set by hand, like scoundrel.exe), not the `x-admin-key` header the page sends today. The admin tools all stay, as admin-only actions.
 - Before this stage: split the ~35 run fields the page writes itself (found in v1.19) into page-only display state and run state.
 
-**3. The page talks to it.**
+**3. The page talks to it.** BUILT in v1.21 (server mode at dungeon.88x31.app; the page's own fields and the rules' queues are split in `adopt()`).
 The dispatcher sends the action and plays the beat it already plays (dots, typing) while it waits, then draws the answer. A failed request gets a line in the game's voice and a retry, never a browser dialog.
 
 **4. Fold in what the page does today.**

@@ -3,6 +3,20 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.21 - Down the Wire - Oct 17 2026, 09:55 HST
+
+Page, `act.js`, Worker (`game.js`). No migration (v1.20's `runs` table and `players.admin` are already live). Stage 3 of `4dungeon-server-move.md`.
+
+- **Server mode.** `SERVER` is on at dungeon.88x31.app and on localhost (wrangler dev); anywhere else (itch.io, a file) the page plays locally through `ACT.apply` as in v1.19. `play(action)` sends `POST /api/act { n: runN, action }` (bearer `dd-token`), one at a time through a promise chain; `waiting` blocks `act()`, `bagPick`, `useInv`, `holdAction` and `tick` while an answer is out. `reset` goes to `POST /api/run { fresh: true }`. A failure keeps the run and puts "> The dark doesn't answer. Try again in a moment." on line 2.
+- **Async page.** `act`, `tick`, `freshRun`, `titleAction`, `bagPick`, `useInv`, `holdAction` and the search beat's `step` are async. The search beat awaits `act("search")` when its dots are done; the solo-TALK beat and the out-of-breath search start `act()` with their guard flag set and await it after.
+- **The page's own fields.** `adopt(run, n, old)`: `PAGE_KEEP` (history, logged, eco*, key, unsaved, saved, endShown, submitted, auraBand, regCopies, visitDay, breathNow) come from the page's copy; `OUT_LIST` (finds, gone, events) are the page's unsent ones plus the server's new ones; `OUT_ONE` (tally, line3, exchangeOpen) the server's, else the page's.
+- **Server outbox.** `game.js` hands `OUTBOX` (finds, gone, events, tally, line3, exchangeOpen) over in the answer and never stores them, so the page's queues are sent once. An action that changes nothing answers `{ same: true, n }` with no write (the once-a-minute tick; a refused rename keeps `next === save`). `POST /run { peek: true }` returns the run or `{ run: null }` and never makes a player, so the title only shows CONTINUE for a real run; the first NEW RUN makes the guest.
+- **Start and sign-in.** `start()` calls `serverRun(local)` (peek); the browser's copy gives back `PAGE_KEEP` only when its `runId` matches. `cloudPull` in server mode reloads the run from the server (after ENTER CODE or a passkey login); `cloudPush` does nothing. `sweepCheats` is off in server mode (the admin flag decides).
+- **New actions.** `boxCancel` (was `delete save.box` in the page) and `roundClear` (was `delete save.round/roundOver`; sent after the page clears its own copy).
+- **Old runs** in the browser aren't carried over (owner's call): the server has none for them, so everyone starts fresh.
+- **Not moved yet (stage 4):** the registry, gift box, tally, events and score posting are still sent by the page; `RULES.holding` (key repeat) is still the page's; the cookie login instead of `dd-token`.
+- **Test notes.** Worker: 11 tests (1 new: peek, no-change, outbox). End to end in Chromium against the real `worker.js` on a local server with SQLite: the title has no run until NEW RUN; search, turns, TALK, 25 searches with their beats, walking through a door, a reload keeps the run and `n`; with `/api/act` blocked the move doesn't happen, the line says so and play goes on; no page errors. Not run: a fight (none came up in 25 searches), the altar, the gift box, offers, the live server.
+
 ## v1.20 - The Other Side - Oct 17 2026, 09:30 HST
 
 Worker (`leaderboard/game.js`, wired in `worker.js`), schema, migration `leaderboard/migrations/001_runs.sql` (must run on the live board database before the push). The page doesn't call the new routes yet. Stage 2 of `4dungeon-server-move.md`.
