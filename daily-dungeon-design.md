@@ -1,10 +1,12 @@
 # Daily Dungeon — Design Doc
 
-How the game plays and why. Current as of **v1.02**: wing-based levels, a climb out of a pit on the moon's clock, breath, live presence, and the exchange (a player economy, traded at a screen in every dead end).
+How the game plays and why. Current as of **v1.12.1** (Oct 15 2026; brought up to date Oct 17): wing-based levels, a climb out of a pit on the moon's clock, breath, WORD and AURA with the party and the demons, a small gift box at the end of each wing, and live presence. The exchange (a player economy) is built but parked.
 
 One file, no version suffix; git history is the version history. Ideas that are not built and not yet settled live in `theorycrafting-notes.md`. Exact per-release detail lives in `CHANGELOG.md`.
 
 **A note on history.** v0.70 to v0.78 rebuilt the game as "one room a day" (a single room, two doors on one wall, no going back). v0.80 rolled that back to the wing floors of v0.62 and kept the layers added on top: the pit, the moon's quarters, the open sky, the title feed. Nothing below describes the one-room game; the changelog has it.
+
+**Since v1.02 (Oct 11 to Oct 15),** in short; the changelog has the detail. The exchange was parked in v1.04 (`EXCHANGE_ON = false`; the Worker and its tables are untouched). Every item has an alignment and a nature, and AURA reads them (v1.04, v1.05). WORD replaced TALK, BEHOLD and the gift list (v1.06), and the moon makes offers instead of scrying (v1.06). Breath is eight, comes back faster, and steps and WORD cost less (v1.06, v1.11). A dead end is a signal room with a small gift box and scratch tallies (v1.09, v1.10). Patience only wears when a room gets hot, and nobody snaps or leaves (v1.12). Heat shows as a color after an AURA read (v1.12). Hold Omen is hidden in the page (`HOLD_OMEN_ON = false`) and disguises are built but off (`DISGUISE_ON = false`). `[F]IGHT` is still in the encounter row (`[F]IGHT [W]ORD [A]URA [R]UN`); GIVE and PEACE are gone.
 
 ---
 
@@ -18,11 +20,11 @@ One file, no version suffix; git history is the version history. Ideas that are 
 
 Unlocking only opens the door; she walks through when the player chooses, and open doors stay walkable. Everything else is free of the key: searching, turning, walking between rooms already open, looking up, talking to the party or to demons, using items, the altar, scrying the moon. The gate is a single boolean, `today(st).stepped`. (The key was called a "charge" from v0.70 to v0.81; it is "key" and "unlock" everywhere again since v0.82.)
 
-**Breath (v0.83).** What limits how fast she acts within a day. Six breaths (`BREATH_MAX`), shown as the bar under the map, which closes in from both sides as they are spent and is gone at zero.
-- **Costs:** a search (walls, doors, archways, a terminal, a fixture) and a scry take one; using an item from the bag takes one; a step into another room or up the stairs takes half (`STEP_BREATH`). Turning, looking up, unlocking, talking and fighting take none.
+**Breath (v0.83, retuned v1.06 to v1.11).** What limits how fast she acts within a day. Eight breaths (`BREATH_MAX`), shown as the bar under the map, which closes in from both sides as they are spent and is gone at zero.
+- **Costs:** a search (walls, doors, archways, a terminal, a fixture) takes one; looking up at the moon takes one (looking back down is free); an AURA read of a room or door takes half the bar, 4 (`AURA_BREATH`, v1.10); a WORD with the party takes half a breath (`WORD_BREATH`, v1.11); a step into another room or up the stairs takes a quarter (`STEP_BREATH`, v1.11); using an item from the bag takes one. Turning, unlocking and fighting take none.
 - **At zero** she can't search, use an item (except in a fight, where it is never refused) or step (except when running from a demon). "KURA is out of breath."
-- **Pressing on makes the wait longer (v0.98).** Each refused try (a search, a step, the bag) pushes the recovery back half a second, to at most ten seconds past the usual wait. A held key counts once; clicks always count.
-- **It comes back in real time,** starting 2 seconds after the last one spent, slower the emptier it got: climbing from n to n+1 takes `[10, 8, 6, 4, 3, 2]` seconds, so about 35 seconds from empty and a few seconds from a small dip. It follows KURA from room to room and refills while the page is closed.
+- **Pressing on makes the wait longer (v0.98).** Each refused try (a search, a step, the bag) pushes the recovery back half a second, to at most seven seconds past the usual wait (`BREATH_NUDGE_MAX`). A held key counts once; clicks always count.
+- **It comes back in real time,** starting 1 second after the last one spent (`BREATH_WAIT`), slower the emptier it got: climbing from n to n+1 takes `[4, 3.5, 3, 2.5, 2, 1.5, 1.5, 1.5]` seconds (`BREATH_BACK`, v1.11), so about 20 seconds from empty and a second or two from a small dip. It follows KURA from room to room and refills while the page is closed.
 - **On screen (v1.01-v1.02):** the bar is one white run with a dark square at each end, 20 columns, closing in up to 10 a side; what is left keeps its dark ends. It is nudged about two thirds of a column on the page so it sits in the middle of its panel. A `>` and a `<` press on it for one second whenever a breath is spent; while she is out, a countdown beside it shows the seconds until she can act again.
 - **The dots over it** count the other way from the bar: one when rested, one more for each breath spent, seven when out, three columns apart and centered over the bar (they grow from the middle as the bar closes), drawn half again as big. (Until v1.01 the bar was drawn from the moon's phase shapes and a dot marked today's phase.)
 - Heat (Part 3) is separate and is what total searching costs; breath caps the rate.
@@ -41,7 +43,7 @@ Unlocking only opens the door; she walks through when the player chooses, and op
 
 Every action runs `sync()` first, which also: halves every room's heat overnight, decays taint by 1, restores 3 Patience to each party member, heals a little HP, rolls that day's bonus/void room (Part 8), and checks the level's deadline. Missing it ends the run (Part 9).
 
-**Controls.** Under the view: `[  ^  ]` walks through the door she faces (at a bare wall it searches) and `[ < ]  N  [ > ]` turn, with the compass letter between. The bottom bar is `[T]ALK [I]NVOKE [S]EARCH [M]OON`. `[M]OON` looks up at the sky and, pressed again, level; while she looks up `[S]EARCH` reads `[S]CRY`. `[F]IGHT` left the bar in v0.93: it lives in the fight box, where it is used.
+**Controls.** Under the view: `[  ^  ]` walks through the door she faces (at a bare wall it searches) and `[ < ]  N  [ > ]` turn, with the compass letter between. The bottom bar is `[W]ORD [A]URA [I]NVOKE [S]EARCH [M]OON`. `[M]OON` looks up at the sky and, pressed again, level; looking up spends a breath (v1.06) and may bring an offer from the moon (Part 8). In a fight the row is `[F]IGHT [W]ORD [A]URA [R]UN`. Item moves happen only as offers (Part 4).
 
 **The three log lines** (v0.89 on). Top: the flavor line (the place, the party, a demon's words, and a question with its `[Y]ES [N]O [S]ILENT`). Middle: what KURA just did. Bottom: a line typed out as if at a terminal (Part 11).
 
@@ -63,7 +65,7 @@ Every action runs `sync()` first, which also: halves every room's heat overnight
 - **The deck:** the six kinds are shuffled twice and concatenated, retried until no pair repeats a kind, then dealt two at a time, one offer per wing. **The last offer is a wildcard:** one door of a kind rolled from the private seed, never part of the shared deck.
 - **Wings:** every wing is exactly three spaces: K (the room entered), P (a passage) and X (a dead end), as a chain (K, P, X) or a star (K to P, K to X). Every wing but the last hangs **two locked doors** off K or P. Unlocking one seals the other for good.
 - **The last wing** has one door (the wildcard's) and hides the stairs up in its passage or dead end. The stairs are found by searching their wall, then walked through like a door.
-- **The dead end is the exchange room (v1.00).** Every dead end with no other kind has the exchange's screen in one wall (Part 12), the same for everyone on the level, and is named for it: Exchange, Xchange, Trade floor, Market end, Ticker room, Trading gap, Swap room.
+- **The dead end is a signal room (v1.09, v1.10).** Since the exchange was parked (v1.04) a dead end is plain, named Beacon, Lamp room, Uplink, Waystation, Signal room or Comms nook, and has its own party lines and door read. At the end of a wing, a few searches turn up **a small gift box**: take what the last visitor left and leave something small (a COMMON or UNCOMMON thing) in its place; the swap goes through the Worker's `/gift` and the item only leaves the bag when the server says yes. **Scratch marks** on the wall show, biggest first, how many others took each of that wing's two doors, never which door is which (`/tally`, one mark per sender per wing per day). A room can be settled, and then shows only the scratches.
 - **Painted doors:** some walls carry a false door. Trying it costs nothing and keeps the key.
 - **Lure room:** about 60% of levels hide one locker (`?`) in a wing's dead end.
 - **Two seeds:** the shared `seed` (from the lunar epoch and the level's height) picks wing shapes and which two kinds are offered together; the private `pseed` (re-rolled every level) picks which kind is behind which door, where things hide, the wildcard's kind, and bonus/void placement.
@@ -96,7 +98,7 @@ Room type names are never shown. Each room has a flavor name in the slot under t
 
 **Doors** can't be searched for hidden things but give something up: a locked door has about a 55% chance of a sense-clue toward the kind behind it (warm: Den/Forge, hum: Bay/Altar, cold and static: Vault/Relay); a painted door gives itself away; a sealed door reads as sealed; an open archway describes the room beyond without naming it.
 
-**Heat** is per room: each search adds 1 (scaled by the omen), up to 24 (`HEAT_MAX + 4`; the top tier is named "wrong"), and it raises the encounter chance and lowers search yield. It halves overnight and is cleared by a STANDBY night. It is not shown. (v0.81 briefly showed it on the moon strip and cooled it in real time; v0.83 gave the strip to breath and put heat back as it was.)
+**Heat** is per room: each search adds 1 (scaled by the omen), up to 24 (`HEAT_MAX + 4`; the top tier is named "wrong"), and it raises the encounter chance and lowers search yield. It halves overnight and is cleared by a STANDBY night. Since v1.12 it also **cools by a third** (`coolOff`) when a demon dies, is recruited, leaves, or KURA runs past it, and a room *first* reaching heat 12 is the one thing that wears the party's patience (Part 5). **Seeing it (v1.12):** after an AURA read of the room, the map's brackets tint from pale yellow through orange to red for about 20 steps (this room exactly, rooms through its doors by tier), then fade. **Safe or gamble (v1.12):** a hot room (heat 12+, 1 in 6; 18+, 1 in 3) or a worn wall (about 1 in 12 up to 1 in 3 with heat) sometimes offers a sure thing beside a bigger one that only lands half the time; a miss gives nothing and says something silly.
 
 ---
 
@@ -110,7 +112,7 @@ Room type names are never shown. Each room has a flavor name in the slot under t
 
 **Demon's turn:** targets KURA 40% of the time when she's alive, otherwise a random standing member. Damage is `max(1, round(R(2, ceil(HP/3)) × moon rage multiplier × unique hit multiplier × 0.67 if a WATCHDOG is present))`. KURA hitting 0 HP ends the run.
 
-**TALK:** a demon listens with probability up to 95%, built from a moon curve (most willing at new moon, least at full moon) × 0.7 if corrupted × the day's omen talk multiplier × a stance multiplier (1.5 same-alignment / 1 neutral / 0.6 opposite). Programs always listen. A demon that doesn't listen has a 50% chance to get angry and attack instead. One that does listen asks 2–3 yes/no questions before sizing up (Part 5).
+**WORD (v1.06, key W; it replaced TALK, BEHOLD and the gift list).** With a calm demon it is a conversation: the listen roll is as it was (a moon curve, most willing at new moon, least at full; corrupted ×0.7; the day's omen; the stance multiplier; programs always listen). One that doesn't listen has a 50% chance to get angry and strike. One that does listen decides what happens next: a corrupted demon is restored (60%), then it joins (60%) or leaves, sometimes with a gift (70% a gift when it leaves); otherwise it **offers** two things from its pockets to take one of (about 0.4 when it carries two or more), notices a good item in the bag, or just goes. An **angry** demon can be calmed with a good item from the bag: it stops mid-swing and asks for one of the top two. An offer is always two things, one taken; with a full bag it becomes a swap; one may be wrapped, a gamble that is the real thing half the time (the odds follow the member's persona). Leaving a demon's own offer asks first ("it won't be back"). GIVE, PEACE, BEHOLD and the demon's yes/no questions are gone.
 
 **RUN:** 50/50 whether the demon blocks the way (can't retry that encounter) or KURA gets away. The ways out are an open door, found stairs, or a locked door. A locked door takes the day's key **only if she gets through**: a blocked run costs nothing but the demon's blow. Running costs a breath if she has one and is never refused for want of one. Difficulty everywhere in this Part scales with *levels climbed in the run* (`st.climb`), not the level's name, so a late start high in the pit meets first-level demons.
 
@@ -127,42 +129,25 @@ Room type names are never shown. Each room has a flavor name in the slot under t
 
 Modifiers on top: a flat 3% chance of ATOM SLASHER, 7% chance of a free PROGRAM; repeatedly searching the same wall (4+) boosts data/hardware; lingering in a room (30+ actions) boosts folklore/hybrid; the day's omen can multiply either pairing (Part 8).
 
-**Win rewards:** ICHOR (`R(5,30) + 3×depth`), 50% chance of silver (`R(8,40)×depth`), 25% chance of a rolled item, and a small moon-phase chance of a MOON-tier drop that only exists around full moon.
+**Win rewards:** ICHOR (`R(5,30) + 3×depth`) and, since v1.06, one or two things from the demon's own pockets (3 to 5 things, filled on first look; `R(1,2)` since v1.09). No silver, no rolled item and no moon drop come from a fight any more. PATCH in the party mends everyone a little.
 
 ---
 
 # Part 5: Party, Patience & recruiting
 
-**Patience** caps at 5 per non-KURA member. It drops from over-talking in a day, breaking items (worse for a member who's a fan of that item), fidgeting, looping the same action, drinking ichor, and disliked question answers. It recovers +3 overnight, fully on a STANDBY/camp night, or +1 for confiding.
+**The party** caps at **4** (KURA + 3). It starts as ELF, PIXIE and CU SITH. A demon that wants to join a full party offers a swap instead: the player picks who to send away (KURA can't be swapped) or declines and the demon leaves.
 
-At 0 Patience, a second push has a 50% chance to **snap**: a CHAOS-aligned member strikes KURA (never fatally) and stays; a LAW or NEUTRAL member **leaves the party for good**. A "last chance" prompt can head this off — saying yes mends +3 Patience; saying no risks a persona-dependent chance of leaving outright (HAUGHTY/PRIM/SLY essentially always leave on a no, GRUFF rarely does).
+**WORD with the party (v1.06, key W).** Costs half a breath (`WORD_BREATH`). A member is picked (weighted toward the one with low patience or the one least talked out). `p.words` counts today's WORDs with that member and the yield falls with each: `WORD_YIELD = [1, 1, 0.5, 0.25]`, then "talked out" lines. In order: a member at patience 2 or less gets a **check-in** (+3); an opposite pair (LAW against CHAOS) gets a **truce** 60% of the time (+2 each); a member makes an **offer** (0 on the first WORD, about 12% on the second, less after); a member may **confide**; otherwise **banter**: a line about KURA's aura or a plain one, and 20% of the time a small heal for KURA. Now and then two members talk to each other and KURA listens (20%), and, only after a good many talks and not on the first of the day, a member asks a **question** with two good answers (`[1]` or `[2]`, both worth 1 or 2 patience; v1.10, v1.12.1). Nagging (the same action over and over) gets a dry remark, not a question.
 
-**Recruiting:** after a demon listens and answers 2–3 questions, it sizes up. Programs join at 90% odds with a good mood, 40% at neutral. Ordinary demons may instead ask for a gift first (more likely for haughty or dreamy personas to skip straight to asking), or offer to join directly at up to ~50% odds scaling with mood — except CHAOS-aligned "tricksters," who rarely join even when pleased (10–30%) and are more likely to demand more or run off with a gift.
+**Offers** work as in Part 4: two things, one taken; a full bag makes it a swap; one may be wrapped (a gamble). A member's own pockets hold 3 to 5 things, refilled a little each night (`nightFinds`), and recruited demons keep theirs.
 
-Gift pricing runs on a taste matrix by family (tech/both/spirit/plain/silver preferences differ by family — hardware loves silver, folklore loves spirit items and dislikes tech, hybrid is the generalist), with alignment match/mismatch nudging the value ±2 and a reaction scale from hate (rejects and attacks) through meh (keeps asking, up to 3 times) to like/love.
+**Patience (v1.12, gentle).** It caps at 5 and is the party's mood, not a fuse. The only thing that wears it is a room *first* reaching heat 12: -1 for each demon member (`heatUp`). It comes back overnight, fully on a STANDBY night, and with check-ins, truces, confiding and answered questions. **At zero nobody snaps, strikes or leaves:** a member who has had enough just goes quiet and content, with lines for it. The old snap-and-leave rules, the "last chance" question, and the costs for talking, nagging, fiddling, breaking, grief, tripping and drinking ICHOR were removed. `PARTY_TENSE`, `SNAP` and `QUIT` are still in the rules but unreachable.
 
-The party caps at **4** (KURA + 3). A demon that wants to join a full party offers a swap instead — the player picks who to send away (KURA can't be swapped) or declines and the demon leaves.
+**Recruiting.** Through WORD, as in Part 4: a demon that listens may join. Programs join more readily (70%); a CHAOS-aligned or HAUGHTY demon never takes the plain "join" branch (a CHAOS one given something runs off laughing); and a joining demon nudges KURA toward its alignment (Part 6). A taken gift or offer can also tip a demon into joining (about 20% for a gift it gave, 35% for something it asked for).
 
-**Dissonance (shipped v0.59, retuned v0.75):** the risk side of mixed-alignment parties. It is the same number as Patience, not a second meter. Every standing member (KURA included, via her own alignment) has a gap against every other standing member (same alignment 0, one side NEUTRAL 1, LAW vs CHAOS 2), and a member's tension is the worst gap against anyone else standing, computed live.
+**Dissonance** (v0.59, retuned v0.75, switched off in v1.12): `wearTension` now returns at once, so an opposite-alignment pair costs nothing. Alignment still matters through the truce above and through the stance multiplier on talk odds (Part 4).
 
-Only an opposite pair (gap 2) wears at all; a gap of 1 costs nothing, so **NEUTRAL is the bridge**:
-
-| Source | Gap 2 | When |
-|---|---|---|
-| Fighting | −1 | once, when a fight is won (not every round) |
-| Lingering | −1 | each time the stay in a hot room (heat tier 2+) crosses another 30 actions |
-| Skipping | −1 | once per return, if any real day passed with no key spent and no STANDBY |
-
-The starting party (ELF and CU SITH are CHAOS, PIXIE and a fresh KURA are NEUTRAL) is at peace until KURA herself turns LAW or a LAW demon joins. Each source is 1 point against a night's +3, so tension erodes a party only if it is fed every day.
-
-**Read-out:** Patience's own level doubles as the Dissonance read: **CALM** (3–5), **STRAINED** (1–2), **FRACTURING** (0, the existing warn-then-snap/leave zone). A member at 0 with tension present gives an alignment-flavored line. Snap behavior is unchanged: CHAOS members strike and stay, LAW/NEUTRAL leave.
-
-**Settled but not built:**
-- **Give**: handing an item to a party member to restore their Patience, priced by the taste matrix.
-- **Omen tie-in**: e.g. a `calm` day boosting a tense pair's regen.
-- **Cross-alignment combo skills**: fixed pairings that only exist with an opposing pair in the party (floated: PING + REDCAP, CRON + BANSHEE). Pure parties get smaller, steady perks.
-
-Recruiting already leans KURA toward the new member's alignment (Part 6), a brake on mixing.
+**Settled but not built:** the omen tie-in (e.g. a `calm` day boosting a mood check), and cross-alignment combo skills (floated: PING + REDCAP, CRON + BANSHEE; pure parties would get smaller, steady perks).
 
 ---
 
@@ -176,12 +161,7 @@ Thresholds use hysteresis to avoid flickering: `score ≤ −3` → LAW, `≥ 3`
 
 A demon's own alignment comes from its family (data → LAW, folklore → CHAOS, hardware/hybrid → NEUTRAL) with a handful of named outliers. `stance()` compares KURA's alignment to a demon's (same/neutral/opposite) and feeds both talk odds (Part 4) and gift pricing (Part 5).
 
-**Alignment tag naming (not decided):** the current tag is `[LAW]`/`[NEU]`/`[CHA]`, between SILVER and ICHOR, with a `<`/`>` pull mark on the action that just leaned it.
-
-- **Renames, same mechanic:** `[SYS]`/`[NEU]`/`[OLD]` (the system vs. the old layer), `[COR]`/`[NEU]`/`[STR]` (corp vs. street), `[COD]`/`[NEU]`/`[RUN]` (code vs. rune), `[ORD]`/`[NEU]`/`[WLD]` (order vs. wild).
-- **Different driving axes** (need new demon-affinity rules, not a drop-in): data vs. flesh, talk vs. fight, careful vs. reckless, sun vs. moon, debt (`[OWE]`/`[EVN]`/`[OWN]`).
-- **Finer-grained:** a 5-step tag, or two side-by-side axes (Law/Chaos + Light/Dark) — both cost more UI space than the single bracket.
-- **Recommendation on file, no decision:** `[SYS]`/`[NEU]`/`[OLD]` if just renaming; talk-vs-fight if a different axis is wanted, since it fits the recruiting-focused loop.
+**Names (decided in v1.04).** Every item has an alignment and a nature, and every demon a family. A thing's **machine half** is SIGNAL, HUM or STATIC (data, hardware, programs, tech items), and its **natural half** is KEPT, STRAY or FERAL (folklore, spirit items, KURA's own lean); hybrids and half-and-half items take both words, e.g. KEPT HUM. KURA's tag is her natural half: `[KPT]` / `[STR]` / `[FRL]` (LAW, NEUTRAL, CHAOS underneath). The mechanic is unchanged, and **only RARE and up move the lean** (`relicAlign`); COMMON and UNCOMMON items lean four LAW, four NEUTRAL and four CHAOS but don't move it. **Aura (v1.04, v1.05):** each alignment has a pile (2 for KURA's lean, plus item strength by tier: COMMON 1, UNCOMMON 2, RARE 3, MYTHIC 5, MOON 8). The biggest pile is the machine half (a tie is HUM), her lean the natural half, and the total sets a band: QUIET 0-5, NOTICED 6-11, LOUD 12+. NOTICED and LOUD raise the encounter chance (×1.15, ×1.35), tilt which demon turns up toward her biggest pile, raise the moon's answer odds when LOUD, and bring remarks. `[A]URA` is how she reads all of it: out of a fight it reads a room (her party's and her own temperament, and the room's heat) or a door (a hunch about what is behind it); in a fight it reads the demon.
 
 ---
 
@@ -192,11 +172,11 @@ A demon's own alignment comes from its family (data → LAW, folklore → CHAOS,
 **ICHOR** heals a fallen party member at 3 ICHOR/HP, a standing one at 1 ICHOR/HP. KURA herself can't be fed ICHOR, but can drink it directly: 10 ICHOR for +5 HP, +1 taint, and a CHAOS nudge.
 - Taint thresholds: at 3, random "seeing things" lines start appearing; at 6, a forced TRIP for 50–100 actions (or until she sleeps). Tripping doubles melee damage but risks hitting an ally, may flip a demon-question answer, triples deep-find speed, and makes the turn counter unreliable. Coming down costs real HP. Taint decays 1/night, or clears instantly on a Forge fixture use or STANDBY/camp night.
 
-**Breaking items** (ones with no defined use) has tier-based odds — 8% COMMON down to 0% for MOON items — that can't even trigger before a minimum number of uses (10 tries for COMMON up to effectively never for MOON). Spirit-natured items are 1.5× more fragile at full moon, 0.5× at new moon. A party member who's a "fan" of the item's nature can snatch it away once before it breaks. Breaking heats the room, leans alignment, and costs every standing member 1 Patience.
+**Breaking items** (ones with no defined use) has tier-based odds, 8% COMMON down to 0% for MOON items, that can't even trigger before a minimum number of uses (10 tries for COMMON up to effectively never for MOON). Spirit-natured items are 1.5× more fragile at full moon, 0.5× at new moon. Since v1.05.1, after about half the tries (`REVEAL_AT`) INVOKE says "Something rattles inside." or "Solid, all the way through." for that copy, and the reveal is always true for the copy that later breaks. Breaking an item heats the room and leans alignment; it no longer costs the party patience. The bag holds **9** things (`BAG_MAX`); a tenth asks what to leave behind.
 
 **Usable UNCOMMON items** include a medicine vial (heal ⅓ max HP), prayer cloth (small revive-and-heal), and a black candle (−8 room heat).
 
-**Altar (MATRIX ALTAR):** an offering terminal rather than a searchable fixture — offers silver (`20 × floor depth`, if affordable) or up to five carried items as a gift, priced the same way a demon mid-recruitment would price them (Part 5's taste matrix).
+**Altar (MATRIX ALTAR):** an offering terminal rather than a searchable fixture. Offering a carried thing is a three-line exchange with the terminal, once a day per room. How it goes (`affinity` of the thing to the terminal, a data thing) is "good" or "ok" (never bad). The result box shows the terminal's line, which way the symbols turned (LAW, CHAOS or the middle), and a boon: LAW gives the wing's door clue; CHAOS fills her breath and heals every living member 25% (15% on "ok"); anything else, or LAW with no clue, gives +3 breath (+2 on "ok"). The lean shift itself is as before (half on a second feeding in the room). *(It was broken from v1.06 until v1.10: every offering threw an error. Fixed in v1.10.)*
 
 **Camp jobs** (only on a STANDBY/camp night, and only if the right PROGRAM is in the party): COMPILER merges two COMMON items into one random UNCOMMON; CACHE duplicates a COMMON item.
 
@@ -214,7 +194,7 @@ The daily omen is a deterministic function of the real UTC calendar day — iden
 | hard | ×0.5 search "worth" (finds harder) | LAW |
 | easy | ×1.6 search "worth" | CHAOS |
 | talk | ×1.6 talk-listen chance | — |
-| calm | ×0.5 heat gain | — |
+| calm | ×0.5 heat gain | LAW (since v1.10) |
 | loot | ×3 rare-item chance | CHAOS |
 
 **Streaks:** three consecutive real days sharing the same lean (LAW or CHAOS) trigger a **100% guaranteed** room the day the streak first completes — not a probability boost — LAW guarantees an Archive (bonus) room, CHAOS guarantees THE VOID. Because CHAOS has three qualifying omen keys against LAW's two, the streaks aren't symmetric: simulated over 20,000 days, LAW streaks land around 1-in-513 days, CHAOS around 1-in-160 — noticeably more common. Flagged as a tuning knob, not yet addressed. The "rare and telegraphed" design goal is only half-met: the streak itself is rare, but no in-game buildup cue exists yet to signal one is forming.
@@ -232,11 +212,12 @@ The daily omen is a deterministic function of the real UTC calendar day — iden
 
 Demons talk most easily at new moon and hit hardest at full moon — opposite curves by design. Full moon also raises the moon-drop chance on a kill, gives a 50% chance of a MOON-tier item from the lure locker instead of the usual roll, and makes spirit-natured items more fragile.
 
-**Scrying the moon (v0.72; `[S]CRY` since v0.87).** `[M]OON` looks up at the night sky with the real moon at today's phase. Scrying her asks, once a night; it costs a breath, no heat, and nothing wanders in. With probability `[0, .15, .5, .85, 1, .85, .5, .15]` by phase she shows what one of the still-locked doors hides (this room's, or failing that any seen on the level), never which door; otherwise she keeps her counsel. A new moon never answers and doesn't use the night's ask.
+**The moon's offers (v1.06; it replaced scrying and `askMoon`).** `[M]OON` looks up at the night sky with the real moon at today's phase and costs a breath. The first look of a night may bring an **offer** from her: a pair of choices, one taken, "now or never" (leaving asks "LEAVE HER OFFER?" first). The odds by phase are `MOON_OFFER = [0, .25, .45, .65, .85, .65, .45, .25]` (×1.2 when her aura is LOUD, up to 95%; a new moon never offers). The pairs are a hunch against a breath, LAW against CHAOS (a lean), or a hush against a breath (a *hush* quiets her aura for the day); gibbous and full moons add a moon item against a hush or a breath, and the full moon a moon item against a moon item. Since v1.12, a third of offers at the full moon (none at the new) put the sure gift beside a gamble moon item that lands half the time. The second and third looks of a night get a word about being asked again, and later ones a "done". When she is below the horizon for the player she says so.
 
 **Bonus room and THE VOID are live again (v0.80).** Since v1.00 they take over a wing's passage only (the dead end holds the exchange), never in the stairs wing; the streak trigger and the moon-weighted roll above place them. Their placement is private per account.
 
 **Omen banking** (Hold/Release, its cap of 1 and the 7-day cooldown) is described in Part 1.
+*(Hold Omen is hidden in the page since v1.04, `HOLD_OMEN_ON = false`: no button, no key. The rules still have it, but a banked omen can't be released while it is off.)* On the second day of a run of the same lean the omen reads "The pattern is repeating."; the third day keeps the streak's telegraph (v1.10).
 
 ---
 
@@ -285,9 +266,10 @@ Everyone feels like they're in the same place, without players being able to spo
 | Events that say where and who (`news`) | Shipped v0.90 |
 | Bots: ten scripted players, daily | Running since Oct 11 (dungeon-notes `bots/`) |
 | Live presence (right now, by level; counts only) | Shipped v1.00 (polling; Durable Objects deferred) |
-| The exchange: player economy, offers, codes, stash | Shipped v1.00; the Worker picks the thing since v1.01 |
+| The exchange: player economy, offers, codes, stash | Built in v1.00-v1.01, **parked since v1.04** (`EXCHANGE_ON = false`) |
 | Admin presence (`[H]ERE` in the X-mode board) | Shipped v1.02 |
-| Things left for other players (notes, bones, wards) | Designed, not built |
+| The gift box and door tallies at a wing's end | Shipped v1.10 (Worker `/gift` and `/tally`) |
+| Bones, ghost demons, wards, route traces | Designed, not built |
 | Monthly and all-time boards, the finish at the surface | Decided, not built |
 
 ## What is shared, what is private
@@ -312,7 +294,7 @@ A device with a living run POSTs `/here` `{ id, level }`. The id is 24 random he
 
 ## Events (v0.74, located since v0.90)
 
-When one of thirteen moments happens (a gift thrown back, a demon's first question, a corrupted demon restored, a trickster running off, a pleased altar, a pact, a silent answer, a deep find, someone leaving, a fall, reaching the surface, last words), the game sends a tag and a few small fields: level, day on the level, room kind, lean, party size, levels into the run, the demon involved, the moon's phase, and the run's name. The Worker checks each field against a fixed shape, keeps the newest 20 of each tag in `news`, and returns them without the name: names are stored for later use and never sent out. Cost: no extra requests; a few hundred small rows in all.
+When one of a fixed list of moments happens (thirteen at v0.74; v1.09 added `traded`, `parted` and `moonpick`)
 
 ## Bots
 
@@ -358,6 +340,8 @@ Ten scripted players (HAL, R2D2, C3PO, DATA, MARVIN, BENDER, GORT, TARS, WALLE, 
 - **Full server-authoritative gameplay / real accounts** — rejected for now. Would solve cheating cleanly but means every action round-trips to a server and the game stops being a static client — too big a shift from the low-friction, mostly-client-side feel wanted. There's also a hard technical reason: Cloudflare Workers' free tier caps CPU time at 10ms per request, nowhere near enough to replay a whole run server-side to verify a submission. That's part of why the hybrid/event-sourced trust model below is the right fit, not just a scope preference.
 
 ## Player identity & economy (the exchange, v1.00)
+
+> **Parked since v1.04.** `EXCHANGE_ON = false`: dead ends no longer carry the exchange screen, the page stops reporting finds (no Worker rolls; MOON things stay in the bag), and the market lines are gone from the title feed. The Worker, its D1 tables and any stashes are untouched, so it can come back. The bots' trading (`bots/bot.js` `TRADE`) has nothing to trade with while it is off. Everything below describes it as built.
 
 **As built:**
 - **What trades:** only RARE, MYTHIC and MOON things. Silver does not trade, and is run-only.
@@ -413,7 +397,7 @@ Not urgent at current scale, but cheap to build in from the start:
 
 **The title** is shown first on every load; `CONTINUE` is the explicit resume. Top to bottom (v0.94):
 - The in-game moon/date header (v0.99): `LUNAR DAY d/29  <kanji> <PHASE>`, then the weekday, date and time. The day counts the lunar month from 1 to 29 (the 29.53-day month rounded down to a steady 29), the same number the EPOCH line shows. The phase's Japanese name sits beside its English one: 新月, 三日月, 上弦, 十三夜, 満月, 十六夜, 下弦, 二十六夜 (the last is the traditional "twenty-sixth night"; v0.99.1 replaced a word that isn't in the dictionary). Kanji are drawn at 80% size in a two-cell box so the frame stays at 80 columns.
-- **The wordmark** in block letters (the dev's own lettering), eight rows, with a fixed waxing crescent to its left (v0.96: seven rows by thirteen columns, flat blue, the lettering's own dotted block on its inner edge; the same every day, a phase-following version left for later).
+- **The wordmark** is an image since v1.03 (`title-logo.png`, white letters cut from the dev's own `#`/`/` lettering, two lines: "Daily Digital" over "Demon Dungeon"), with a fixed waxing crescent to its left (15 columns by 8 rows, flat blue, the same every day; a phase-following version left for later).
 - Under it, side by side:
   - **The level as a line of days** (`levelBones`): a dashed line of this quarter's lunar days with a branch off each, above and below in turn. Today's number is in brackets; days that haven't come show `?` and no branch. The shape is rolled from the lunar month and the quarter alone, so it is the same for everyone and different each quarter; it carries no information about the rooms. Heading underneath (v0.99): `B4F - 新月 New Moon - Lunar Days 1-8`, the quarter's kanji (新月, 上弦, 満月, 下弦) beside its name, laid out so "Lunar Days" starts in the same column for every quarter.
   - **RUMORS AND SECRETS:** a scrolling list of cards, six rows.
@@ -428,6 +412,7 @@ Not urgent at current scale, but cheap to build in from the start:
 **Rumor cards.** One vague line per recent event, never quoting the game except a demon's last words, which are quoted and never attributed.
 
 **Market cards (v1.00).** The newest public offers and the latest trades, nobody named: `MARKET: a moonstone, for any RARE. Code K7Q-2MX`, `Traded: x, for y`, `Given away: x`. They also ride the typed line's news of everyone else.
+*(Parked with the exchange since v1.04: no market cards or market lines on the title or the typed line while `EXCHANGE_ON` is false.)*
 
 **One request:** the title reads everything from `GET /feed`.
 
@@ -441,6 +426,8 @@ Not urgent at current scale, but cheap to build in from the start:
 **The fight screens** unfold a beat at a time and can't be skipped: the opening (art, name, lines, `[ OK ]`, 0.45 s apart) and the ending (0.7 s apart).
 
 # Part 12: The exchange room
+
+> **Parked since v1.04.** Dead ends are signal rooms with a gift box now (Part 2); the exchange screen and its window do not appear. This is how it was built, kept for when it returns.
 
 Every dead end has the exchange's screen in one wall (`exchDir`: never a door wall or the stairs wall; nothing hides behind it). The room is named for it (Part 2). A dead end laid out before v1.00 that still hides something behind that wall searches normally until it is empty.
 
@@ -466,10 +453,9 @@ Every dead end has the exchange's screen in one wall (`exchDir`: never a door wa
 - **A shared map of the level** beyond the title's line: a readout and a tree were mocked up and set aside; the line of days is what shipped.
 - **Player names in events:** stored, unused. Whether the feed ever shows them.
 - **More from live presence:** a listening-post room, something small when several players are on a level at once; to decide once there are real numbers.
-- **The exchange:** prices and balance unknown until people trade; whether the bots stay in the live market (`BOTS_PUBLIC`) once people play; Durable Objects if trades ever need two players at once; a full server-run game is the only way to make forged finds impossible (ruled out).
-- **Dissonance** (Part 5): the Give action, the omen tie-in, combo skills.
-- **Alignment tag naming** (Part 6): no decision.
-- **Omen banking** (Part 1): whether Hold should cost something; a named buff for the day after a held day.
+- **The exchange:** parked (v1.04). Whether it comes back, in what form, and whether the gift box is the lighter version that replaces it. Prices and balance unknown until people trade; whether the bots stay in the live market (`BOTS_PUBLIC`) once people play; Durable Objects if trades ever need two players at once; a full server-run game is the only way to make forged finds impossible (ruled out).
+- **Which systems stay:** the dev reports ICHOR and SILVER go unused. The candidates for merging or cutting (breath and heat, patience and dissonance, alignment/AURA/WORD, the item sprawl, faction seasons) are in the theorycrafting notes' conversation of Oct 17; nothing is decided. The moon as the one dial every system reads is the leading idea.
+- **Omen banking** (Part 1): hidden in the page; whether it returns, whether Hold should cost something, and a named buff for the day after a held day.
 - **The moon's odds** (Part 8): first guesses, kept "for now".
 - **The countdown beside the breath bar** is rarely seen; kept.
 - **Bots** on the leaderboards: settled, they are hidden (names ending `-bot`).
