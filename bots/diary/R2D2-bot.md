@@ -255,3 +255,32 @@ KURA needs a moment before she moves on.
 ```
 TypeError: R.offerGive is not a function |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:176:44) |     at async /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:262:15
 ```
+
+## 2026-10-17  -  B4F, day 7, the run ended  (latest v1.24)
+
+```
+KURA wakes on B4F.
+KURA searches the WEST wall... KURA hears something. Then nothing.
+KURA digs deep.
+KURA searches the WEST wall... A P!NG wanders in!
+  The P!NG comes off as STATIC.
+  P!NG: "0000000000000000"
+  The P!NG strikes KURA. -3 HP
+  The P!NG stops mid-swing.
+  P!NG: "THOSE OBJECTS. TRANSFER ONE?"
+  KURA keeps her things.
+  P!NG: "INPUT LOGGED. THREAT UNCHANGED."
+  The P!NG strikes KURA. -6 HP
+  The P!NG strikes CU SITH. -5 HP
+  The party strikes. -12 HP
+  Something old leans toward KURA. [FRL]
+  The P!NG stops mid-swing.
+  P!NG: "THOSE OBJECTS. TRANSFER ONE?"
+  KURA keeps her things.
+  P!NG: "INPUT LOGGED. THREAT UNCHANGED."
+  The P!NG strikes KURA. -1 HP. FALLS
+  KURA falls. The run is over.
+The P!NG strikes KURA down.
+
+posted, rank 1
+```

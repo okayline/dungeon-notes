@@ -230,3 +230,59 @@ KURA goes SOUTH into a cleared room.
 KURA goes NORTH into a cleared room.
 KURA goes SOUTH into a cleared room.
 ```
+
+## 2026-10-17  -  B4F, day 7  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the WEST wall. A warmth comes through, here and only here.
+A scarred workbench, its tools cold and laid out. It can be used.
+KURA works at the bench. Nothing needs mending.
+KURA searches the WEST wall. Fingers come away gray.
+KURA searches the WEST wall. A DAEMON wanders in!
+  The DAEMON strikes KURA. -3 HP
+  The party strikes. -12
+  DAEMON: "01001000 01001001"
+  DAEMON: "QUERY: DO YOU FOLLOW RULES? Y / N"
+  KURA: "Yes."
+  DAEMON: "COMPATIBLE."
+  DAEMON: "QUERY: ARE YOU LOST? Y / N"
+  KURA: "Yes."
+  DAEMON: "ROUTE UNKNOWN. RELATABLE."
+  DAEMON: "01000110 01010010 01001001 01000101 01001110 01000100 00111111 Y / N"
+  KURA: "Yes."
+  DAEMON: "01011001 01000101 01010011"
+  The DAEMON is content. PROCESS ENDED
+KURA searches the WEST wall. Mortar, mostly. Some is older.
+KURA searches the WEST wall. Someone has looked here before.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall. A LOOP SHADE wanders in!
+  LOOP SHADE: "are you my replacement?"
+  LOOP SHADE: "do you remember being plugged in?"
+  KURA says nothing.
+  The LOOP SHADE drifts closer. It likes the quiet.
+  LOOP SHADE: "is it still raining up there?"
+  KURA says nothing.
+  The LOOP SHADE drifts closer. It likes the quiet.
+  The LOOP SHADE is content. SHUTTING DOWN. bye
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall. Nothing yet.
+KURA searches the SOUTH wall. Only stone.
+KURA searches the SOUTH wall. A PING wanders in!
+  PING: "SIGNAL FOUND"
+  PING: "QUERY: DO YOU FOLLOW RULES? Y / N"
+  KURA says nothing.
+  The PING waits, then quietly takes note.
+  PING: "QUERY: ARE YOU HUMAN? Y / N"
+  KURA: "No."
+  PING: "LIE DETECTED."
+  The PING loses interest. 01000010 01011001 01000101
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA searches the EAST wall. Old tally marks, in groups of five.
+KURA goes NORTH into a cleared room.
+KURA searches the EAST wall. A crack. It goes nowhere.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+```

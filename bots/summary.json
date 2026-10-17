@@ -1,76 +1,98 @@
 {
  "HAL-bot": {
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 6,
-   "turns": 374,
+   "day": 7,
+   "turns": 422,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA goes SOUTH into a cleared room."
+   "last": "KURA turns to face SOUTH. A bare archway, and the way through."
   },
   "n": {
    "searches": 15,
    "blocked": 0,
    "waited": 75,
-   "fights": 0,
-   "talks": 0,
+   "fights": 1,
+   "talks": 3,
    "runs": 0,
    "unlocks": 0,
-   "moves": 10,
-   "moon": 1,
+   "moves": 12,
+   "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok",
+  "events": "4/4 sent: silent, silent, asked, silent; here: ok",
   "eco": "nothing"
  },
  "TARS-bot": {
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 6,
-   "turns": 369,
+   "day": 7,
+   "turns": 407,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA turns to face NORTH. An opening in the stone, the dark past it."
+   "last": "KURA turns to face EAST. Cracked stone, nothing more."
   },
   "n": {
-   "searches": 14,
+   "searches": 16,
    "blocked": 0,
    "waited": 75,
-   "fights": 0,
+   "fights": 3,
    "talks": 0,
    "runs": 0,
-   "unlocks": 1,
-   "moves": 9,
+   "unlocks": 0,
+   "moves": 8,
    "moon": 1,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "none; here: ok",
+  "events": "1/1 sent: words; here: ok",
   "eco": "nothing"
  },
  "R2D2-bot": {
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "build": "latest",
-  "crashed": "TypeError: R.offerGive is not a function |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:176:44) |     at async /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:262:15",
-  "row": null,
-  "n": {},
-  "posted": null,
-  "events": "none",
+  "version": "v1.24",
+  "crashed": null,
+  "row": {
+   "level": "B4F",
+   "climbed": 0,
+   "day": 7,
+   "turns": 374,
+   "alive": false,
+   "party": "",
+   "align": "NEUTRAL",
+   "last": "The P!NG strikes KURA down."
+  },
+  "n": {
+   "searches": 2,
+   "blocked": 0,
+   "waited": 0,
+   "fights": 1,
+   "talks": 3,
+   "runs": 0,
+   "unlocks": 0,
+   "moves": 0,
+   "moon": 0,
+   "holds": 0,
+   "climbs": 0
+  },
+  "posted": "posted, rank 1",
+  "events": "1/1 sent: fall",
   "eco": ""
  },
  "DATA-bot": {
@@ -234,19 +256,19 @@
   "eco": "nothing"
  },
  "C3PO-bot": {
-  "date": "2026-10-15",
+  "date": "2026-10-17",
   "build": "pinned",
   "version": "v0.94",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 5,
-   "turns": 93,
+   "day": 7,
+   "turns": 103,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA needs a moment before she moves on."
+   "last": "KURA is out of breath. She stays where she is."
   },
   "n": {
    "searches": 3,
@@ -263,8 +285,7 @@
   },
   "posted": null,
   "events": "none; here: ok",
-  "eco": "nothing",
-  "skipped": "2026-10-16: did not show up"
+  "eco": "nothing"
  },
  "MARVIN-bot": {
   "date": "2026-10-16",

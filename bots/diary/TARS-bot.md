@@ -229,3 +229,43 @@ KURA goes NORTH into a cleared room.
 KURA goes SOUTH into a cleared room.
 KURA goes NORTH into a cleared room.
 ```
+
+## 2026-10-17  -  B4F, day 7  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA searches the EAST wall. Damp. The smell of old pipes.
+KURA searches the EAST wall. Nothing yet.
+KURA searches the EAST wall. A crack. It goes nowhere.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA searches the EAST wall. The wall gives nothing away.
+KURA searches the EAST wall. Nothing but dust.
+KURA goes SOUTH into a cleared room.
+The drawers slide open. 80 SILVER.
+KURA searches the WEST wall. Damp. The smell of old pipes.
+KURA searches the WEST wall. KURA hears something. Then nothing.
+KURA searches the WEST wall. Something ticks, very softly.
+KURA searches the WEST wall. A TRACER wanders in!
+  The TRACER strikes KURA. -6 HP
+  The party strikes. -12
+  The TRACER strikes KURA. -4 HP
+  The party strikes. -11
+  The party strikes. -13
+  The TRACER falls.  +13 ICHOR
+  It drops 29 SILVER.
+KURA searches the WEST wall. A crack. It goes nowhere.
+KURA searches the WEST wall. Damp. The smell of old pipes.
+KURA searches the WEST wall. Nothing yet.
+KURA goes EAST into a new room.
+KURA searches the SOUTH wall. Only stone.
+KURA goes NORTH into a new room.
+KURA goes SOUTH into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes SOUTH into a new room.
+KURA scries the moon.
+KURA asks. The moon only watches.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA is out of breath. She stays where she is.
+```
