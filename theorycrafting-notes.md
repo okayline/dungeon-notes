@@ -1,11 +1,9 @@
 # Daily Dungeon — Theorycrafting Notes
-**v10 — Oct 11 2026**
+**v11 — Oct 17 2026** (game at v1.24)
 
-Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs. As of this pass the game is at **v1.02** (wing-based levels again since v0.80, a climb out of a pit on the moon's quarters, breath, a title screen with a live feed, live presence, the exchange in every dead end, and ten bots playing and trading daily).
+Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs.
 
-Moved out in v10 (shipped in v1.00-v1.02, now in the design doc): live presence and the admin view (Part 10), the player economy and the exchange room (Parts 10 and 12), the search cadence (Part 1).
-
-Moved out since v6, because they shipped or were settled: faction seasons (design doc Part 10), the title screen including its unbuilt stages 4–5 (Part 11), Dissonance and its open pieces (Part 5), alignment tag renames (Part 6), and the Hold/Release Omen consolidation (Part 1). The read-budget rules for any async feature are in the design doc's Part 10 as well.
+**Since v10 (Oct 11, at v1.02), now in the design doc and no longer open here:** the signal room in every dead end, with the gift box and the door tallies (part 6, built v1.10 to v1.12; the exchange it was going to hold is parked); STANDBY, which part 9's `[W]AIT` idea assumed, was removed (v1.16); the free-action breath question (part 2) waits on breath, which is off on the server until it is retuned; the rested-day bonus (part 5) went with STANDBY. The Oct 17 direction (provenance, the moon's wish, walls as the space) is in the design doc's section 15, not here.
 
 These are working notes, not a spoiler-safe document.
 

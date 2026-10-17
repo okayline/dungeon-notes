@@ -2,6 +2,8 @@
 
 Oct 15 2026, written at v1.11. Ideas are marked **decided**, **leaning**, **proposed** (suggested, not confirmed) or **open**.
 
+**Status at v1.24 (Oct 17).** Built from these notes: a demon cools the room by a third when dealt with, heat colour on the map after a read, the safe-versus-gamble choices (v1.12); patience wear removed and patience renamed VIBES, with a quiet day instead of tension (v1.12, v1.15); WORD renamed TALK, and the AURA button folded into TALK (v1.15). Still open below: wavy minimap walls, WORD pairs by personality, what MOON does when she has set, and the split between heat as danger and heat as reward.
+
 ## Decisions at a glance
 
 - **Heat:** a demon cools the room after you deal with it. No heat gauge. Searches in a hot room get a slower, heavier rhythm. Minimap walls are the leading way to show it (leaning).

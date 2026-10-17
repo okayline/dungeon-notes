@@ -1,8 +1,8 @@
 # Daily Digital Demon Dungeon: design
 
-As of **v1.14** (Oct 17 2026). The previous, much longer version of this file is in git history.
+As of **v1.24** (Oct 17 2026). Earlier versions of this file are in git history.
 
-**What this is.** What the game is for and how it plays, in plain words. It does not repeat exact numbers: those live in `rules.js` and `floor.js`, and when the doc and the code disagree, the code is right and the doc is wrong. Per-release detail is in `CHANGELOG.md` (this repo). Unbuilt ideas are in `theorycrafting-notes.md` and `daily-dungeon-heat-notes.md`. Voice rules are in `voice-guide.md`.
+**What this is.** What the game is for and how it plays, in plain words. It does not repeat exact numbers: those live in `rules.js` and `floor.js`, and when the doc and the code disagree, the code is right and the doc is wrong. Per-release detail is in `CHANGELOG.md` (this repo). Unbuilt ideas are in `theorycrafting-notes.md` and `daily-dungeon-heat-notes.md`; the move to the server is in `4dungeon-server-move.md`. Voice rules are in `voice-guide.md`.
 
 **Tags.** BUILT is in the game. PARKED is built but switched off. DECIDED is agreed but not built. LEANING means a direction, not a decision. OPEN means undecided.
 
@@ -12,11 +12,13 @@ As of **v1.14** (Oct 17 2026). The previous, much longer version of this file is
 
 KURA wakes in a pit four levels deep: B4F at the bottom, then B3F, B2F, B1F, then the surface (1F). There is no ceiling; looking up shows the real night sky and the real moon.
 
-The clock is the lunar month. It is cut into four quarters, each level belongs to one quarter, and the dark takes a level when the real quarter moon arrives (about 7.4 days apart). Not being on the next level by then ends the run. The goal for now is to **survive one cycle** (about four weeks). What happens past the surface is OPEN (section 15).
+The clock is the lunar month. It is cut into four quarters, each level belongs to one quarter, and the dark takes a level when the real quarter moon arrives (about 7.4 days apart). Not being on the next level by then ends the run. The goal for now is to **survive one cycle** (about four weeks). What happens past the surface is OPEN, and the owner doesn't want to think about it yet.
 
 One key a day. Everyone playing in a quarter is on the same level with the same rooms, but which door is which is private to each player. The game shows how many others are down there, never who.
 
 The party is KURA plus up to three others. It starts with ELF, PIXIE and CU SITH. Demons can join when there is room.
+
+**Where it runs** (BUILT, v1.19 to v1.24). At dungeon.88x31.app the server keeps each player's run and plays every move with the same rules the page has; the page only draws. The page is never sent the run's secrets (the seeds, what is behind each door, what each wall hides). Anywhere else (itch.io, a file) the page plays the run by itself, as it always did. A run on the server can't be changed from the browser.
 
 ## 2. Principles
 
@@ -24,27 +26,26 @@ These are the rules you have set. Check new ideas against them.
 
 - **Shared clock, private contents.** The level and the day's offers are the same for everyone. What is behind a door, where things hide and every roll are private.
 - **Never sad.** The player should never feel sad or like they made a bad choice. Rooms are different, not better or worse. Bad outcomes come from not listening to clues, not from the choice itself. A gamble that misses gives nothing and never costs anything.
-- **Good against good.** Choices pair two good things (WORD offers, party questions, the moon's offers). Never YES/NO, never one clearly lower. Nothing negative or fighting between party members.
+- **Good against good.** Choices pair two good things (offers, party questions, the moon's offers). Never YES/NO, never one clearly lower. Nothing negative or fighting between party members.
 - **What a room turns out to be is random.** It does not lean to help the party.
 - **Everything is in the game.** No browser dialogs. Anything significant is a popup the player clicks through. Ask before adding a popup, an input window or an animation. No text glow, ever.
-- **No friction at the start.** No name entry (a run gets a funny placeholder; the name is typed when posting). No accounts needed to play.
+- **No friction at the start.** No name entry (a run gets a funny placeholder; the name is typed when posting). No account needed to play: the first NEW RUN makes a guest.
 - **Anonymous.** Fixed phrases, never free text. Counts of others, never who.
 - **Every line must be spoken by someone clear.** Line 1 of the log is flavor, line 3 is status. A period in typed text is a full one-second stop.
 - **The test for every system and line:** does it change what the player does next?
+- **A new system comes with a cut list** (Oct 17): what it replaces, and what is deleted the same day. If that list can't be written, it is just another system.
 
 ## 3. A day of play
 
-**The key.** One a day. It is spent by unlocking a locked door or by going on STANDBY (resting). Unlocking only opens the door; she walks in when the player chooses, and open doors stay open and free to walk. Everything else is free of the key.
+**The key.** One a day, spent by unlocking a locked door. Unlocking only opens the door; she walks in when the player chooses, and open doors stay open and free to walk. Everything else is free of the key. (STANDBY, which spent the key on resting, was removed in v1.16.)
 
-**Breath.** What limits the pace inside a day. Eight breaths, back in real time (about 20 seconds from empty, a second or two from a small dip). A search costs 1. Looking up at the moon costs 1. Using a bag item costs 1. An AURA read of a room or door costs half the bar. A WORD with the party costs half a breath, and a step into another room a quarter. Turning, unlocking and fighting are free. At zero she can't search, use an item or step (running from a demon is never refused). Pressing on while out of breath makes the wait a little longer.
+**Breath.** What limits the pace inside a day: eight breaths, coming back in real time. A search, a look at the moon and using a bag item cost 1; a TALK with the party half; a step a quarter; alone, TALK's room or door read costs half the bar. Turning, unlocking and fighting are free. **On the server breath is off (always full) until it is retuned for the new feel** (owner's call, Oct 17).
 
-**STANDBY.** Spends the key without moving (not with a demon in the room). The next dawn the party is restored, taint and the room's heat are cleared, and camp jobs run (section 9).
+**Overnight, for everyone.** Heat in every room halves, taint (DRUNK) drops, a little HP heals, party members go out and find things, program members do their camp jobs, the bonus-room roll is made, and the level deadline is checked.
 
-**Overnight, for everyone.** Heat in every room halves, taint drops by 1, patience comes back, a little HP heals, party members go out and find things, the bonus-room roll is made, and the level deadline is checked.
+**Controls.** Under the view: `[ ^ ]` walks through the door she faces (at a bare wall it searches) and `[ < ] N [ > ]` turn. The bar is `[T]ALK [I]NVOKE [S]EARCH [M]OON`. In a fight it is `[F]IGHT [T]ALK [R]UN`.
 
-**Controls.** Under the view: `[ ^ ]` walks through the door she faces (at a bare wall it searches) and `[ < ] N [ > ]` turn. The bar is `[W]ORD [A]URA [I]NVOKE [S]EARCH [M]OON`. In a fight it is `[F]IGHT [W]ORD [A]URA [R]UN`.
-
-**The three log lines.** Line 1 is flavor (the place, the party, a demon's words). Line 2 is what KURA just did. Line 3 is a status line typed out as if at a terminal. A search plays out slowly: dots first, then the result typed in a color for what it is. A good find waits longer, and the party reacts before it appears, so the reaction is the tell.
+**The three log lines.** Line 1 is flavor (the place, the party, a demon's words). Line 2 is what KURA just did. Line 3 is a status line typed out as if at a terminal. A search plays out slowly: dots first, then the result typed in a color for what it is. A good find waits longer, and the party reacts before it appears, so the reaction is the tell. (On the server the search is asked for when the dots start, so the wait hides inside them.)
 
 ## 4. The level
 
@@ -60,7 +61,7 @@ These are the rules you have set. Check new ideas against them.
 | Bay | A safe room (no encounters); its fixture heals the party |
 | Relay | Gives a clue naming the wing's other offered kind |
 | Vault | SILVER |
-| Forge | Clears taint |
+| Forge | Clears taint (DRUNK) |
 | Altar | No fixture. A terminal that takes an offering |
 
 Room kinds are never named on screen. Each room gets a flavor name (Soft room, Walkway, and so on).
@@ -71,19 +72,17 @@ Room kinds are never named on screen. Each room gets a flavor name (Soft room, W
 
 **The lure locker.** About 60% of levels hide a locker in a wing's dead end, usually a RARE item and sometimes a MYTHIC, and at the full moon half the time a MOON item.
 
-**Door clues.** A locked door sometimes gives a hint of what is behind it (warm, soft, cold) when searched. AURA on a door always gives a hunch.
+**Door clues.** A locked door sometimes gives a hint of what is behind it (warm, soft, cold) when searched. TALK alone at a door gives a hunch.
 
-**Minimap.** One character per room. Each player's is rotated or mirrored privately, so "the east door" means nothing to someone else.
+**Minimap.** One character per room. Each player's is rotated or mirrored privately, so "the east door" means nothing to someone else. After an AURA read the room brackets show heat, pale yellow to red, for a while.
 
 ## 5. Searching and heat
 
-Searching works like NetHack: each hidden thing needs a few search points, and each search adds up to about 2, scaled by the day's omen, how hot the room is (calm rooms yield more), a rested-day bonus and the fullness of the moon. Finding more on one wall gets harder. Some rooms hide a much deeper MYTHIC find.
+Searching works like NetHack: each hidden thing needs a few search points, and each search adds up to about 2, scaled by the day's omen, how hot the room is (calm rooms yield more) and the fullness of the moon. Finding more on one wall gets harder. Some rooms hide a much deeper MYTHIC find.
 
-**Heat** is per room. Each search warms it. The hotter it is, the likelier a demon comes: about 1 search in 24 when cold up to about 1 in 4 at the hottest, scaled by the moon. Bays and passages never get encounters. A demon dying, being recruited, leaving, or KURA running past it cools the room by a third. Heat halves overnight.
+**Heat** is per room. Each search warms it. The hotter it is, the likelier a demon comes: about 1 search in 24 when cold up to about 1 in 4 at the hottest, scaled by the moon and KURA's loudness. Bays and passages never get encounters. A demon dying, being recruited, leaving, or KURA running past it cools the room by a third. Heat halves overnight. A room crossing tier 2 heat makes the demon members go quiet for the day (VIBES, section 7).
 
-The player sees heat only after an AURA read of the room: the map brackets turn from pale yellow to red for a while. A room first reaching tier 2 heat (12 or more) is the only thing that wears the party's patience.
-
-**Safe or gamble** (BUILT). Sometimes a sure small thing is offered next to a bigger one that only lands part of the time: in a hot room, at a worn wall, on demon offers (by personality), and from the moon on fuller nights. A miss gives nothing and says something silly.
+**Safe or gamble** (BUILT). Sometimes a sure small thing is offered next to a bigger one that only lands part of the time: in a hot room, at a worn wall, on demon and party offers (wrapped gifts, by personality), and from the moon on fuller nights. A miss gives nothing and says something silly.
 
 ## 6. Demons and fights
 
@@ -91,47 +90,47 @@ The player sees heat only after an AURA read of the room: the map brackets turn 
 
 **FIGHT.** Each standing member hits, the party's total comes off the demon, and the demon hits back (at KURA four times in ten). KURA at 0 HP ends the run. The moon changes damage: demons hit hardest at the full moon.
 
-**WORD with a demon.** A conversation. A demon that listens might join, leave in peace (sometimes with a gift), offer two things from its pockets (take one), or notice a good item in the bag. One that doesn't listen may get angry. An angry demon can be calmed by a good item. Demons listen most at the new moon and least at the full. Programs always listen.
-
-**AURA in a fight** reads the demon (how loud it is, what it carries) in KURA's voice and is free.
+**TALK with a demon.** A conversation. A demon that listens might join, leave in peace (sometimes leaving ICHOR, sometimes a gift), offer two things from its pockets (take one), or notice a good item in the bag. One that doesn't listen may get angry. An angry demon can be calmed by a good item. Demons listen most at the new moon and least at the full. Programs always listen. The first TALK of a fight also says how the demon comes off (its alignment).
 
 **RUN.** About even odds that the demon blocks the way. A blocked run costs only the demon's blow, and a locked door takes the key only if she gets through.
 
-**Rewards.** A beaten demon gives ICHOR and one or two things from its own pockets (3 to 5 things, filled the first time it is seen). No SILVER and no moon things.
+**Rewards.** A beaten demon fills the ICHOR flask and gives one or two things from its own pockets (3 to 5 things, filled the first time it is seen). No SILVER and no moon things.
 
-Difficulty follows how far into the run she is, not the level's name.
+Difficulty follows how far into the run she is, not the level's name. Demons and the party sometimes remark on what KURA has done lately (her tags, section 8).
 
 ## 7. The party
 
-**WORD with a member** costs half a breath. A member is picked (leaning toward whoever is low on patience or hasn't been talked to). Over a day the yield falls with each WORD, then they are talked out. What can happen, in order: a check-in for someone low on patience; a truce between a LAW and CHAOS member; an offer (never on the first WORD with a member, rarer after); a confidence; or banter, sometimes a small heal. Now and then two members talk and KURA listens, and after a good many talks a member asks a question with two good answers.
+**TALK with a member** (was WORD until v1.15) costs half a breath. A member is picked (leaning toward whoever is quiet or hasn't been talked to). Over a day the yield falls with each TALK, then they are talked out. What can happen: a check-in for a quiet member; a truce between a LAW and CHAOS member; an offer (never on the first TALK with a member, rarer after); a confidence; or banter, sometimes a small heal. Now and then two members talk and KURA listens, and after a good many talks a member asks a question with two good answers. With nobody standing beside her, TALK is KURA reading the room or the door she faces.
 
 **Offers** are always two things from the member's own pockets (or one asked for from your bag), one taken. A full bag makes it a swap. Some are wrapped, a gamble that is the real thing about half the time. Members refill their pockets a little each night.
 
-**Patience** is the party's mood, not a fuse. It sits at 5 each dawn and WORD can lift it to 7. The only thing that wears it is a room first reaching tier 2 heat (each demon member loses 1). At zero a member goes quiet and content. Nobody snaps, strikes or leaves.
+**VIBES** (was patience until v1.15) is the party's mood, and it only grows: talks, questions and confiding raise it, nothing lowers it. A room crossing tier 2 heat makes demon members go quiet (the old tired lines) for the rest of the day; a night's sleep or a check-in TALK brings them back. Nobody snaps, strikes or leaves.
 
-**Recruiting.** Through WORD. Programs join more readily. CHAOS or HAUGHTY demons never take the plain "join." A full party offers a swap.
+**Recruiting.** Through TALK. Programs join more readily. CHAOS or HAUGHTY demons never take the plain "join." A full party offers a swap.
 
 ## 8. Alignment and aura
 
-**Alignment** is one hidden score from -6 (LAW) to +6 (CHAOS). Choices nudge it: patient searching a little toward LAW, searching a hot room, fighting and running toward CHAOS, talking and restoring toward LAW, recruiting toward the demon's side. Early choices count more than later ones. The tag shows as the *natural half* (KPT, STR, FRL for LAW, NEUTRAL, CHAOS) and flips at thresholds so it doesn't flicker.
+**Tags** (v1.15). KURA's choices that matter (fighting, killing, giving, restoring, breaking things, running) leave a tag; she keeps her last six. Tags pull toward LAW or CHAOS, and her colour drifts back when she acts differently. Tiny nudges (a search) leave none. Flip lines and the "something is pulling at you" tell still fire.
 
 **Names.** Everything has a two-word name: a machine half (SIGNAL, HUM, STATIC) and a natural half (KEPT, STRAY, FERAL). Data and tech things are the machine half, folklore and spirit things the natural half, and hybrids take both.
 
-**Aura.** KURA's aura is her lean plus the alignment and tier of what is in her bag. The total sets a loudness: QUIET, NOTICED or LOUD. Louder auras draw demons more often and toward the loudest side, and raise the moon's answer odds. AURA is the verb that reads all of this: out of a fight it reads a room or a door, in a fight a demon.
+**Aura.** KURA's aura is a volume and a colour, hidden. Volume: KURA, each standing member, the things in her bag by tier, and half the room's heat. Colour: the biggest pile of LAW, NEUTRAL or CHAOS among her tags, her party and her things. Volume sets a loudness: QUIET, NOTICED or LOUD. Louder auras draw demons more often and toward the loudest side, and raise the moon's answer odds. The AURA button is gone (v1.15); reading the air is part of TALK.
 
 ## 9. Items
 
-**Tiers** are COMMON, UNCOMMON, RARE, MYTHIC and MOON. The shared item list (dungeon-items) also knows prototype, relic and ultra, but 4Dungeon never deals those. Every item has an alignment and a nature, but only RARE and above move KURA's own lean when found. Offering any item at the altar does.
+**Tiers** are COMMON, UNCOMMON, RARE, MYTHIC and MOON. The shared ladder across the games is common, uncommon, rare, prototype, relic, ultra (1-of-1), plus moon; 4Dungeon's six old MYTHIC items keep their name (forward only), new top-tier dungeon items will be relics, and 4Dungeon never deals prototype or ultra (88x31 is their home game). Every item has an alignment and a nature.
 
-**The bag** holds 9. A tenth asks what to leave. INVOKE lists the bag and ICHOR. A few UNCOMMON items have uses (a heal, a revive, a candle that cools a room). Most items have no use, and fiddling with one reveals something about it after enough tries ("Something rattles inside"), and a few break.
+**The bag** holds 9. A tenth asks what to leave. INVOKE lists the bag, the ICHOR flask and SILVER. A few UNCOMMON items have uses (a heal, a revive, a candle that cools a room). Most items have no use, and fiddling with one reveals something about it after enough tries ("Something rattles inside"), and a few break.
 
-**ICHOR** heals fallen members (and standing ones less). KURA can drink it, which adds taint: at 3 she starts seeing things, at 6 she trips for 50 to 100 actions (melee doubled, risk of hitting an ally, the turn counter lies). Taint drops by 1 a night or clears at a Forge or after STANDBY.
+**ICHOR** (v1.16) is a flask KURA always carries, holding a fixed amount. It fills from a fallen demon and from a demon that parts in peace, and the party drinks from it to heal. KURA can drink it herself, which makes her DRUNK (was "taint"): at 3 she starts seeing things, at 6 she trips for a while (melee doubled, risk of hitting an ally, the turn counter lies). It wears off overnight, at a Forge, or with SILVER.
 
-**The altar** takes one offering a day per room: an item (or SILVER). The result depends on the item's alignment, and gives a boon: the wing's door clue (LAW), breath refill and a heal (CHAOS), or a few breaths otherwise.
+**SILVER** (v1.16) is found in walls, the vault fixture and the lure locker. Spent from the bag, it cools the room to nothing and clears what clouds KURA (DRUNK, and quiet members); its price goes up with the level. It can also be offered at the altar.
 
-**Camp jobs.** On a STANDBY night, if the right program is in the party: COMPILER turns two COMMON items into an UNCOMMON, CACHE duplicates a COMMON.
+**The altar** takes one offering a day per room: an item (or SILVER). The result depends on the item's alignment, and gives a boon: the wing's door clue (LAW), breath and a heal (CHAOS), or a few breaths otherwise.
 
-**Shared items (v1.14).** The item list comes from the shared dungeon-items table, and finds are queued as numbered registry copies. The page has an INVENTORY screen for sending copies home to 88x31. This is display only: the run's bag is not tied to the registry, and visiting items do nothing in play yet.
+**Camp jobs.** Every night, if the right program is in the party: COMPILER turns two COMMON items into an UNCOMMON, CACHE duplicates a COMMON.
+
+**Shared items** (v1.14 to v1.23). The item list comes from the shared dungeon-items table. **Every find in the bag is its own numbered copy** in the shared registry from the moment she picks it up (v1.23, kept by the server in the run); when it leaves for good (used up, broken, given, left behind) that exact copy is used up there. MAIL (in INVOKE) lists the copies you hold and sends them home to your 88x31; 88x31 buttons you send here arrive in the bag as **visitors**, which can't be broken or offered, can be asked for, and always come back. Visiting items do nothing special in play yet.
 
 ## 10. The moon and the omens
 
@@ -139,76 +138,67 @@ Difficulty follows how far into the run she is, not the level's name.
 
 **[M]OON.** Looking up shows the real sky above her (named bright stars, the moon where she really is) and costs a breath. The first look of a night may bring an offer from the moon: a pair of good things, take one, now or never. Odds go from none at the new moon to 85% at the full (higher with a LOUD aura). Later looks get a word and then quiet. When the real moon is below the horizon she says so.
 
-**Omens.** One per real day, the same for everyone, never rerolled. About half the days are ordinary. The rest are one of eight: more data demons, more folklore demons, double heat, harder finds, easier finds, easier talk, half heat, three times the rare chance. Six of the eight lean LAW or CHAOS, three each. **Streaks:** three days running with the same lean guarantees a room that day (LAW an Archive, CHAOS the Void). Each side comes about once every 190 days. The second day of a matching run reads "The pattern is repeating."
+**Omens.** One per real day, the same for everyone, never rerolled. About half the days are ordinary. The rest are one of eight: more data demons, more folklore demons, double heat, harder finds, easier finds, easier talk, half heat, three times the rare chance. Six of the eight lean LAW or CHAOS, three each. **Streaks:** three days running with the same lean guarantees a room that day (LAW an Archive, CHAOS the Void). The second day of a matching run reads "The pattern is repeating."
 
 ## 11. Runs and scoring
 
-A run starts KURA at 30 HP, level 1, alignment NEUTRAL, with a small kit. It wakes on the level the dark has reached; if fewer than two days of the quarter are left, one level higher with a whole quarter ahead.
+A run starts KURA at 30 HP, level 1, with a small kit. It wakes on the level the dark has reached; if fewer than two days of the quarter are left, one level higher with a whole quarter ahead.
 
 Climbing is always to the next quarter's level, so leaving early banks the rest of the current one. From B1F she climbs out to 1F and the run goes on upward, quarter by quarter. Nothing ends at the surface yet.
 
-**Score** is levels climbed, then real days survived, then earliest post. Turns are shown but never ranked. Posting needs an ended run and a name of 3 to 10 characters, once per run. Scores can't be proven (the free server plan can't replay a run), so the board is for fun.
+**Score** is levels climbed, then real days survived, then earliest post. Turns are shown but never ranked. Posting needs an ended run and a name of 3 to 10 characters, once per run. The page still posts the score itself; with the run now on the server, a posted score can be checked against the real run (not built yet).
 
 ## 12. The shared world
 
 - **Presence** BUILT. Counts of others on the level and in the pit, now and today. Never who.
-- **Events and rumors** BUILT. Fixed moments post anonymous news, and the title screen turns them into vague rumors.
-- **Bots** BUILT. Ten scripted players take a turn each day through the real rules, and are hidden from the board (names end in `-bot`).
-- **Faction seasons** BUILT. Each ended run adds its level to its final side for the lunar month, and NEUTRAL runs go to the side that is behind. Cosmetic only, and forgeable.
+- **Events and rumors** BUILT. Fixed moments post anonymous news (sent by the server since v1.22), and the title screen turns them into vague rumors.
+- **Bots** BUILT. Ten scripted players take a turn each day through the rules, and are hidden from the board (names end in `-bot`). They still play their pinned builds locally; the owner may stop or rerun them.
+- **Faction seasons** BUILT, **DECIDED to cut** (Oct 17): cosmetic, forgeable, unrewarded. How pleased the moon is could become the monthly tally instead (section 15).
 - **Gift box and door tallies** BUILT (section 4).
-- **Accounts** BUILT (v1.13). One account (save codes and passkeys) covers 4Dungeon, 88x31, irl-dungeon and dawn-baton.
+- **Accounts** BUILT (v1.13). One account (save codes and passkeys) covers 4Dungeon, 88x31, irl-dungeon, scoundrel.exe and dawn-baton. Admin is a flag on the player (`players.admin`), not a key.
 - **Bones, ghost demons, route traces, shared wards** DECIDED to be considered, not built. House rule under discussion: anything visible to other players is flavor only, never mechanical.
 
 ## 13. Title and typed line
 
-The title shows the moon header, a wordmark, a line of the quarter's days, six rows of rumor and number cards, and `[N]EW RUN [C]ONTINUE [B]OARD [?] ABOUT`. A card shows only when its number is above zero. The `[?]` page says what the game is and leaves the rest to find out. The typed line (line 3) carries status in sentences, about two lines about this run for every one about everyone else.
+The title shows the moon header, a wordmark, a line of the quarter's days, six rows of rumor and number cards, and `[N]EW RUN [C]ONTINUE [B]OARD [?] ABOUT`. CONTINUE shows only when there is a run to go back to. A card shows only when its number is above zero. The `[?]` page says what the game is and leaves the rest to find out. The typed line (line 3) carries status in sentences, about two lines about this run for every one about everyone else.
 
-## 14. Parked
+## 14. Parked and removed
 
-Built and switched off. Details are in the changelog.
+Built and switched off, or taken out. Details are in the changelog.
 
-- **The exchange** (player market for RARE and up, stash, offers by code), `EXCHANGE_ON = false` since v1.04 (built v1.00 to v1.01). Parked as too complicated for too little reason; the gift box replaced it.
-- **Hold Omen** (bank a STANDBY night's omen), hidden in the page.
-- **Disguises**, `DISGUISE_ON = false`.
-- **Painted (false) doors**, `PAINTED_DOORS = false`.
-- **Dissonance and the old patience costs** (snapping, leaving, the last-chance question), unreachable since v1.12.
+- **The exchange** (player market for RARE and up), `EXCHANGE_ON = false` since v1.04. Parked as too complicated for too little reason; the gift box replaced it.
+- **Hold Omen** (bank a night's omen), dormant code behind `HOLD_OMEN_ON = false`; nothing reaches it since STANDBY went.
+- **Disguises**, `DISGUISE_ON = false`. **Painted (false) doors**, `PAINTED_DOORS = false`.
+- **Removed:** STANDBY and its camp (v1.16), the AURA button (v1.15), patience wear and snapping (v1.12, v1.15), the lean score (v1.15, replaced by tags), the cloud save and run codes (v1.18, v1.21: the run lives on the server).
 
-## 15. Decided, not built
+## 15. The direction (Oct 17)
 
-- **Getting out is a finish.** Reaching the surface completes the monthly climb. Two boards: this moon (who got out and how fast, resetting each month) and all time.
-- **WORD as a real decision.** Party members offer a pair of good things by personality (the gruff one breath or healing, the dreamy one an item or a lean). The first TALK of the day becomes a pick by personality.
-- **AURA reads places and demons only.** The door hunch folds into searching a locked door.
-- **The gift box carries the left item's alignment**, so the next player gets a hint of who was there (from the heat notes).
-- **Glitch mechanic** (the 3D view glitches, then the UI, tied to data monsters turning CHAOS): low priority, maybe only at higher levels.
-- **Heat on the minimap** as wavy walls (leaning), and cracks or scratches in the 3D art (later).
+The owner's own diagnosis: systems keep getting built without meaning or purpose; items are meaningless; the game has no tension or stakes; the four-week goal is the only pressure. What came out of the conversation:
+
+- **Provenance** DECIDED ("provenance is in"). Every copy remembers what it has been through: where it was found and under which moon, who carried it, what it was given for, what it survived. It lives in the shared registry, so the story follows the copy into any game. It is the same idea as KURA's tags, used on things. The groundwork is built (v1.23: each bag item is a specific copy). Shown to the player; never names other players. What a run's marks can claim is only as true as the server says, which is now the case.
+- **What does the Moon want?** LEANING. The sealed stairs become the moon's judgment: each quarter she wants something, and the player has to work out what and appease her. Her wish is phrased in histories, not items ("something that has seen a full moon", "something given, not found", "something carried up from below", "something a demon held"), so the player has to *make* the answer by carrying things through the right moments. [M]OON becomes how you learn it (cryptic when she's dim, nearly plain when she's bright). She can be pleased in degrees, never failed. This would replace finding hidden stairs by searching.
+- **Her wish is personal** LEANING ("shared clock, private contents"), from a **shared vocabulary of histories** LEANING, so a storied item someone leaves in a gift box can be exactly what a stranger's moon wants.
+- **Walls as the space** LEANING. A day in a small space should be full: walls have depth, and hold traces (old marks) that hint at the moon's wish.
+- **The game becomes an item-gathering puzzle** OPEN: the owner likes it ("it fills in a LOT of gaps") and is thinking it over. The check: histories should come from doing dungeon things (a fight survived while holding it, a demon talked down, a hot room), so gathering *is* the dungeon.
+- **The cut list for provenance** (drafted Oct 17, not agreed item by item): cut the hidden stairs search, the lean nudge from RARE+ finds, CACHE (a copy with no history clashes with provenance), the unbuilt "gift box carries alignment"; merge tags and item marks into one history; read alignment off marks; fiddling reveals old marks; repurpose the altar (it adds a mark), COMPILER (the merged item inherits both histories), the moon's offers (hints toward her wish), the Relay's clue (hints at the wish), the locker and the Archive and Void (unusual histories).
+- **Cross-game item gameplay** DECIDED for later, after the redesign.
+
+Still decided from before, not built: **getting out is a finish** (two boards, this moon and all time); **the glitch mechanic** (low priority); **heat on the minimap** as wavy walls (leaning).
 
 ## 16. Systems under review
 
-Redesigning the systems is the top priority, and balance comes after it. These are your statements from Oct 17:
-
-- The game feels like it has **no tension or stakes**.
-- The **goal at the top is fuzzy**; the main goal for now is survive one cycle.
-- **Playing on a phone is awkward** for both 4Dungeon and irl-dungeon.
-
-**What each system gives the player today.** The test is the question in section 2: does it change what they do next?
+Redesigning the systems is the top priority, and balance comes after it. TALK, tags, aura and heat were overhauled on Oct 17 (v1.15 to v1.16) and get tuned another day.
 
 | System | What exists | Concern |
 |---|---|---|
-| SILVER | Found in walls, the vault fixture and the lure locker | Its only use is offering it at the altar |
-| ICHOR | From demon wins, heals members, drinking it causes taint and tripping | You report it goes unused |
-| Taint and TRIP | Comes only from drinking ICHOR | Depends on ICHOR being used |
-| Heat | More demons, worse yields, cooled by a third when a demon is dealt with, shown only after AURA | Overlaps breath. The bots' first day (Oct 11) suggested breath, not heat, is what limits searching |
-| Breath | Caps the pace | Does many jobs |
-| Patience | WORD raises it, heat tier 2 lowers it, nothing happens at zero | Almost no stakes left |
-| Alignment | Hidden score, shapes demons and truces | Few visible consequences |
-| SEARCH, AURA, WORD, MOON | Four verbs that all spend breath and give a line of text | They overlap |
-| Faction seasons | Cosmetic tally | Forgeable, with no reward |
+| Items | 46 dungeon items, numbered copies, a few uses | Still meaningless in play; provenance is the answer being built |
+| The goal | Survive four weeks | No tension or stakes; what is at the top is open |
+| Breath | Off on the server | Needs retuning for the server's feel |
+| ICHOR, SILVER | Both have uses since v1.16 | Watch whether they get used now |
+| Heat | More demons, cooled by dealing with them, seen after a read | How much is danger and how much reward |
+| Tags and aura | Hidden volume and colour | Few visible consequences yet; provenance can make them readable |
+| SEARCH, TALK, MOON | Three verbs that spend breath and give a line | MOON gets a real job if it is how you learn the moon's wish |
+| The start | Slow, because the game is a slow burn | Onboarding later, after the fundamental systems |
+| Phones | Fits since v1.17 | Still awkward for both 4Dungeon and irl-dungeon |
 
-**Floated, not decided.** These came up in conversation and are proposals, not agreed.
-
-- *Stakes without sadness.* Stakes could come from what the run has built up (the party, what she carries, the run's history), so there is something to lose that isn't a penalty. The month-long clock already does part of this.
-- *The moon as the one dial every system reads.* Mentioned as a direction, nothing decided.
-- *A phone screen budget.* About 60 columns by 20 rows, with a bar of thumb buttons under the screen. 4Dungeon's view and a stacked panel layout would need a separate phone mode, and irl-dungeon may want its own "glance" screen. Landscape may fit the current 80 columns.
-- *Wall-read heat, the moon's real position mattering to [M]OON, bright stars with alignment.* From the heat notes, each with open questions (the sky depends on where the player is, so a fixed sky would be needed).
-
-**Open.** What is at the top. How much heat is danger and how much is reward. Whether looking up costs a breath when the moon has set. Whether the exchange or a lighter form of it ever returns. The wording of rumors and KURA's last words. Whether Hold Omen returns.
+**Open.** What is at the top. How much heat is danger and how much is reward. Whether looking up costs a breath when the moon has set. The wording of rumors and KURA's last words. Whether Hold Omen returns.
