@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.17 - Visitors - Oct 17 2026, 07:35 HST
+
+Page, rules, screen, Worker (`POST /spent`, `/inventory` returns `align` and `nature`). No migration.
+
+- **Bag to registry.** `trackBag` (in `show()`) diffs `st.itemSnap` and queues removed items in `st.gone` (visitors exempt). The page's `goneTick()` sends `/spent` with `save.regCopies` ({id, copy}), newest copy of that item from this run. `/spent` is rate limited (`acct_limits`) and calls `spendCopy` for the player's own 4dungeon copies. `registryTick` stores `regCopies`.
+- **Visitors.** `visitorTick(force)`: once per day, or when the bag opens (at most every 30s). `welcomeVisitor` registers runtime info (`regVisitor`; tier from rarity; alignment NEUTRAL, nature plain). Visitors can't break or go to an altar, can be asked for by members and demons, are never used up, and get +1 in `affinity`. If in neither the bag nor a member's pockets, the next check returns them to the bag. `takeAway()` removes from the bag or a pocket for send-home. New reset keys: itemSnap, gone, visitors, visitorInfo, regCopies, visitDay.
+- **Fix.** v1.14 overflow double-registration: `gain(st, it, lines, noQueue)`; `keepItem` passes `noQueue`.
+- **Tags.** `TAG_KIND`: fight to fought, offer / offerLAW to gave. `TAG_SAY` fought / gave; `PARTY_TAG_SAY` broke / talked / fought / gave. Flip lines reworded; relic text says the mark fades.
+- **Phones.** CSS: under 700px wide the pre font is (100vw - 8px) / 32.5 (80 VT323 columns are 32em), body padding 4px; landscape under 500px tall uses min of that and (100vh - 16px) / 35. Viewport `maximum-scale=1, user-scalable=no`, `touch-action: manipulation`, iOS gesture events blocked.
+- **Test notes.** Worker: 8 tests pass. Chromium smoke test; title screen at 844x390, 390x844, 1200x800. Not run on a real phone.
+
 ## v1.16 - Flask - Oct 17 2026, 06:58 HST
 
 Page, rules, screen. No Worker or migration change. New optional save fields: none that old saves need.
