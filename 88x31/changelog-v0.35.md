@@ -1,9 +1,20 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.36
+# 88x31 cLuB — Dev Changelog — v0.35–v0.37
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.37 — "Plain Windows"
+**Sat Oct 17, 2026 · 10:25 AM HST** (no migration)
+
+Decisions (owner): take back the collapsible windows ("have them be normal"); a logged-out visitor should see fewer buttons on the Wall than a logged-in player (who only sees what they've seen); Ledger lines should lead with the card ("CARD was opened by USER, because the card is the main thing").
+
+- **Folding removed.** The whole v0.31.1/v0.32.2/v0.34.5 folding section of `app.js` (`foldKey`, `isFoldHead`, `foldBody`, `setFold`, `prepFold`, `applyFolds`, `toggleFold`, the click and key handlers, the MutationObserver) and the `.fold-*` rules in `style.css`. The » « headings stay as decoration. Old `fold-*` keys in players' localStorage are now unused.
+- **Wall, logged out** (`functions/api/designs.js`): a design is a mystery unless it is an original-tier common (was: only rare, prototype, ultra and special were mysteries). On the live catalog that is 36 shown and 433 as "?" (375 archive commons and 16 uncommons became mysteries). The info-window path (`?id=`) uses the same rule. Logged-in players are unchanged (seen-only, v0.30).
+- **Ledger lines** (`ledgerItem`): card or pack first, then who. Transfers use `MOVED[reason](copy, to, from)` (18 reasons; an unknown one reads "X went to USER (reason)"); `ledUser(name)` links a name to its page. Fusion "X #n was fused from 3 copies by USER, now FINISH!"; foil "X #n came with a GOLD finish for USER!"; request "X was wished for by USER on the request board"; pack "Sealed pack #n was made for USER (source)" / "was traded|stamped|given to A by B" / "was opened by USER!"; design "X (rarity) was found by USER and joined ~*~ tHe cLuB ~*~". WEBMASTER lines unchanged. The bold kind labels (PACK, FUSION, FOIL...) are gone from the line.
+- Footer v0.37; css/js cache tags 0.37.
+- Checked: `node --check`; every ledger kind and 5 transfer reasons rendered in node with stand-ins for the DOM helpers. Not rendered in a browser.
 
 ## v0.36 — "Visiting Hours"
 **Sat Oct 17, 2026 · 4:55 AM HST** (no migration; needs dungeon-items `0ef474e` for `whereIs` and item details in `heldBy`)
