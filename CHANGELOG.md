@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.19.1 - Admin Keys - Oct 17 2026, 09:25 HST
+
+Page only (`act.js`, `screen.js` VERSION).
+
+- v1.19's action list missed the admin keys `freesteps` (infinite steps) and `next` (jump the clock a day), so `ACT.apply` threw "unknown action" on them. Both are in the list now, and `ACT.ADMIN` names them so the server can require the admin flag.
+- Checked: every name the page can send to `act()` (buttons, keys, offer and fight boxes, the altar, the confirm boxes, the admin keys) maps to a type in the list.
+
 ## v1.19 - One List - Oct 17 2026, 09:15 HST
 
 Page only, plus the new `act.js`. No Worker or migration change. Stage 1 of `4dungeon-server-move.md`.
