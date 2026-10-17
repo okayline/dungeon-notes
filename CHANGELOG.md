@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.19 - One List - Oct 17 2026, 09:15 HST
+
+Page only, plus the new `act.js`. No Worker or migration change. Stage 1 of `4dungeon-server-move.md`.
+
+- **`act.js`**: `ACT.apply(st, { t, ... })`, 29 action types, one entry per way the page changes a run; unknown types throw. `ACT.fromName` turns the page's old button names (`go-N`, `opick-2`, `altar-none`, `yes`, ...) into actions. Loaded after `rules.js`.
+- **The page** sends the main dispatcher and the 14 other calls that changed the run (keep, tick, named, reset, setName, takeAway, useSilver, giveIchor, useItem, useBankedOmen, reply, welcomeVisitor, boxFound, boxDone) through `ACT.apply`. Read-only calls (available, offerView, aura, codex, ...) still go to `RULES` directly.
+- **Running** picked its door with `Math.random` in the page; that roll is now `ACT.runWay(st)`, so the server can make it later.
+- **Bug fixed (since v1.16):** TALK out of a fight with no standing member was routed to `act("aura")`, which called `RULES.aura(save)`. That returns the aura reading `{ piles, dom, band, ... }`, not a run, so the save was replaced and the run lost. `aura` now maps to `RULES.word`, which already does the solo room or door read.
+- **Found, for stage 2:** the page also writes about 35 run fields itself (`log` 16 times, `regCopies`, `history`, `gone`, `extra`, `ecoSeen`, `box`, `auraBand`, `finds`, ...). Those have to be split into page-only display state and run state before the server can own the run.
+- **Test notes.** Node: every page button name applied to a fresh run without losing it or throwing; solo TALK keeps the run; an unknown action throws. Worker: 8 tests pass. Chromium (Worker routes mocked): a new run, search, turns, TALK, solo TALK, no page errors. Not run: a real fight, the altar, the gift box against the real server.
+
 ## v1.18 - Automatic Saves - Oct 17 2026, 07:50 HST
 
 Page only. No Worker change.
