@@ -38,7 +38,7 @@ The dispatcher sends the action and plays the beat it already plays (dots, typin
 **4. Fold in what the page does today.** 4a BUILT in v1.22 (finds, used-up items, tallies and events sent by the server after it answers). 4b BUILT in v1.23 (`st.copies`: each find in the bag is its registry copy).
 Once the server holds the run: finds go to the registry from `/act` directly (no `st.finds` queue), and so do used-up items and visitors. The cloud save, SAVE and GET code, and the run-code loader go away, because the run already lives on the server. The gift box and tallies keep their routes. **This is also where each bag slot becomes a registry copy, which provenance needs.**
 
-**5. Later: keep secrets on the server.**
+**5. Later: keep secrets on the server.** BUILT in v1.24 (`secretless()` in `game.js`). The move is done.
 The server sends only what the screen needs (scoundrel's `publicView`), never the seeds or what is behind doors. It needs a pass over what `screen.js` reads, so it comes after the move works.
 
 ## A free gain

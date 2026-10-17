@@ -3,6 +3,16 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.24 - Behind Closed Doors - Oct 17 2026, 10:50 HST
+
+Worker (`game.js`). No page change, no migration. Stage 5 of `4dungeon-server-move.md`, the last one.
+
+- **`secretless(st)`** on every run the page is sent (`/run`, `/act`, a stale 409): drops `st.pseed`, `dungeon.seed`, `floor.seed`, `floor.pseed` (either rebuilds the floor), `floor.kinds` (which kind is behind which door), `floor.stairs`, `floor.lure`, every `rooms[].hidden`, and each `dungeon.state[].walls` down to `{ taken }` (what a wall hides, its `need` and `prog`). The server's stored run keeps everything.
+- **Checked before choosing the list:** a script played 400 states (searches, turns, TALK, fights, offers, questions, walking, new runs after a death) and compared every read the page and screen make on the full run against the redacted one: `available`, `isLocked` (4 ways), `offerView`, `aura`, `codex`, `inventory`, `summary`, `score`, `altarGifts`, `silverCost`, `levelMap` and `renderScreen`. No differences. Redacting saves about 10% of the answer's size.
+- **The webmaster** (`players.admin`) gets the whole run, for the debug line.
+- Not hidden (shown on screen anyway, or the player's own): the shared offers, the map's rotation (`sym`), heat, a demon's pockets once met.
+- Tests: 13 Worker tests (1 new: no secrets in what the page gets, the server keeps them, the admin sees them). End to end in Chromium as before; no page errors.
+
 ## v1.23 - Numbered - Oct 17 2026, 10:35 HST
 
 Worker (`game.js`), `act.js`, page (one line). No migration. Stage 4b of `4dungeon-server-move.md`: the groundwork provenance needs.
