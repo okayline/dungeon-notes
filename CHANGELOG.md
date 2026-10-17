@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.22 - Word Gets Around - Oct 17 2026, 10:20 HST
+
+Worker (`game.js`, `worker.js`), page, `act.js`. No migration. Stage 4a of `4dungeon-server-move.md` (4b, bag slots as registry copies, is next).
+
+- **`sendOut(env, inner, me, st)`** runs after `/act` has answered (`ctx.waitUntil`; inline when there is no ctx, as in tests): `st.finds` to `/found`; `st.gone` names to item ids (`ACT.itemId`), matched to the newest copy of each that `REGISTRY.heldBy("4dungeon", me)` lists (each copy once), then `/spent`; `st.tally` to `/tally`; the last 4 `st.events` to `/event` unless the run is `cheated` or `freeSteps`. Errors are logged and never fail the move.
+- **`inner(path, data)`** in `worker.js`: a POST to the Worker's own route with the original request's `origin`, `cf-connecting-ip` and `authorization`, so the existing validation, limits (finds and spends a day, events an hour, one tally mark per address) and tables apply unchanged. `export default { fetch }` became `const WORKER = { fetch(req, env, ctx) }` so it can call itself.
+- **The answer to the page** is `kept(run)` (no `finds`, `gone`, `events`, `tally`), with `line3` and `exchangeOpen` put back for the screen.
+- **Page:** in server mode `tallyTick`, `registryTick`, `goneTick` and the event half of `flushEvents` return at once. MAIL's send-home takes a find out of the bag when the bag holds that item (the page's `regCopies` no longer fills in server mode).
+- **Known:** guests are players, so their finds are registered too (to the guest player); `/run` fresh's opening events are dropped (they were never sent before either); `visitorTick` (88x31 buttons arriving) is still the page's.
+- Tests: 12 Worker tests (1 new: a find is born in the registry and the queues aren't sent to the page). End to end in Chromium as in v1.21: searches, walking, a blocked server, no page errors.
+
 ## v1.21.1 - Quicker Steps - Oct 17 2026, 10:05 HST
 
 Page, Worker (`game.js`, `accounts.js`). No migration.
