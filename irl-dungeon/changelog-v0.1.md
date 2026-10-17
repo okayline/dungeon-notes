@@ -1,9 +1,26 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.20
+# irl-dungeon — Dev Changelog — v0.01–v0.21
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
 minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
+
+---
+
+## v0.21 — "Dungeon Finds"
+**Sat Oct 17, 2026 · 4:30 AM HST** (no migration)
+
+- **Decision (owner):** irl-dungeon only deals dungeon items for now. `poolFor` in `src/worker.js` now passes
+  `source: "4dungeon"` to `listItems`, so 88x31 buttons (shared items 47+) are no longer dealt.
+- **Why now:** the shared item list gained 88x31's original rares, prototypes and ultras (dungeon-items migration 004,
+  88x31 v0.35). Without the filter, rare finds here would have started dealing 88x31 rares. Prototype, relic and
+  ultra can only be born in their home game anyway (registry trigger `copies_home_only`).
+- **Side effect:** each room-day's deck is built from the pool, so finds dealt from today on differ from what the
+  old (mixed) pool would have dealt. Past finds are untouched.
+- **Shared ladder (for reference):** common · uncommon · rare · prototype · relic · ultra (1-of-1), plus moon. This game
+  still deals common, uncommon and rare.
+- **Tests:** `sizeOf` in `test/find.test.mjs` counts only `4dungeon` items, the rarity check no longer allows the button
+  (id 37), and the deal test checks 37 is never found. `VERSION` is `vX.YY`, so this is v0.21, not v0.20.1.
 
 ---
 
