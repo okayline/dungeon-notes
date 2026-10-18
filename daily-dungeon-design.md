@@ -2,7 +2,7 @@
 
 As of **v1.27.1** (Oct 17 2026), with the gate review of Oct 18 in section 16. Earlier versions of this file are in git history.
 
-**What this is.** What the game is for and how it plays, in plain words. It does not repeat exact numbers: those live in `rules.js` and `floor.js`, and when the doc and the code disagree, the code is right and the doc is wrong. Per-release detail is in `CHANGELOG.md` (this repo). Unbuilt ideas are in `daily-dungeon-heat-notes.md` (older ones, no longer kept up to date, are in `archive/theorycrafting-notes.md`); the move to the server is in `4dungeon-server-move.md`. Voice rules are in `voice-guide.md`.
+**What this is.** What the game is for and how it plays, in plain words. It does not repeat exact numbers: those live in `rules.js` and `floor.js`, and when the doc and the code disagree, the code is right and the doc is wrong. Per-release detail is in `CHANGELOG.md` (this repo). Unbuilt ideas are in `daily-dungeon-heat-notes.md` and `theorycrafting-notes.md`; the move to the server is in `4dungeon-server-move.md`. Voice rules are in `voice-guide.md`.
 
 **Tags.** BUILT is in the game. PARKED is built but switched off. DECIDED is agreed but not built. LEANING means a direction, not a decision. OPEN means undecided.
 
@@ -243,7 +243,7 @@ A first pass over what is unbuilt or unsettled, read from these notes only (no c
 | Fix the leaks: demon pockets, run-end copies, a friend who leaves keeping your copy | Nothing new for the player | Ends "handed to a demon = used up", which erases marks | Do first. No new concept; provenance is only as true as the record |
 | Coincidence occasions (same door for everyone, even tallies, round player counts) | Surprise marks | Needs a shared counter (counts only, no player ids) | Wait. With one player on a level it cannot fire yet |
 | Bones and ghost demons | A run's ending leaves something for others | Needs other players and names | Wait. If built, make it provenance: items from a dead run arrive with their history |
-| Free actions and the ward (Listen, Knock, Mark, Combine, Leave an offering, Elbereth) | New verbs | Blurs the three verbs (SEARCH, TALK, MOON) | Cut or park. Marks and the stairs offering already cover "Mark" and "Leave an offering"; the theorycrafting notes (now in `archive/`) predate the provenance direction |
+| Free actions and the ward (Listen, Knock, Mark, Combine, Leave an offering, Elbereth) | New verbs | Blurs the three verbs (SEARCH, TALK, MOON) | Cut or park. Marks and the stairs offering already cover "Mark" and "Leave an offering"; the theorycrafting notes predate the provenance direction |
 | Breath retune | Pacing | Limits searching; touches the goal | Ask what job it has now that the Moon's wish gives the goal. If there is no answer, leave it off |
 | Item-gathering puzzle (section 15, still marked OPEN) | A purpose for items | Touches everything | The big decision, and the one that answers "items are meaningless". Owner, Oct 18: "that is the main loop of the game". Section 15's status is left as OPEN until the owner says to change it. Test by playing before building more |
 
