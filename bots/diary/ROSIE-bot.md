@@ -414,3 +414,34 @@ KURA searches the SOUTH wall... A W0RM wanders in!
   The W0RM falls.  +26 ICHOR
   It drops a neon tube fragment.
 ```
+
+## 2026-10-18  -  B4F, day 8, the run ended  (latest v1.27.1)
+
+```
+KURA wakes on B4F.
+KURA searches the NORTH wall... Nothing but dust.
+The air grows heavy. The way up closes tonight.
+KURA searches the SOUTH wall... Nothing yet.
+KURA searches the NORTH wall... A DEADLINK wanders in!
+  The DEADLINK comes off as HUM.
+  DEADLINK: "ACCESS DENIED. go away"
+  The DEADLINK strikes KURA. -2 HP
+  The DEADLINK stops mid-swing.
+  DEADLINK: "ooh. can I have one of those?"
+  KURA keeps her things.
+  DEADLINK: "thanks. still gonna hit you."
+  The DEADLINK strikes KURA. -5 HP
+  The DEADLINK stops mid-swing.
+  DEADLINK: "ooh. can I have one of those?"
+  KURA keeps her things.
+  DEADLINK: "cute. one more round."
+  The DEADLINK strikes KURA. -7 HP
+  The DEADLINK strikes KURA. -2 HP
+  The party strikes. -8 HP
+  The DEADLINK strikes KURA. -1 HP. FALLS
+  KURA falls. The run is over.
+  The party strikes. -7 HP
+The DEADLINK strikes KURA down.
+
+posted, rank 1
+```

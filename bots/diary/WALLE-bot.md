@@ -361,3 +361,57 @@ KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 Not yet. KURA catches her breath.
 ```
+
+## 2026-10-18  -  B4F, day 8  (pinned v0.94)
+
+```
+KURA wakes on B4F.
+KURA works at the bench. Nothing needs mending.
+KURA goes EAST into a cleared room.
+KURA goes EAST into a new room.
+KURA searches the EAST wall. A STATIC RAT wanders in!
+  STATIC RAT: "are you my replacement?"
+  STATIC RAT: "are you here to fix me?"
+  KURA: "Yes."
+  STATIC RAT: "finally. finally."
+  STATIC RAT: "is it still raining up there?"
+  KURA: "Yes."
+  STATIC RAT: "I liked the rain. on my casing."
+  STATIC RAT: "do you remember being plugged in?"
+  KURA: "Yes."
+  STATIC RAT: "me too. it hummed."
+  The STATIC RAT is content. SHUTTING DOWN. bye
+KURA searches the EAST wall. Old tally marks, in groups of five.
+KURA searches the EAST wall. Faded paint. A number, or a sigil.
+KURA searches the EAST wall. Only stone.
+A dish bolted to the wall, turning slowly. It can be used. Two doors.
+KURA turns the dish. It settles on a signal.
+KURA searches the EAST wall. Mortar, mostly. Some is older.
+KURA searches the EAST wall. A dead cable runs in and stops.
+KURA searches the EAST wall. KURA hears a soft knock. Or her own pulse.
+KURA searches the EAST wall. Fingers come away gray.
+KURA searches the EAST wall. KURA hears something. Then nothing.
+KURA searches the EAST wall. The wall gives nothing away.
+KURA searches the EAST wall. Nothing but dust.
+KURA searches the EAST wall. Faded paint. A number, or a sigil.
+A locked door. Something small and hard settles inside.
+KURA unlocks the SOUTH door. The way is clear.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+```
