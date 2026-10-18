@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.40
+# 88x31 cLuB — Dev Changelog — v0.35–v0.41
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.41 — "Stay Put"
+**Sat Oct 17, 2026 · 11:05 PM HST**
+
+Decisions (owner): the picker box is a fixed height with no scrolling; when a player has more buttons than fit, show the ones that fit the week's theme first (the owner accepts that this hints at the theme; otherwise a fresh random handful each time); a blank line under the lock / LAST DAY line; hopping between rings in the footer webring must not jump the page to the top.
+
+- **Picker** (`twDraw`): `.tw-grid` is 130 px high, `overflow: hidden`; up to 150 buttons are drawn and the ones that don't fit are removed by measuring `offsetTop` (one layout pass). Order: a random shuffle, buttons in a trade or away last; if anything was cut, it is redrawn with theme matches (`twMatch`) first. Players with many buttons can't reach the rest from the picker (offered: arrows or swipe to page through).
+- **Lock line**: `.tw-lock` has 1.6em of space under it.
+- **Webring hops**: the `hashchange` handler skips `scrollTo(0, 0)` when both the old and new hash are `#themewall...`, and `route()` doesn't move the webring panel back to the footer when the target is a ring page, so the layout doesn't shift while the next ring loads (headless: the scroll position was identical before and after Next).
+- Checked: headless Chromium with 80 mock buttons (9 shown, all theme matches, no inner scroll), the scroll position kept across Next, the panel staying under the wall.
 
 ## v0.40 — "Drag It Over"
 **Sat Oct 17, 2026 · 10:58 PM HST**
