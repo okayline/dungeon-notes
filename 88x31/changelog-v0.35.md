@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.42
+# 88x31 cLuB — Dev Changelog — v0.35–v0.43
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.43 — "Click Here to Enter"
+**Sat Oct 17, 2026 · 11:30 PM HST**
+
+Decisions (owner): the wall picker shows every button the player has in a fixed-height box ("it's ok to have the scroller if they have that many"); the line above the title no longer all starts with "You have", and must include "*dial-up noises* Connecting...".
+
+- **Wall picker**: `.tw-grid` is 130 px high with `overflow-y: auto` (`overscroll-behavior: contain`); every button is drawn (no cap). Random order, buttons in a trade or away last; if it has to scroll (`scrollHeight > clientHeight`) it is redrawn with the week's theme matches first. Replaces the v0.41 "only what fits" trimming.
+- **Opening lines** (`FOUND_LINES`, one random per page load): "You have found...", "You have dialed into...", "You have unlocked...", "You have surfed onto...", "Welcome, web surfer, to...", "*dial-up noises* Connecting...", "Buffering... buffering... buffering...", "Loading... 97%...", "Surfin' the information superhighway", "Click here to enter...", "Your search returned...", "Greetings from...", "Now entering...", "This site is best viewed at...", "Transmission received from...", "You've got buttons!" (the owner's 16 picks from a longer list).
+- Checked: headless Chromium with 80 mock buttons (all 80 in the box, theme matches first, drag from the box still puts a button up).
 
 ## v0.42 — "Right Where You Are"
 **Sat Oct 17, 2026 · 11:18 PM HST**
