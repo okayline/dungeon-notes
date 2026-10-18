@@ -6,7 +6,7 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 ---
 
 ## v0.38 — "Theme Wall"
-**Sat Oct 17, 2026 · 9:30 PM HST** (migration `028_theme_walls.sql`, not yet run on the live database; run it before the push)
+**Sat Oct 17, 2026 · 9:30 PM HST** (migration `028_theme_walls.sql`; pushed to main before the migration was run, so the Theme Wall and Rings pages answer with an error until it is; everything else, the Ledger page included, works without it)
 
 Decisions (owner): everyone in a ring sees every pin on its wall, seen or not (the group wall is where you meet buttons you haven't seen). Name clash with `wall_slots` (a player's own button order): new tables, "Theme Wall" in the UI. Lock at the Monday 00:00 UTC rollover, not "Sunday". Rare theme types are fine for now. Players don't make rings (too much for now): the webmaster makes them. The ★ for a theme match is a row above the wall (one per on-theme button), not on the buttons. Design doc: `88x31-club-weekly-loop-v1.md`.
 
