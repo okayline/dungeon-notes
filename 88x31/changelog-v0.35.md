@@ -1,9 +1,21 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.39
+# 88x31 cLuB — Dev Changelog — v0.35–v0.40
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.40 — "Drag It Over"
+**Sat Oct 17, 2026 · 10:58 PM HST**
+
+Decisions (owner): the wall is drag and drop only, no buttons, with a long-press to pick up (and it has to work with a mouse on a PC); no explainer text anywhere on the wall page; earlier / later week links off "for now" (the owner has ideas for later); every wall the same size; new players go straight into a ring at signup; the webring panel under the wall panel; no stars (or theme-first ordering) in the picker.
+
+- **Drag and drop** (`twHold`, `twCarry`, `twDraw`): the tray of your buttons is always shown under the wall (no "Put up a button" / "Change button" / arrow / "Take it down" buttons). A touch press has to be held 350 ms (a 10 px move first means scrolling; the phone buzzes on pick-up); a mouse picks up after 3 px. While carrying: a fixed-position ghost (`.tw-carried`) follows the pointer, a dashed preview shows the snapped, non-overlapping landing spot, touchmove is blocked so the page doesn't scroll. Drop on the wall: `pin` with instance + x/y (replaces your button; the server still has the last word on overlap). Pick up your own pin: drop on the wall to move it, drop on the tray (red dashed outline) to take it down, drop elsewhere to leave it. Arrow keys still nudge a focused pin. Mouse presses `preventDefault` so the browser's own picture-drag doesn't start; `dragstart` is blocked too. Found by the headless test: my ghost class clashed with the existing "your spot" label class (`tw-ghost`), renamed.
+- **Wall page:** the tray hint, the "Every button of the <type> type adds a ★!" line and the earlier / later week links are removed (the week pages still exist at their links); the lock / LAST DAY line stays; no "locked" after the week label on old weeks; no "back to my ring" in the visiting line; `first_week` is in the GET reply for when the links return.
+- **One wall size:** `canvasSize()` is a constant 335 px square, 10 slots, for every ring (older walls keep theirs). Rings over about 10 members get crowded; around 25 refuse new pins ("The wall is full"). Rings admin text updated.
+- **Signup:** `createAccount` calls `ensureDefaultRing`, so a new player is in "~*~cLuB~*~ Ring #1" at once (the fullest default ring with a seat: #1 until it has 8, then #2, ...). Not the owner's literal "Ring #1 for everyone", because the fixed wall would fill; offered to lift the cap. Players who signed up earlier are still grouped on their first look.
+- **Webring panel:** moved into the ring page under the wall panel (`webringTo`); back in the footer on every other page.
+- Checked: node tests (fixed size, signup into Ring #1 then #2, joining, ring admin, API + ledger) and headless Chromium (mouse drag from the tray puts a button up with a preview, mouse drag of your pin onto the tray takes it down, simulated long-press touch puts one up, no leftover ghosts, webring placement both ways).
 
 ## v0.39 — "Everybody Gets One"
 **Sat Oct 17, 2026 · 10:40 PM HST**
