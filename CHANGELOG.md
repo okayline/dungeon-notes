@@ -3,6 +3,10 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## Notes only - Oct 18 2026
+
+No code. `daily-dungeon-design.md` brought up to v1.27.1; new "The gate" subsection and a first gate review of unbuilt items in section 16 (what does it add, take away, touch). No game files changed.
+
 ## v1.27.1 - Quick Turns - Oct 17 2026, 19:20 HST
 
 Page only (`index.html`, `screen.js` version). No Worker change.
