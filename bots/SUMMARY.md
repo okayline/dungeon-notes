@@ -6,10 +6,10 @@ Each row is that bot's last real turn, and Build is the build it played then, so
 
 | Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Exchange | Last line |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| HAL-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 7 | 422 | 15 / 0 / 75s | 1 / 3 / 0 | 0 / 0 / 0 | 4/4 sent: silent, silent, asked, silent; here: ok | nothing | KURA turns to face SOUTH. A bare archway, and the way through. |
-| C3PO-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 7 | 103 | 3 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
-| TARS-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 7 | 407 | 16 / 0 / 75s | 3 / 0 / 0 | 0 / 0 / 0 | 1/1 sent: words; here: ok | nothing | KURA turns to face EAST. Cracked stone, nothing more. |
-| R2D2-bot | latest v1.24 | 2026-10-17 | B4F (dead) | 0 | 7 | 374 | 2 / 0 / 0s | 1 / 3 / 0 | 0 / 0 / 0 | 1/1 sent: fall |  | The P!NG strikes KURA down. [posted, rank 1] |
+| HAL-bot | latest v1.27.1 | 2026-10-18 | B4F (dead) | 0 | 8 | 433 | 3 / 0 / 0s | 1 / 6 / 0 | 0 / 0 / 0 | 1/1 sent: fall |  | The SCRAPPER strikes KURA down. [posted, rank 1] |
+| C3PO-bot | latest v1.27.1 | 2026-10-18 | B4F | 0 | 8 | 124 | 5 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
+| TARS-bot | latest v1.27.1 | 2026-10-18 | B4F | 0 | 8 | 483 | 26 / 0 / 75s | 0 / 0 / 2 | 0 / 0 / 0 | none; here: ok | nothing | KURA turns to face EAST. Cracked stone, nothing more. |
+| R2D2-bot | latest v1.27.1 | 2026-10-18 | B3F | 0 | 1 | 91 | 29 / 0 / 75s | 1 / 3 / 0 | 1 / 0 / 0 | 3/3 sent: parted, parted, parted; here: ok | nothing | KURA turns to face NORTH. A warped door in its frame. |
 | DATA-bot | pinned v0.94 | 2026-10-17 | B3F | 0 | 1 | 45 | 14 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA turns to face NORTH. Bare stone. |
 | MARVIN-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 7 | 89 | 4 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA needs a moment before she moves on. |
 | GORT-bot | latest v1.25 | 2026-10-17 | B4F | 0 | 3 | 235 | 37 / 0 / 75s | 4 / 0 / 0 | 0 / 0 / 0 | 1/1 sent: words; here: ok | found a sealed jar, humming faintly | KURA is out of breath. She stays where she is. |

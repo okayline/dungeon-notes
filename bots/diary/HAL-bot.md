@@ -286,3 +286,45 @@ KURA goes SOUTH into a cleared room.
 KURA goes NORTH into a cleared room.
 KURA goes SOUTH into a cleared room.
 ```
+
+## 2026-10-18  -  B4F, day 8, the run ended  (latest v1.27.1)
+
+```
+KURA wakes on B4F.
+The drawers slide open. 86 SILVER.
+KURA searches the WEST wall... Faded paint. A number, or a sigil.
+KURA searches the WEST wall... A SCRAPPER wanders in!
+  The SCRAPPER comes off as HUM.
+  SCRAPPER: "ACCESS DENIED. go away"
+  The SCRAPPER strikes KURA. -2 HP
+  The SCRAPPER stops mid-swing.
+  SCRAPPER: "ooh. can I have one of those?"
+  KURA keeps her things.
+  SCRAPPER: "cute. one more round."
+  The SCRAPPER strikes KURA. -10 HP
+  The SCRAPPER stops mid-swing.
+  SCRAPPER: "ooh. can I have one of those?"
+  KURA keeps her things.
+  SCRAPPER: "cute. one more round."
+  The SCRAPPER strikes ELF. -2 HP
+  The SCRAPPER stops mid-swing.
+  SCRAPPER: "ooh. can I have one of those?"
+  KURA keeps her things.
+  SCRAPPER: "thanks. still gonna hit you."
+  The SCRAPPER strikes KURA. -4 HP
+  The party strikes. -7 HP
+  The SCRAPPER stops mid-swing.
+  SCRAPPER: "ooh. can I have one of those?"
+  KURA keeps her things.
+  SCRAPPER: "cute. one more round."
+  The SCRAPPER strikes PIXIE. -3 HP
+  The SCRAPPER stops mid-swing.
+  SCRAPPER: "ooh. can I have one of those?"
+  KURA keeps her things.
+  SCRAPPER: "thanks. still gonna hit you."
+  The SCRAPPER strikes KURA. -10 HP. FALLS
+  KURA falls. The run is over.
+The SCRAPPER strikes KURA down.
+
+posted, rank 1
+```

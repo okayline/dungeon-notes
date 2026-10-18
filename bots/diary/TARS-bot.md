@@ -269,3 +269,49 @@ KURA goes NORTH into a cleared room.
 KURA goes SOUTH into a cleared room.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-18  -  B4F, day 8  (latest v1.27.1)
+
+```
+KURA wakes on B4F.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Damp. The smell of old pipes.
+KURA searches the EAST wall... Cold stone, cold hands.
+KURA goes NORTH into a cleared room.
+The drawers slide open. 87 SILVER.
+KURA searches the WEST wall... Nothing yet.
+KURA works the worn wall, steady.
+KURA searches the WEST wall... Nothing.
+KURA searches the WEST wall... A V3NDOR wanders in!
+  KURA runs EAST and leaves the V3NDOR behind.
+  Something old leans toward KURA. [FRL]
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall... KURA finds a moth-eaten glove.
+KURA searches the WEST wall... A PATCH wanders in!
+  KURA runs NORTH and leaves the PATCH behind.
+  Something old leans toward KURA. [FRL]
+KURA searches the EAST wall... Nothing but dust.
+KURA searches the EAST wall... Damp. The smell of old pipes.
+KURA searches the EAST wall... The wall gives nothing away.
+KURA searches the EAST wall... Mortar, mostly. Some is older.
+KURA searches the EAST wall... Someone has looked here before.
+KURA searches the EAST wall... The wall gives nothing away.
+KURA searches the EAST wall... Damp. The smell of old pipes.
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA goes SOUTH into a cleared room.
+KURA searches the EAST wall... Nothing.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Salt along the base, in a line.
+KURA searches the EAST wall... Cold stone, cold hands.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA goes SOUTH into a new room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+```

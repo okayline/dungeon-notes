@@ -284,3 +284,68 @@ The P!NG strikes KURA down.
 
 posted, rank 1
 ```
+
+## 2026-10-18  -  B3F, day 1  (latest v1.27.1)
+
+```
+KURA searches the SOUTH wall... Only stone.
+KURA searches the SOUTH wall... Fingers come away gray.
+KURA searches the SOUTH wall... KURA hears something. Then nothing.
+KURA searches the SOUTH wall... 150 SILVER, loose in the rubble. Two doors.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA searches the EAST wall... Salt along the base, in a line.
+A locked door. Nothing to search here.
+KURA unlocks the NORTH door. The way is clear.
+KURA searches the SOUTH wall... The wall gives nothing away.
+KURA searches the SOUTH wall... A WORM wanders in!
+  The WORM strikes KURA. -5 HP
+  The party strikes. -9 HP
+  The WORM comes off as STATIC.
+  WORM: "01001000 01001001"
+  The WORM goes its way. PROCESS ENDED
+  It leaves 11 ICHOR in the flask.
+KURA searches the EAST wall... Salt along the base, in a line.
+KURA searches the EAST wall... A low sound. KURA holds her breath.
+KURA searches the EAST wall... A small sound, there and gone.
+KURA goes NORTH into a new room.
+KURA searches the WEST wall... Someone has looked here before.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall... A WORM wanders in!
+  The WORM comes off as STATIC.
+  WORM: "PROCESS DETECTED"
+  The WORM goes its way. 01000010 01011001 01000101
+  It leaves 10 ICHOR in the flask.
+KURA goes WEST into a new room.
+KURA searches the SOUTH wall... A WORM wanders in!
+  The WORM comes off as STATIC.
+  WORM: "SIGNAL FOUND"
+  The WORM leaves a tangle of fiber cable behind.
+  The WORM is content. 01000010 01011001 01000101
+  It leaves 6 ICHOR in the flask.
+Not yet. KURA catches her breath.
+KURA searches the SOUTH wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA searches the NORTH wall... Nothing.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall... Salt along the base, in a line.
+KURA works the worn wall, steady.
+KURA searches the EAST wall... Nothing yet.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall... Someone has looked here before.
+KURA searches the WEST wall... Fingers come away gray.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA searches WEST... A hatch of heavy drawers, shut tight. It can be used.
+KURA goes NORTH into a new room.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+```
