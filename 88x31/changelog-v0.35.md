@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.41
+# 88x31 cLuB — Dev Changelog — v0.35–v0.42
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.42 — "Right Where You Are"
+**Sat Oct 17, 2026 · 11:18 PM HST**
+
+Decisions (owner): opening a pack must take the player to the cards (on mobile too), "maybe above the Packs panel"; guestbook stamped buttons bigger; the button collection centered in its panel.
+
+- **Pack opening**: the old code asked the page to scroll (`block: "nearest"`) while the box still said "Loading...", so once the cards appeared below the fold nothing scrolled again. `#pack-open` is now its own `.panel` above the Packs panel (empty = hidden), and `showPull`, `openPackCards` and re-clicking an opened pack call `scrollIntoView({ block: "start" })` after the cards are in place (`scroll-margin-top: 8px`). Daily, sealed and bonus packs all use it.
+- **Guestbook stamps**: a stamped button is `bannerImg(..., 2)` (sealed-pack stamps unchanged).
+- **Collection**: `#page-collection { justify-content: center }`; on a phone it is still two to a row.
+- Checked: headless Chromium at 390 px with the page scrolled to the bottom (the pack box lands at the top of the viewport, above the Packs panel) and at 900 px (59 px gaps on both sides of the collection; stamps drawn at about 172 px).
 
 ## v0.41 — "Stay Put"
 **Sat Oct 17, 2026 · 11:05 PM HST**
