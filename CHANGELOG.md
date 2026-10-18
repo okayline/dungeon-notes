@@ -3,6 +3,14 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.27.1 - Quick Turns - Oct 17 2026, 19:20 HST
+
+Page only (`index.html`, `screen.js` version). No Worker change.
+
+- **Dropped clicks.** `act()` returned at once while `waiting` (a server move or the once-a-minute background `tick`) was set, for every button. Now: `VIEW_ONLY` (invoke, exchange, log, board, about, codex, backup) skips that wait; `left` / `right` tapped meanwhile are kept in `queuedTurn` (one at most, 3 seconds at most) and replayed by `flushTurn()` when `act` (depth 0) or `tick` finishes, only if there is no fight, question, raise, altar, found box, open screen, search beat or title. `act` is now a wrapper around `actCore`; `tick` around `tickCore`. Forward and search are NOT queued (a queued step could walk through a door).
+- Still dropped during the wait: forward, search, fight and the rest. The search beat still blocks everything on purpose.
+- Checked in Chromium with a mock server answering after 0.8 s: three quick taps on [>] gave two turns.
+
 ## v1.27 - Blessed - Oct 17 2026, 19:05 HST
 
 Rules, `screen.js`, Worker (`game.js`), tests. No migration (marks accept any new value). Design doc section 15.
