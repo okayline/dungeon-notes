@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.27 - Blessed - Oct 17 2026, 19:05 HST
+
+Rules, `screen.js`, Worker (`game.js`), tests. No migration (marks accept any new value). Design doc section 15.
+
+- **Copy matching** (the "bag slots by order" gap). `takeOut(st, i, to)` replaces the bare `st.items.splice`s (altar offering, breaking, use, handTo, box give, keepItem's drop, COMPILER): it takes bag slot i out and records `{ n, k, to }` in `st.slots`, k being the index among items of that name (oldest first). `trackBag` turns each lost name into `st.gone` plus aligned `st.goneAt` (k; 0 when no slot was named, which is what `indexOf` took) and `st.goneTo` (a friend's name or ""). keepItem's never-kept find is k = -1 (the newest). `settleCopies` splices copy k out of `st.copies[name]` and spends THAT copy; no k falls back to the newest. `goneAt` and `goneTo` are in OUTBOX and in the reset list, with `slots` and `pocketed`.
+- **Friends' pockets.** A thing handed to a PARTY member is no longer used up: its copy entry moves to `st.pocketed[member]`; `takeFrom` tags the new find `w: member`, and `settleCopies` puts the same entry (same number, same marks) back instead of numbering a new copy. Handed to a demon (a trade): still used up. A member who leaves or dies keeps the copy in `pocketed` unspent until the run resets (known leak, see below).
+- **Blessings.** `slotTier(st, i)` = `tierWithBlessings` for the copy in slot i. Read by `aura` (AURA_STR), the altar offering (ALTAR_SIZE) and breaking (BREAK, BREAK_MIN). NOT yet read by `affinity` (demon taste), the box-gift check, or the heat/TIER lookups by name.
+- **Marks for the unmarked.** New deeds: `kit` ("Brought along", the starting bag, which already had registry copies), `moon_gift` ("A moon gift", `moonGift` item/gamble), `found_inside` ("Found inside", a hollow thing's contents), `made_compiler` ("Made by COMPILER"), `copied_cache` ("Copied by CACHE"). Still no marks: visitors (display only), anything found before v1.25.
+- **Occasions** (`screen.js` `occasions(date)`, UTC calendar, the game's mean moon): `blue_moon` (the full phase around a full moon that is the second of its UTC month), `supermoon` (full moon at peak <= 361,500 km by Meeus' biggest distance terms; the mean moon misses some real ones, e.g. Jan 3 2026), `thirteenth_moon` (the 13th full moon of a year with 13), `eclipse_solar` / `eclipse_lunar` (NASA's tables 2026-2040, entered by hand in `ECLIPSES`; penumbral lunar left out; EXTEND IN 2040), `equinox` / `solstice` (Meeus' mean formulas, the UTC day), `mirror_day` (month = day). `gain` stamps `f.o` on a find; `settleCopies` queues each as a `night` mark. INVOKE line 1 names the rarest occasion in place of the phase when it fits 41 columns.
+- **Copy-number marks.** When the registry numbers a copy as #1 or #100, `settleCopies` queues `first_copy` / `hundredth_copy` (deeds). INVOKE line 2: "The first copy." before "Carried up N levels." when it fits.
+- **Not built (coincidence occasions).** Everyone on a level taking the same door, even tallies, a 1-of-1 changing hands, round player counts: they need a shared count across players; the first two need a Worker-side tally.
+- Tests: 17 (new: the right copy is spent, blessed counts one tier up, friends' pockets round trip, occasions and every history line fitting 41).
+
 ## v1.26 - Show Her - Oct 17 2026, 18:50 HST
 
 Rules, page, `act.js`, Worker (`game.js`, one line). No migration. The Moon's wish and the offering at the stairs (design doc section 15).

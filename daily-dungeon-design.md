@@ -199,6 +199,16 @@ The owner's own diagnosis: systems keep getting built without meaning or purpose
 - **Stairs** LEANING: no longer found by searching (the game is now finding the right items, not the stairs); sealed behind her judgment. The Altar room may fold into it later; left as it is for now.
 - **Occasions** DECIDED, each one only a mark (no new system): blue moons, real eclipses, supermoons at perigee, solstices and equinoxes, the Thirteenth Moon (a year with 13 full moons, every few years), and mirror days (month equals day, 1/1 to 12/12, on the omen clock). Coincidence occasions too: everyone on a level taking the same door, even tallies, a first copy or copy #100, a 1-of-1 changing hands, a round number of players down at once.
 - **"Never sad," rebalanced** DECIDED: no choice is ever wrong and a miss never costs, but time can carry stakes and poignancy.
+- **Built (v1.27, Oct 17):** blessings count (aura, altar, breaking); the right copy leaves the bag (slot-matched); things handed to a friend keep their copy and marks; the kit, moon gifts, hollow insides, COMPILER and CACHE now carry marks (CACHE stays); occasion marks (blue moon, supermoon, Thirteenth Moon, eclipses 2026-2040, equinox, solstice, mirror day); first/hundredth copy marks.
+- **Open issues, saved for later (Oct 17, after v1.27):**
+  - Demons: a thing handed to a demon is used up, so it loses its copy and marks when the demon gives it back or joins. Idea: carry the copy in the demon's pocket like a friend's.
+  - Run end: leftover bag and pocket copies are never used up in the registry (they stay held by the player). Idea: use up every copy still held when a run ends or restarts. Check what the account page shows for them.
+  - A friend who dies or leaves with your thing leaves its copy unspent until the run resets.
+  - Blessings do not yet change demon taste (`affinity`) or the box-gift check.
+  - Coincidence occasions (same door for everyone, even tallies, round player counts): need a shared server-side counter (counts only, no player ids); the action's reply returns the count it just made, and the mark goes on what was found at that moment. A door tally route and the recent-players window already exist. A 1-of-1 changing hands waits for relics.
+  - Supermoons come from the game's mean moon, so some real ones are missed (Jan 3 2026). Eclipse table ends 2040.
+  - No v1.27 screenshot (README image is still v1.26). Title feed: the three frozen "moon" cards go when it is redone.
+  - Visitors from 88x31 and finds from before v1.25 stay unmarked.
 - **Later:** bones (endings become gifts), the dark rising as a shared in-game event. **Not now:** weather; the Moon keeping items.
 - **Built:** marks stamped and shown in INVOKE (v1.25); the wish, the + pip, the sealed stairs with [S]HOW and her judgment (v1.26). The moon's offers of two things were removed in v1.26.
 
