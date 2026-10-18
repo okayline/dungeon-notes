@@ -183,6 +183,25 @@ The owner's own diagnosis: systems keep getting built without meaning or purpose
 - **The cut list for provenance** (drafted Oct 17, not agreed item by item): cut the hidden stairs search, the lean nudge from RARE+ finds, CACHE (a copy with no history clashes with provenance), the unbuilt "gift box carries alignment"; merge tags and item marks into one history; read alignment off marks; fiddling reveals old marks; repurpose the altar (it adds a mark), COMPILER (the merged item inherits both histories), the moon's offers (hints toward her wish), the Relay's clue (hints at the wish), the locker and the Archive and Void (unusual histories).
 - **Cross-game item gameplay** DECIDED for later, after the redesign.
 
+### The Moon's wish and marks (decided Oct 17, evening)
+
+- **Marks** DECIDED; backend BUILT (dungeon-items migration 005, live). A mark is one thing that happened to a numbered copy, kept in the shared registry, shown in the item's description in INVOKE. Each verb makes its own kind of history: SEARCH finds, TALK gives, time leaves sky marks. Starting set:
+  - night marks: the eight moon phases (stamped when the item comes to the bag);
+  - deed marks: found in a wall, given by a party member, taken from a demon, left by a stranger in a gift box, carried up a level;
+  - base attributes (already on every item): alignment, nature, and tier (common, uncommon and rare only, for now).
+- **Her wish** DECIDED. Each quarter she asks for three qualities: one night mark, one deed mark, one base attribute. Her wish is personal, and plain (she says it outright; dim-means-cryptic is PARKED for later, since it would give new players less at the start of a month). The night mark only asks for phases still ahead in that quarter, and the generator checks every part is makeable.
+- **The offering** DECIDED. At the stairs, at the end of the quarter, the player offers her up to **two** items. She judges the whole offering (a quality counts if any offered item has it), only on what is visible: no hidden weights from her fullness, VIBES or tags.
+- **Anything passes.** The only way to fail is not making it out before the dark rises.
+  - 0 qualities: she lets you through, no mark, nothing given.
+  - 1 or 2: the items get **"answered the Moon"**, and she shows you **the path not taken** (what was behind the doors you didn't open).
+  - all 3: also **"blessed by the Moon"** on one item: it counts one tier higher. Blessings stack, capped by the ladder (common 3, uncommon 2, rare 1, up to mythic). A mark, never a swap, so the copy keeps its number and history.
+- **She keeps nothing**; the items come back to the bag.
+- **Stairs** LEANING: no longer found by searching (the game is now finding the right items, not the stairs); sealed behind her judgment. The Altar room may fold into it later; left as it is for now.
+- **Occasions** DECIDED, each one only a mark (no new system): blue moons, real eclipses, supermoons at perigee, solstices and equinoxes, the Thirteenth Moon (a year with 13 full moons, every few years), and mirror days (month equals day, 1/1 to 12/12, on the omen clock). Coincidence occasions too: everyone on a level taking the same door, even tallies, a first copy or copy #100, a 1-of-1 changing hands, a round number of players down at once.
+- **"Never sad," rebalanced** DECIDED: no choice is ever wrong and a miss never costs, but time can carry stakes and poignancy.
+- **Later:** bones (endings become gifts), the dark rising as a shared in-game event. **Not now:** weather; the Moon keeping items.
+- **Next to build:** 4Dungeon stamps the starting marks, INVOKE shows them, then the wish and the offering.
+
 Still decided from before, not built: **getting out is a finish** (two boards, this moon and all time); **the glitch mechanic** (low priority); **heat on the minimap** as wavy walls (leaning).
 
 ## 16. Systems under review
