@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.38
+# 88x31 cLuB — Dev Changelog — v0.35–v0.39
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.39 — "Everybody Gets One"
+**Sat Oct 17, 2026 · 10:40 PM HST**
+
+Decisions (owner): the daily pack has no "send to nobody" option, but it shouldn't be friction either: a drop-down (no typing) of players or "Random person", not a form. Rejected: a dealt list of three recipients, a "thanks" note back, extra choices. The button already remembers it was passed on from A to B (an `ownership_history` row with reason `pass_on`, shown in the ledger as "passed on to B by A"), so nothing new is stored. The owner will watch the print runs: twice as many copies come out of every daily pack. Fill tags are being rethought (the "Finishes the Ocean set!!" and ★ tags tell the player the answer, so the puzzle is gone); built on branch `fill-tags`, not merged. The "prediction mechanic" line in the design doc is not the owner's (they don't like it).
+
+- **`POST /api/pull`**: one of the other two always goes out. `pass` defaults to the first other card that isn't the BONUS card; `to` is a name or `__random__` (the default). Random = a real player other than you, recently seen (14 days) first, then a bot only if no real player exists and the card isn't an ultra. A named bot recipient is refused for an ultra ("An ultra can only go to a real player."). The reply now has `to` (the recipient's name). Taking the BONUS PACK card skips all of this.
+- **Page** (`showPull`): "No thanks, let the other two go" is gone; the first of the other two is pre-selected (radio, switchable); "Send it to" is a `<select>` with "🎲 Random person" first, then real players, then bots marked [bot], never you. After keeping: "Kept, and <name> got your gift!". Footer v0.39.
+- Checked: a node test on an in-memory SQLite with the real schema (no pass and no recipient still sends one, to a real player; ultra to a bot refused; common to a bot fine; to yourself refused; one `pass_on` row written).
 
 ## v0.38 — "Theme Wall"
 **Sat Oct 17, 2026 · 9:30 PM HST** (migration `028_theme_walls.sql`; pushed to main before the migration was run, so the Theme Wall and Rings pages answer with an error until it is; everything else, the Ledger page included, works without it)
