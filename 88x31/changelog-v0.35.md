@@ -1,9 +1,27 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.37.2
+# 88x31 cLuB — Dev Changelog — v0.35–v0.38
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.38 — "Theme Wall"
+**Sat Oct 17, 2026 · 9:30 PM HST** (migration `028_theme_walls.sql`, not yet run on the live database; run it before the push)
+
+Decisions (owner): everyone in a ring sees every pin on its wall, seen or not (the group wall is where you meet buttons you haven't seen). Name clash with `wall_slots` (a player's own button order): new tables, "Theme Wall" in the UI. Lock at the Monday 00:00 UTC rollover, not "Sunday". Rare theme types are fine for now. Design doc: `88x31-club-weekly-loop-v1.md`.
+
+- **Pins are checked when drawn, not hooked.** `wall_pins` holds (wall, member, copy, x, y). `wallPins` shows a pin only while `instances.owner_id` is still the member, `consumed = 0` and `locked != -1` (away); otherwise the spot draws empty and the x/y stay reserved. Nothing in trades, gifts, fusion, trade-in or travel was touched. A button that goes away and comes home before the lock is back in its spot. A trade-locked copy (`locked > 0`) still shows (still owned) but can't be newly pinned.
+- **Tables** (`028`): `rings.is_default`; `ring_walls` (ring, week, theme, size, slots, `locked_at`, `snapshot`; unique per ring and week); `wall_pins` (PK wall + user); a unique index on `ring_members (ring_id, user_id)`. `rings` / `ring_members` already existed unused; `ring_members.position` is the seat number and a leaving member's `user_id` is nulled (seat kept).
+- **Weeks and lock** (`lib/themewall.js`): week = whole weeks since Mon Jan 5 1970 00:00 UTC (`weekOf`, `weekStart`, `weekEnd`). `lockEndedWalls` runs on every `/api/me`, on `sealLedger`, and on every Theme Wall request: walls with `week < now` get `locked_at = weekEnd(week)` (the rollover, whenever it actually ran) and a `snapshot` of what was showing then. So the snapshot is the state at the first request after the rollover, usually minutes. A wall nobody used is locked with a NULL snapshot and is never sealed.
+- **Theme** (`themeFor`): nothing stored. The six types (neon, webring, guestbook, counter, construction, divider; never `found`) are shuffled per 6-week cycle (seeded by the cycle) and played in order; if a cycle would open with the last cycle's last type, its first two swap. So it never repeats two weeks running and every type comes up once per six. The wall stores its own copy of the theme. A match is `type == theme` or `type == 'found'`.
+- **Canvas** (`canvasSize`): square, slots = members + 2 (default rings: at least 8 + 2, since they fill up over the week), area = slots x 88 x 31 x 4, side rounded up to a multiple of 5 (a full ring is 335 px). Fixed when the wall is made (first look of the week).
+- **Rings.** `ensureDefaultRing` (on the first Theme Wall look): a player in no ring goes into the fullest default ring with a free seat (8 seats), else a new "~*~cLuB~*~ Ring #N". Default rings are owned by the webmaster so `deleteAccount` never deletes them. Bots are not in rings yet. `accounts.js` also deletes a player's pins.
+- **Placement.** `placePin` (server, the last word): any pixel in bounds is fine (edge snapping lands off-grid); a drop on top of someone lands in the nearest free spot (grid spots plus spots flush against other pins, empty reserved spots included); a full wall refuses. The page (`twSnap`): 5 px grid, then flush against a neighbour's edge within 6 px; a drag onto somebody stays at the last free spot. Arrow keys / buttons nudge 5 px (Shift: 1). Saves 250 ms after a nudge, at once after a drag. Fixed size, no rotation, no scale; stored in wall pixels, drawn at `min(2, fits)`.
+- **API** `/api/themewall`: GET (`ring`, `week`) gives the wall, pins (with the copy's finish so `bannerImg` draws them), members and your rings; POST `pin` (copy optional when moving) and `unpin`. This week only; members only. Looking calls `markSeen` on the shown designs, like visiting a page.
+- **Ledger.** New kind `wall`: record `["wall", id, ring, week, theme, size, [[user, copy, design, x, y], ...], locked_at]` (ids only, empty spots have null copy and design), sealed once per locked wall that has a snapshot. The ledger line: "<ring>'s Theme Wall (NEON) was locked with N buttons on it", linking to the wall.
+- **Page.** `#themewall` (and `#themewall/<ring>/<week>` for earlier weeks), a nav link, the last-day warning, a picker for your buttons (theme matches first, ★; locked or away ones greyed), a "Who's up" list. How to Play has a Theme Wall section. Footer v0.38.
+- Checked: `node --check`; a 0.2 s node test on an in-memory SQLite with the real `schema.sql` (week boundaries, 600 weeks of themes, canvas sizes, placement, default ring filling to 8 and the ninth starting a new ring, pins going empty on trade / fusion / away and coming back, lock timing, frozen snapshot, empty wall not sealed, the real GET / POST handlers with sessions, ledger sealing and chain verification, the ledger API's SQL); and a headless Chromium run at 390 px with a mock API (drawing, ★, dragging with grid snap, arrow keys, the picker, no page errors from the new code). Found and fixed by the test: the member's name and the button's name were both `name` in one query.
+- Not built: bots in rings, joining or making your own rings, the forced send, fill tags, scoring, shapes, rewards.
 
 ## v0.37.2 — "A Few More Mysteries"
 **Sat Oct 17, 2026 · 11:12 AM HST** (no migration)
