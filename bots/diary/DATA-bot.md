@@ -279,3 +279,39 @@ The DAEMON strikes KURA down.
 
 posted, rank 2
 ```
+
+## 2026-10-17  -  B3F, day 1  (pinned v0.94)
+
+```
+(a new run begins)
+KURA wakes in the dark. B3F.
+A locked door. The crack hums on one note, almost singing.
+KURA unlocks the NORTH door. The way is clear.
+KURA searches the EAST wall. Cold stone, cold hands.
+KURA searches the EAST wall. Faded paint. A number, or a sigil.
+KURA searches the SOUTH wall. A dead cable runs in and stops.
+KURA searches the SOUTH wall. Cold stone, cold hands.
+KURA searches the EAST wall. Nothing but dust.
+KURA searches the EAST wall. Salt along the base, in a line.
+KURA goes WEST into a new room.
+KURA searches the NORTH wall. Faded paint. A number, or a sigil.
+KURA searches the NORTH wall. Damp. The smell of old pipes.
+KURA goes WEST into a new room.
+KURA searches the WEST wall. Mortar, mostly. Some is older.
+KURA searches the WEST wall. Faded paint. A number, or a sigil.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall. Nothing.
+KURA searches the NORTH wall. The wall gives nothing away.
+KURA searches the NORTH wall. Damp. The smell of old pipes.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+```

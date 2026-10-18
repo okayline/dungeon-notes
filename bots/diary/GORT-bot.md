@@ -269,3 +269,68 @@ KURA goes WEST into a cleared room.
 KURA goes NORTH into a cleared room.
 KURA goes SOUTH into a cleared room.
 ```
+
+## 2026-10-17  -  B4F, day 3  (latest v1.25)
+
+```
+KURA takes what's loose.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall... Fingers come away gray.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall... Salt along the base, in a line.
+KURA digs deep.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall... A faint scrape, and then quiet.
+KURA searches the NORTH wall... 98 SILVER, loose in the rubble. Two doors.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA goes EAST into a new room.
+KURA searches the EAST wall... Someone has looked here before.
+KURA searches the EAST wall... Nothing but dust.
+KURA searches the EAST wall... Cold stone, cold hands.
+KURA searches EAST... Something behind the stone shifts, just once.
+A scarred workbench, its tools cold and laid out. It can be used.
+KURA works at the bench. Nothing needs mending.
+KURA searches the EAST wall... Damp. The smell of old pipes.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall... The wall gives nothing away.
+KURA searches the NORTH wall... Salt along the base, in a line.
+KURA searches the NORTH wall... Faded paint. A number, or a sigil.
+KURA searches the NORTH wall... A dead cable runs in and stops.
+KURA takes what's loose.
+KURA searches the NORTH wall... Mortar, mostly. Some is older.
+KURA digs deep.
+KURA goes WEST into a cleared room.
+KURA searches the SOUTH wall... Someone has looked here before.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall... A WORM wanders in!
+  The WORM strikes KURA. -5 HP
+  The party strikes. -9 HP
+  The WORM strikes CU SITH. -9 HP
+  The party strikes. -11 HP
+  The WORM strikes CU SITH. -6 HP
+  The party strikes. -11 HP
+  The party strikes. -14 HP
+  The WORM falls.  +8 ICHOR
+  It drops a neon tube fragment.
+  It drops a bag of loose screws.
+KURA searches the NORTH wall... Someone has looked here before.
+KURA searches the NORTH wall... Salt along the base, in a line.
+KURA searches the NORTH wall... Nothing yet.
+KURA goes SOUTH into a cleared room.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... The wall gives nothing away.
+KURA searches the WEST wall... Salt along the base, in a line.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+```

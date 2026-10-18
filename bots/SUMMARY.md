@@ -1,6 +1,6 @@
 # Bots: where everyone is
 
-Updated 2026-10-17 (Honolulu). Pinned build: `0ab1a92` (v0.94). Canaries play the latest code (v1.24).
+Updated 2026-10-17 (Honolulu). Pinned build: `0ab1a92` (v0.94). Canaries play the latest code (v1.25).
 
 Each row is that bot's last real turn, and Build is the build it played then, so a row can be older than the builds named above until that bot's next turn. A bot plays once a day. Newest real turn on file: 2026-10-17. Bots (names ending `-bot`) are kept off the leaderboards but still count in the feed's totals, season tallies and daily presence (not the live count). At the exchange they trade anonymously in the live market while the Worker's BOTS_PUBLIC switch is on.
 
@@ -10,9 +10,9 @@ Each row is that bot's last real turn, and Build is the build it played then, so
 | C3PO-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 7 | 103 | 3 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA is out of breath. She stays where she is. |
 | TARS-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 7 | 407 | 16 / 0 / 75s | 3 / 0 / 0 | 0 / 0 / 0 | 1/1 sent: words; here: ok | nothing | KURA turns to face EAST. Cracked stone, nothing more. |
 | R2D2-bot | latest v1.24 | 2026-10-17 | B4F (dead) | 0 | 7 | 374 | 2 / 0 / 0s | 1 / 3 / 0 | 0 / 0 / 0 | 1/1 sent: fall |  | The P!NG strikes KURA down. [posted, rank 1] |
-| DATA-bot | pinned v0.94 | 2026-10-16 | B4F (dead) | 0 | 2 | 77 | 8 / 0 / 36s | 1 / 6 / 0 | 0 / 0 / 0 | 1/1 sent: fall |  | The DAEMON strikes KURA down. [posted, rank 2] |
-| MARVIN-bot | pinned v0.94 | 2026-10-16 | B4F | 0 | 6 | 74 | 4 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA turns to face WEST. An open arch. The dark goes on beyond it. |
-| GORT-bot | latest v1.12.1 | 2026-10-16 | B4F | 0 | 2 | 162 | 25 / 0 / 61s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA turns to face NORTH. A bare archway, and the way through. |
+| DATA-bot | pinned v0.94 | 2026-10-17 | B3F | 0 | 1 | 45 | 14 / 0 / 75s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | nothing | KURA turns to face NORTH. Bare stone. |
+| MARVIN-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 7 | 89 | 4 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | nothing | KURA needs a moment before she moves on. |
+| GORT-bot | latest v1.25 | 2026-10-17 | B4F | 0 | 3 | 235 | 37 / 0 / 75s | 4 / 0 / 0 | 0 / 0 / 0 | 1/1 sent: words; here: ok | found a sealed jar, humming faintly | KURA is out of breath. She stays where she is. |
 | BENDER-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 5 | 64 | 6 / 2 / 0s | 4 / 0 / 0 | 0 / 0 / 0 | 1/1 sent: words; here: ok | nothing | KURA is out of breath. She stays where she is. |
 | WALLE-bot | pinned v0.94 | 2026-10-17 | B4F | 0 | 7 | 423 | 16 / 0 / 75s | 4 / 9 / 1 | 0 / 0 / 0 | 2/2 sent: asked, words; here: ok | nothing | Not yet. KURA catches her breath. |
 | ROSIE-bot | latest v1.12.1 | 2026-10-17 | B4F | 0 | 7 | 416 | 23 / 17 / 75s | 4 / 7 / 1 | 1 / 0 / 0 | 1/1 sent: words; here: ok | nothing | The W0RM falls. 26 ICHOR. |
