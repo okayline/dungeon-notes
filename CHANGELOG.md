@@ -3,6 +3,10 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## Bots to latest - Oct 18 2026
+
+No game code. `bots/roster.json`: the seven bots pinned to v0.94 (HAL, C3PO, TARS, DATA, MARVIN, BENDER, WALLE) now play the latest build, like R2D2, GORT and ROSIE. Reason: their diaries since Oct 13 are almost all "out of breath" / "needs a moment" lines. Not confirmed that the pin was the cause (GORT, already on latest, shows the same lines). Watch the next daily run.
+
 ## Notes only - Oct 18 2026
 
 No code. `daily-dungeon-design.md` brought up to v1.27.1; new "The gate" subsection and a first gate review of unbuilt items in section 16 (what does it add, take away, touch). No game files changed.
