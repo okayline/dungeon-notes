@@ -200,7 +200,7 @@ The owner's own diagnosis: systems keep getting built without meaning or purpose
 - **Occasions** DECIDED, each one only a mark (no new system): blue moons, real eclipses, supermoons at perigee, solstices and equinoxes, the Thirteenth Moon (a year with 13 full moons, every few years), and mirror days (month equals day, 1/1 to 12/12, on the omen clock). Coincidence occasions too: everyone on a level taking the same door, even tallies, a first copy or copy #100, a 1-of-1 changing hands, a round number of players down at once.
 - **"Never sad," rebalanced** DECIDED: no choice is ever wrong and a miss never costs, but time can carry stakes and poignancy.
 - **Later:** bones (endings become gifts), the dark rising as a shared in-game event. **Not now:** weather; the Moon keeping items.
-- **Next to build:** 4Dungeon stamps the starting marks, INVOKE shows them, then the wish and the offering.
+- **Built:** marks stamped and shown in INVOKE (v1.25); the wish, the + pip, the sealed stairs with [S]HOW and her judgment (v1.26). The moon's offers of two things were removed in v1.26.
 
 Still decided from before, not built: **getting out is a finish** (two boards, this moon and all time); **the glitch mechanic** (low priority); **heat on the minimap** as wavy walls (leaning).
 

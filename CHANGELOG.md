@@ -3,6 +3,21 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.26 - Show Her - Oct 17 2026, 18:50 HST
+
+Rules, page, `act.js`, Worker (`game.js`, one line). No migration. The Moon's wish and the offering at the stairs (design doc section 15).
+
+- **The wish** (`wishFor(st)`): per level, keyed by `d.quarter`, rolled once (`st.wish = { n, night, deed, base: { k, v } }`), private, never rerolled. Night: a phase of that quarter still ahead (`2q`, `2q+1`, only those `>= moon()` when the level's quarter is now; quarter q ends at the first half, full, last half and new moon). Deed: `found_wall`, `from_demon`, `given_member`, `from_stranger`. Base: alignment (LAW, NEUTRAL, CHAOS), nature (tech, spirit, both) or tier (COMMON, UNCOMMON, RARE, counting blessings via `tierWithBlessings`). Uniform picks.
+- **[M]OON** (`moonLook`): her offers of two things are gone (the offer branch, `MOON_OFFER`, `MOON_OFFERS`, `moonPair` removed; `moonTake` stays for an offer left waiting in an old run; `moonHunch` is now unused). Every look under MOON_TALKS with the moon up says the wish, plainly, as line 1 (`wishLine`, at most 77 columns for every wish, checked over all 288): "> She wants something alive, found in a wall, under a first quarter." The first telling sets `wish.told`. The moon's chatter is only for when she has set or there is no level.
+- **Pip.** `inventory()` gives `pips` per copy (`wishPip`: the wish was told, belongs to this level, and the copy meets any part); INVOKE draws a `+` at column 44.
+- **The stairs** are found on entering their room (`go`: `floor.stairs === i` adds "stairs" to `found`), no searching. Stepping onto them (no encounter) opens `st.raise = { dir, picks }` instead of climbing.
+- **SHOW** (page `raiseBox`, in the 3D view; actions `raisePick`, `raiseGo`, `raiseCancel`): numbers pick up to two (again unpicks), S or Enter shows, Esc steps back. "Your offering: ..." lists the picks or "nothing".
+- **Her judgment** (`raiseGo` -> `wishJudge`, a part counts if any shown thing has it; marks are `m` plus waiting `q` of the copy behind that bag slot, `copyAt`: the k-th of a name in the bag is the k-th in `st.copies`). 0 parts or nothing shown: one dry line (`MOON_NO` / `MOON_NOTHING`), no marks. 1-2: `MOON_SOME`, each shown copy queues `answered`, and "Behind the doors you left:" lists the flavor name (first of `NAMES_BY_KIND`) of every sealed wing door on the level, once each. 3: `MOON_YES`, plus `blessed` on the copy meeting the most parts (first shown on a tie), unless it is already MYTHIC or not COMMON to MYTHIC; that copy's line is the blessing. Then `st.judged = { k, lines }` and `go()` climbs (`st.raiseOk` for that one call). Tallies `moonJudged`, `moonBlessed`.
+- **The popup** (`judgedBox`): `noticeBox(J.lines)` once per `J.k` (`save.logged.judged`, page-kept).
+- **Worker:** `stampMarks` stamps `answered` and `blessed` as kind `moon`.
+- Known: the title card "moon answered" (`moonAnswered`) no longer grows; a run on a level before this release gets its wish on the next look.
+- Tests: 14 Worker tests pass. Checked by a script that plays a level to the sealed stairs and shows the moon a marked thing (judgment, marks queued, the climb), 300 looks with no offer, and in Chromium: picking, unpicking, SHOW, the popup, INVOKE's + (no page errors).
+
 ## v1.25 - Marked - Oct 17 2026, 18:30 HST
 
 Rules, Worker (`game.js`), page, `act.js`. No migration here; needs dungeon-items migration 005 (marks, already live on `items-db`) and dungeon-items `a7fa204` (`addMark`, `marksOf`). First step of provenance and the Moon's wish (design doc section 15).
