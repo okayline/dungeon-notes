@@ -230,4 +230,21 @@ Redesigning the systems is the top priority, and balance comes after it. TALK, t
 | The start | Slow, because the game is a slow burn | Onboarding later, after the fundamental systems |
 | Phones | Fits since v1.17 | Still awkward for both 4Dungeon and irl-dungeon |
 
+### The gate (Oct 18)
+
+Before a new system or verb is built, three one-line answers go here: **what does it add, what does it take away, what does it touch?** If still unsure: would it still be wanted in four weeks? The cutting so far has come after building (STANDBY in v1.16, the moon's offers in v1.26); the gate is a short look before.
+
+A first pass over what is unbuilt or unsettled, read from these notes only (no code looked at). Every verdict is SUGGESTED, not agreed.
+
+| Item | Adds | Takes away / touches | Suggested |
+|---|---|---|---|
+| Fix the leaks: demon pockets, run-end copies, a friend who leaves keeping your copy | Nothing new for the player | Ends "handed to a demon = used up", which erases marks | Do first. No new concept; provenance is only as true as the record |
+| Coincidence occasions (same door for everyone, even tallies, round player counts) | Surprise marks | Needs a shared counter (counts only, no player ids) | Wait. With one player on a level it cannot fire yet |
+| Bones and ghost demons | A run's ending leaves something for others | Needs other players and names | Wait. If built, make it provenance: items from a dead run arrive with their history |
+| Free actions and the ward (Listen, Knock, Mark, Combine, Leave an offering, Elbereth) | New verbs | Blurs the three verbs (SEARCH, TALK, MOON) | Cut or park. Marks and the stairs offering already cover "Mark" and "Leave an offering"; these notes predate the provenance direction |
+| Breath retune | Pacing | Limits searching; touches the goal | Ask what job it has now that the Moon's wish gives the goal. If there is no answer, leave it off |
+| Item-gathering puzzle (section 15, still marked OPEN) | A purpose for items | Touches everything | The big decision, and the one that answers "items are meaningless". Owner, Oct 18: "that is the main loop of the game". Section 15's status is left as OPEN until the owner says to change it. Test by playing before building more |
+
+The "wait" rows mostly wait for the same thing: other players. 4Dungeon has one player, so the test that matters now is playing the four weeks.
+
 **Open.** What is at the top. How much heat is danger and how much is reward. Whether looking up costs a breath when the moon has set. The wording of rumors and KURA's last words. Whether Hold Omen returns.
