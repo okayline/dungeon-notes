@@ -3,6 +3,18 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.25 - Marked - Oct 17 2026, 18:30 HST
+
+Rules, Worker (`game.js`), page, `act.js`. No migration here; needs dungeon-items migration 005 (marks, already live on `items-db`) and dungeon-items `a7fa204` (`addMark`, `marksOf`). First step of provenance and the Moon's wish (design doc section 15).
+
+- **What a find carries.** `gain(st, it, lines, noQueue, how)`: each `st.finds` entry gains `p` (the moon's phase, `moonIndex` 0-7) and `h` (the deed): `found_wall` (wall search, deep find, lure locker, a HOT dig), `from_demon` (a fallen demon's drop, a demon's offer or trade back, via `takeFrom`), `given_member` (`takeFrom` with a party member), `from_stranger` (the signal-room gift box, `boxDone`). No deed: the starting kit, the moon's gifts, junk insides, COMPILER, CACHE.
+- **Stamping (Worker).** `settleCopies(env, inner, st, a, me, old)` (now exported for tests): a new find's entry in `st.copies` gets `q` (waiting marks: the phase name, then the deed). A climb (`st.climb` above the stored run's) adds `carried_up:<climb>` to every copy in the bag. `stampMarks` runs after numbering: each waiting mark on a numbered copy goes to `REGISTRY.addMark` (kind `night` for a phase name, else `deed`; key `<player>:<find key>:<mark>`, so a retry never makes two) and moves to `m`; refused for good (not theirs, used up, no such copy) it is dropped; anything else waits for the next move. Phase names: `new, wax_cres, first_q, wax_gib, full, wan_gib, last_q, wan_cres` (`ACT.phaseMark(i)`).
+- **INVOKE.** `RULES.inventory` gives each name `marks` (one list per copy, from `st.copies[name][k].m`); the page gives each line its own copy's `history` (`RULES.markLines`): "<deed> under <phase>." (one line, at most 41 columns for every pair, tested) and "Carried up a level." / "Carried up N levels.", dim, under the description. Only marks the registry confirmed are shown. Words: Found in a wall / From a demon / A friend's gift / From a stranger; a new moon, a waxing crescent, a first quarter, a waxing gibbous, a full moon, a waning gibbous, a last quarter, a waning crescent.
+- **INVOKE layout (owner's).** ICHOR and SILVER left the list for the foot line (`ICHOR n/60  SILVER n  [M]AIL [C]LOSE`), no "0" and no "[1-9] use"; one click on either uses it (was: first click selects). Keys unchanged (0 and arrows still reach them). The blank line under the title stays. With a full bag there is room for a one-line description and both history lines; a two-line description loses the "Carried up" line.
+- **MAIL** is `[M]AIL`; M opens it and M or Esc closes it.
+- Not marked yet: the starting kit (never "found"), visitors, copies made before this release, things in party pockets.
+- Tests: 14 Worker tests (1 new: a find is stamped with its moon and deed once numbered, a climb adds carried_up, every history line fits). INVOKE checked in Chromium with a full bag; no new page errors.
+
 ## v1.24 - Behind Closed Doors - Oct 17 2026, 10:50 HST
 
 Worker (`game.js`). No page change, no migration. Stage 5 of `4dungeon-server-move.md`, the last one.
