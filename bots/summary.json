@@ -1,25 +1,57 @@
 {
  "HAL-bot": {
-  "date": "2026-10-18",
+  "date": "2026-10-19",
   "build": "latest",
-  "version": "v1.27.1",
+  "version": "v1.28",
+  "crashed": null,
+  "row": {
+   "level": "B3F",
+   "climbed": 0,
+   "day": 1,
+   "turns": 16,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, CU SITH",
+   "align": "NEUTRAL",
+   "last": "KURA is out of breath. She stays where she is."
+  },
+  "n": {
+   "searches": 8,
+   "blocked": 0,
+   "waited": 12,
+   "fights": 0,
+   "talks": 0,
+   "runs": 0,
+   "unlocks": 1,
+   "moves": 0,
+   "moon": 1,
+   "holds": 0,
+   "climbs": 0
+  },
+  "posted": null,
+  "events": "none; here: ok",
+  "eco": ""
+ },
+ "TARS-bot": {
+  "date": "2026-10-19",
+  "build": "latest",
+  "version": "v1.28",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 8,
-   "turns": 433,
+   "day": 9,
+   "turns": 483,
    "alive": false,
    "party": "",
-   "align": "NEUTRAL",
-   "last": "The SCRAPPER strikes KURA down."
+   "align": "CHAOS",
+   "last": "The moon turned. The dark rose and closed over KURA."
   },
   "n": {
-   "searches": 3,
+   "searches": 0,
    "blocked": 0,
    "waited": 0,
-   "fights": 1,
-   "talks": 6,
+   "fights": 0,
+   "talks": 0,
    "runs": 0,
    "unlocks": 0,
    "moves": 0,
@@ -28,72 +60,40 @@
    "climbs": 0
   },
   "posted": "posted, rank 1",
-  "events": "1/1 sent: fall",
+  "events": "none",
   "eco": ""
  },
- "TARS-bot": {
-  "date": "2026-10-18",
-  "build": "latest",
-  "version": "v1.27.1",
-  "crashed": null,
-  "row": {
-   "level": "B4F",
-   "climbed": 0,
-   "day": 8,
-   "turns": 483,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "CHAOS",
-   "last": "KURA turns to face EAST. Cracked stone, nothing more."
-  },
-  "n": {
-   "searches": 26,
-   "blocked": 0,
-   "waited": 75,
-   "fights": 0,
-   "talks": 0,
-   "runs": 2,
-   "unlocks": 0,
-   "moves": 12,
-   "moon": 0,
-   "holds": 0,
-   "climbs": 0
-  },
-  "posted": null,
-  "events": "none; here: ok",
-  "eco": "nothing"
- },
  "R2D2-bot": {
-  "date": "2026-10-18",
+  "date": "2026-10-19",
   "build": "latest",
-  "version": "v1.27.1",
+  "version": "v1.28",
   "crashed": null,
   "row": {
    "level": "B3F",
    "climbed": 0,
-   "day": 1,
-   "turns": 91,
+   "day": 2,
+   "turns": 175,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "CHAOS",
-   "last": "KURA turns to face NORTH. A warped door in its frame."
+   "last": "KURA turns to face SOUTH. Bare stone."
   },
   "n": {
-   "searches": 29,
+   "searches": 32,
    "blocked": 0,
    "waited": 75,
-   "fights": 1,
+   "fights": 3,
    "talks": 3,
    "runs": 0,
    "unlocks": 1,
-   "moves": 10,
+   "moves": 4,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
   "posted": null,
-  "events": "3/3 sent: parted, parted, parted; here: ok",
-  "eco": "nothing"
+  "events": "1/1 sent: words; here: ok",
+  "eco": ""
  },
  "DATA-bot": {
   "date": "2026-10-18",
@@ -256,36 +256,36 @@
   "eco": ""
  },
  "C3PO-bot": {
-  "date": "2026-10-18",
+  "date": "2026-10-19",
   "build": "latest",
-  "version": "v1.27.1",
+  "version": "v1.28",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 8,
+   "day": 9,
    "turns": 124,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "CHAOS",
-   "last": "KURA is out of breath. She stays where she is."
+   "alive": false,
+   "party": "",
+   "align": "NEUTRAL",
+   "last": "The moon turned. The dark rose and closed over KURA."
   },
   "n": {
-   "searches": 5,
+   "searches": 0,
    "blocked": 0,
    "waited": 0,
    "fights": 0,
    "talks": 0,
    "runs": 0,
    "unlocks": 0,
-   "moves": 8,
-   "moon": 1,
+   "moves": 0,
+   "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null,
-  "events": "none; here: ok",
-  "eco": "nothing"
+  "posted": "posted, rank 1",
+  "events": "none",
+  "eco": ""
  },
  "MARVIN-bot": {
   "date": "2026-10-18",

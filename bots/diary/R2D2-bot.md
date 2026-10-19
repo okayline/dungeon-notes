@@ -349,3 +349,68 @@ KURA is out of breath. She stays where she is.
 Not yet. KURA catches her breath.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-19  -  B3F, day 2  (latest v1.28)
+
+```
+A locked door. Nothing to search here.
+KURA unlocks the NORTH door. The way is clear.
+KURA searches the EAST wall... Fingers come away gray.
+KURA searches the EAST wall... Nothing but dust.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA searches the EAST wall... Cold stone, cold hands.
+KURA searches the EAST wall... The wall gives nothing away.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA searches the EAST wall... Nothing but dust.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... The wall gives nothing away.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA takes what's loose.
+KURA goes NORTH into a new room.
+KURA searches the WEST wall... Nothing.
+KURA goes SOUTH into a cleared room.
+The drawers slide open. 98 SILVER.
+KURA searches the WEST wall... Only stone.
+KURA searches the WEST wall... Someone has looked here before.
+KURA searches the WEST wall... Mortar, mostly. Some is older.
+KURA works the worn wall, steady.
+KURA searches the WEST wall... KURA hears a soft knock. Or her own pulse.
+KURA searches the WEST wall... Someone has looked here before.
+KURA searches the WEST wall... Something ticks, very softly.
+KURA searches the WEST wall... 148 SILVER, loose in the rubble.
+KURA searches the WEST wall... Mortar, mostly. Some is older.
+KURA searches the WEST wall... Nothing yet.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall... Nothing yet.
+KURA searches the SOUTH wall... A VENDOR wanders in!
+  The VENDOR strikes CU SITH. -3 HP
+  The party strikes. -10 HP
+  The VENDOR comes off as SIGNAL.
+  VENDOR: "ACCESS DENIED. go away"
+  The VENDOR strikes CU SITH. -6 HP
+  The VENDOR strikes ELF. -4 HP
+  The party strikes. -13 HP
+  KURA holds up a tangle of fiber cable.
+  VENDOR: "thanks. still gonna hit you."
+  The VENDOR strikes PIXIE. -6 HP
+  The party strikes. -11 HP
+  The VENDOR falls.  +23 ICHOR
+  It drops a vial of medicine.
+KURA searches the EAST wall... A DEADLINK appears!
+  The DEADLINK comes off as HUM.
+  DEADLINK: "still here. still running"
+  The DEADLINK notices something in KURA's bag.
+  DEADLINK: "ooh. can I have one of those?"
+  KURA keeps her things.
+  The DEADLINK loses interest. SHUTTING DOWN. bye
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+```
