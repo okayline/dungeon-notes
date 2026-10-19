@@ -3,6 +3,17 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.28 - Tidy Up - Oct 18 2026, 19:40 HST
+
+Removals only. No new feature, no rules change that a player can see. Decisions (ryan, Oct 18): "Exchange and cloud save can go"; delete, don't park (systems audit, `/mnt/project-files/dungeons/systems-audit.md`).
+
+- **Cloud save removed.** Obsolete since v1.21 (the run lives on the server): `signedIn()` needs ACCOUNT_HOST, which implies SERVER, so the page's pull branch could never run. Gone: SAVE RUN / GET RUN and the auto-save in `index.html` (new `reloadRun()` for the one place that re-read it), the `/save` routes in `leaderboard/accounts.js`, its test, the `cloud_saves` table in `schema.sql`, README lines.
+- **Exchange removed.** Off since v1.04 (`EXCHANGE_ON = false`). `rules.js`: exchange flag, `exchDir`, the exchange screen/room (`exchDir` returned null while off and used no randomness, so seeds and runs are unchanged). `screen.js`, `floor.js`: the exchange screen. `index.html`: the window, `exTick`, `showExchange`, `exRefresh`, keys, `.exframe`, the `\u2800` replace, `ecoSeen/ecoRun/ecoNews/ecoEnded` and `exchangeOpen` in the page-kept fields. `leaderboard/worker.js`: `economy()`, every `/eco/*` route, `marketFeed` and the `market` entry in `/feed`, `BOTS_PUBLIC` (also in `wrangler.toml`). `game.js`: `exchangeOpen` in the outbox. `schema.sql`: `eco_owners`, `eco_items`, `eco_offers`, `eco_retired`. About 750 lines gone.
+- **Bots:** `bots/bot.js` no longer trades (`TRADE`, `eco()`, `trade()`, the Exchange column). `bots/SUMMARY.md` loses the column on the next run.
+- **Left alone on purpose:** the live `cloud_saves` and `eco_*` tables stay in D1 (dropping is irreversible; needs ryan's word). The `present` table and live count are not exchange and stay.
+- **Same release, other repos:** dungeon-items gets `GET /api/registry/head` (ok, entries, head, copies; cached 5 min) with one test, no migration. 88x31-anchors `stamp.py` now stamps two ledgers (88x31 and the shared registry, folder `registry/`), a failure in one doesn't stop the other. The scheduled "Registry ledger backup" task becomes redundant once the first registry receipt lands.
+- **No migration.** Tests: 16 pass in daily-dungeon. dungeon-items has one failing test (migration 004, "no such table: main.copies") that fails without these changes too.
+
 ## Bots to latest - Oct 18 2026
 
 No game code. `bots/roster.json`: the seven bots pinned to v0.94 (HAL, C3PO, TARS, DATA, MARVIN, BENDER, WALLE) now play the latest build, like R2D2, GORT and ROSIE. Reason: their diaries since Oct 13 are almost all "out of breath" / "needs a moment" lines. Not confirmed that the pin was the cause (GORT, already on latest, shows the same lines). Watch the next daily run.
