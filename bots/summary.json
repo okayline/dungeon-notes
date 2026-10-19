@@ -96,28 +96,60 @@
   "eco": "nothing"
  },
  "DATA-bot": {
-  "date": "2026-10-17",
-  "build": "pinned",
-  "version": "v0.94",
+  "date": "2026-10-18",
+  "build": "latest",
+  "version": "v1.27.1",
   "crashed": null,
   "row": {
    "level": "B3F",
    "climbed": 0,
-   "day": 1,
-   "turns": 45,
+   "day": 2,
+   "turns": 132,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "NEUTRAL",
-   "last": "KURA turns to face NORTH. Bare stone."
+   "align": "CHAOS",
+   "last": "KURA turns to face SOUTH. A door, shut tight."
   },
   "n": {
-   "searches": 14,
+   "searches": 21,
+   "blocked": 0,
+   "waited": 67,
+   "fights": 0,
+   "talks": 1,
+   "runs": 0,
+   "unlocks": 0,
+   "moves": 12,
+   "moon": 1,
+   "holds": 0,
+   "climbs": 0
+  },
+  "posted": null,
+  "events": "1/1 sent: parted; here: ok",
+  "eco": "nothing"
+ },
+ "GORT-bot": {
+  "date": "2026-10-18",
+  "build": "latest",
+  "version": "v1.27.1",
+  "crashed": null,
+  "row": {
+   "level": "B4F",
+   "climbed": 0,
+   "day": 4,
+   "turns": 301,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, CU SITH",
+   "align": "CHAOS",
+   "last": "KURA goes NORTH into a cleared room."
+  },
+  "n": {
+   "searches": 32,
    "blocked": 0,
    "waited": 75,
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 1,
+   "unlocks": 0,
    "moves": 11,
    "moon": 0,
    "holds": 0,
@@ -126,38 +158,6 @@
   "posted": null,
   "events": "none; here: ok",
   "eco": "nothing"
- },
- "GORT-bot": {
-  "date": "2026-10-17",
-  "build": "latest",
-  "version": "v1.25",
-  "crashed": null,
-  "row": {
-   "level": "B4F",
-   "climbed": 0,
-   "day": 3,
-   "turns": 235,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "CHAOS",
-   "last": "KURA is out of breath. She stays where she is."
-  },
-  "n": {
-   "searches": 37,
-   "blocked": 0,
-   "waited": 75,
-   "fights": 4,
-   "talks": 0,
-   "runs": 0,
-   "unlocks": 0,
-   "moves": 10,
-   "moon": 0,
-   "holds": 0,
-   "climbs": 0
-  },
-  "posted": null,
-  "events": "1/1 sent: words; here: ok",
-  "eco": "found a sealed jar, humming faintly"
  },
  "BENDER-bot": {
   "date": "2026-10-18",
@@ -288,29 +288,29 @@
   "eco": "nothing"
  },
  "MARVIN-bot": {
-  "date": "2026-10-17",
-  "build": "pinned",
-  "version": "v0.94",
+  "date": "2026-10-18",
+  "build": "latest",
+  "version": "v1.27.1",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 7,
-   "turns": 89,
+   "day": 8,
+   "turns": 108,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "NEUTRAL",
-   "last": "KURA needs a moment before she moves on."
+   "last": "KURA goes NORTH into a new room."
   },
   "n": {
-   "searches": 4,
+   "searches": 6,
    "blocked": 0,
    "waited": 0,
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 0,
-   "moves": 4,
+   "unlocks": 1,
+   "moves": 6,
    "moon": 0,
    "holds": 0,
    "climbs": 0

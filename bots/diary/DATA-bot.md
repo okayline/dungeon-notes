@@ -315,3 +315,47 @@ KURA is out of breath. She stays where she is.
 KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-18  -  B3F, day 2  (latest v1.27.1)
+
+```
+KURA wakes on B3F.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall... Damp. The smell of old pipes.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall... A dead cable runs in and stops.
+KURA searches the NORTH wall... Old tally marks, in groups of five.
+KURA searches the NORTH wall... Only stone.
+KURA searches the NORTH wall... Faded paint. A number, or a sigil.
+KURA searches the NORTH wall... Old tally marks, in groups of five.
+KURA searches the NORTH wall... Nothing yet.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall... Fingers come away gray.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall... Salt along the base, in a line.
+KURA searches the EAST wall... Fingers come away gray.
+KURA searches the EAST wall... A WORM wanders in!
+  The WORM comes off as STATIC.
+  WORM: "AWAITING INPUT"
+  The WORM goes its way. PROCESS ENDED
+  It leaves 9 ICHOR in the flask.
+KURA searches the EAST wall... Damp. The smell of old pipes.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall... Fingers come away gray.
+KURA searches the NORTH wall... Damp. The smell of old pipes.
+KURA searches the NORTH wall... KURA hears a soft knock. Or her own pulse.
+KURA searches the NORTH wall... Only stone.
+An arch to another room. It is only a narrow way through, bare and echoing.
+She wants something common, found in a wall, under a waxing gibbous.
+KURA searches the NORTH wall... Salt along the base, in a line.
+KURA searches the NORTH wall... A scrap of writing, pinned to the wall.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+```

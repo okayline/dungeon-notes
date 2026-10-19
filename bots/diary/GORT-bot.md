@@ -334,3 +334,52 @@ Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-18  -  B4F, day 4  (latest v1.27.1)
+
+```
+KURA wakes on B4F.
+KURA searches the WEST wall... The wall gives nothing away.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA searches the WEST wall... Someone has looked here before.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... Only stone.
+KURA searches the WEST wall... Nothing.
+KURA searches the WEST wall... Nothing yet.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall... A dead cable runs in and stops.
+KURA goes EAST into a cleared room.
+KURA plugs in. The party mends a little.
+KURA searches the SOUTH wall... Only stone.
+KURA goes EAST into a cleared room.
+KURA searches the NORTH wall... Nothing but dust.
+KURA searches the NORTH wall... Nothing yet.
+KURA searches the NORTH wall... A dead cable runs in and stops.
+KURA searches the NORTH wall... Mortar, mostly. Some is older.
+KURA searches the NORTH wall... The wall gives nothing away.
+KURA takes what's loose.
+KURA searches the NORTH wall... Fingers come away gray.
+KURA searches the NORTH wall... Nothing.
+KURA goes EAST into a cleared room.
+KURA works at the bench. Nothing needs mending.
+KURA searches the EAST wall... Nothing yet.
+KURA searches the EAST wall... Damp. The smell of old pipes.
+KURA searches the EAST wall... Nothing yet.
+KURA goes NORTH into a new room.
+KURA searches the WEST wall... Fingers come away gray.
+KURA goes SOUTH into a cleared room.
+KURA goes SOUTH into a new room.
+KURA searches the SOUTH wall... A dead cable runs in and stops.
+KURA searches the SOUTH wall... Nothing.
+KURA searches the SOUTH wall... Someone has looked here before.
+KURA searches the SOUTH wall... Something ticks, very softly.
+KURA searches the SOUTH wall... A crack. It goes nowhere.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA goes NORTH into a cleared room.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+```

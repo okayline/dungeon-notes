@@ -132,3 +132,21 @@ KURA searches the NORTH wall. Only stone.
 KURA goes EAST into a new room.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-18  -  B4F, day 8  (latest v1.27.1)
+
+```
+KURA wakes on B4F.
+KURA searches the SOUTH wall... A dead cable runs in and stops.
+KURA searches the SOUTH wall... Nothing but dust.
+KURA unlocks the NORTH door. The way is clear.
+KURA goes WEST into a cleared room.
+KURA touches the terminal. The screen wakes.
+KURA goes EAST into a cleared room.
+KURA goes NORTH into a new room.
+KURA goes WEST into a new room.
+KURA searches the NORTH wall... Faded paint. A number, or a sigil.
+KURA searches the NORTH wall... Mortar, mostly. Some is older.
+KURA goes EAST into a cleared room.
+KURA goes NORTH into a new room.
+```
