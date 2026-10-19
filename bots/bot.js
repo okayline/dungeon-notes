@@ -50,80 +50,6 @@ const STYLE = {
   "ROSIE-bot":  { fight: .34, talk: .33, run: .33, yes: .5, silent: .2, join: .5, gift: .5, searches: 10, breath: "random", listen: .5, hold: .1, skip: .1, stairs: "any", moon: .3, actions: 70 },
 };
 
-// HOW EACH BOT TRADES (v1.00, the exchange). offer / take: odds a day of putting one thing up, or taking one offer.
-// ask: what its offers ask for: gift (nothing), same (any thing of the same tier), moon (any MOON), any (a mix).
-// Who bots trade with is the Worker's BOTS_PUBLIC switch: on ("1", v1.00's setting), bots trade in the live market
-// with players, anonymously; off, they only trade with each other and only the admin sees their offers.
-const TRADE = {
-  "HAL-bot":    { offer: .05, take: .1, ask: "moon" },   // hoards; lets go only for the moon
-  "R2D2-bot":   { offer: .3, take: .3, ask: "same" },
-  "C3PO-bot":   { offer: .4, take: .2, ask: "gift" },    // gives things away
-  "DATA-bot":   { offer: .3, take: .4, ask: "same" },    // fair swaps
-  "MARVIN-bot": { offer: .02, take: .02, ask: "any" },   // can't be bothered
-  "BENDER-bot": { offer: .1, take: .8, ask: "moon" },    // takes everything, asks the moon for anything
-  "GORT-bot":   { offer: 0, take: .05, ask: "same" },
-  "TARS-bot":   { offer: .2, take: .2, ask: "any" },
-  "WALLE-bot":  { offer: .05, take: .6, ask: "same" },   // a collector
-  "ROSIE-bot":  { offer: .3, take: .3, ask: "any" },
-};
-async function eco(pathname, key, body) {
-  if (DRY) return { dry: true };
-  try {
-    const h = { origin: ORIGIN, "x-key": key, ...(body ? { "content-type": "application/json" } : {}) };
-    const r = await fetch(WORKER + "/eco/" + pathname, body ? { method: "POST", headers: h, body: JSON.stringify(body) } : { headers: h });
-    let d = {}; try { d = await r.json(); } catch (e) {}
-    return { status: r.status, ...d };
-  } catch (e) { return { error: String(e.message || e) }; }
-}
-// A bot's day at the exchange: report the tradeable things the day turned up (a MOON thing the Worker counts goes to
-// the stash), pick up anything sent to it, then maybe take one offer and maybe make one.
-async function trade(name, st, R, note) {
-  const t = TRADE[name]; if (!t || DRY) return;
-  const tier = n => (R.tierOf ? R.tierOf(n) : "COMMON"), tradeable = n => ["RARE", "MYTHIC", "MOON"].includes(tier(n));
-  const drop = n => { for (const list of [st.items, st.ecoSeen]) { const i = (list || []).indexOf(n); if (i >= 0) list.splice(i, 1); } };
-  const gain = n => { st.items = st.items || []; st.items.push(n); (st.ecoSeen = st.ecoSeen || []).push(n); };
-  if (!st.ecoKey) st.ecoKey = "bot" + [...Array(40)].map(() => "0123456789abcdef"[Math.floor(Math.random() * 16)]).join("");
-  const key = st.ecoKey, run = st.runId, did = [];
-  const mine = (st.items || []).filter(tradeable);
-  if (st.ecoRun !== run) { st.ecoRun = run; st.ecoSeen = mine.slice(); }
-  else {
-    const left = (st.ecoSeen || []).slice(), fresh = [];
-    for (const n of mine) { const i = left.indexOf(n); if (i >= 0) left.splice(i, 1); else fresh.push(n); }
-    st.ecoSeen = mine.slice();
-    // (v1.01: the Worker picks which thing of the tier it is; the bag's copy takes its name.)
-    for (const n of fresh) {
-      const r = await eco("find", key, { run, name: n }); if (!r.ok) continue;
-      const got = r.name || n;
-      if (r.stash) drop(n);
-      else if (got !== n) for (const list of [st.items, st.ecoSeen]) { const i = (list || []).lastIndexOf(n); if (i >= 0) list[i] = got; }
-      did.push(`found ${got}${r.stash ? " (stash)" : ""}`);
-    }
-  }
-  const m = await eco("mine", key, { run, bag: (st.items || []).filter(tradeable) });
-  if (m.error) { note.eco = "mine: " + (m.why || m.error); return; }
-  for (const f of m.fresh || []) { gain(f.name); did.push("got " + f.name); }
-  const hold = [...m.bag.map(x => ({ ...x, from: "bag" })), ...m.stash.map(x => ({ ...x, tier: "MOON", from: "stash" }))];
-  const fits = (w, it) => !w || (w.startsWith("tier:") && it.tier === w.slice(5)) || (w.startsWith("name:") && it.name === w.slice(5));
-  if (Math.random() < t.take) {
-    const mk = await eco("market", key), offers = (mk.offers || []).filter(o => !m.offers.some(x => x.code === o.code)).sort(() => Math.random() - .5);
-    for (const o of offers) {
-      const pay = o.wants ? hold.find(h => fits(o.wants, h)) : null;
-      if (o.wants && !pay) continue;
-      const r = await eco("take", key, { run, code: o.code, pay: pay && pay.id });
-      if (!r.ok) continue;
-      if (!r.stash) gain(r.got.name);
-      if (pay) { if (pay.from === "bag") drop(pay.name); hold.splice(hold.indexOf(pay), 1); }
-      did.push(`took ${r.got.name}${pay ? " for " + pay.name : ""}`); break;
-    }
-  }
-  if (hold.length && m.offers.length < 3 && Math.random() < t.offer) {
-    const it = pick(hold);
-    const wants = t.ask === "gift" ? "" : t.ask === "moon" ? "tier:MOON" : t.ask === "same" ? "tier:" + it.tier : pick(["", "tier:RARE", "tier:MYTHIC", "tier:MOON"]);
-    const r = await eco("offer", key, { run, item: it.id, wants, public: true });
-    if (r.ok) { if (it.from === "bag") drop(it.name); did.push(`offered ${it.name} (${r.code})`); }
-  }
-  note.eco = did.length ? did.join("; ") : "nothing";
-}
 
 async function post(pathname, body) {
   if (DRY) return { dry: true };
@@ -238,8 +164,6 @@ async function play(name, build) {
     if (res.ok) st.submitted = { name: st.playerName, rank: res.rank }; else st.postTries = (st.postTries || 0) + 1;
     note.posted = res.ok ? `posted, rank ${res.rank}` : `post failed (${res.error || res.status || "dry run"})`;
   }
-  // The exchange (v1.00): only for a living run.
-  if (!st.dead && st.runId) { try { await trade(name, st, R, note); } catch (e) { note.eco = "error: " + String(e.message || e); } }
   // "Someone is here": the same daily ping the page sends, with this bot's own id.
   // A bot's presence id starts "bot" (a page's is hex, so it never can), so the Worker's live count can leave bots out.
   // Older saves carry a plain hex id: it is replaced once, and the old row ages out on its own.
@@ -286,12 +210,12 @@ async function play(name, build) {
   fs.writeFileSync(sumFile, JSON.stringify(sum, null, 1));
   const rows = roster.bots.map(b => { const s = sum[b.name]; if (!s || !s.date) return `| ${b.name} | ${b.build} | - | | | | | | | | | | ${s && s.skipped ? "skipped " + s.skipped : "not played yet"} |`;
     const r = s.row || {}, c = s.n || {};
-    return `| ${b.name} | ${s.build} ${s.version || ""} | ${s.date} | ${s.crashed ? "CRASHED" : r.level + (r.alive ? "" : " (dead)")} | ${r.climbed ?? ""} | ${r.day ?? ""} | ${r.turns ?? ""} | ${c.searches ?? 0} / ${c.blocked ?? 0} / ${Math.round(c.waited ?? 0)}s | ${c.fights ?? 0} / ${c.talks ?? 0} / ${c.runs ?? 0} | ${c.unlocks ?? 0} / ${c.holds ?? 0} / ${c.climbs ?? 0} | ${s.events || ""} | ${s.eco || ""} | ${s.crashed || (r.last || "").slice(0, 70)}${s.posted ? " [" + s.posted + "]" : ""}${s.skipped && s.skipped.slice(0, 10) >= s.date ? " (skipped " + s.skipped + ")" : ""} |`; });
+    return `| ${b.name} | ${s.build} ${s.version || ""} | ${s.date} | ${s.crashed ? "CRASHED" : r.level + (r.alive ? "" : " (dead)")} | ${r.climbed ?? ""} | ${r.day ?? ""} | ${r.turns ?? ""} | ${c.searches ?? 0} / ${c.blocked ?? 0} / ${Math.round(c.waited ?? 0)}s | ${c.fights ?? 0} / ${c.talks ?? 0} / ${c.runs ?? 0} | ${c.unlocks ?? 0} / ${c.holds ?? 0} / ${c.climbs ?? 0} | ${s.events || ""} | ${s.crashed || (r.last || "").slice(0, 70)}${s.posted ? " [" + s.posted + "]" : ""}${s.skipped && s.skipped.slice(0, 10) >= s.date ? " (skipped " + s.skipped + ")" : ""} |`; });
   // The header names the version of each build (read from the game itself) and the newest real turn on file, so a run where
   // every bot skipped ("already played today") can't leave a current-looking header over older rows.
   const ver = b => { try { return game(b).S.VERSION; } catch (e) { return "?"; } };
   const newest = Object.values(sum).map(s => s.date || "").sort().pop() || "none yet";
   fs.writeFileSync(path.join(HERE, "SUMMARY.md"), `# Bots: where everyone is\n\nUpdated ${today()} (Honolulu). Pinned build: \`${roster.pinned}\` (${ver("pinned")}). Canaries play the latest code (${ver("latest")}).\n\n` +
     `Each row is that bot's last real turn, and Build is the build it played then, so a row can be older than the builds named above until that bot's next turn. A bot plays once a day. Newest real turn on file: ${newest}. Bots (names ending \`-bot\`) are kept off the leaderboards but still count in the feed's totals, season tallies and daily presence (not the live count). At the exchange they trade anonymously in the live market while the Worker's BOTS_PUBLIC switch is on.\n\n` +
-    "| Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Exchange | Last line |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|\n" + rows.join("\n") + "\n");
+    "| Bot | Build | Last played | Level | Climbed | Day | Turns | Searches / blocked / waited | Fights / talks / runs | Unlocks / holds / climbs | Rumor events | Last line |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n" + rows.join("\n") + "\n");
 })();
