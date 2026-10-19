@@ -416,3 +416,11 @@ KURA needs a moment before she moves on.
 Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 ```
+
+## 2026-10-19  -  B4F, day 7, the run ended  (latest v1.28)
+
+```
+The moon turned. The dark rose and closed over KURA.
+
+posted, rank 1
+```

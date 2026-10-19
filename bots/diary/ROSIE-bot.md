@@ -445,3 +445,68 @@ The DEADLINK strikes KURA down.
 
 posted, rank 1
 ```
+
+## 2026-10-19  -  B3F, day 1  (latest v1.28)
+
+```
+KURA wakes in the dark. B3F.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA digs deep.
+KURA searches the SOUTH wall... Nothing but dust.
+KURA searches the SOUTH wall... Fingers come away gray.
+KURA searches the EAST wall... 29 SILVER, loose in the rubble. Two doors.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA goes NORTH into a new room.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA searches the WEST wall... Nothing but dust.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA is out of breath.
+KURA needs a moment.
+KURA unlocks the EAST door. The way is clear.
+KURA needs a moment.
+KURA is out of breath.
+KURA needs a moment.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA searches the WEST wall... 25 SILVER, loose in the rubble. Two doors.
+KURA searches the WEST wall... Nothing yet.
+KURA searches the WEST wall... Fingers come away gray.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... Only stone.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall... A low sound. KURA holds her breath.
+KURA searches the SOUTH wall... Fingers come away gray.
+KURA goes NORTH into a cleared room.
+KURA goes EAST into a new room.
+KURA touches the terminal. The screen wakes.
+KURA makes an offering.
+KURA touches the terminal. The screen wakes.
+KURA goes WEST into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA searches the EAST wall... A STATIC RAT wanders in!
+  The STATIC RAT comes off as HUM.
+  STATIC RAT: "ACCESS DENIED. go away"
+  The STATIC RAT strikes KURA. -3 HP
+  KURA runs NORTH. The STATIC RAT blocks the door.
+  The STATIC RAT strikes KURA. -3 HP
+  The STATIC RAT strikes KURA. -6 HP
+  The party strikes. -12 HP
+  Something old leans toward KURA. [FRL]
+  The STATIC RAT stops mid-swing.
+  STATIC RAT: "ooh. can I have one of those?"
+  KURA keeps her things.
+  STATIC RAT: "it's not about that. sorry."
+  The STATIC RAT strikes PIXIE. -2 HP
+  The STATIC RAT stops mid-swing.
+  STATIC RAT: "ooh. can I have one of those?"
+  KURA keeps her things.
+  STATIC RAT: "cute. one more round."
+  The STATIC RAT strikes KURA. -4 HP
+  The STATIC RAT strikes KURA. -9 HP
+  The party strikes. -9 HP
+  The party strikes. -13 HP
+  The STATIC RAT falls.  +17 ICHOR
+  It drops a spent battery.
+  It drops a bag of loose screws.
+```
