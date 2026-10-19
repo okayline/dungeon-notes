@@ -1,6 +1,6 @@
 # Daily Dungeon: detailed changelog (internal)
 
-The full version, with every number, odd and hidden rule. NOT for the public repo: this file is in `.gitignore`.
+The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
 ## v1.28 - Tidy Up - Oct 18 2026, 19:40 HST

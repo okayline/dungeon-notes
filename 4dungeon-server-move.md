@@ -1,6 +1,6 @@
 # 4Dungeon: moving the run to the server
 
-Oct 17 2026, written at v1.18. A plan, nothing built. The redesign (provenance, the moon's wish, cuts) is separate and comes after.
+Oct 17 2026, written at v1.18. All five stages were built in v1.19 to v1.24 (see Stages below). The redesign (provenance, the moon's wish, cuts) is separate and comes after.
 
 **Goal.** The Worker holds each player's run and runs the rules; the page sends actions and draws what comes back. Same game, same behavior, except breath (below). This is the scoundrel.exe shape.
 
