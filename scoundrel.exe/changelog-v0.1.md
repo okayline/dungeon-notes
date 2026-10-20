@@ -7,7 +7,7 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 ---
 
 ## v0.8.10 — "On the Record"
-**Tue Oct 20, 2026 · 2:31 AM HST** (no migration; needs dungeon-items with `Registry.checkpoint` deployed first)
+**Tue Oct 20, 2026 · 2:31 AM HST** (no migration here; needs dungeon-items with `Registry.checkpoint` and its migration 006 deployed first)
 
 ### Decisions (the owner's)
 - Owner (Oct 20, HST): no separate Bitcoin stamp per game; "i want everything on the shared registry, that's the point of it"; Dawn Baton once a day, scoundrel.exe after every run, and the stamps visible on the registry ledger page.
@@ -19,9 +19,10 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 - `public/app.js` VERSION v0.8.10 and `CHANGELOG.md`. Removed: nothing.
 
 - Later (owner: "more information about the scoundrel run"): the checkpoint carries `detail` from the sealed `run` record: day number, status, score, hp, room, moves, demons_left. Never the player. Run ends are already open on this ledger as soon as they are sealed (`ledger()`: "deals, run ends and voids are open"). The test now checks the detail and that no `player` key is sent.
+- Then (owner chose "Name beside entry", Oct 20 HST): the checkpoint also sends `name`, the player's leaderboard name (`LEFT JOIN players` on the `run` entry's player_id; null without one). The registry keeps it beside the record, unhashed, so the record still never names a player; the name is the one they had when the run ended. Why not sealed: this ledger keeps names out of records so a rename shows everywhere, and a sealed name could never be removed. Decided against the owner's first wording ("A Scoundrel (username?)"): the name replaces "A Scoundrel".
 
 ### Tests
-- One new test: no checkpoint mid-run, one after the run ends, equal to the count and hash up to the `run` row. 42 tests pass.
+- One new test: no checkpoint mid-run, one after the run ends, equal to the count and hash up to the `run` row. One more test: a named player's checkpoint carries the name, and the detail doesn't. 43 tests pass.
 
 ## v0.8.9 — "One Key"
 **Sat Oct 17, 2026 · 2:45 AM HST** (no migration here; migration 003 ran on the shared `items-db`)
