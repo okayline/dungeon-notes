@@ -7,6 +7,25 @@ Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.21 — "Quick Dawn"
+**Tue Oct 20, 2026 · 12:51 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Tab clicks felt slow; make them faster (Oct 20, HST). "Opens in" on Catch gets seconds and milliseconds.
+
+### What was built
+- Timed from the build sandbox against the live site (v0.20): the page 0.34s, a route that never touches the database (`/api/nope`) 0.17s, `today`/`planet`/`lap` 0.86 to 1.17s. So about 0.75s a click was database round trips: `settle()` (two laps, each a seal attempt that fails on the unique index, plus a read of the sealed bands; about 6 sequential trips by my count) and v0.20's `batonCopy` (one more).
+- `src/worker.js`: `settle()` remembers per database (a `WeakMap` on `env.DB`) the key `currentLap:bandsClosed` it last finished, and returns at once when it is unchanged; it only has work when a lap opens or a window closes. `batonCopy` remembers the last closed lap that had no baton left to make. A failed run sets neither, so it retries. If Workers hands each request a new `env.DB` object the memory just never hits: slower, not wrong (sealing and `birth` are repeat-safe).
+- `public/index.html`: `load()` puts "Loading…" in a tab that has never been filled; `durMs` and a 47 ms timer make the Catch "Opens in" line show h, m, s and ms (tabular digits, paused while the page is hidden). The other countdowns still tick every 30 s in whole minutes.
+
+### Findings and shortcuts
+- Not changed: `players.seen_at` is still written on every request, and Catch can still wait up to 2 s on Open-Meteo in the player's own open window.
+- Not measured after the change (the check is the same timing against the live site once deployed).
+- Removed: the per-request lap sweep when nothing has closed.
+
+### Tests
+- One new test: settle's band sweep runs once, not again at the same moment or a few minutes later, and runs again once bands have closed. It fails if the early return is removed. 45 tests pass.
+
 ## v0.20 — "Keepsake"
 **Tue Oct 20, 2026 · 12:26 AM HST** (migration 007; needs dungeon-items' baton seeded on `items-db` first)
 
