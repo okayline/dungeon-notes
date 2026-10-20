@@ -3,6 +3,16 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.37 - Bottomless Bag - Oct 20 2026, 09:22 HST
+
+min, Oct 20: "can we make it so my bag never gets full in 4dungeon please?", then chose "Everyone, no limit" on a card (over a limit only for min's account). `rules.js`, `act.js`, `index.html`, `screen.js`.
+- **Removed (`rules.js`):** `BAG_MAX` (9) and every check on it: `gain`'s overflow line (a thing coming to a full bag went to `st.overflow`), `welcomeVisitor`'s full-bag wait, the gift's `< BAG_MAX` odds check in `departs`, and the demon's give-back check (`o.dir === "ask"`). `keepItem` (the "what do you leave?" answer, which also wrote "KURA leaves X where it is. The bag is full." and put the thing in `st.gone`). `OFFER_TRADE` and the full-bag swap in `offerPick` (member and demon offers became swaps with a full bag; the encounter's `"trade"` stage). `offerTrade` keeps only the gift box's swap. `offerView`'s non-box `trade` is always false. `api` drops `keepItem` and `BAG_MAX`; `act.js` drops the `keep` action.
+- **Removed (`index.html`):** `bagBox`/`bagPick` (the full-bag chooser), the `data-bag` click and `bag` key handlers, the encounter's `"trade"` render branch and its keys, and INVOKE's empty-slot dot rows. The INVOKE head reads `BAG n` (was `BAG n/9`).
+- **Changed:** INVOKE pages are 5 things each for any number of pages. Each page ends with grey numbered rows, ` n  ... (next page)` and then ` n  ... (previous page)`, numbered on from the page's last thing (v1.36 had a fixed ` 10` for previous). The 6 key still turns page 1. Things past 9 have no number key; arrows, [<] [>] and clicks reach them. The error text points to [U] (was [P]).
+- **Migration (`sync`):** a saved `st.overflow` goes into the bag (`gain(..., noQueue)`, so it isn't a second find) and is deleted. An encounter left in stage `"trade"` goes back to `"offer"` with no pick. A member's `st.offer.trade` (not the box) is cleared.
+- **Tests:** 22 pass (1 new: a server run with 9 things and 2 in `overflow` has 11 after a move, no `overflow`, and `keep` is no longer an action). Headless Chromium at 1280 x 900, a local run with 13 things plus 2 in `overflow`: the saved run has 15 things and no overflow after loading; INVOKE shows `BAG 15`, 3 pages (`2/3`), page 2 is 6-10 with grey ` 11 ... (next page)` and ` 12 ... (previous page)`, from page 3, previous twice returns to page 1; no page errors.
+- **Not checked:** a member or demon offer and the gift box played through in the browser, the live site, a phone width, how a very large bag reads on the board or ledger.
+
 ## v1.36.1 - Oct 20 2026, 09:13 HST
 
 min, Oct 20, with a screenshot of the USER page cut off under [LOG IN WITH A PASSKEY]: "could you make the window scrollable please". `index.html`, `screen.js`.

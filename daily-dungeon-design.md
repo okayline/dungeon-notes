@@ -102,7 +102,7 @@ Difficulty follows how far into the run she is, not the level's name. Demons and
 
 **TALK with a member** (was WORD until v1.15) costs half a breath. A member is picked (leaning toward whoever is quiet or hasn't been talked to). Over a day the yield falls with each TALK (16 a day with one member), then they are talked out. What can happen: a check-in for a quiet member; a truce between a LAW and CHAOS member; an offer (never on the first TALK with a member, rarer after); a confidence; or banter, sometimes a small heal. Now and then two members talk and KURA listens. With nobody standing beside her, TALK is KURA reading the room or the door she faces.
 
-**Offers** are always two things from the member's own pockets (or one asked for from your bag), one taken. A full bag makes it a swap. Some are wrapped, a gamble that is the real thing about half the time. Members refill their pockets a little each night.
+**Offers** are always two things from the member's own pockets (or one asked for from your bag), one taken. Some are wrapped, a gamble that is the real thing about half the time. Members refill their pockets a little each night.
 
 **VIBES** (was patience until v1.15) is the party's mood, and it only grows: talks, questions and confiding raise it, nothing lowers it. A room crossing tier 3 heat (the hottest) makes demon members go quiet (the old tired lines) for the rest of the day; a night's sleep or a check-in TALK brings them back. Nobody snaps, strikes or leaves.
 
@@ -120,7 +120,7 @@ Difficulty follows how far into the run she is, not the level's name. Demons and
 
 **Tiers** are COMMON, UNCOMMON, RARE, MYTHIC and MOON. The shared ladder across the games is common, uncommon, rare, prototype, relic, ultra (1-of-1), plus moon; 4Dungeon's six old MYTHIC items keep their name (forward only), new top-tier dungeon items will be relics, and 4Dungeon never deals prototype or ultra (88x31 is their home game). Every item has an alignment and a nature. **Marks** (v1.25 to v1.27): each numbered copy remembers what happened to it: the moon phase it came under, how it was got (found in a wall, from a demon, a friend's gift, from a stranger), the levels it was carried up, and real-sky occasions (section 10). INVOKE shows them under the description. The Moon can **bless** a copy, which counts it one tier higher for aura, the altar and breaking (not yet for demon taste or the box-gift check).
 
-**The bag** holds 9. A tenth asks what to leave. INVOKE lists the bag, the ICHOR flask and SILVER. A few UNCOMMON items have uses (a heal, a revive, a candle that cools a room). Most items have no use, and fiddling with one reveals something about it after enough tries ("Something rattles inside"), and a few break.
+**The bag** has no limit (v1.37; it held 9 before). INVOKE lists the bag, the ICHOR flask and SILVER. A few UNCOMMON items have uses (a heal, a revive, a candle that cools a room). Most items have no use, and fiddling with one reveals something about it after enough tries ("Something rattles inside"), and a few break.
 
 **ICHOR** (v1.16) is a flask KURA always carries, holding a fixed amount. It fills from a fallen demon and from a demon that parts in peace, and the party drinks from it to heal. KURA can drink it herself, which makes her DRUNK (was "taint"): at 3 she starts seeing things, at 6 she trips for a while (melee doubled, risk of hitting an ally, the turn counter lies). It wears off overnight, at a Forge, or with SILVER.
 
