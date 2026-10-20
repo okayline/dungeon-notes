@@ -5,6 +5,11 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
+## Oct 20, 10:15 AM HST: a mark entry on one copy shows its picture (not pushed)
+- min (thread "Unpicked rares in 88x31 packs"), with a screenshot of Disk Full #1's "button marked" entry under its "new button" entry: "could you show the button in the top entry too?"
+- `src/public-ledger.js` `row()`: the picture comes from `e.item`, or else from the one copy the entry marks (`mine.look`). A `marks` record naming one copy several times (n 1-3) has `items` of length 3, so `shape` leaves `e.item` null and the picture was missing. Added: the picture on mark entries about one copy (and, on a copy's page, that copy's picture). Removed: nothing. Not changed: mark entries over several different copies still show no picture; the facts line ("common · counter button") still shows only on entries with `e.item`; mystery buttons have no image, so still none.
+- No migration. 78 tests pass (no new test: page drawing). Checked in headless Chromium against a mocked `/api/registry/ledger` shaped like min's screenshot (#849, #850): both entries show the button.
+
 ## Oct 20, 10:09 AM HST: the 88x31 door takes `addMarks`; heading "~*~ The Registry ~*~" (with 88x31 v0.46.10; pushed to main)
 - min: 88x31's entries should sit together like 4Dungeon's (see 88x31 v0.46.10), and "could you rename ~*~ Item Registry ~*~ to just ~*~ The Registry ~*~ on the top of that page?".
 - `src/registry-http.js`: `addMarks` on the HTTP door, only for 88x31 holders (same rule as `addMark`). `/ledger` h1 reads "~*~ The Registry ~*~" (was "~*~ Item Registry ~*~"). Not changed: the `<title>` ("~*~ Item Registry Ledger ~*~") and a 4Dungeon copy page's "= ITEM REGISTRY =".
