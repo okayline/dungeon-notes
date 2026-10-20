@@ -1,9 +1,34 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.1
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.4
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.4
+**Tue Oct 20, 2026 · 2:10 AM HST** (no migration)
+
+Decisions (owner, thread on the streak track, Oct 20): asked why the same rare kept coming up ("my third drop of this exact button"), then "could you do the fewer repeat rares thing please", then "can you just make it lower the odds of ones you already own (a lot), but not completely skip?". So: a weight, not a filter.
+- **`rollDesigns` (`lib/game.js`)** takes `opts.userId`. It reads the player's rare designs (`instances.owner_id = ?`, `consumed = 0`, `designs.rarity = 'rare'`) once per roll. When a card rolls a rarity, the pick among that rarity's designs is weighted: an owned design has `OWNED_WEIGHT = 0.1`, any other 1, so an owned rare is 1 in 10 as likely as an unowned one (`pickLessOwned`). Only rares count as owned; commons, uncommons, prototypes and ultras roll as before. Removed: every design of a rarity being equally likely whatever you owned. With no `userId` the old `randInt` pick is used, unchanged.
+- **Rarity odds are untouched.** The 8% rare roll (`ODDS_PER_1000`) is the same, so a pack has the same chance of holding a rare; only which rare changes. If you own all of a series' rares, they are equally likely again (all weights 0.1). A copy used up in a fusion (`consumed = 1`) does not count as owned.
+- **Callers passing `userId`:** `functions/api/pull.js` (the daily pack and the bonus pack's fresh pack) and `openPack` in `lib/packs.js` (sealed packs: club, series, special, webmaster, streak). Not passed: `giveWelcomePack` (a new player owns nothing), and the one-card Free Pack, which rolls through `rollFreeCard` in `lib/freepack.js` (it can still deal a rare you own: not asked for, left alone).
+- **Why the repeats happened (finding, no code change):** a rare is 8% of an ordinary card; Beta takes 70.6% of ordinary cards (series weights 60/25 with two active); 12 Beta rares are equally likely; a daily card is an ordinary button 93.3% of the time. So one named rare is about 0.44% per daily card, 2.6% a day for 2 packs; a Beta series pack is about 0.67% per card; special packs are boosted (rare 11%, one guaranteed). Three of one rare is unlikely from daily packs alone. Not known: how many packs the player had opened.
+- **Effects (finding, no code change):** `EFFECT_CHANCE = 0.0005` (1 in 2,000, `lib/game.js:180`) since v0.37 (Oct 17, 10:25 AM HST), and the live `/api/odds` reports the same. From the public ledger (all 1,542 entries): 16 of 191 new copies before v0.37 had an effect (about 8%, the old 10%), 1 of 138 after it. The one is the owner's Y2K Ready #6 (Dial-Up, streak pack, Oct 20), which is plausible luck at 1 in 2,000 (about 1 in 15 for one or more in 138 copies). Fusion is the other source (`FUSE_EFFECT_CHANCE` 10%).
+- **Checked:** `node --check` on the three files; a scratch script (not committed) on Node SQLite with a throwaway schema: 12 rares in one series, 11 owned (one more owned but consumed): the unowned one came up 47.5% of 20,000 single-rare rolls (expected 1/(1+1.1) = 47.6%); with no `userId` it came up 8.3% (expected 8.3%); owning all 12 still shows all 12. No test suite in this repo.
+- **Not checked:** the live site; the real database; how the Fair Play page words this (it has no line for it, so there is nothing to say yet: not asked for).
+- `public/index.html`: v0.46.4.
+
+## v0.46.3
+**Tue Oct 20, 2026 · 1:57 AM HST** (no migration)
+
+Decisions (owner, Oct 20): "for this part, could we have it so it keeps going past day 7? maybe keeps going indefinitely?" (a screenshot of the dashboard's visit streak track). The server already paid streak packs forever (`streakReward`: from day 8 on, the 3rd to 7th day of every week pay out), so this is the display only. Picked: a rolling window, not a wider track.
+- **`streakChart` (`public/app.js`):** the track is always 7 cells: the 3 days before today, today, and the 3 days ahead, starting no earlier than day 2 (`start = Math.max(2, n - 3)`, `for d < start + 7`). Removed: stopping at day 7 and then drawing whole weeks (days 8-14, 15-21...), which hid the days just behind you. Day 1 is still not drawn (v0.34.8).
+- **`streakDays` (`lib/progress.js`):** looks up the packs you got on only those past days (`start = Math.max(2, n - 3)`), instead of the whole week so far. Removed: the week-based start (`n - ((n - 1) % 7)`).
+- **Day 100 and up:** today's circle gets `.sk-wide` (`public/style.css`: `width: auto; padding: 0 3px; border-radius: 10px`) so three digits fit.
+- **Rewards unchanged.** Because later days now show, you can see that days 8 and 9, 15 and 16 and so on pay nothing (the first two days of each week after the first; they draw as a "·"). That is how `streakReward` has always worked.
+- **Checked:** `node --check public/app.js`; `lib/progress.js` imports. The real page in headless Chromium (Playwright) with stubbed API responses at streak days 1, 5, 7, 8, 12, 30 and 104: no page errors; the cell numbers, the circled day and the "Come back..." line were right each time (e.g. day 104 showed 101-107). Screenshots: project files `88x31-streak-track/streak-days-1-to-104.png`. No test suite in this repo.
+- **Not checked:** a phone-width screen; the live site; real streak packs from the database (the screenshots used made-up packs).
+- `public/index.html`: v0.46.3.
 
 ## v0.46.1
 **Tue Oct 20, 2026 · 1:33 AM HST**
