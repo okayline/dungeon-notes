@@ -5,6 +5,11 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
+## Oct 20, 10:09 AM HST: the 88x31 door takes `addMarks`; heading "~*~ The Registry ~*~" (with 88x31 v0.46.10; pushed to main)
+- min: 88x31's entries should sit together like 4Dungeon's (see 88x31 v0.46.10), and "could you rename ~*~ Item Registry ~*~ to just ~*~ The Registry ~*~ on the top of that page?".
+- `src/registry-http.js`: `addMarks` on the HTTP door, only for 88x31 holders (same rule as `addMark`). `/ledger` h1 reads "~*~ The Registry ~*~" (was "~*~ Item Registry ~*~"). Not changed: the `<title>` ("~*~ Item Registry Ledger ~*~") and a 4Dungeon copy page's "= ITEM REGISTRY =".
+- 78 tests pass (HTTP door test extended). Workers Builds did not start for 6676de9; an empty commit (7261c42) and min's manual build got it deployed at 10:09.
+
 ## Oct 20, 9:52 AM HST: ledger entries end without a period (pushed to main)
 - min: "can we remove the . period at the end of all the ledger entries please". `/ledger` `row()` strips one trailing "." from the entry's last text (in a link or not), for every game; sentences inside an entry ("was used up. It is gone", a run's end with its totals) keep their inner periods. The regex is `/[.]$/` (the page is a JS template string, which would eat `\.`). Removed: the final period on every ledger line. 78 tests pass (no new test: page wording); checked in headless Chromium.
 - Not changed: 88x31's own ledger page (`public/app.js`), which words its own entries.

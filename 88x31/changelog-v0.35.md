@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.9
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.10
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.10
+**Tue Oct 20, 2026 · 10:09 AM HST** (no migration; needs dungeon-items 3acf1b4, the HTTP door's `addMarks`, deployed first)
+
+Decisions (min, Oct 20, thread "Consolidate 4Dungeon ledger entries"), with a screenshot of registry entries #841-#846 (Synthwave #5 born, mystery #4 born, mystery #4's two marks, then Synthwave #5's two): "can we rearrange the order for these ones too. so that Synthwave #5 entries are next to each other?", then "please push !". Same rule as 4Dungeon v1.39: a thing's marks right after its birth, several marks in one entry. Old entries stay as sealed.
+- **`lib/registry.js`:** new `markCopy(db, R, c, spend, refuse, out)`: reads the copy's `ownership_history`, sends every `copyMarks` value not yet in `registry_marks` in ONE `R.addMarks({ holder, marks: [{ kind, value, copies: [{ itemId, copy, key: "inst:<id>:<value>" }] }] })` call (one budget unit, one ledger entry), logs a whole-call refusal or each skipped mark, and saves `registry_marks` `{ h, v }` as before (no budget left: nothing sent, `h` unchanged). Step 2 (births) selects the copy's finish, owner, `consumed`, `locked`, `registry_marks`, and right after a birth, when the first owner still owns it (not used up, not away), calls `markCopy`, so the ledger reads birth, marks, birth, marks. Step 7 calls `markCopy` for the rest (copies that changed hands or came home). `out.marked` counts marks made. Keys unchanged, so nothing is marked twice.
+- **Removed:** one `R.addMark` call (and one ledger entry) per mark; new copies' marks waiting for step 7 after every birth in the pass.
+- `changelog-v0.35.md` v0.46.10; `public/index.html` v0.46.10 tags.
+- **Checked:** the real `syncRegistry` against node:sqlite with 88x31's `schema.sql` (seeded designs set pending) and a real dungeon-items registry (`fakeD1`, real `birth`/`addMarks`): two pack-pulled copies give ledger rows copy, mark(wax_gib, pulled_pack, first_copy), copy, mark(...), `registry_marks` `{h, v: 3 values}`, and a second pass sends nothing. dungeon-items: 78 tests (the HTTP door test now also sends `addMarks`: refused for 4dungeon, two marks numbered 2 and 3, one more entry). `node --check`. No test suite in this repo.
+- **Not checked:** the live database; copies with trade/gift history through step 7 (same `markCopy`, not exercised).
 
 ## v0.46.9
 **Tue Oct 20, 2026 · 9:07 AM HST** (migration 032, run before the push)
