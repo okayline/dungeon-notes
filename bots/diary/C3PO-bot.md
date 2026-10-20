@@ -314,3 +314,52 @@ The moon turned. The dark rose and closed over KURA.
 
 posted, rank 1
 ```
+
+## 2026-10-20  -  B3F, day 1  (latest v1.39)
+
+```
+(a new run begins)
+KURA wakes in the dark. B3F.
+KURA searches the SOUTH wall... Nothing yet.
+KURA searches the EAST wall... Only stone.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Nothing yet.
+KURA searches the EAST wall... KURA hears something. Then nothing.
+A locked door. The door is cold, and heavier than it looks.
+KURA unlocks the WEST door. The way is clear.
+KURA goes WEST into a new room.
+KURA goes SOUTH into a new room.
+KURA goes NORTH into a cleared room.
+KURA goes WEST into a new room.
+KURA goes EAST into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+```

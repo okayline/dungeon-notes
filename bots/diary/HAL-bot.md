@@ -393,3 +393,59 @@ KURA is out of breath. She stays where she is.
 Not yet. KURA catches her breath.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-20  -  B3F, day 2  (latest v1.39)
+
+```
+KURA wakes on B3F.
+KURA goes WEST into a new room.
+KURA searches the SOUTH wall... Old tally marks, in groups of five.
+KURA searches the SOUTH wall... Nothing but dust.
+KURA searches the SOUTH wall... A dead cable runs in and stops.
+KURA searches the SOUTH wall... Nothing but dust.
+KURA goes WEST into a new room.
+KURA searches the WEST wall... Nothing but dust.
+KURA searches the WEST wall... Fingers come away gray.
+KURA searches the SOUTH wall... A crack. It goes nowhere.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA works the worn wall, steady.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA searches the EAST wall... A DAEMON wanders in!
+  The DAEMON strikes KURA. -3 HP
+  The party strikes. -13 HP
+  Something old leans toward KURA. [FRL]
+  The DAEMON strikes PIXIE. -5 HP
+  The party strikes. -11 HP
+  The party strikes. -10 HP
+  The DAEMON falls.  +14 ICHOR
+  It drops a scratched data disc.
+  It drops a VR visor, lens cracked.
+KURA searches the EAST wall... Cold stone, cold hands.
+KURA searches the EAST wall... KURA finds a dead pager.
+KURA searches the EAST wall... A crack. It goes nowhere.
+KURA searches the EAST wall... Only stone.
+KURA goes SOUTH into a new room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall... The wall gives nothing away.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall... Nothing but dust.
+KURA goes SOUTH into a new room.
+A locked door. The handle is warm, and gritty with ash.
+A locked door. The door is faintly warm to the touch.
+KURA unlocks the SOUTH door. The way is clear.
+KURA searches the EAST wall... Nothing but dust.
+KURA searches the EAST wall... Someone has looked here before.
+KURA searches the EAST wall... Salt along the base, in a line.
+KURA searches the EAST wall... Nothing.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA searches the WEST wall... Nothing yet.
+KURA searches WEST... Something behind the stone shifts, just once.
+KURA goes EAST into a new room.
+KURA searches the NORTH wall... Someone has looked here before.
+She wants something neutral, given by a friend, under a waxing gibbous.
+```

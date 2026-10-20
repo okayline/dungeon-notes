@@ -414,3 +414,34 @@ Not yet. KURA catches her breath.
 KURA needs a moment before she moves on.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-20  -  B3F, day 3, the run ended  (latest v1.39)
+
+```
+KURA wakes on B3F.
+KURA searches the SOUTH wall... Cold stone, cold hands.
+KURA goes NORTH into a cleared room.
+The drawers slide open. 72 SILVER.
+KURA searches the WEST wall... Someone has looked here before.
+KURA searches the WEST wall... A low sound. KURA holds her breath.
+KURA digs deep.
+KURA searches the WEST wall... KURA finds a moth-eaten glove.
+KURA searches the WEST wall... Mortar, mostly. Some is older.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall... Salt along the base, in a line.
+KURA searches the SOUTH wall... The wall gives nothing away.
+KURA searches the SOUTH wall... Salt along the base, in a line.
+KURA searches the SOUTH wall... The wall gives nothing away.
+KURA searches the SOUTH wall... A crack. It goes nowhere.
+KURA searches the SOUTH wall... ATOM SLASHER wanders in!
+  ATOM SLASHER strikes KURA. -9 HP
+  The party strikes. -8 HP
+  ATOM SLASHER strikes KURA. -10 HP
+  The party strikes. -9 HP
+  ATOM SLASHER strikes KURA. -11 HP. FALLS
+  KURA falls. The run is over.
+  The party strikes. -12 HP
+ATOM SLASHER strikes KURA down.
+
+posted, rank 2
+```

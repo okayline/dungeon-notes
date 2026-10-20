@@ -323,3 +323,52 @@ The moon turned. The dark rose and closed over KURA.
 
 posted, rank 1
 ```
+
+## 2026-10-20  -  B3F, day 1, the run ended  (latest v1.39)
+
+```
+(a new run begins)
+KURA wakes in the dark. B3F.
+KURA searches the WEST wall... Only stone.
+KURA searches the WEST wall... Fingers come away gray.
+KURA searches the WEST wall... Salt along the base, in a line.
+KURA searches the WEST wall... Nothing.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA unlocks the SOUTH door. The way is clear.
+KURA searches the WEST wall... Only stone.
+KURA searches the WEST wall... KURA finds a cracked hand mirror. Two doors.
+KURA goes SOUTH into a new room.
+KURA searches the EAST wall... Mortar, mostly. Some is older.
+KURA searches the EAST wall... Someone has looked here before.
+KURA searches the EAST wall... Nothing.
+KURA searches the EAST wall... Nothing yet.
+KURA searches the EAST wall... Damp. The smell of old pipes.
+KURA searches the EAST wall... Only stone.
+KURA searches EAST... A hatch of heavy drawers, shut tight. It can be used.
+The drawers slide open. 49 SILVER.
+KURA searches the EAST wall... A WORM wanders in!
+  KURA runs WEST. The WORM blocks the door.
+  The WORM strikes ELF. -6 HP
+  The WORM strikes KURA. -5 HP
+  The party strikes. -10 HP
+  The WORM strikes KURA. -2 HP
+  The party strikes. -8 HP
+  The party strikes. -12 HP
+  The WORM falls.  +15 ICHOR
+  It drops a dead pager.
+  It drops a tangle of fiber cable.
+KURA goes WEST into a new room.
+KURA searches the WEST wall... Fingers come away gray.
+KURA searches the SOUTH wall... A DEADLINK wanders in!
+  The DEADLINK comes off as HUM.
+  DEADLINK: "ACCESS DENIED. go away"
+  The DEADLINK strikes KURA. -7 HP
+  The DEADLINK strikes KURA. -10 HP
+  The party strikes. -6 HP
+  The DEADLINK strikes KURA. -6 HP. FALLS
+  KURA falls. The run is over.
+  The party strikes. -9 HP
+The DEADLINK strikes KURA down.
+
+posted, rank 7
+```
