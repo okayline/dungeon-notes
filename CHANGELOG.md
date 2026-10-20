@@ -3,7 +3,7 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## v1.36.1 - Oct 20 2026, TIME HST
+## v1.36.1 - Oct 20 2026, 09:13 HST
 
 min, Oct 20, with a screenshot of the USER page cut off under [LOG IN WITH A PASSKEY]: "could you make the window scrollable please". `index.html`, `screen.js`.
 - **Found:** v1.36's `.foundbox[data-mode="pass"] { overflow: auto }` sits above `.foundbox.inframe { ... overflow: hidden }` in the stylesheet; both have the same specificity, so the later `hidden` won and the panel couldn't be scrolled by hand (the v1.36 check only looked at the layout, never scrolled it).
