@@ -1,10 +1,32 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.8.10
+# scoundrel.exe — Dev Changelog — v0.1–v0.8.11
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.8.11 — "Name Tag"
+**Tue Oct 20, 2026 · 3:24 AM HST** (no migration: `players.name` stays nullable; nameless rows are filled in when next seen)
+
+### Why
+- The owner logged in with a passkey and still saw GUEST, and could log in again and again. Cause: account 1's scoundrel player (#16) had no name. The header shows `GUEST` for any player without a name (`public/app.js:148`), the title offers LOG IN while there's no name (`:955`), and a nameless player had no way to the account screen from the title (U needs a name, `:956`). The login itself worked.
+- The owner's real player KURA was a different player, not linked to account 1. Fixed by hand in the live `scoundrel-db` (owner ran it, Oct 20 ~3:22 AM HST): `UPDATE players SET name = NULL, name_key = NULL, admin = 0 WHERE name_key = 'kura'; UPDATE players SET name = 'KURA', name_key = 'kura', admin = 1 WHERE id = 16;`. The old KURA's runs stay, unnamed, so they're off the leaderboard pages. Chosen over deleting it, which would cascade-delete its runs.
+
+### Decisions (the owner's)
+- "can we please have it make random names like the other games??" / "then there will be no nameless people".
+
+### What was built
+- `src/names.js` (new): the 40 + 40 word lists copied from irl-dungeon `src/names.js` (itself from dawn-baton). Unlike those games, the name is stored as plain text in `players.name`/`name_key`, the same as a typed one, so NAME, the leaderboard, the ledger and checkpoints are unchanged. Only pairs of 16 characters or fewer (`NAME_RE`) are used: 1,516 of 1,600. `giveName` tries 40 random pairs against the `name_key` UNIQUE index.
+- `src/worker.js`: `findPlayer`, `needPlayer` and `enter` all pass the player through `giveName`, so new players are named when made and old nameless ones when next seen.
+- `public/app.js`: removed the end-of-run "PUT YOUR NAME ON THE BOARD?" prompt for guests and the name screen's end-screen paths; the name screen is only reached from the account screen now. Hint line changed from "Runs without a name still count, they just don't show." to "You started with a random one. Change it any time." VERSION v0.8.11; `index.html` cache tag 0.8.9 -> 0.8.11 (it was not bumped in v0.8.10).
+- `schema.sql` comment and README updated. Removed: the guest name prompt.
+
+### Effects
+- Every player who plays now shows on the leaderboard (it lists `p.name IS NOT NULL`). Registry checkpoints carry a name for everyone, so "A Scoundrel" is no longer shown for new runs.
+
+### Tests
+- "unnamed players are counted but not listed" became "everyone is listed"; the checkpoint test expects the random name; one new test: a new player gets a two-word name, and a nameless row gets one on the next request. 44 tests pass.
 
 ## v0.8.10 — "On the Record"
 **Tue Oct 20, 2026 · 2:55 AM HST** (no migration here; needs dungeon-items with `Registry.checkpoint` and its migration 006 deployed first)
