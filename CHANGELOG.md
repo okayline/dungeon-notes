@@ -3,6 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.34 - Clean Start - Oct 20 2026, 04:45 HST
+
+min, Oct 20 (thread on "permadeath style runs"): "the codex should carry over haha!", then "yeah can you make those fixes please !" and "push !". `rules.js`, `leaderboard/game.js`, `leaderboard/test/game.test.mjs`, `screen.js` v1.33 to v1.34.
+- **Found:** on the live site a new run lost the codex. The page sends RESET as `/run` with `fresh: true` (`index.html` `play()`), and the server's `fresh()` built the run from `ACT.apply({}, { t: "reset" })`, so nothing carried; `PAGE_KEEP` doesn't list `codex`. In the browser-only path (no server) the opposite: `reset()` deleted a 40-key list and kept everything else, so `pacts` (counted in `score()`), `tags` (alignment pull), `raiseOk` (sealed stairs already open), `wish`, `judged`, `heatSense`, `disguise` and the old bag's `copies` (which could hang an old copy's marks on a new kit item of the same name) leaked into the next run.
+- **Changed:** `reset(old)` builds the new run from `{}` plus `CARRY` = `codex`, `tz`, `lastSeen`, `rewindNoted`, `freeSteps`, `playerName`, `needName`, `finds`, `tally` (the last two are queues the page still owes the server). The timezone and `clockOffset` rules for the calendar guard are as before; `cheated` is set again if `freeSteps` is on. `fresh(old)` in `game.js` resets from the saved row's state (`kept()` keeps the codex; it only drops `OUTBOX`).
+- **Removed:** the 40-key delete list in `reset()`, `delete st.macca/mag`, `delete st.submitted` (none of them can survive a whitelist).
+- **Not checked:** the live site after deploy, and the itch.io build.
+- **Tests:** 20 pass (1 new: a saved run with a codex, a name, pacts, tags, open stairs and silver; after `/run` with `fresh: true` the codex and name stay and the rest is gone. It fails without the fix).
+
 ## v1.33 - Fuller Stories - Oct 20 2026, 00:30 HST
 
 ryan, Oct 20 (thread "shared registry ideas"): "let's stamp as much info as possible ! can we do this across all games?", "can we do this in 4Dungeon too? is there anything that we keep track of, that we don't stamp?", then chose **once per copy** on a card ("Stamp what an item lives through in 4Dungeon: every time, or once per copy?"). `rules.js`, `leaderboard/game.js`, `screen.js` v1.32 to v1.33.
