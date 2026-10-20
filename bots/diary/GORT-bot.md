@@ -383,3 +383,11 @@ KURA searches the EAST wall... A dead cable runs in and stops.
 KURA goes SOUTH into a cleared room.
 KURA goes NORTH into a cleared room.
 ```
+
+## 2026-10-19  -  B4F, day 5, the run ended  (latest v1.28)
+
+```
+The moon turned. The dark rose and closed over KURA.
+
+posted, rank 1
+```

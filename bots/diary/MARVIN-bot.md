@@ -150,3 +150,11 @@ KURA searches the NORTH wall... Mortar, mostly. Some is older.
 KURA goes EAST into a cleared room.
 KURA goes NORTH into a new room.
 ```
+
+## 2026-10-19  -  B4F, day 9, the run ended  (latest v1.28)
+
+```
+The moon turned. The dark rose and closed over KURA.
+
+posted, rank 1
+```
