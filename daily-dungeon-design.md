@@ -80,7 +80,7 @@ Room kinds are never named on screen. Each room gets a flavor name (Soft room, W
 
 Searching works like NetHack: each hidden thing needs a few search points, and each search adds up to about 2, scaled by the day's omen, how hot the room is (calm rooms yield more) and the fullness of the moon. Every room hides 1 to 3 items (half the rooms 1, 35 in 100 two, 15 in 100 three), on top of whatever demons and coins it hides, spread over its walls. Finding more on one wall gets harder. Some rooms hide a much deeper MYTHIC find.
 
-**Heat** is per room. Each search warms it. The hotter it is, the likelier a demon comes: about 1 search in 24 when cold up to about 1 in 4 at the hottest, scaled by the moon and KURA's loudness. Bays and passages never get encounters. A demon dying, being recruited, leaving, or KURA running past it cools the room by a third. Heat halves overnight. A room crossing tier 2 heat makes the demon members go quiet for the day (VIBES, section 7).
+**Heat** is per room. Each search warms it. The hotter it is, the likelier a demon comes: about 1 search in 24 when cold up to about 1 in 4 at the hottest, scaled by the moon and KURA's loudness. Bays and passages never get encounters. A demon dying, being recruited, leaving, or KURA running past it cools the room by a third. Heat halves overnight. A room crossing tier 3 heat (the hottest) makes the demon members go quiet for the day (VIBES, section 7).
 
 **Safe or gamble** (BUILT). Sometimes a sure small thing is offered next to a bigger one that only lands part of the time: in a hot room, at a worn wall, on demon and party offers (wrapped gifts, by personality), and from the moon on fuller nights. A miss gives nothing and says something silly.
 
