@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.6
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.8
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.8
+**Tue Oct 20, 2026 · 8:11 AM HST**
+
+Decisions (owner, Oct 20, thread "New-visitor playthrough of all games"): the new-visitor review found the footer webring's logo placeholder (`#wr-logo`, added in v0.35 as "a 100x100 dashed placeholder for a future ring logo") showing the text "100x100" to every visitor. Owner: "could you just take the text out but keep the outline and 100x100 space there?" and "push".
+- **`public/index.html`:** `<div class="wr-logo" id="wr-logo" ...>` is now empty. The `title="Ring logo (100x100)"` tooltip stays. The `.wr-logo` CSS (100x100, 2px dashed) is unchanged, so the box keeps its size. Removed: the "100x100" text. Version tags v0.46.8.
+- **Checked:** a local `wrangler pages dev` copy in headless Chromium: `#wr-logo` is 100x100, dashed, empty, at 1280 and 390 px wide. No test suite in this repo.
+- **Not checked:** the live site after deploy.
+- (v0.46.7 has no entry here; see the public changelog.)
 
 ## v0.46.6
 **Tue Oct 20, 2026 · 3:15 AM HST** (migration 031, run after the push: the GIFs must be live first)

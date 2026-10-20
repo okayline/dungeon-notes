@@ -1,10 +1,26 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.8.12
+# scoundrel.exe — Dev Changelog — v0.1–v0.8.13
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.8.13 — "Pocket Guide"
+**Tue Oct 20, 2026 · 8:11 AM HST** (no migration)
+
+### Decisions (the owner's)
+- From the new-visitor review (thread "New-visitor playthrough of all games"): "can you please fix the scoundrel.exe phone screen?", then "could you do the other quick fixes, and then push ?" (the free-play pointer was one of them). Also PR #1.
+
+### What was built
+- **Phone screen (`public/index.html`):** added DDDD's phone rule (`daily-dungeon/index.html:35-38`): `@media (max-width: 700px) { body { padding: 16px 4px; } pre { font-size: calc((100vw - 8px) / 32.5); } }`. Before, `(100vw - 32px) / 49` gave 7.3px text and a 234px-wide screen on a 390px phone (measured on live). Removed: the 16px side padding on phones. Desktop keeps the 22px clamp.
+- **Free-play pointer (`public/app.js`):** when `/api/history` comes back on the title, if `canFree() && !dailyDone()` and the flavor line is empty, the flavor line becomes "New here? Try [F]REE PLAY first. It never counts." `canFree` already limits it to players who haven't finished a ranked run, have no run today and haven't used the learning run. Removed: the blank third log line for those players.
+- VERSION v0.8.13, cache tag 0.8.13.
+- Cloudflare Workers Builds on non-main branches ran `wrangler preview`, which fails without a `previews` block. The owner turned off branch builds instead of adding preview resources.
+
+### Tests
+- 46 pass (no new test: CSS and one title line). Local `wrangler dev` in headless Chromium: 11.75px / 376px wide at 390, 10.8px / 347px at 360, 13.0px / 415px at 430, 22px at 1280, no sideways scroll; a fresh player sees the free-play line on desktop and phone, and F starts free play.
+- Not checked: phones held sideways (no landscape rule), a real phone, the live site after deploy.
 
 ## v0.8.12 — "Reroll"
 **Tue Oct 20, 2026 · 3:29 AM HST** (no migration)

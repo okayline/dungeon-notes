@@ -3,6 +3,14 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.35 - Front Door - Oct 20 2026, 08:11 HST
+
+min, Oct 20 (thread "New-visitor playthrough of all games"): the review found the title screen full of moon and epoch words with nothing saying how to start; "could you do the other quick fixes, and then push ?". `screen.js` only.
+- **Changed:** `renderTitle` pads the menu bar so `hint = "New here? Press N to start. "` sits at its right end (78 columns: the 45-column menu, padding, the 28-column hint). The page's menu-bar renderer (`index.html` `i === lines.length - 2`) only turns the bracket words into buttons, so the hint is plain text. VERSION v1.35.
+- **Removed:** nothing (the space at the bar's right end was blank).
+- **Tests:** 20 pass (no new test: one line of text). Local `wrangler dev` in headless Chromium at 1280 and 390 px: the hint shows inside the frame.
+- **Not checked:** the itch.io build, the live site after deploy.
+
 ## v1.34 - Clean Start - Oct 20 2026, 04:45 HST
 
 min, Oct 20 (thread on "permadeath style runs"): "the codex should carry over haha!", then "yeah can you make those fixes please !" and "push !". `rules.js`, `leaderboard/game.js`, `leaderboard/test/game.test.mjs`, `screen.js` v1.33 to v1.34.
