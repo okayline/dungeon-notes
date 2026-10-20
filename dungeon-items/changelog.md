@@ -4,6 +4,12 @@ The shared core every game binds to: the item table, the copy registry, marks an
 
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
+## Oct 20, 1:18 AM HST: `info()` in one batch (with Dawn Baton v0.22)
+- Owner (passkeys thread): the Dawn Baton account page was slow after logging in; "you can build it and push it".
+- `src/accounts.js` `info()`: the account check plus the codes, passkeys and games reads go in one `db.batch` (one database trip instead of four). Same answers, same 404 for a missing account. Every game's account page calls it. Removed: the four sequential reads.
+- `test/helpers.mjs`: the fake D1's `batch` returns `results` for a `SELECT`, as D1 does (it used to return only `meta`).
+- No migration. 73 tests pass, plus a hand check on hand-built rows.
+
 ## Oct 20, 12:40 AM HST: mark words for 4Dungeon v1.33 and irl-dungeon v0.22; 88x31 can mark (branch claude/project-thread-ecf8mr, not on main)
 - Owner (thread "shared registry ideas"): "can you add the dungeon-items words, and how do we let 88x31 stamp marks ? can you do the mark call thing?"
 - `/ledger` words (`src/public-ledger.js` `DEED`): in_locker "was in a hidden locker", in_archive "was in the Archive", deep_stone "was deep in the stone", beat_demon "saw a demon fall", talked_down "saw a demon talked down", fled_fight "ran from a fight", through_door "went through a locked door", found_outside "was found outside, in the real world"; `on_b4f`..`on_b1f` / `on_1f` read "was picked up on B4F" (a regex with `[0-9]`, not `\d`: the page is a JS template string, which would eat the backslash). Removed: the fallback "got a mark in X: ..." wording for these values (it stays for unknown ones).

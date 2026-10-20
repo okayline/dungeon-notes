@@ -7,6 +7,25 @@ Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.22 — "Quick Key"
+**Tue Oct 20, 2026 · 1:18 AM HST** (no migration; ships with the dungeon-items `info()` batch below)
+
+### Decisions (the owner's)
+- The Account tab was slow to load after a passkey login; batch the account reads and push it (Oct 20, HST, thread on passkeys: "yeah can you do that? ... you can build it and push it").
+
+### What was built
+- Counted from the code, not timed: after a passkey login `GET /api/account` made about 11 sequential database or Accounts trips (player lookup 4, `accountFor` 2, `info` 4, the device count 1).
+- dungeon-items `src/accounts.js` `info()`: the account check and its three reads (codes, passkeys, games) go in one `db.batch`, so one trip instead of four. Every game's account page calls it. The fake D1 in its `test/helpers.mjs` now returns rows for a `SELECT` in a batch, as D1 does.
+- `src/worker.js` `account()`: the device count runs alongside `accountFor` + `info` (`Promise.all`) instead of after them.
+- Removed: three sequential trips in `info()` and one wait in `account()`. Nothing on screen changed.
+
+### Findings and shortcuts
+- Not changed: `player()` still makes up to 4 sequential trips (token lookup, sessions lookup, two `seen_at` writes), and `accountFor` still reads `accountOf` and the legacy `save_codes` one after the other.
+- Not measured after the change; the check is timing a logged-in `/api/account` on the live site.
+
+### Tests
+- No new test (no new rule). 45 tests pass here; dungeon-items 73 pass, plus a hand check of `info()` on hand-built rows (an account with one code, one passkey, two games; and a missing account gives 404).
+
 ## v0.21 — "Quick Dawn"
 **Tue Oct 20, 2026 · 12:51 AM HST** (no migration)
 
