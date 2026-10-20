@@ -4,6 +4,11 @@ The shared core every game binds to: the item table, the copy registry, marks an
 
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
+
+## Oct 20, 12:26 AM HST: The Dawn Baton (with Dawn Baton v0.20)
+- `seed/dawn-baton.json`: one item, The Dawn Baton (`dawn-baton` / `baton`, relic, so only Dawn Baton can make copies). Owner's ask: Dawn Baton writes its daily baton into the registry, one copy per lap. Not seeded on the live `items-db` yet.
+- `Registry` entrypoint gains `itemIds(game, keys)` (the existing `registry.js` function the HTTP door already used), so Dawn Baton looks its item up by key instead of hard-coding an id. README: the call and a Dawn Baton section. Removed: nothing.
+- No migration. 72 tests pass (one new: the seed is one relic, `itemIds` finds it, `lap:1` gives back the same copy, another game can't make one).
 ## Oct 19, 10:10 PM HST: ledger page text sizes, no glow (pushed to main with 88x31 v0.45.1)
 - Owner: the 4Dungeon panels' text was much bigger than the 88x31 panels'; make them the same, medium. Both now use 16px for the line, 13px for the details, 11px for the hashes and 22px for a copy's name (were 17/13/11/24 and 19/19/15/28 for 4Dungeon). VT323 gets `size-adjust: 130%` so it reads the same size; if it fails to load, the fallback monospace is the same px. Removed: every text glow on the 4Dungeon panels and pages (owner: "no text glow ever").
 - The button pictures that showed "removed by request" were 88x31's `/api/img` (fixed there, v0.45.1); nothing changed here for it. No migration. 70 tests pass.

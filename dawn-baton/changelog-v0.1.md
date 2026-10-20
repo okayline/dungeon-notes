@@ -7,6 +7,27 @@ Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.20 — "Keepsake"
+**Tue Oct 20, 2026 · 12:26 AM HST** (migration 007; needs dungeon-items' baton seeded on `items-db` first)
+
+### Decisions (the owner's)
+- Dawn Baton writes its baton into the shared registry every day: a real item, `relic`, one numbered copy per lap (Oct 20, HST). From the write-up `analysis/dawn-baton-registry.md` in the project files. The "pass something along to a stranger" idea stays on hold.
+
+### What was built
+- `wrangler.jsonc`: a second service binding, `REGISTRY` (dungeon-items, entrypoint `Registry`).
+- `src/worker.js` `batonCopy`, run after `settle` on every request inside its own try/catch: finds the oldest closed lap that has a human stamp, has its last band (index 23) sealed, and has no `lap_copies` row. The holder is one of that lap's human stampers (ordered by band), index `parseInt(hash[0..8], 16) % count` of the band-23 entry's hash, so anyone can check it from the public ledger. Looks up the item id once with `REGISTRY.itemIds("dawn-baton", ["baton"])`, then `REGISTRY.birth({ itemId, game: "dawn-baton", playerId, key: "lap:<n>" })` and saves the row. One lap per request. Laps already closed before this version get their copies too, oldest first, made now (not back-dated).
+- `GET /api/lap` gains `baton: { item, copy }`, only for the player who got it (null for everyone else). Yesterday shows "You carried this lap's baton home" with a link to `https://88x31.app/registry?item=&copy=`.
+- `migrations/007_lap_copies.sql` and `schema.sql`: `lap_copies (lap, item_id, copy, player_id, made_at)`.
+
+### Findings and shortcuts
+- A lap with no human stamper makes no copy (a copy needs a real player, and numbers can't skip), so copy numbers count held laps, not days.
+- If the item isn't seeded or the registry refuses, every request retries one RPC and logs it. Fine at today's traffic.
+- Not checked: the registry link on 88x31.app (taken from dungeon-items' changelog, "served on 88x31.app at `/registry`").
+- Removed: nothing.
+
+### Tests
+- One new test (fake registry): no copy while the lap is open, one copy at close for the stamper picked from the band-23 hash (worked out from raw SQL in the test), only that player sees `baton`, no second birth on a later request, a lap with nobody makes none. 44 tests pass.
+
 ## v0.19 — "Twenty-Four"
 **Mon Oct 19, 2026 · 8:15 PM HST** (no migration)
 

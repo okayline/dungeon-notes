@@ -21,6 +21,7 @@ Written Thu Oct 15, 2026 (HST) from what the code does today, so each rule can b
   holds no player id (from v0.15; earlier stamps still do). Who stamped is kept only in the table's own `player_id`
   column, which no endpoint publishes. It is append-only and permanent.
 - **band_sky:** weather for empty bands. Not about any player.
+- **lap_copies** (v0.20): which player got each lap's baton, and its copy number in the shared registry. Only that player is told. The registry itself keeps the holder as `dawn-baton` + player id, which it never publishes; its public ledger shows only that Dawn Baton made copy #n, and when.
 
 ## What is used but not kept
 
