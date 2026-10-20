@@ -3,7 +3,7 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## v1.38 - One Line Per Moment - Oct 20 2026, 09:28 HST
+## v1.38 - One Line Per Moment - Oct 20 2026, 09:29 HST
 
 min, Oct 20, after the ledger showed #801-#804 as four "ran from a fight" entries: "Can we have each moment be one entry however many items im carrying that haven't seen the event before?". `leaderboard/game.js`, `screen.js`; needs dungeon-items `addMarks` (deployed first).
 - **Changed:** `takeMarks` groups the waiting marks by kind and mark (`kind + " " + w`, so `carried_up:2` and `carried_up:3` stay apart) into `{ holder, kind, value, copies: [{ itemId, copy, key }] }`; each copy's key is unchanged (`me.id:e.k:w`), so a mark already made one at a time is never made twice. `stampMarks` calls `REGISTRY.addMarks` once per group (in chunks of 300, dungeon-items `MARKS_AT_ONCE`), and a skipped copy is logged. A `blessed` mark still goes through `addMark` one copy at a time (it climbs that copy's ladder). Applies to every mark 4Dungeon stamps: lived-through (beat_demon, talked_down, fled_fight, through_door), carried_up, and a find's own marks (two finds in one move under the same moon share one entry). VERSION v1.38.
@@ -11,7 +11,7 @@ min, Oct 20, after the ledger showed #801-#804 as four "ran from a fight" entrie
 - **Tests:** 23 pass (1 new: three copies, one that already ran from a fight and one blessed in the same move: one `addMarks` call naming the two others with their keys, and one `addMark` for the blessing). Four tests' registry fakes now take `addMarks`.
 - **Not checked:** the live registry, and a real Worker's D1 running `json_each` (dungeon-items tests use Node's SQLite).
 
-## v1.37 - Bottomless Bag - Oct 20 2026, 09:22 HST
+## v1.37 - Bottomless Bag - Oct 20 2026, 09:29 HST
 
 min, Oct 20: "can we make it so my bag never gets full in 4dungeon please?", then chose "Everyone, no limit" on a card (over a limit only for min's account). `rules.js`, `act.js`, `index.html`, `screen.js`.
 - **Removed (`rules.js`):** `BAG_MAX` (9) and every check on it: `gain`'s overflow line (a thing coming to a full bag went to `st.overflow`), `welcomeVisitor`'s full-bag wait, the gift's `< BAG_MAX` odds check in `departs`, and the demon's give-back check (`o.dir === "ask"`). `keepItem` (the "what do you leave?" answer, which also wrote "KURA leaves X where it is. The bag is full." and put the thing in `st.gone`). `OFFER_TRADE` and the full-bag swap in `offerPick` (member and demon offers became swaps with a full bag; the encounter's `"trade"` stage). `offerTrade` keeps only the gift box's swap. `offerView`'s non-box `trade` is always false. `api` drops `keepItem` and `BAG_MAX`; `act.js` drops the `keep` action.
