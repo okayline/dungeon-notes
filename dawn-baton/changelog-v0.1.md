@@ -7,6 +7,25 @@ Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.23 — "Proof of Dawn"
+**Tue Oct 20, 2026 · 2:22 AM HST** (no migration; the 88x31-anchors change must go on main only after this is deployed)
+
+### Decisions (the owner's)
+- Dawn Baton's ledger gets the same hourly Bitcoin timestamp as the 88x31 ledger and the shared registry (Oct 20, HST). Not written into the shared registry: bots and unheld bands have no player, a mark needs a copy that exists and is held, and 25 entries a day would push the registry past its 10,000-entry chain check in about a year.
+
+### What was built
+- `src/worker.js` `ledgerHead`, route `GET /api/ledger/head`: reads the whole ledger, checks the chain with `verifyChain`, returns `{ ok, entries, head }` (the newest hash, or 64 zeros when empty) or `{ ok: false, broken_at }`. No contents, no players.
+- 88x31-anchors `stamp.py`: a third `Ledger("Dawn Baton", https://dawn.88x31.app/api/ledger/head, "dawn-baton")`. Receipts go in `dawn-baton/`, with their own `log.md`. A failure there doesn't stop the other two ledgers (the script already fails at the end). README there: "Three ledgers".
+- Dawn Baton README: "hourly OpenTimestamps anchoring" removed from "Not yet".
+
+### Findings and shortcuts
+- Checked locally: `fetch_head` parses the new shape and the three ledger list is right. `ots` isn't installed in the sandbox, so no real receipt was made; the first one comes from the Action's next run after both repos are on main.
+- Other chains not anchored yet: irl-dungeon (`/api/verify` returns a head) and scoundrel.exe (a ledger route, no head route found). 4Dungeon: no own chain found.
+- Removed: nothing.
+
+### Tests
+- One new test: `/api/ledger/head` equals the last row's hash and the row count, and a record edited by hand makes it answer `ok: false` at that entry. 46 tests pass.
+
 ## v0.22 — "Quick Key"
 **Tue Oct 20, 2026 · 1:18 AM HST** (no migration; ships with the dungeon-items `info()` batch below)
 
