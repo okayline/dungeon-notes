@@ -4,6 +4,11 @@ The shared core every game binds to: the item table, the copy registry, marks an
 
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
+## Oct 20: Open registry ledger (not pushed to main yet)
+- Added `GET /api/registry/ledger?before=&limit=` (newest first, up to 100 entries: id, kind, game, record, prev_hash, hash, date, item name) and a page at `/ledger` that reads it. Owner's call (Oct 20): the ledgers should be open and readable. The `player_id` column is never selected, and records already hold no player ids; times are shown as dates only, as in irl-dungeon. The item name is added beside the record and is not part of the sealed text.
+- Removed: nothing. This replaces the README's "Not public" statement for the ledger; `/api/registry/head` stays. Still not public: copy holders and the `copies` table (no route).
+- No migration. 67 tests pass (one new: no player id in the output, newest first, paging, hashes rebuilt by hand with node:crypto).
+
 ## Oct 18, 9:08 PM HST: docs and test fix (7857f59)
 - CLAUDE.md gets the project's 12 working rules. README item count corrected (98 became 135, counted on the live table), "no game stamps marks" corrected (4Dungeon has since v1.25), `ACCOUNTS.md` lists all games using it.
 - `test/ladder.test.mjs`: the "migration 004 runs on the old layout" test built the old layout from `HEAD:schema.sql`, which stopped being old once marks arrived. It now uses `dd6d80c^:schema.sql`. 66 tests pass.
