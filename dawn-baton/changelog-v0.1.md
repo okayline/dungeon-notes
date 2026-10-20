@@ -7,6 +7,22 @@ Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.18 — "Open Book"
+**Mon Oct 19, 2026 · 8:00 PM HST** (no migration)
+
+### Decisions (the owner's)
+- The ledgers should be open and readable (Oct 19, HST): Dawn Baton gets a ledger page. Every entry shows its exact time, newest first.
+
+### What was built
+- `public/index.html`: a Ledger section and a footer link. It reads the existing `GET /api/ledger?limit=40&before=` (40 an entry page, an "Older" button), and lists laps, stamps and unheld bands newest first with the local date and time and the first 12 characters of each entry's `prev_hash` and `hash`. A stamp in the lap that is still open shows only its band ("hidden until the lap is over"); the Worker already withholds its contents. Band names are `solar UTC+n` (band index 12 minus the index).
+- `engine/version.js` 0.17 to 0.18, matching `CHANGELOG.md`.
+
+### Findings and shortcuts
+- No Worker change: the route and its hiding rule were already there, the page just never used them. Removed: nothing.
+
+### Tests
+- No new test (page-only change; checked in headless Chromium with a stubbed `/api/ledger`, no page errors). 43 tests pass.
+
 ## v0.17 — "One Key"
 **Sat Oct 17, 2026 · 2:45 AM HST** (no migration here; migration 003 ran on the shared `items-db`)
 

@@ -3,7 +3,7 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## Unreleased (v1.29 draft; on the branch only, no version bump until ryan says push) - Oct 20 2026 HST
+## v1.29 - Pages - Oct 19 2026, 20:00 HST
 
 INVOKE redone, a HISTORY screen added, Hold Omen's button removed. Decisions (ryan, Oct 20, from mock-ups): pages of about six things, blank rows between sections, ICHOR/SILVER on the line above thing 1, page controls and `[H]ISTORY [M]AIL [C]LOSE` on the bottom bar, no menu option outside the bar, newest first on HISTORY, one page, a link to the registry page, "get rid of hold omen", MAIL stays.
 
@@ -11,6 +11,7 @@ INVOKE redone, a HISTORY screen added, Hold Omen's button removed. Decisions (ry
 - **HISTORY screen** (`H`, `[H]ISTORY`): the chosen thing's tier counting blessings, alignment, nature, its text, when and where it was made, "#n of N", how many times it changed hands, then each mark with its real date and time, newest first, one page (the rest are "+N older, see the ledger"). `[L]EDGER` opens `https://dungeon-items.ddddungeon.workers.dev/ledger?item=&copy=`; a thing with no registry number (starting kit, not signed in) shows "This one has no number, so no history." and no link. Wording of the mark lines is mine: `markLabel` in `rules.js` ("Answered the Moon", "Blessed by the Moon", "Carried up", "Under a full moon", ...). Not recorded anywhere, so not shown: the level a thing was found on or carried up on (`gain()` stores no level; `stampMarks` keeps only `carried_up`).
 - **MAIL.** Removed: `[ESC] back` in the title, `[ BACK ]`, the `[ < ] [ > ]` buttons. The bar is now `[<] n/m [>]  [C]LOSE`.
 - **Hold Omen removed from INVOKE.** Removed: `HOLD_OMEN_ON`, `holdBtn`, `holdAction()`, the `H` key binding, the `data-hold` click, and the button code in `showInv`. Left alone (not asked, needs ryan's word): the rules side (`hold`, `useBankedOmen`, `bankedOmen`, `omenCooldownDay`, the "An omen is held in reserve" line) and the STANDBY hold on the main screen (`holdBox`).
+- **Version:** `screen.js` v1.28 to v1.29. The public `CHANGELOG.md` entry says only what players see.
 - **Server:** `GET /history?item=&copy=` in `leaderboard/accounts.js` (no sign-in: it returns what the registry's `/ledger` page already shows). `rules.js` `inventory()` now returns each copy's registry number (`nums`) and the item's nature. New test: `/history`. 17 tests pass.
 - **Same change, dungeon-items:** the registry gets `copyStory(itemId, copy)` (the service-binding method behind `/history`; also the code behind `/api/registry/copy`, which now also carries `of` and `born_at`). Deploy dungeon-items first.
 - **Left alone on purpose:** the ichor-give screen's `[ESC] back` title and "Esc back" foot line (asked once; no answer yet).
