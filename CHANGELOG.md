@@ -3,6 +3,19 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.33 - Fuller Stories - Oct 20 2026, 00:30 HST
+
+ryan, Oct 20 (thread "shared registry ideas"): "let's stamp as much info as possible ! can we do this across all games?", "can we do this in 4Dungeon too? is there anything that we keep track of, that we don't stamp?", then chose **once per copy** on a card ("Stamp what an item lives through in 4Dungeon: every time, or once per copy?"). `rules.js`, `leaderboard/game.js`, `screen.js` v1.32 to v1.33.
+- **Finer place, on top of the deed:** `gain(st, it, lines, noQueue, how, where)` takes a sixth argument. The locker (`reveal` "lure") passes `in_locker`, an item in an Archive room `in_archive`, the deep stone `deep_stone`. The deed stays `found_wall`, so the Moon's `found_wall` wish still matches and `markLines` (INVOKE) reads as before.
+- **Level:** every queued find also gets `on_` + the level name lowercased (`on_b4f` ... `on_b1f`, `on_1f` above the pit) from `st.floor` when there is one. The starting kit is gained before the floor exists, so it has none.
+- **Both ride in `f.x`;** `settleCopies` only accepts values matching `FIND_EXTRA` (`/^(in_locker|in_archive|deep_stone|on_(b[1-4]|[1-9])f)$/`) and queues them after the deed and before the occasions.
+- **What a carried copy lives through, once per copy:** `settleCopies` compares `st.stats` with the run before the move (`old.stats`). `beaten` up → `beat_demon`; `peace` or `recruited` up → `talked_down`; `fled` up → `fled_fight`; `unlocks` up → `through_door`. Each goes on every copy in `st.copies` that doesn't already have it (stamped `m` or waiting `q`), before this move's finds are added, so a demon's drop doesn't get `beat_demon` for its own fight. Copies in a friend's pockets and 88x31 visitors get none. Stamped as kind `deed` (not in `NIGHT`).
+- **Words (HISTORY, `markLabel`):** `MORE_WORDS`: In a hidden locker, In the Archive, Deep in the stone, Saw a demon fall, Saw a demon talked down, Ran from a fight, Through a locked door; `on_b3f` reads "On B3F". All 24 columns or fewer. `markLines` (INVOKE's two lines) is unchanged: these show only on HISTORY and the ledger page.
+- **No migration:** the registry only checks a value's shape (`[a-z0-9_]`, 1-40).
+- **Not done (for ryan):** the dungeon-items `/ledger` page has no words for the new values (it falls back to "got a mark in 4Dungeon: beat demon."); copies found before v1.33 get no find-place or level marks, but do get the lived-through marks from now on.
+- **Not checked:** a real run reaching a locker, Archive or deep-stone find (a scripted walk of 3000 searches found no wall item; the kit finds showed no `x`, as expected). The test drives `settleCopies` directly.
+- **Tests:** 19 pass (1 new: place and level on a find, beat_demon and through_door on the bag's copy but not the new find, no repeat on a second fight, the HISTORY words, INVOKE still reading found_wall).
+
 ## v1.32 - Patient Party - Oct 19 2026, 21:20 HST
 
 ryan, Oct 19: "can you make the party members like 4-5x more patient with me. they still get quiet or lose patience too fast." `daily-dungeon/rules.js`.
