@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.32 - Patient Party - Oct 19 2026, 21:05 HST (branch only, not released; version not bumped)
+
+ryan, Oct 19: "can you make the party members like 4-5x more patient with me. they still get quiet or lose patience too fast." `daily-dungeon/rules.js`.
+- **Talked out later:** `WORD_YIELD` is 16 long, the old shape four times over (8 TALKs at yield 1, 4 at 0.5, 4 at 0.25). Was `[1, 1, 0.5, 0.25]`, so a member was talked out after 4 TALKs a day; now after 16. Each TALK at yield 1 still adds a point of patience (capped), so more of them are worth the same each.
+- **Quiet later:** a room crossing heat tier 3 (18) makes the demon members go quiet for the day (`heatUp`). Was tier 2 (12). Heat tops out at 24, so this is 1.5 times the heat, not 4 times; there is nothing hotter to move it to.
+- **Not changed:** the members' sarcastic remarks when KURA keeps at one thing (`nag`, `fidget`, from 8 repeats), which are not quiet or patience. Design doc lines 103 and 107 updated. Tests: 18 pass, no new test.
+
 ## v1.31 - Loose Ends - Oct 19 2026, 20:50 HST
 
 The Moon's wish, from the thread "the Moon asks for histories". `screen.js` v1.30 to v1.31. Mostly `daily-dungeon/rules.js`, `floor.js` and `act.js` (commits 994e00b, cb0e464, a66907d, 84b9c41, 64680bf, d1cc203).

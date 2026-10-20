@@ -100,11 +100,11 @@ Difficulty follows how far into the run she is, not the level's name. Demons and
 
 ## 7. The party
 
-**TALK with a member** (was WORD until v1.15) costs half a breath. A member is picked (leaning toward whoever is quiet or hasn't been talked to). Over a day the yield falls with each TALK, then they are talked out. What can happen: a check-in for a quiet member; a truce between a LAW and CHAOS member; an offer (never on the first TALK with a member, rarer after); a confidence; or banter, sometimes a small heal. Now and then two members talk and KURA listens, and after a good many talks a member asks a question with two good answers. With nobody standing beside her, TALK is KURA reading the room or the door she faces.
+**TALK with a member** (was WORD until v1.15) costs half a breath. A member is picked (leaning toward whoever is quiet or hasn't been talked to). Over a day the yield falls with each TALK (16 a day with one member), then they are talked out. What can happen: a check-in for a quiet member; a truce between a LAW and CHAOS member; an offer (never on the first TALK with a member, rarer after); a confidence; or banter, sometimes a small heal. Now and then two members talk and KURA listens, and after a good many talks a member asks a question with two good answers. With nobody standing beside her, TALK is KURA reading the room or the door she faces.
 
 **Offers** are always two things from the member's own pockets (or one asked for from your bag), one taken. A full bag makes it a swap. Some are wrapped, a gamble that is the real thing about half the time. Members refill their pockets a little each night.
 
-**VIBES** (was patience until v1.15) is the party's mood, and it only grows: talks, questions and confiding raise it, nothing lowers it. A room crossing tier 2 heat makes demon members go quiet (the old tired lines) for the rest of the day; a night's sleep or a check-in TALK brings them back. Nobody snaps, strikes or leaves.
+**VIBES** (was patience until v1.15) is the party's mood, and it only grows: talks, questions and confiding raise it, nothing lowers it. A room crossing tier 3 heat (the hottest) makes demon members go quiet (the old tired lines) for the rest of the day; a night's sleep or a check-in TALK brings them back. Nobody snaps, strikes or leaves.
 
 **Recruiting.** Through TALK. Programs join more readily. CHAOS or HAUGHTY demons never take the plain "join." A full party offers a swap.
 
