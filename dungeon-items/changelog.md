@@ -5,6 +5,7 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 ## Oct 19, 8:25 PM HST: 24-hour times (branch only, not released)
+- The `/ledger` page's "The whole ledger" link goes to the page's own path (was a fixed `/ledger`), so the page works when 88x31.app serves it at `/registry`.
 - The `/ledger` page shows every time as 24-hour (`hourCycle: "h23"`, with seconds); was the browser's default, 12-hour in US locales. Owner's ask: 24-hour time in all games. No migration. 69 tests pass.
 
 ## Oct 19, 8:00 PM HST: Open registry ledger (pushed to main with 4Dungeon v1.29 and Dawn Baton v0.18)

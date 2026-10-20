@@ -6,6 +6,7 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 ---
 
 ## Unreleased (branch only, no version bump until ryan says push) — Oct 19, 2026 · 8:30 PM HST
+- **The shared registry's ledger on 88x31.app** (owner's ask: don't show the dungeon-items Worker's own address): `GET /registry` (the page), `GET /api/registry/ledger` and `GET /api/registry/copy` (`functions/registry.js`, `functions/api/registry/*.js`, `lib/registry-view.js`). Each asks the dungeon-items Worker through the existing `ACCOUNTS` binding for the same path and hands back the answer; only the parameters the registry reads are forwarded (`before`, `limit`, `item`, `copy`); GET only, no key, nothing written. 4Dungeon's HISTORY `[L]EDGER` links here. Checked with the real Worker code over a stand-in database: page, ledger and copy answer, extra parameters are dropped, a missing copy answers 404 and no binding answers 503, no player id in the output, and the page renders and its row links work in Chromium; not run on Cloudflare. No new test file (88x31 has none).
 - **24-hour time everywhere** (owner's ask, all games): `public/app.js` has one helper, `when24`, and the ledger stamp (`fmtStamp`), guestbook times (`fmtWhen`), the cLuB certificate's issue time and the wall's lock time use it (were the browser default, 12-hour in US locales: "9:52:13 PM"). Dates alone are unchanged. `node --check` passes; there is no test for page text.
 
 ## v0.43 — "Click Here to Enter"
