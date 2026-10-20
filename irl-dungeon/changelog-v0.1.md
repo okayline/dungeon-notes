@@ -1,9 +1,34 @@
-# irl-dungeon — Dev Changelog — v0.01–v0.21
+# irl-dungeon — Dev Changelog — v0.01–v0.22
 
 Detailed changelog for irl-dungeon (public repo: okayline/irl-dungeon): 4Dungeon in the real world. Every H3
 resolution-10 cell (about 100 m) is a dungeon that grows over time, using 4Dungeon's floor generator, screen and
 minimap. Live at irl.88x31.app. Companion to Daily Digital Demon Dungeon.
 The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times are Hawaii time (HST).
+
+---
+
+## v0.22 — "First Marks"
+**Tue Oct 20, 2026 · 12:20 AM HST** (no migration; uses dungeon-items marks, migration 005, already live per its README)
+
+- **Decision (owner):** "Every game writes marks" (project thread "shared registry ideas"). First step: irl-dungeon stamps a
+  night and a deed mark on each find.
+- **Code (`src/copies.js`):** after `birth`, `numberFind` calls `REGISTRY.addMark` twice for the holder
+  `{ game: "irl-dungeon", playerId }`: `night` = the moon phase at the find's `created_at` (`moonIndex` from
+  `public/screen.js`, the same mean moon 4Dungeon stamps, mapped to 4Dungeon's `PHASE_MARK` names) and `deed` =
+  `found_outside` (a new value; no migration, the registry only checks the shape). Keys are `irl-find:<id>:night` and
+  `irl-find:<id>:deed`, so retries make no second mark.
+- **A find counts as numbered only when its copy and both marks are in.** If a mark fails, `finds.copy` stays NULL and
+  `numberPending` retries; `birth` gives back the same copy and `addMark` the same mark. `numberPending` now also reads
+  `created_at`.
+- **Why a new deed value, not `found_wall`:** location here can't be proven (DESIGN.md open question 3), and 4Dungeon's
+  Moon's wish accepts `found_wall` (`rules.js` `WISH_DEEDS`). A separate value keeps farmed finds out of the wish unless
+  4Dungeon chooses to accept them.
+- **Not done (listed for the owner):** finds numbered before v0.22 have no marks (no backfill); dungeon-items'
+  `/ledger` copy page has no words for `found_outside` (it falls back to "got a mark in irl-dungeon: found outside.");
+  4Dungeon's `DEED_WORDS` has no words for it either.
+- **Finding:** NOON in `test/find.test.mjs` (Oct 16 2026, 22:00 UTC) sits on the mean moon's crescent/quarter line
+  (age 5.53 days), so the mark test compares against `nightOf`, and a separate test checks three calendar dates.
+- **Tests:** 218 pass (2 new: the two marks and their retry; the calendar phases). The fake registry gained `addMark`.
 
 ---
 
