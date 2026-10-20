@@ -1,9 +1,20 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.8
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.9
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.9
+**Tue Oct 20, 2026 · 9:07 AM HST** (migration 032, run before the push)
+
+Decisions (owner, Oct 20, thread "Pixel Domino Club Steam page"): comparing a Steam game's commit-reveal "fairness verification" with ours, the gap found was that a roll only reached the ledger after the player picked (`sealLedger`: `WHERE o.done_at IS NOT NULL AND o.kept IS NOT NULL`), so options shown to a player could be edited in the database with no trace, and unpicked packs were never sealed. Owner: "can we do #2". Then found that daily pulls (`daily_pulls`) never seal their options at all; owner chose "Packs and daily pulls" on a decision card. Per-pack proof (committed seed, player seed, pool snapshot) was discussed and not built: this change is its first step.
+- **New ledger kind `pack_roll`** (`lib/ledger.js`): `["pack_roll", pack, user, [3 design ids], finishes|null, opened_at]`, sealed for every `pack_openings` row with no `pack_roll` and no `pack_open` entry yet (so openings picked from before this release get no roll; their options are already in `pack_open`). Order 0.55, before `pack_open` (0.6). `functions/api/packs.js` already calls `sealSafe` before returning the opened pack, so the roll is on the chain before the player sees it. Limited packs' finishes are now sealed for all three cards, not just kept ones.
+- **New ledger kind `pull_roll`**: `["pull_roll", roll_id, user, day, [3 design ids, -1 = BONUS], created_at]`, sealed for `daily_pulls` with `roll_id > MAX(ref_id)`. **Migration 032** adds `daily_pulls.roll_id` (unique index); `functions/api/pull.js` inserts with `roll_id = COALESCE(MAX(roll_id), 0) + 1` in the same statement (one table, no extra id table) and calls `sealSafe` right after rolling (GET) and after a bonus pack's fresh roll (POST), which it didn't before. Pulls rolled before 032 keep `roll_id` NULL and are not sealed as rolls.
+- **`/api/ledger`**: `who` for both kinds; `pack_id` for `pack_roll`; new `pull_day` for `pull_roll`. **`public/app.js` ledgerItem**: "A daily pack / A bonus pack was opened by X!", "Sealed pack #N was opened by X!" for `pack_roll`; `pack_open` now reads "Sealed pack #N's buttons were picked by X". Removed: "was opened by" on `pack_open`.
+- Comments: `lib/ledger.js` kind list, `lib/packs.js` header, `schema.sql` pack_openings comment. `public/index.html`: v0.46.9.
+- **Checked** (node:sqlite, schema.sql + seeds, D1-style wrapper, real `openPack`/`keepFromPack`/`sealLedger` and the real `/api/pull` and `/api/ledger` handlers with a real session; expected records and hashes built by hand and with node:crypto): a pack_open sealed by the old code gets no roll; an opened pack's `pack_roll` record and hash match; an unpicked opening is sealed; roll comes before open; re-sealing adds nothing; GET /api/pull seals `pull_roll` 1 before responding; picking a BONUS card seals the bonus pull as roll 2; `/api/ledger` names the player on all 4 rolls; whole chain verifies and re-hashes with node:crypto. Migration 032 applied to the pre-032 schema adds the column and unique index. `node --check` on the changed files. No test suite in this repo.
+- **Not checked:** the live database and site; the Fair Play lines in a browser; bot pack openings (they go through the same sealer, not exercised).
 
 ## v0.46.8
 **Tue Oct 20, 2026 · 8:11 AM HST**
