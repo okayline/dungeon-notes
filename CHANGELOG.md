@@ -3,6 +3,12 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.35.1 - Oct 20 2026, 08:15 HST
+
+min, Oct 20, right after v1.35 went live: "can you take out the "New here? press N to start" on 4Dungeon". `screen.js` only.
+- **Removed:** the v1.35 `hint` in `renderTitle`; the menu bar is back to the v1.34 line. VERSION v1.35.1.
+- **Tests:** 20 pass.
+
 ## v1.35 - Front Door - Oct 20 2026, 08:11 HST
 
 min, Oct 20 (thread "New-visitor playthrough of all games"): the review found the title screen full of moon and epoch words with nothing saying how to start; "could you do the other quick fixes, and then push ?". `screen.js` only.
