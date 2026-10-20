@@ -3,6 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.31 - Late Start - Oct 19 2026, 20:35 HST (branch only, not released; version not bumped)
+
+The Moon's wish, from the thread "the Moon asks for histories". All in `daily-dungeon/rules.js` and `floor.js` (commits 994e00b, cb0e464 and a66907d).
+- **No cap on looks (ryan: "remove the cap"):** [M]OON says her wish every time it is pressed. Removed: `MOON_TALKS` (3 answered looks a run-day) and `MOON_DONE` ("The moon is only light now." and two more), and the old comment about her offers.
+- **The wish at the new moon too (ryan):** `moonLook` tells the wish at every phase. Was: at the new moon (moon 0) she only chattered. She still chatters when there is no level to wish about.
+- **A late start wakes on its own quarter's level (ryan: "i don't like that at all"):** `startSlot` no longer moves a run up one level when fewer than two days of the quarter are left. Removed: that skip. The floor is shorter instead: `floor.js` `generate` now allows 1 or 2 days (the minimum was 3), so a floor has one wing for each day left (days left minus 1 pairs of locked doors; the stairs are in the last wing, which for a 1-day floor is the start wing).
+- **Deed filter (ryan: "shrunk floor with the deed filter sounds great"):** `wishFor` rolls the deed from `found_wall` and `from_demon`, plus `given_member` only when the level has a night left (`deadline - clock >= 1`, a party member's pockets fill overnight). Removed: `from_stranger` from the pool (it needs another player's gift box). Its words stay in `WISH_DEED_WORDS` so a wish rolled earlier still reads. The design doc said the generator checks every part is makeable; the code only checked the night, so this is the first real check on the deed.
+- **Checked (scripts, not tests):** starting at each day of the quarter gives floors of 7 down to 2 days at the same level; 300 one-day floors all had the stairs in the start wing and reachable by open doors; a random walker reached the sealed stairs in about 49 of 60 two-day runs and 52 of 60 one-day runs (the rest got stuck on walls or breath, not on the floor); 600 wish rolls gave no `given_member` with no night left. 17 tests pass; no new test written. Not checked: a new moon (the phase comes from the real clock), `pairs = 0` in the minimap and `levelMap` in a browser.
+
 ## v1.30 - Use It - Oct 19 2026, 20:15 HST
 
 Owner's asks (Oct 19): HISTORY in colour, 24-hour time in every game, a [U]SE button, no workers.dev address on show, MAIL only the current bag. `screen.js` v1.29 to v1.30.

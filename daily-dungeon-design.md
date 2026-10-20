@@ -144,7 +144,7 @@ Difficulty follows how far into the run she is, not the level's name. Demons and
 
 ## 11. Runs and scoring
 
-A run starts KURA at 30 HP, level 1, with a small kit. It wakes on the level the dark has reached; if fewer than two days of the quarter are left, one level higher with a whole quarter ahead.
+A run starts KURA at 30 HP, level 1, with a small kit. It wakes on the level the dark has reached, however late in the quarter; a late start gets a shorter floor, one wing for each day left (a floor can be 1 to 7 days).
 
 Climbing is always to the next quarter's level, so leaving early banks the rest of the current one. It is done at the stairs by showing the Moon up to two things (v1.26); anything passes, and the only way to fail is not making it out before the dark rises. From B1F she climbs out to 1F and the run goes on upward, quarter by quarter. Nothing ends at the surface yet.
 
@@ -191,7 +191,7 @@ The owner's own diagnosis: systems keep getting built without meaning or purpose
   - night marks: the eight moon phases (stamped when the item comes to the bag);
   - deed marks: found in a wall, given by a party member, taken from a demon, left by a stranger in a gift box, carried up a level;
   - base attributes (already on every item): alignment, nature, and tier (common, uncommon and rare only, for now).
-- **Her wish** DECIDED. Each quarter she asks for three qualities: one night mark, one deed mark, one base attribute. Her wish is personal, and plain (she says it outright; dim-means-cryptic is PARKED for later, since it would give new players less at the start of a month). The night mark only asks for phases still ahead in that quarter, and the generator checks every part is makeable.
+- **Her wish** DECIDED. Each quarter she asks for three qualities: one night mark, one deed mark, one base attribute. Her wish is personal, and plain (she says it outright; dim-means-cryptic is PARKED for later, since it would give new players less at the start of a month). The night mark only asks for phases still ahead in that quarter. The deed is only one she can still get: from a wall or a demon, or from a friend while a night is left (she no longer asks for "from a stranger", which needs another player's box). The base is not checked.
 - **The offering** DECIDED. At the stairs, at the end of the quarter, the player offers her up to **two** items. She judges the whole offering (a quality counts if any offered item has it), only on what is visible: no hidden weights from her fullness, VIBES or tags.
 - **Anything passes.** The only way to fail is not making it out before the dark rises.
   - 0 qualities: she lets you through, no mark, nothing given.
