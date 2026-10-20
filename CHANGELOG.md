@@ -3,7 +3,7 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## v1.32 - Patient Party - Oct 19 2026, 21:05 HST (branch only, not released; version not bumped)
+## v1.32 - Patient Party - Oct 19 2026, 21:20 HST
 
 ryan, Oct 19: "can you make the party members like 4-5x more patient with me. they still get quiet or lose patience too fast." `daily-dungeon/rules.js`.
 - **Talked out later:** `WORD_YIELD` is 16 long, the old shape four times over (8 TALKs at yield 1, 4 at 0.5, 4 at 0.25). Was `[1, 1, 0.5, 0.25]`, so a member was talked out after 4 TALKs a day; now after 16. Each TALK at yield 1 still adds a point of patience (capped), so more of them are worth the same each.
