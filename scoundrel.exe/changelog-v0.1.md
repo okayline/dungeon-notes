@@ -1,10 +1,25 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.8.11
+# scoundrel.exe — Dev Changelog — v0.1–v0.8.12
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.8.12 — "Reroll"
+**Tue Oct 20, 2026 · 3:29 AM HST** (no migration)
+
+### Decisions (the owner's)
+- "can you give a button to reroll the name in scoundrel.exe / and can you give KURA a switch to turn admin mode on and off?" and "instead of [P] CONTINUE could it be [C]ONTINUE".
+
+### What was built
+- Reroll: `POST /api/name {reroll: true}` -> `giveName(env, p, { reroll: true })` (`src/names.js`), a free pair different from the current name. PLAYER screen: `[R]EROLL` beside NAME.
+- Admin switch: `players.admin` is now 0 (not an admin), 1 (admin mode on) or 2 (an admin with it off), so no new column. `findPlayer` selects `admin = 1 AS admin, admin > 0 AS can_admin`; the leaderboard filters `p.admin != 1`. `POST /api/admin {on}` (admins only): off deletes the player's runs with no ledger rows (admin runs, never counted) so today starts fresh; on is refused if the player has a run today or an unfinished one from yesterday, because that run is on the ledger and switching on would hide it and let R throw it away. `/api/account` returns `canAdmin`. PLAYER screen: an ADMIN line with `[A] TURN OFF/ON`.
+- Found while searching (rule 10): v0.5 had an in-game tester switch for admins; v0.6.0 removed tester mode ("Tester mode is gone"). The `tester` column is still in `schema.sql` and unused. Not touched.
+- Title: `[C]ONTINUE` (key c) instead of `[P] CONTINUE`; p and Enter still work. VERSION v0.8.12, cache tag 0.8.12. Removed: the [P] label on CONTINUE.
+
+### Tests
+- Two new: reroll gives a different free two-word name; the admin switch (off throws admin runs away, the next run counts and is ranked, on refused after playing, on works before playing). 46 tests pass. The new PLAYER screen rows were not looked at in a browser.
 
 ## v0.8.11 — "Name Tag"
 **Tue Oct 20, 2026 · 3:24 AM HST** (no migration: `players.name` stays nullable; nameless rows are filled in when next seen)
