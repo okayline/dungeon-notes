@@ -1,9 +1,17 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.45
+# 88x31 cLuB — Dev Changelog — v0.35–v0.45.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.45.1
+**Mon Oct 19, 2026 · 10:10 PM HST** (no migration)
+
+Decisions (owner): "no text glow ever".
+- **Registry pictures** (`functions/api/img.js`): the registry stores every 88x31 button's picture as `/api/img?d=<design>` (`lib/registry.js` `IMAGE`), but the route only served uploads (`design_images`), so all 89 registered built-in buttons answered with `banners/removed.gif` (bug since v0.35, first visible on the v0.45 registry page). A design with no uploaded bytes now 302s to its own `image_key` file (never to an `api/img` key, so no loop); removed designs and unknown ids still get `removed.gif`. Checked with a stand-in database (built-in, upload, removed, upload key without bytes, unknown) and that all 89 registered `image_key` files exist in `public/banners`; live lookups read-only. Not checked on the deployed site.
+- **No glow on the Singles**: removed the blurred `text-shadow` on `.tw`, `.th-bl-c .tiara`, `.th-bl-c .xo` and the glow half of `.bl .chrome`'s `drop-shadow` (the 1px white offset stays). Not touched: 12 older text glows elsewhere in `style.css` (not asked for).
+- `public/index.html` 0.45 to 0.45.1.
 
 ## v0.45 — "Bling Bling"
 **Mon Oct 19, 2026 · 10:00 PM HST** (no migration)
