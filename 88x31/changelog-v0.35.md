@@ -1,9 +1,27 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.45.1
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46
+**Tue Oct 20, 2026 · 12:55 AM HST** (migration 029, run before the push; needs dungeon-items' HTTP `addMark` live first)
+
+Decisions (owner, thread "shared registry ideas", Oct 20): "every game writes marks", "let's stamp as much info as possible !", "yeah can we work on 88x31 marks next?". The 4Dungeon side chose "once per copy" for lived-through marks; the same here.
+- **Step 7 of `syncRegistry` (`lib/registry.js`): marks.** With the budget left after steps 1-6, oldest instances first, for a copy the registry has with its owner here (`registry_copy > 0`, not spent or consumed, not away `locked != -1`, `owner_id = registry_owner`) whose marks were never stamped or whose `ownership_history` has grown since. `copyMarks(c, hist)` lists [kind, value]:
+  - night: the moon's phase at `instances.created_at` (`PHASE_MARK[moonIndex]`) and each occasion that day (`occasions`).
+  - how it came, from the first history row: pack `pulled_pack`, free_pack `free_pack`, welcome/starter `welcome_gift`, daily `daily_pick`, pass_on `passed_on`, set_reward `set_reward`, admin `from_webmaster` (found uploads aren't on the ladder).
+  - copy #1 / #100: `first_copy` / `hundredth_copy` (the shared number, as 4Dungeon and irl-dungeon).
+  - finish: `first_print` when `foil` is NULL; `foil_<id>` unless clear; `pattern_<id>`; `effect_<id>` (ids lowercased, other characters to `_`, 40 max).
+  - lived, from later rows with a `to_user`: trade `traded`, gift `gifted`, guestbook `guestbook_gift`, request `filled_request`, fusion `fused` (the survivor). away/home are already moves; trade_in uses the copy up.
+  - Each value once per copy (key `inst:<id>:<value>`). A fusion that changes the finish adds a history row, so the new foil/pattern/effect is stamped too, beside the old ones.
+- **`instances.registry_marks`** (migration 029, also in `schema.sql`): JSON `{ h, v }`, the last history id read and the values stamped. A pass that runs out of budget keeps `h` as it was, so the copy comes back. A refused mark is logged and not asked again (as refused births are).
+- **`lib/sky.js`** (new): `moonIndex` and `occasions` copied from `daily-dungeon/screen.js` v1.33; irl-dungeon has the same copy (v0.22). Three copies of one eclipse table: a fix goes in all three.
+- **Backfill:** every existing registered copy gets marks over the next passes (about 24 marks a pass at the default budget of 30, once a minute at most; the webmaster's `registry_sync` uses 120). Existing copies are marked with their *current* finish, which for a fused copy is the upgraded one.
+- **Not checked:** the live database (how many copies, so how long the backfill takes and how many ledger entries it adds); whether 88x31's mystery rule should hide finish marks on rares and up on the public ledger (the page shows the sentence, e.g. "a mystery button #3 has a Gold foil", but not the button).
+- **Checked:** no test suite in this repo. A scratch script (not committed) ran `syncRegistry` on `schema.sql` in Node SQLite with a fake registry: a pack copy made on Aug 12 2026 (a real solar eclipse, so a new moon) and traded got new, eclipse_solar, pulled_pack, first_copy, foil_holo, pattern_etched, effect_crt_vhs, traded; a welcome First Print on Oct 26 got full, welcome_gift, first_print; a second pass made no calls; a later gift and trade added gifted and traded once; a budget that ran out mid-copy finished on the next pass.
+- `public/index.html`: v0.46.
 
 ## v0.45.1
 **Mon Oct 19, 2026 · 10:10 PM HST** (no migration)
