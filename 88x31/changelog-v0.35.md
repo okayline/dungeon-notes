@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.43
+# 88x31 cLuB — Dev Changelog — v0.35–v0.45
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.45 — "Bling Bling"
+**Mon Oct 19, 2026 · 10:00 PM HST** (no migration)
+
+Decisions (owner): the cLuB Singles' three quiet homepage looks "are not doing it", redo them as 90s Blingee kawaii; three quieter 90s GeoCities Single looks were drawn too but are **saved for later, not added** (`/mnt/project-files/club-singles/geocities-saved/`). The registry ledger page gets 88x31's look, with 4Dungeon items in 4Dungeon's ASCII style, and a button's page and its registry page link both ways.
+
+`public/index.html` 0.44 to 0.45 (footer and the `?v=` cache-busters).
+- **cLuB Singles** (`packTile`, the `p.cards === 1` branch in `public/app.js`): looks `bl-a` Glitter Heart (hot pink, CSS heart with a face), `bl-b` Strawberry Milk (lavender/mint check, rainbow SiNGLE bubble), `bl-c` Midnight Tiara (plum, tiara, xoxo); still picked by `id % 3`. Each has a flickering glitter layer (`.glit`), a rhinestone edge (`.stones`) and four twinkles (`.tw`); an opened Single's sticker says "opened!". Removed: looks `fp-a`/`fp-b`/`fp-c` (guestbook paper, starry grey box, white link page), all their `.th-fp-*` CSS and `.pack-tile.still-art`, which only they used.
+- **Registry links**: `/api/banner` also returns `instances.registry_copy`; a button's page shows "Shared item registry: this copy's page" under On the Ledger once the copy is registered (`registry_copy > 0`). New `GET /api/registry/button?item=&copy=` (`functions/api/registry/button.js`) finds the copy by `designs.registry_item` and `instances.registry_copy` and redirects to `/#banner/<id>`; an unknown copy goes to `/registry?item=&copy=`. The registry page (dungeon-items) links to it from an 88x31 button's copy page.
+- Checked: `node --check` on the changed files; the redirect with a stand-in database (found, unknown, bad input); the lookup query on the live `88x31-db` (read-only: item 47 copy 4 finds instance 28); Singles screenshots from the real `packTile` and `style.css` in Chromium. Not checked: phones, and the deployed site. No test file (88x31 has none).
 
 ## v0.44 — "Open Ledger"
 **Mon Oct 19, 2026 · 8:15 PM HST** (no migration)
