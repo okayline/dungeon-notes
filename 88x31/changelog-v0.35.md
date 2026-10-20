@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.1
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.1
+**Tue Oct 20, 2026 · 1:33 AM HST**
+
+Decision (owner, thread on the registry link, Oct 20): the copy page keeps its link (no per-button registry page), with the text "Shared item registry: Item Name (item 49, copy #1)".
+- `public/app.js` `showBanner`: the registry link's text is now `${b.name} (item N, copy #M)`. Removed: "this copy's page". Same target `/registry?item=&copy=`.
+- Mystery rule: this page already shows `b.name` in its heading to every viewer, logged out included (`/api/banner` doesn't hide names), so the link shows nothing new. The registry page itself still shows rare-and-up 88x31 buttons as "a mystery button". Tombstones show "Removed by request".
+- **Checked:** `node --check public/app.js`. No test suite in this repo. **Not checked:** how it looks on screen before the push.
+- `public/index.html`: v0.46.1.
 
 ## v0.46
 **Tue Oct 20, 2026 · 12:55 AM HST** (migration 029, run before the push; needs dungeon-items' HTTP `addMark` live first). Migration 029 run by the owner in the D1 console (Oct 20, 12:34 AM HST), then pushed to main.
