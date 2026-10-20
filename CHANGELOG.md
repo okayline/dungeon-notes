@@ -3,6 +3,16 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.39 - Fewer Ledger Lines - Oct 20 2026, 09:47 HST
+
+min, Oct 20 (thread "Consolidate 4Dungeon ledger entries"), with screenshots of #827-#836 (a find's birth then one entry per mark; two finds' three marks as three entries; the bag's "saw a demon fall" between the births and the finds' marks): "can we consolidate the entries any more?", then chose "Marks only, one per move" on a card (over folding a find's marks into its birth entry), then "all the same item entries next to each other ... birth is always first, then mark", then on a one-entry-per-move preview: "there's a little TOO much in that entry ... all the things that saw the demon fall in one entry?". Also: "take out 'In 4Dungeon' at the end of every line" (dungeon-items page) and "Escaped a fight" chosen on a card over "was carried out of a fight" and "saw KURA flee a fight". Old entries stay as sealed (min: "old entries stay how they were sealed"); the page does not reorder entries. `leaderboard/game.js`, `leaderboard/accounts.js`, `rules.js`, `screen.js`; needs dungeon-items `addMarks` with `marks` (deployed first).
+- **Changed:** `takeMarks` groups numbered copies by their whole waiting list (`e.q` minus `blessed`, joined), not by single mark. Each group is one `REGISTRY.addMarks({ holder, marks: [{ kind, value, copies: [{ itemId, copy, key }] }] })` call, so one ledger entry. Groups holding a copy with no earlier marks (`!e.m.length`: a new find) go first, so the finds' entry is sealed right after their births. A group too big for 300 marks is split into calls of `floor(300 / marks)` copies. Keys unchanged (`me.id:e.k:w`). `blessed` is its own `{ bless: addMark args }` call, after the groups. `stampMarks` runs the list in order and logs refusals and skips.
+- **Changed (`accounts.js` `/history`):** a `marks` record gives one event per mark that names this copy (`s.item.id`, `s.copy`), newest first; the old `kind`/`value` records read as before. Without this, INVOKE's history would have shown an empty mark for every v1.39 entry.
+- **Changed (`rules.js` DEED_WORDS):** fled_fight "Escaped a fight" (was "Ran from a fight"). VERSION v1.39.
+- **Removed:** one `addMarks` call (and one ledger entry) per mark kind; the v1.38 per-moment grouping.
+- **Tests:** 23 pass (the v1.38 test replaced: a find from a demon on B3F plus two bag copies that saw it fall, one blessed: two `addMarks` calls, the find's three marks first, then `beat_demon` for the two; one `addMark` for the blessing. `/history` test gains a `marks` entry naming the copy in two of three marks). A chunking check by hand (200 + 150 copies): calls of 300 and 50.
+- **Not checked:** the live registry and live INVOKE history after deploy.
+
 ## v1.38 - One Line Per Moment - Oct 20 2026, 09:29 HST
 
 min, Oct 20, after the ledger showed #801-#804 as four "ran from a fight" entries: "Can we have each moment be one entry however many items im carrying that haven't seen the event before?". `leaderboard/game.js`, `screen.js`; needs dungeon-items `addMarks` (deployed first).
