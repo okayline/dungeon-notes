@@ -1,9 +1,19 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.10
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.11
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.11
+**Tue Oct 20, 2026 · 10:38 AM HST** (no migration)
+
+Decisions (min, Oct 20, thread "D1 rows read near daily cap"): Cloudflare emailed that the account had used 80% of the D1 free tier's 5,000,000 rows read a day (shared by all six games' databases). min's dashboard showed 88x31-db at 4M rows read and 36k queries in 24h. Sorted by rows read, the top query was `seriesPrinted`: 873 calls, 2.08M rows. min chose "Push both fixes now" on a decision card.
+- **`lib/game.js` `seriesPrinted`:** one `LEFT JOIN` on a grouped subquery (`SELECT d.series_id, COUNT(*), MIN(i.created_at) FROM instances i JOIN designs d ... GROUP BY d.series_id`), `COALESCE(printed, 0)`. Removed: two correlated subqueries per series, each with a `SCAN d` (no index on `designs.series_id`), so every call read every design about twice per series.
+- **`lib/registry.js`:** `EVERY` 60 → 900 (the background pass from `/api/me`). Keeping from a pack still calls `syncRegistry` right away (`functions/api/packs.js`). Removed: a pass every minute.
+- `changelog-v0.35.md` v0.46.11; `public/index.html` v0.46.11 tags.
+- **Checked:** old and new queries on Python sqlite3 with the 88x31 `schema.sql` plus migrations and synthetic data (4 series, one with no copies; 159 designs, some with no series; 459 copies) give the same rows; series 1 recounted by hand in Python. New plan: one `SCAN i` plus PK lookups on designs. `node --check` on both files. No test suite in this repo.
+- **Not checked:** the live rows read after the push. Other big readers on the dashboard, not changed: `/api/designs` Wall list (208 calls, 254k), `seenSet` (229 calls, 194k; `ownership_history.to_user` has no index), a `packs` list query (1,078 calls, 188k).
 
 ## v0.46.10
 **Tue Oct 20, 2026 · 10:09 AM HST** (no migration; needs dungeon-items 3acf1b4, the HTTP door's `addMarks`, deployed first)
