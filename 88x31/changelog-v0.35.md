@@ -1,9 +1,22 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.11
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.12
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.12
+**Tue Oct 20, 2026 · 10:58 AM HST** (migration 033, run before the push)
+
+Decisions (ryan, Oct 20, thread "D1 rows read near daily cap"): after v0.46.11, `seriesPrinted` still read 1,072 rows a call on live 88x31-db (measured with the MCP D1 query tool; old version was about 2,380 a call, 2.08M ÷ 873). Asked for ways to cut it; chose "the stored count thing", the biggest single cut. Pros and cons given first: stored count is flat cost but can drift if a copy is made outside the two insert sites.
+- **`migrations/033_series_printed.sql`** (and `schema.sql`): `series.printed INTEGER NOT NULL DEFAULT 0`, `series.first_copy INTEGER`, backfilled with the old count (`COUNT(*)` and `MIN(i.created_at)` over instances joined to designs by `series_id`). Live values before migrating: Alpha 122, Beta 55.
+- **`lib/game.js`:** `seriesPrinted` is now `SELECT ... printed, first_copy FROM series`. New `printedStatement(db, designId, t)`: `UPDATE series SET printed = printed + 1, first_copy = COALESCE(first_copy, ?) WHERE changes() = 1 AND id = (SELECT series_id FROM designs WHERE id = ?)`, third statement of `mintStatements` (after the history insert, which only happens when the copy was made, so a sold-out mint counts nothing). New `recountStatement(db, ids)`: full recount of the given series. `res[0]` is still the copy insert, so callers' `meta.changes` checks are unchanged.
+- **`lib/sets.js` `claimSet`:** `printedStatement` after the set-reward copy's history insert.
+- **`functions/api/series.js` `assign`:** moving a button between series runs `recountStatement` on the old and new series in the same batch.
+- **Removed:** the grouped count over every copy (v0.46.11) on each of the 10 `seriesPrinted` callers. No trigger used (a trigger's writes might show in D1's `meta.changes`; not checked, so avoided).
+- `changelog-v0.35.md` v0.46.12; `public/index.html` v0.46.12 tags.
+- **Checked:** the real `mintStatements`, `recountStatement` and `seriesPrinted` on node:sqlite with 88x31's `schema.sql` and a small D1 shim, compared each step with an independent raw COUNT/MIN: fresh schema, 3 mints, a capped (max 1) button minted twice (second sold out, `changes` 1 then 0, counted once), a button moved series. All matched. `node --check` on the three files. No test suite in this repo.
+- **Not checked:** `claimSet` (same statement, not run); the live migration and rows read after the push; copies made by hand-written SQL would not be counted (re-run the 033 `UPDATE` to recount).
 
 ## v0.46.11
 **Tue Oct 20, 2026 · 10:38 AM HST** (no migration)
