@@ -160,67 +160,67 @@
   "eco": ""
  },
  "BENDER-bot": {
-  "date": "2026-10-19",
+  "date": "2026-10-20",
   "build": "latest",
-  "version": "v1.28",
+  "version": "v1.33",
   "crashed": null,
   "row": {
-   "level": "B4F",
+   "level": "B3F",
    "climbed": 0,
-   "day": 7,
-   "turns": 82,
-   "alive": false,
-   "party": "",
+   "day": 1,
+   "turns": 20,
+   "alive": true,
+   "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "CHAOS",
-   "last": "The moon turned. The dark rose and closed over KURA."
+   "last": "KURA needs a moment before she moves on."
   },
   "n": {
-   "searches": 0,
-   "blocked": 0,
+   "searches": 7,
+   "blocked": 2,
    "waited": 0,
-   "fights": 0,
+   "fights": 4,
    "talks": 0,
    "runs": 0,
-   "unlocks": 0,
+   "unlocks": 1,
    "moves": 0,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": "posted, rank 1",
-  "events": "none",
+  "posted": null,
+  "events": "1/1 sent: words; here: ok",
   "eco": ""
  },
  "WALLE-bot": {
-  "date": "2026-10-19",
+  "date": "2026-10-20",
   "build": "latest",
-  "version": "v1.28",
+  "version": "v1.33",
   "crashed": null,
   "row": {
-   "level": "B4F",
+   "level": "B3F",
    "climbed": 0,
-   "day": 9,
-   "turns": 465,
+   "day": 1,
+   "turns": 14,
    "alive": false,
    "party": "",
-   "align": "NEUTRAL",
-   "last": "The moon turned. The dark rose and closed over KURA."
+   "align": "LAW",
+   "last": "The TRACER strikes KURA down."
   },
   "n": {
-   "searches": 0,
+   "searches": 4,
    "blocked": 0,
    "waited": 0,
-   "fights": 0,
-   "talks": 0,
-   "runs": 0,
+   "fights": 1,
+   "talks": 5,
+   "runs": 1,
    "unlocks": 0,
    "moves": 0,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": "posted, rank 1",
-  "events": "none",
+  "posted": "posted, rank 7",
+  "events": "1/1 sent: fall",
   "eco": ""
  },
  "ROSIE-bot": {
@@ -253,7 +253,8 @@
   },
   "posted": null,
   "events": "1/1 sent: words; here: ok",
-  "eco": ""
+  "eco": "",
+  "skipped": "2026-10-20: did not show up"
  },
  "C3PO-bot": {
   "date": "2026-10-19",

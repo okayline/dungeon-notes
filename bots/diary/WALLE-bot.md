@@ -423,3 +423,47 @@ The moon turned. The dark rose and closed over KURA.
 
 posted, rank 1
 ```
+
+## 2026-10-20  -  B3F, day 1, the run ended  (latest v1.33)
+
+```
+(a new run begins)
+KURA wakes in the dark. B3F.
+KURA searches the NORTH wall... Mortar, mostly. Some is older.
+KURA searches the NORTH wall... Damp. The smell of old pipes.
+KURA searches the NORTH wall... A WORM wanders in!
+  The WORM comes off as STATIC.
+  WORM: "AWAITING INPUT"
+  WORM: "OFFER: ONE OF TWO. SELECT."
+  LEAVE THEIR OFFER ON THE TABLE?
+  IT WON'T BE BACK.
+  KURA leaves the offer on the table.
+  The WORM takes its things and goes. 01000010 01011001 01000101
+KURA searches the NORTH wall... A TRACER wanders in!
+  The TRACER strikes KURA. -3 HP
+  The party strikes. -8 HP
+  KURA runs EAST. The TRACER blocks the door.
+  The TRACER strikes KURA. -10 HP
+  The TRACER comes off as SIGNAL.
+  TRACER: "INPUT REJECTED"
+  The TRACER strikes KURA. -3 HP
+  The TRACER stops mid-swing.
+  TRACER: "THOSE OBJECTS. TRANSFER ONE?"
+  KURA keeps her things.
+  TRACER: "INPUT LOGGED. THREAT UNCHANGED."
+  The TRACER strikes KURA. -10 HP
+  The TRACER stops mid-swing.
+  TRACER: "THOSE OBJECTS. TRANSFER ONE?"
+  KURA keeps her things.
+  TRACER: "NOTED. NO CHANGE."
+  The TRACER strikes CU SITH. -6 HP
+  The TRACER stops mid-swing.
+  TRACER: "THOSE OBJECTS. TRANSFER ONE?"
+  KURA keeps her things.
+  TRACER: "NOTED. NO CHANGE."
+  The TRACER strikes KURA. -4 HP. FALLS
+  KURA falls. The run is over.
+The TRACER strikes KURA down.
+
+posted, rank 7
+```
