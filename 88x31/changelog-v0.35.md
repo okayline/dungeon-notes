@@ -1,9 +1,22 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.4
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.5
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.5
+**Tue Oct 20, 2026 · 2:35 AM HST** (migration 030, run before the push)
+
+Decisions (owner, Oct 20): asked for the webring Theme Wall to be "1/2 as big", then "can it be the same width but half as tall?", then chose a stored column over a cutoff week ("let's do the migration way please"). Half the width and height was rejected (about 167 px wide holds 1 button across, 5 spots for the 10 needed).
+- **Migration 030** (`migrations/030_wall_height.sql`, also `schema.sql`): `ring_walls.height INTEGER`, NULL = square. Every wall made so far stays NULL, so it keeps its shape and its pins. The owner runs it in the D1 console before the push (`ensureWall` inserts the column).
+- **`lib/themewall.js`:** `WALL_HEIGHT = 168`; `canvasSize()` returns `{ slots, size: 335, height: 168 }`; `ensureWall` stores the height; `wallHeight(w) = w.height ?? w.size`; `inBounds` and `placePin(size, others, want, height = size)` use the height for the vertical limit. 335 x 168 fits 3 across and 5 down, 15 spots for the 10 a wall holds (`WALL_SLOTS`). Removed: every new wall being a 335 px square.
+- **`functions/api/themewall.js`:** the wall payload has `height` (`wallHeight`); the pin's default centre and `placePin` use it. **`lib/bots.js`:** a bot's pin uses it too.
+- **Ledger (`lib/ledger.js` `wallRecord`):** the sealed record gets the height as a 9th item only when `height` is set and differs from `size`, so the records (and hashes) of every wall sealed before are unchanged. A wall made now and sealed next Monday carries it.
+- **Page (`public/app.js`):** `twSnap(..., size, height)`, the canvas's drawn height, arrow-key nudges and drops use `WH = W.height ?? W.size`. The draw scale still comes from the width, so the strip is the same width on every screen and half as tall.
+- **Checked:** `node --check` on the five JS files; a scratch script (not committed): the new wall fits 15 pins in bounds with no overlap and the old square wall fits 30; `wallHeight` gives 335 for NULL and 168 for 168; migration 030 applied to an old-shaped table leaves the old row's height NULL. The real page in headless Chromium with stubbed API data: a new wall drew 654 x 328 px and an old one 654 x 654 at a 1000 px window, and a new one 324 x 162 at a 390 px phone window; no page errors. Screenshot: project files `88x31-streak-track/wall-half-height.png`. No test suite in this repo.
+- **Not checked:** dragging a pin on the shorter wall by hand; the live site; the wall sealing a non-square wall on the ledger (the record code was read, not run); `functions/api/rings.js` (selects `size` for the ring list; the height isn't used there).
+- `public/index.html`: v0.46.5.
 
 ## v0.46.4
 **Tue Oct 20, 2026 · 2:10 AM HST** (no migration)
