@@ -8,7 +8,7 @@ Newest first. Times are Hawaii time (HST).
 ---
 
 ## v0.24 — "One Record"
-**Tue Oct 20, 2026 · 2:31 AM HST** (no migration; needs dungeon-items with `Registry.checkpoint` deployed first)
+**Tue Oct 20, 2026 · 2:55 AM HST** (no migration; needs dungeon-items with `Registry.checkpoint` deployed first)
 
 ### Decisions (the owner's)
 - Owner (Oct 20, HST): no separate Bitcoin stamp per game; "i want everything on the shared registry, that's the point of it"; Dawn Baton once a day, scoundrel.exe after every run, and the stamps visible on the registry ledger page.

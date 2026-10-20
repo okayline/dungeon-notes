@@ -5,7 +5,7 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
-## Oct 20, 2:31 AM HST: Registry checkpoints (with Dawn Baton v0.24 and scoundrel.exe v0.8.10)
+## Oct 20, 2:55 AM HST: Registry checkpoints (with Dawn Baton v0.24 and scoundrel.exe v0.8.10; migration 006 run on live items-db by the owner in the D1 console first)
 - Owner (Oct 20, HST): no separate Bitcoin stamp per game; "i want everything on the shared registry, that's the point of it"; Dawn Baton once a day, scoundrel.exe after every run, and the stamps visible on the registry ledger page.
 - `registry.js` `checkpoint(db, { game, entries, head })` and `Registry.checkpoint`: one ledger entry, kind `checkpoint`, player_id 0, record `{ k, game, entries, head }`. A repeat of the game's last checkpoint adds nothing; fewer entries, or the same count with another fingerprint, is refused. `/ledger` said "<game>'s own ledger reached N entries" (since replaced, below). README: a Checkpoints section.
 - No migration (the ledger's `kind` is free text). Finding: the "last checkpoint for this game" lookup has no index (`kind`, `game` aren't indexed); fine at today's size.
