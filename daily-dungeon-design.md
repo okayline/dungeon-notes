@@ -62,7 +62,7 @@ These are the rules you have set. Check new ideas against them.
 | Relay | Gives a clue naming the wing's other offered kind |
 | Vault | SILVER |
 | Forge | Clears taint (DRUNK) |
-| Altar | No fixture. A terminal that takes an offering |
+| Altar | No fixture. A terminal set in a wall, only drawn (it takes nothing and answers nothing) |
 
 Room kinds are never named on screen. Each room gets a flavor name (Soft room, Walkway, and so on).
 
@@ -124,9 +124,9 @@ Difficulty follows how far into the run she is, not the level's name. Demons and
 
 **ICHOR** (v1.16) is a flask KURA always carries, holding a fixed amount. It fills from a fallen demon and from a demon that parts in peace, and the party drinks from it to heal. KURA can drink it herself, which makes her DRUNK (was "taint"): at 3 she starts seeing things, at 6 she trips for a while (melee doubled, risk of hitting an ally, the turn counter lies). It wears off overnight, at a Forge, or with SILVER.
 
-**SILVER** (v1.16) is found in walls, the vault fixture and the lure locker. Spent from the bag, it cools the room to nothing and clears what clouds KURA (DRUNK, and quiet members); its price goes up with the level. It can also be offered at the altar.
+**SILVER** (v1.16) is found in walls, the vault fixture and the lure locker. Spent from the bag, it cools the room to nothing and clears what clouds KURA (DRUNK, and quiet members); its price goes up with the level.
 
-**The altar** takes one offering a day per room: an item (or SILVER). The result depends on the item's alignment, and gives a boon: the wing's door clue (LAW), breath and a heal (CHAOS), or a few breaths otherwise.
+**The altar room** (Oct 20) is empty for now: its terminal is drawn on one wall but takes no offering, and its wall is searched like any other. The offering (an item or SILVER for a lean shift and a boon) is gone. More room types are planned later.
 
 **Camp jobs.** Every night, if the right program is in the party: COMPILER turns two COMMON items into an UNCOMMON, CACHE duplicates a COMMON.
 
@@ -198,7 +198,7 @@ The owner's own diagnosis: systems keep getting built without meaning or purpose
   - 1 or 2: the items get **"answered the Moon"**, and she shows you **the path not taken** (what was behind the doors you didn't open).
   - all 3: also **"blessed by the Moon"** on one item: it counts one tier higher. Blessings stack, capped by the ladder (common 3, uncommon 2, rare 1, up to mythic). A mark, never a swap, so the copy keeps its number and history.
 - **She keeps nothing**; the items come back to the bag.
-- **Stairs** BUILT (v1.26): no longer found by searching (the game is now finding the right items, not the stairs); sealed behind her judgment. The Altar room may fold into it later; left as it is for now.
+- **Stairs** BUILT (v1.26): no longer found by searching (the game is now finding the right items, not the stairs); sealed behind her judgment. The Altar room is kept as an empty room (its offering was cut Oct 20); room types are to be revisited later.
 - **Occasions** DECIDED, each one only a mark (no new system): blue moons, real eclipses, supermoons at perigee, solstices and equinoxes, the Thirteenth Moon (a year with 13 full moons, every few years), and mirror days (month equals day, 1/1 to 12/12, on the omen clock). Coincidence occasions too: everyone on a level taking the same door, even tallies, a first copy or copy #100, a 1-of-1 changing hands, a round number of players down at once.
 - **"Never sad," rebalanced** DECIDED: no choice is ever wrong and a miss never costs, but time can carry stakes and poignancy.
 - **Built (v1.27, Oct 17):** blessings count (aura, altar, breaking); the right copy leaves the bag (slot-matched); things handed to a friend keep their copy and marks; the kit, moon gifts, hollow insides, COMPILER and CACHE now carry marks (CACHE stays); occasion marks (blue moon, supermoon, Thirteenth Moon, eclipses 2026-2040, equinox, solstice, mirror day); first/hundredth copy marks.
