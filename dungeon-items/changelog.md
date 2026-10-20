@@ -6,8 +6,9 @@ The shared core every game binds to: the item table, the copy registry, marks an
 
 ## Oct 20: Open registry ledger (not pushed to main yet)
 - Added `GET /api/registry/ledger?before=&limit=` (newest first, up to 100 entries: id, kind, game, record, prev_hash, hash, date, item name) and a page at `/ledger` that reads it. Owner's call (Oct 20): the ledgers should be open and readable. The `player_id` column is never selected, and records already hold no player ids; times are shown as dates only, as in irl-dungeon. The item name is added beside the record and is not part of the sealed text.
+- Same day: `GET /api/registry/copy?item=&copy=` (the item, the game that made it, moves, used up or not, and every ledger entry about that copy, oldest first; no holder) and the same page at `/ledger?item=&copy=`; each ledger line links to its copy. This is the "look up a copy's history" half of the Moon's-wish direction; 4Dungeon does not link to it yet. Uses `json_extract` over the ledger (a full scan; fine at this size).
 - Removed: nothing. This replaces the README's "Not public" statement for the ledger; `/api/registry/head` stays. Still not public: copy holders and the `copies` table (no route).
-- No migration. 67 tests pass (one new: no player id in the output, newest first, paging, hashes rebuilt by hand with node:crypto).
+- No migration. 68 tests pass (two new: no player id in the output, newest first, paging, hashes rebuilt by hand with node:crypto; the copy route returns only that copy's entries and no holder).
 
 ## Oct 18, 9:08 PM HST: docs and test fix (7857f59)
 - CLAUDE.md gets the project's 12 working rules. README item count corrected (98 became 135, counted on the live table), "no game stamps marks" corrected (4Dungeon has since v1.25), `ACCOUNTS.md` lists all games using it.
