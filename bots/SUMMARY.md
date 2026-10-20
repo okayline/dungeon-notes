@@ -10,9 +10,9 @@ Each row is that bot's last real turn, and Build is the build it played then, so
 | C3PO-bot | latest v1.28 | 2026-10-19 | B4F (dead) | 0 | 9 | 124 | 0 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none | The moon turned. The dark rose and closed over KURA. [posted, rank 1] |
 | TARS-bot | latest v1.28 | 2026-10-19 | B4F (dead) | 0 | 9 | 483 | 0 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none | The moon turned. The dark rose and closed over KURA. [posted, rank 1] |
 | R2D2-bot | latest v1.28 | 2026-10-19 | B3F | 0 | 2 | 175 | 32 / 0 / 75s | 3 / 3 / 0 | 1 / 0 / 0 | 1/1 sent: words; here: ok | KURA turns to face SOUTH. Bare stone. |
-| DATA-bot | latest v1.27.1 | 2026-10-18 | B3F | 0 | 2 | 132 | 21 / 0 / 67s | 0 / 1 / 0 | 0 / 0 / 0 | 1/1 sent: parted; here: ok | KURA turns to face SOUTH. A door, shut tight. |
-| MARVIN-bot | latest v1.27.1 | 2026-10-18 | B4F | 0 | 8 | 108 | 6 / 0 / 0s | 0 / 0 / 0 | 1 / 0 / 0 | none; here: ok | KURA goes NORTH into a new room. |
-| GORT-bot | latest v1.27.1 | 2026-10-18 | B4F | 0 | 4 | 301 | 32 / 0 / 75s | 0 / 0 / 0 | 0 / 0 / 0 | none; here: ok | KURA goes NORTH into a cleared room. |
+| DATA-bot | latest v1.28 | 2026-10-19 | B3F | 0 | 3 | 205 | 23 / 0 / 53s | 0 / 1 / 0 | 0 / 0 / 0 | 1/1 sent: parted; here: ok | KURA turns NORTH, still looking up. |
+| MARVIN-bot | latest v1.28 | 2026-10-19 | B4F (dead) | 0 | 9 | 108 | 0 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none | The moon turned. The dark rose and closed over KURA. [posted, rank 1] |
+| GORT-bot | latest v1.28 | 2026-10-19 | B4F (dead) | 0 | 5 | 301 | 0 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none | The moon turned. The dark rose and closed over KURA. [posted, rank 1] |
 | BENDER-bot | latest v1.28 | 2026-10-19 | B4F (dead) | 0 | 7 | 82 | 0 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none | The moon turned. The dark rose and closed over KURA. [posted, rank 1] |
 | WALLE-bot | latest v1.28 | 2026-10-19 | B4F (dead) | 0 | 9 | 465 | 0 / 0 / 0s | 0 / 0 / 0 | 0 / 0 / 0 | none | The moon turned. The dark rose and closed over KURA. [posted, rank 1] |
 | ROSIE-bot | latest v1.28 | 2026-10-19 | B3F | 0 | 1 | 71 | 30 / 5 / 66s | 3 / 3 / 1 | 1 / 0 / 0 | 1/1 sent: words; here: ok | The STATIC RAT falls. 17 ICHOR. |

@@ -359,3 +359,44 @@ KURA goes EAST into a cleared room.
 KURA goes WEST into a cleared room.
 KURA goes EAST into a cleared room.
 ```
+
+## 2026-10-19  -  B3F, day 3  (latest v1.28)
+
+```
+KURA wakes on B3F.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA searches the EAST wall... Nothing but dust.
+KURA searches the EAST wall... Damp. The smell of old pipes.
+KURA searches the EAST wall... Nothing.
+KURA goes WEST into a cleared room.
+KURA searches the NORTH wall... Someone has looked here before.
+KURA searches the NORTH wall... Nothing yet.
+KURA searches the NORTH wall... Salt along the base, in a line.
+KURA searches the NORTH wall... Nothing yet.
+KURA searches the NORTH wall... Nothing.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall... Someone has looked here before.
+KURA searches the EAST wall... A PAGER GHOUL wanders in!
+  The PAGER GHOUL comes off as HUM.
+  PAGER GHOUL: "ERROR 404: owner not found"
+  The PAGER GHOUL leaves a tangle of fiber cable behind.
+  The PAGER GHOUL is content. SHUTTING DOWN. bye
+  It leaves 12 ICHOR in the flask.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA goes NORTH into a new room.
+KURA touches the terminal. The screen wakes.
+KURA makes an offering.
+KURA touches the terminal. The screen wakes.
+KURA goes NORTH into a new room.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+An arch to another room. It is only a narrow way through, bare and echoing.
+She wants something common, found in a wall, under a waxing gibbous.
+```

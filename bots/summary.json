@@ -96,24 +96,24 @@
   "eco": ""
  },
  "DATA-bot": {
-  "date": "2026-10-18",
+  "date": "2026-10-19",
   "build": "latest",
-  "version": "v1.27.1",
+  "version": "v1.28",
   "crashed": null,
   "row": {
    "level": "B3F",
    "climbed": 0,
-   "day": 2,
-   "turns": 132,
+   "day": 3,
+   "turns": 205,
    "alive": true,
    "party": "KURA, ELF, PIXIE, CU SITH",
    "align": "CHAOS",
-   "last": "KURA turns to face SOUTH. A door, shut tight."
+   "last": "KURA turns NORTH, still looking up."
   },
   "n": {
-   "searches": 21,
+   "searches": 23,
    "blocked": 0,
-   "waited": 67,
+   "waited": 53,
    "fights": 0,
    "talks": 1,
    "runs": 0,
@@ -125,39 +125,39 @@
   },
   "posted": null,
   "events": "1/1 sent: parted; here: ok",
-  "eco": "nothing"
+  "eco": ""
  },
  "GORT-bot": {
-  "date": "2026-10-18",
+  "date": "2026-10-19",
   "build": "latest",
-  "version": "v1.27.1",
+  "version": "v1.28",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 4,
+   "day": 5,
    "turns": 301,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
+   "alive": false,
+   "party": "",
    "align": "CHAOS",
-   "last": "KURA goes NORTH into a cleared room."
+   "last": "The moon turned. The dark rose and closed over KURA."
   },
   "n": {
-   "searches": 32,
+   "searches": 0,
    "blocked": 0,
-   "waited": 75,
+   "waited": 0,
    "fights": 0,
    "talks": 0,
    "runs": 0,
    "unlocks": 0,
-   "moves": 11,
+   "moves": 0,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null,
-  "events": "none; here: ok",
-  "eco": "nothing"
+  "posted": "posted, rank 1",
+  "events": "none",
+  "eco": ""
  },
  "BENDER-bot": {
   "date": "2026-10-19",
@@ -288,35 +288,35 @@
   "eco": ""
  },
  "MARVIN-bot": {
-  "date": "2026-10-18",
+  "date": "2026-10-19",
   "build": "latest",
-  "version": "v1.27.1",
+  "version": "v1.28",
   "crashed": null,
   "row": {
    "level": "B4F",
    "climbed": 0,
-   "day": 8,
+   "day": 9,
    "turns": 108,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
+   "alive": false,
+   "party": "",
    "align": "NEUTRAL",
-   "last": "KURA goes NORTH into a new room."
+   "last": "The moon turned. The dark rose and closed over KURA."
   },
   "n": {
-   "searches": 6,
+   "searches": 0,
    "blocked": 0,
    "waited": 0,
    "fights": 0,
    "talks": 0,
    "runs": 0,
-   "unlocks": 1,
-   "moves": 6,
+   "unlocks": 0,
+   "moves": 0,
    "moon": 0,
    "holds": 0,
    "climbs": 0
   },
-  "posted": null,
-  "events": "none; here: ok",
-  "eco": "nothing"
+  "posted": "posted, rank 1",
+  "events": "none",
+  "eco": ""
  }
 }
