@@ -9,7 +9,8 @@ The shared core every game binds to: the item table, the copy registry, marks an
 - Owner (Oct 20, HST): no separate Bitcoin stamp per game; "i want everything on the shared registry, that's the point of it"; Dawn Baton once a day, scoundrel.exe after every run, and the stamps visible on the registry ledger page.
 - `registry.js` `checkpoint(db, { game, entries, head })` and `Registry.checkpoint`: one ledger entry, kind `checkpoint`, player_id 0, record `{ k, game, entries, head }`. A repeat of the game's last checkpoint adds nothing; fewer entries, or the same count with another fingerprint, is refused. `/ledger` says "<game>'s own ledger reached N entries". README: a Checkpoints section.
 - No migration (the ledger's `kind` is free text). Finding: the "last checkpoint for this game" lookup has no index (`kind`, `game` aren't indexed); fine at today's size.
-- Removed: nothing. 74 tests pass (one new).
+- Later: an optional `detail` (up to 12 keys of whole numbers, short words or lists of up to 24), shown on `/ledger`: Dawn Baton's checkpoints in its own panel style with the lap line, a 24-colour bar and the tune; scoundrel.exe's in the 4Dungeon ASCII frame with the run line (gold when cleared). Colours are only used when they are `#rrggbb`.
+- Removed: nothing. 75 tests pass (two new).
 ## Oct 20, 1:18 AM HST: `info()` in one batch (with Dawn Baton v0.22)
 - Owner (passkeys thread): the Dawn Baton account page was slow after logging in; "you can build it and push it".
 - `src/accounts.js` `info()`: the account check plus the codes, passkeys and games reads go in one `db.batch` (one database trip instead of four). Same answers, same 404 for a missing account. Every game's account page calls it. Removed: the four sequential reads.

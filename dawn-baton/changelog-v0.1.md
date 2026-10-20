@@ -17,6 +17,8 @@ Newest first. Times are Hawaii time (HST).
 - `src/worker.js` `ledgerCheckpoint`, run after `batonCopy` on each request in its own try/catch: once the last closed lap's band-23 entry is sealed, reads the ledger up to that entry, checks it with `verifyChain`, and sends `REGISTRY.checkpoint({ game: "dawn-baton", entries, head })`. Fixed to that entry, so a retry sends the same values and the registry adds nothing. A `WeakMap` per database remembers the lap once the registry took it.
 - Removed: `GET /api/ledger/head` and its test (v0.23), and the Dawn Baton line in 88x31-anchors `stamp.py` (no receipts had been made). Also removed from 88x31-anchors: `__pycache__/stamp.cpython-313.pyc`, which I committed by mistake in v0.23's push.
 
+- Later (owner: "more information about the baton"): the checkpoint carries `detail` from `lapDetail`: lap, people, bots, unheld, the 24 colours as hex (null for none) and the tune (s/l/- a band). All already public on Yesterday once the lap closes. One more test (hex checked against Python colorsys); 47 tests pass.
+
 ### Tests
 - The head-route test is replaced by one checkpoint test: none while the lap is open, exactly one at close, equal to the count and hash up to the band-23 row (from raw SQL); it fails if the call is removed. 46 tests pass.
 

@@ -18,6 +18,8 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 - The finishing move waits on one more call to the registry.
 - `public/app.js` VERSION v0.8.10 and `CHANGELOG.md`. Removed: nothing.
 
+- Later (owner: "more information about the scoundrel run"): the checkpoint carries `detail` from the sealed `run` record: day number, status, score, hp, room, moves, demons_left. Never the player. Run ends are already open on this ledger as soon as they are sealed (`ledger()`: "deals, run ends and voids are open"). The test now checks the detail and that no `player` key is sent.
+
 ### Tests
 - One new test: no checkpoint mid-run, one after the run ends, equal to the count and hash up to the `run` row. 42 tests pass.
 
