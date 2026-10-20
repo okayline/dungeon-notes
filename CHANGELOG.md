@@ -10,6 +10,15 @@ ryan, Oct 19: "can you make the party members like 4-5x more patient with me. th
 - **Quiet later:** a room crossing heat tier 3 (18) makes the demon members go quiet for the day (`heatUp`). Was tier 2 (12). Heat tops out at 24, so this is 1.5 times the heat, not 4 times; there is nothing hotter to move it to.
 - **Not changed:** the members' sarcastic remarks when KURA keeps at one thing (`nag`, `fidget`, from 8 repeats), which are not quiet or patience. Design doc lines 103 and 107 updated. Tests: 18 pass, no new test.
 
+Later the same day (Oct 20), same branch, from ryan's next messages. `daily-dungeon/rules.js` and `index.html`.
+- **Chat questions removed (ryan: "remove the chat questions and keep the hot ones"):** a member no longer asks KURA a question with two answers after long talks. Removed: the `ASK` and `ASK_DID` tables (every persona's questions and what the log says KURA did), `ask()`, the 15% roll in `word` and the `p.talks` counter that gated it (only that roll read it). The hot-room and worn questions (`HOT`, `WORN` in `reply()`) stay. A question saved before this from the old pools is dropped when answered. Design doc line 103 no longer mentions it.
+- **The Moon's wish shows at once (ryan: "her wish doesn't trigger until my next action"):** the page holds line 3 (`st.extra`) for two actions unless it matches `EXTRA_URGENT`; the wish line ("She wants ...") now matches it (`^> She wants`). Checked in a real browser: it shows right after [M]OON, and again on a second look.
+- **Offers say which way (ryan: "unclear if i'm taking or giving"):** the offer box has a heading, TAKE ONE: or GIVE ONE:, above [1] and [2]. Checked in a browser: both a take and a give showed it.
+- **"My click always drops on [1] or [2]":** not reproduced. In a real browser a click on [1] moved the fight on for a take and for a give (2 offers). My guess (not checked further) is the intro reopening described in v1.31, which hid the offer buttons; there is no separate fix.
+- **HISTORY (ryan):** the origin line reads "Found in 4Dungeon, Oct 19 at 20:50:07 HST" (was "Made in 4Dungeon, Oct 15 16:00:07"); the zone name is the device's own, so players elsewhere see theirs. Mark rows show seconds too ("Oct 19 20:50:07  label"; was minutes only). A long game name wraps rather than overflowing 41 columns.
+- **INVOKE (ryan):** when the bag has a second page, page 1 shows a seventh row "7  ... (next page)"; clicking it or pressing 7 turns the page. Was: no row, only `[>]` and the arrow keys. The bag holds 9, so it is only ever two pages; on page 1, 7 no longer picks thing 7 (it is on page 2). Checked in a browser with 8 things: page 1 shows it, a click and the 7 key both land on page 2.
+- **Tests:** 18 pass, no new test (page code only; the removal needed none).
+
 ## v1.31 - Loose Ends - Oct 19 2026, 20:50 HST
 
 The Moon's wish, from the thread "the Moon asks for histories". `screen.js` v1.30 to v1.31. Mostly `daily-dungeon/rules.js`, `floor.js` and `act.js` (commits 994e00b, cb0e464, a66907d, 84b9c41, 64680bf, d1cc203).
