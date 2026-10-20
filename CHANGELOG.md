@@ -3,6 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.36.1 - Oct 20 2026, TIME HST
+
+min, Oct 20, with a screenshot of the USER page cut off under [LOG IN WITH A PASSKEY]: "could you make the window scrollable please". `index.html`, `screen.js`.
+- **Found:** v1.36's `.foundbox[data-mode="pass"] { overflow: auto }` sits above `.foundbox.inframe { ... overflow: hidden }` in the stylesheet; both have the same specificity, so the later `hidden` won and the panel couldn't be scrolled by hand (the v1.36 check only looked at the layout, never scrolled it).
+- **Changed:** the rule is `.foundbox.inframe[data-mode="pass"] { overflow: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain }`, which outranks it. VERSION v1.36.1.
+- **Removed:** nothing.
+- **Tests:** 21 pass (no new test: one CSS rule). Headless Chromium at 1280 x 720 with a mocked signed-in account: the computed `overflow-y` is `auto` (was `hidden`), and a mouse wheel over the panel scrolls it 71 px (0 on v1.36).
+- **Not checked:** touch scrolling. Synthetic touch swipes in this headless Chromium don't scroll even a plain test div, so they prove nothing either way; the same `overflow` rule governs touch.
+
 ## v1.36 - User Page - Oct 20 2026, 09:00 HST
 
 min, Oct 20 (thread "4Dungeon user page"): "in 4dungeon can we make a [U]SER page accessible from the title screen bottom menu bar? to replace PASSWORD inside of [?]", then "if possible, could you have the user page be like the irl-dungeon user page ? open in the 3d panel" and "when the user is logged in, and they go to [?] could you put [U]SER where PASSWORD used to be?". `screen.js`, `index.html`.
