@@ -3,6 +3,15 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## v1.36 - User Page - Oct 20 2026, 08:30 HST
+
+min, Oct 20 (thread "4Dungeon user page"): "in 4dungeon can we make a [U]SER page accessible from the title screen bottom menu bar? to replace PASSWORD inside of [?]". `screen.js`, `index.html`.
+- **Added:** `renderTitle`'s menu bar reads `[N]EW RUN   [C]ONTINUE   [B]OARD   [U]SER   [?] ABOUT`. `colorizeTitle` makes `[U]SER` a button (`title-user`), `titleAction("title-user")` calls `backup()` (= `accountBox()`, unchanged: save codes, enter code, passkey add/login, sign out), and the title's key map has `u`. The page's heading is USER (was ACCOUNT); the INVOKE "Sign in from the ... page" line says USER too. VERSION v1.36.
+- **Changed:** in a run the key is U (was P); the [?] KEYS list reads `[U]SER ..... your account: save codes and passkeys`.
+- **Removed:** the [P]ASSWORD header button in `showAbout` (`{{PASS}}`, `data-pass` and its click handler); the header is [C]ODEX alone with a run, nothing without. The in-run `p: "backup"` key.
+- **Tests:** 20 pass (no new test: no rule changed). Static server + headless Chromium at 1280 px: [U]SER shows and opens the USER page, U opens it too, the [?] page has no PASSWORD, no page errors.
+- **Not checked:** the signed-in view (accounts only work on dungeon.88x31.app), phone width, the itch.io build, the live site after deploy.
+
 ## v1.35.1 - Oct 20 2026, 08:15 HST
 
 min, Oct 20, right after v1.35 went live: "can you take out the "New here? press N to start" on 4Dungeon". `screen.js` only.
