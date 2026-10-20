@@ -3,6 +3,13 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
+## Unreleased (after v1.29; on the branch only, no version bump until ryan says push) - Oct 19 2026, 20:25 HST
+
+Owner's asks (Oct 19): HISTORY in colour, 24-hour time in every game.
+- **HISTORY colours:** the screen's title and the bar's `[H]ISTORY` are gold (`.btn.gold`, new), the Moon's marks ("Answered the Moon", "Blessed by the Moon") are the moon blue (`.moon`, `--moon`). Was: the Moon's marks in gold, the title and `[H]ISTORY` plain. `[H]ISTORY` stays first on the bar (ryan first asked for the right side, then withdrew it).
+- **Click and [U]SE (ryan, Oct 19):** clicking the chosen thing's name opens its HISTORY (was: used it); the bar gains `[U]SE` (key `U`; uses the chosen thing, as the click used to) and reads `[<] 1/2 [>]  [U]SE [H]ISTORY [M]AIL [C]LOSE` (43 columns, fits the box with no sideways scroll). Clicking a different name still just chooses it; ICHOR and SILVER still use on one click; the number keys and Enter still use. Removed: the click-twice-to-use rule.
+- **24-hour time:** HISTORY's dates ("Oct 15 16:00"; was "Oct 15 4:00 PM"), and the sky screen's stamp in `sky.js` (`hourCycle: "h23"`, no `dayPeriod`; was "5:45 AM"). The status line was already 24-hour UTC.
+
 ## v1.29 - Pages - Oct 19 2026, 20:00 HST
 
 INVOKE redone, a HISTORY screen added, Hold Omen's button removed. Decisions (ryan, Oct 20, from mock-ups): pages of about six things, blank rows between sections, ICHOR/SILVER on the line above thing 1, page controls and `[H]ISTORY [M]AIL [C]LOSE` on the bottom bar, no menu option outside the bar, newest first on HISTORY, one page, a link to the registry page, "get rid of hold omen", MAIL stays.

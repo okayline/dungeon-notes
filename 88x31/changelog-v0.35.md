@@ -5,6 +5,9 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 
 ---
 
+## Unreleased (branch only, no version bump until ryan says push) — Oct 19, 2026 · 8:30 PM HST
+- **24-hour time everywhere** (owner's ask, all games): `public/app.js` has one helper, `when24`, and the ledger stamp (`fmtStamp`), guestbook times (`fmtWhen`), the cLuB certificate's issue time and the wall's lock time use it (were the browser default, 12-hour in US locales: "9:52:13 PM"). Dates alone are unchanged. `node --check` passes; there is no test for page text.
+
 ## v0.43 — "Click Here to Enter"
 **Sat Oct 17, 2026 · 11:30 PM HST**
 
