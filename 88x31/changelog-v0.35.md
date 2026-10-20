@@ -1,9 +1,21 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.5
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.6
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.6
+**Tue Oct 20, 2026 · 3:15 AM HST** (migration 031, run after the push: the GIFs must be live first)
+
+Decisions (owner, Oct 20): "88x31 series Beta needs a lot more buttons", "yeah we needed way more commons". Proposed 22 (12 common / 6 uncommon / 4 rare, no ultras or prototypes), early-90s PC and arcade era, rares as demoscene effects. Owner reviewed mock-ups of all 22, asked for Format C:, Shareware and Starfield to be redrawn, approved the redraws ("the rares are all amazing!!!") and said "build it please !".
+- **Art**: 22 GIFs in `public/banners/beta/beta-*.gif`, 88x31, looping, 4 to 40 frames, drawn by a Python/PIL script with a hand-made 5x7 and 3x5 pixel font (script kept in project files `88x31-beta-more/src/`, not in the repo). Commons: Abort Retry Fail?, Ctrl+Alt+Del, Format C:, Insert Disk 2, Hello World, Ping, Sysop Is In, Shareware, Caps Lock, Disk Full, Kernel Panic, Telnet. Uncommons: Insert Coin, Turbo, Starfield, Dot Matrix, Blow on It, Joystick. Rares: Plasma, Copper Bars, Vector Cube, Rotozoom.
+- **Migration 031** (`migrations/031_beta_pc_era.sql`, also appended to `schema.sql`): INSERT OR IGNORE ... SELECT id FROM series WHERE name = 'Beta', like 020; `image_hash` = SHA-256 of each GIF; rares have `max_editions` NULL (uncapped since v0.31). Ends with `DELETE FROM meta WHERE key = 'odds'` so Fair Play's button counts refresh (like 024).
+- **Odds effect** (computed, Beta takes 60/85 = 70.6% of cLuB cards): each Beta common 3.65% → 1.82% of cLuB cards, uncommon 1.98% → 1.24%, rare 0.47% → 0.35%. Rarity odds, prototypes, ultras and Alpha's share unchanged (series weight is per series, `lib/game.js:109`). Live `/api/odds` before: Beta 12 common / 10 uncommon / 12 rare / 4 prototype / 2 ultra.
+- **Permanence**: once 031 runs, `sealLedger` seals each design and `syncRegistry` adds each to the shared registry on the next pack keep; they can then only be removed from packs, not deleted.
+- **Checked:** all 22 GIFs open as 88x31 with loop 0; `schema.sql` + 031 run twice on an in-memory SQLite: Beta 24 common / 16 uncommon / 16 rare / 2 ultra (prototypes aren't in schema.sql), 58 designs, 58 distinct hashes, no duplicates on re-run; the 22 GIFs render in headless Chromium. No test suite in this repo.
+- **Not checked:** the live database; the Wall and packs showing the new buttons on the real site.
+- `public/index.html`: v0.46.6.
 
 ## v0.46.5
 **Tue Oct 20, 2026 · 2:35 AM HST** (migration 030, run before the push)
