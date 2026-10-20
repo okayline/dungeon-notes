@@ -3,7 +3,7 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## v1.36 - User Page - Oct 20 2026, 08:30 HST
+## v1.36 - User Page - Oct 20 2026, 09:00 HST
 
 min, Oct 20 (thread "4Dungeon user page"): "in 4dungeon can we make a [U]SER page accessible from the title screen bottom menu bar? to replace PASSWORD inside of [?]", then "if possible, could you have the user page be like the irl-dungeon user page ? open in the 3d panel" and "when the user is logged in, and they go to [?] could you put [U]SER where PASSWORD used to be?". `screen.js`, `index.html`.
 - **Added:** `renderTitle`'s menu bar reads `[N]EW RUN   [C]ONTINUE   [B]OARD   [U]SER   [?] ABOUT`. `colorizeTitle` makes `[U]SER` a button (`title-user`), `titleAction("title-user")` calls `backup()`, and the title's key map has `u`. In `showAbout`, `{{USER}}` (`data-user`, key U) sits in the header where `{{PASS}}` was, only when `signedIn()` (a `dd-token` on dungeon.88x31.app). VERSION v1.36.
