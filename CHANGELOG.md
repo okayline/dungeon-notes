@@ -3,9 +3,9 @@
 The full version, with every number, odd and hidden rule. NOT for the public repo: it lives here in the private dungeon-notes repo.
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
-## v1.31 - Late Start - Oct 19 2026, 20:35 HST (branch only, not released; version not bumped)
+## v1.31 - Loose Ends - Oct 19 2026, 20:50 HST
 
-The Moon's wish, from the thread "the Moon asks for histories". All in `daily-dungeon/rules.js` and `floor.js` (commits 994e00b, cb0e464 and a66907d).
+The Moon's wish, from the thread "the Moon asks for histories". `screen.js` v1.30 to v1.31. Mostly `daily-dungeon/rules.js`, `floor.js` and `act.js` (commits 994e00b, cb0e464, a66907d, 84b9c41, 64680bf, d1cc203).
 - **No cap on looks (ryan: "remove the cap"):** [M]OON says her wish every time it is pressed. Removed: `MOON_TALKS` (3 answered looks a run-day) and `MOON_DONE` ("The moon is only light now." and two more), and the old comment about her offers.
 - **The wish at the new moon too (ryan):** `moonLook` tells the wish at every phase. Was: at the new moon (moon 0) she only chattered. She still chatters when there is no level to wish about.
 - **A late start wakes on its own quarter's level (ryan: "i don't like that at all"):** `startSlot` no longer moves a run up one level when fewer than two days of the quarter are left. Removed: that skip. The floor is shorter instead: `floor.js` `generate` now allows 1 or 2 days (the minimum was 3), so a floor has one wing for each day left (days left minus 1 pairs of locked doors; the stairs are in the last wing, which for a 1-day floor is the start wing).
