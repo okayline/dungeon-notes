@@ -1,10 +1,25 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.8.9
+# scoundrel.exe — Dev Changelog — v0.1–v0.8.10
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
+
+## v0.8.10 — "On the Record"
+**Tue Oct 20, 2026 · 2:31 AM HST** (no migration; needs dungeon-items with `Registry.checkpoint` deployed first)
+
+### Decisions (the owner's)
+- Owner (Oct 20, HST): no separate Bitcoin stamp per game; "i want everything on the shared registry, that's the point of it"; Dawn Baton once a day, scoundrel.exe after every run, and the stamps visible on the registry ledger page.
+
+### What was built
+- `wrangler.jsonc`: a `REGISTRY` service binding (dungeon-items, `Registry` entrypoint).
+- `src/worker.js` `checkpoint(env, runId)`: after a finished, non-admin run's batch commits, reads the ledger up to that run's `run` entry, checks it (new `verifyChain` in `src/ledger.js`), and sends `REGISTRY.checkpoint({ game: "scoundrel", entries, head })`. Errors are logged and never fail the move; the next run's checkpoint covers a missed one. Two runs ending together can arrive out of order; the older one is then refused as "can only grow" and logged, which is harmless.
+- The finishing move waits on one more call to the registry.
+- `public/app.js` VERSION v0.8.10 and `CHANGELOG.md`. Removed: nothing.
+
+### Tests
+- One new test: no checkpoint mid-run, one after the run ends, equal to the count and hash up to the `run` row. 42 tests pass.
 
 ## v0.8.9 — "One Key"
 **Sat Oct 17, 2026 · 2:45 AM HST** (no migration here; migration 003 ran on the shared `items-db`)
