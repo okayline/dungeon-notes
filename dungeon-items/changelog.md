@@ -5,6 +5,12 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
+## Oct 20, 3:41 AM HST: "what happened" headings on the ledger page (pushed to main, live on 88x31.app/registry)
+- Owner (thread "Game headings on registry entries"): "can we put one of those for 88x31 entries and for 4dungeon entries?", picked option B (what happened) for every game, then "button traveled", "item in bag", "item left bag", and normal capitals for Dawn Baton.
+- `src/public-ledger.js` `heading()`: every entry gets a heading above its number in its game's words. 88x31: "88x31 · new button", "button traveled", "button arrived", "button gone", "button marked". 4Dungeon (all capitals): "4DUNGEON · ITEM FOUND", "ITEM IN BAG", "ITEM LEFT BAG", "ITEM MARKED". irl-dungeon: "new find", "find marked", "find arrived", "find used up". Dawn Baton: "Dawn Baton · Baton made", "Baton came home". scoundrel.exe (lowercase): "run cleared" or "run deleted". A move between games is headed by the game it went to; anything else gets plain words ("new copy", "copy marked").
+- Removed: the fixed "Dawn Baton · checkpoint" and "scoundrel.exe · run" headings (added earlier tonight, 0a6531a and 0f45f05), "button changed hands", "ITEM INTO THE BAG", "ITEM LEFT THE BAG", and the uppercase style on Dawn Baton's checkpoint heading.
+- No migration. 76 tests pass (no new test: wording only). Commits c82f9dd, 8014de8, 318b8a7.
+
 ## Oct 20, 2:55 AM HST: Registry checkpoints (with Dawn Baton v0.24 and scoundrel.exe v0.8.10; migration 006 run on live items-db by the owner in the D1 console first)
 - Owner (Oct 20, HST): no separate Bitcoin stamp per game; "i want everything on the shared registry, that's the point of it"; Dawn Baton once a day, scoundrel.exe after every run, and the stamps visible on the registry ledger page.
 - `registry.js` `checkpoint(db, { game, entries, head })` and `Registry.checkpoint`: one ledger entry, kind `checkpoint`, player_id 0, record `{ k, game, entries, head }`. A repeat of the game's last checkpoint adds nothing; fewer entries, or the same count with another fingerprint, is refused. `/ledger` said "<game>'s own ledger reached N entries" (since replaced, below). README: a Checkpoints section.
@@ -19,7 +25,7 @@ The shared core every game binds to: the item table, the copy registry, marks an
 - `test/helpers.mjs`: the fake D1's `batch` returns `results` for a `SELECT`, as D1 does (it used to return only `meta`).
 - No migration. 73 tests pass, plus a hand check on hand-built rows.
 
-## Oct 20, 12:40 AM HST: mark words for 4Dungeon v1.33 and irl-dungeon v0.22; 88x31 can mark (branch claude/project-thread-ecf8mr, not on main)
+## Oct 20, 12:40 AM HST: mark words for 4Dungeon v1.33 and irl-dungeon v0.22; 88x31 can mark (built on branch claude/project-thread-ecf8mr; on main, pushed with 88x31 v0.46)
 - Owner (thread "shared registry ideas"): "can you add the dungeon-items words, and how do we let 88x31 stamp marks ? can you do the mark call thing?"
 - `/ledger` words (`src/public-ledger.js` `DEED`): in_locker "was in a hidden locker", in_archive "was in the Archive", deep_stone "was deep in the stone", beat_demon "saw a demon fall", talked_down "saw a demon talked down", fled_fight "ran from a fight", through_door "went through a locked door", found_outside "was found outside, in the real world"; `on_b4f`..`on_b1f` / `on_1f` read "was picked up on B4F" (a regex with `[0-9]`, not `\d`: the page is a JS template string, which would eat the backslash). Removed: the fallback "got a mark in X: ..." wording for these values (it stays for unknown ones).
 - HTTP door (`src/registry-http.js`): `addMark` (only when `holder.game` is 88x31, as `moveCopy` and `spendCopy` check; the registry's own check then requires that player to hold the copy) and `marksOf` (public anyway via the copy page). Nothing was removed. No migration (marks are migration 005).
@@ -32,6 +38,10 @@ The shared core every game binds to: the item table, the copy registry, marks an
 - `seed/dawn-baton.json`: one item, The Dawn Baton (`dawn-baton` / `baton`, relic, so only Dawn Baton can make copies). Owner's ask: Dawn Baton writes its daily baton into the registry, one copy per lap. Not seeded on the live `items-db` yet.
 - `Registry` entrypoint gains `itemIds(game, keys)` (the existing `registry.js` function the HTTP door already used), so Dawn Baton looks its item up by key instead of hard-coding an id. README: the call and a Dawn Baton section. Removed: nothing.
 - No migration. 72 tests pass (one new: the seed is one relic, `itemIds` finds it, `lap:1` gives back the same copy, another game can't make one).
+
+## Oct 19, 10:35 PM HST: public views hide 88x31's non-commons (pushed to main)
+- `src/public-ledger.js` `isMystery`, applied to the registry ledger, a copy's story and `/api/items` (only `source` and `hidden: true` come back): first 88x31's rares and up (c13de79), then everything but commons (01a9f22), the same as 88x31's logged-out Wall (88x31's own side is its v0.45.2). The page calls a hidden copy "a mystery button". Sealed records and hashes are unchanged; every 4Dungeon item still shows in full.
+- Removed: the narrower "rare, prototype, ultra" `MYSTERY` list, so 88x31 uncommons are hidden too. README line and one test updated. No migration. Backfilled Oct 20 from the git history; test count not recorded in the commits.
 
 ## Oct 19, 10:10 PM HST: ledger page text sizes, no glow (pushed to main with 88x31 v0.45.1)
 - Owner: the 4Dungeon panels' text was much bigger than the 88x31 panels'; make them the same, medium. Both now use 16px for the line, 13px for the details, 11px for the hashes and 22px for a copy's name (were 17/13/11/24 and 19/19/15/28 for 4Dungeon). VT323 gets `size-adjust: 130%` so it reads the same size; if it fails to load, the fallback monospace is the same px. Removed: every text glow on the 4Dungeon panels and pages (owner: "no text glow ever").

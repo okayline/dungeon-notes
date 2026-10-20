@@ -55,6 +55,16 @@ Decisions (owner, Oct 20): "for this part, could we have it so it keeps going pa
 - **Not checked:** a phone-width screen; the live site; real streak packs from the database (the screenshots used made-up packs).
 - `public/index.html`: v0.46.3.
 
+## v0.46.2
+**Tue Oct 20, 2026 · 1:40 AM HST** (no migration)
+
+Backfilled Oct 20 from the git history (4bcef84) and the public changelog; the owner's words for this one are not recorded here.
+- **`lib/ledger.js` sort order:** a pack opening (`pack_open`) now sorts at 0.6, before the moment's transfers, so "Sealed pack #N was opened" is sealed before the buttons that came out of it. Removed: order 2.5 (the opening sealed after its copies).
+- **Finishes beside their copy:** when a new copy and its foil are sealed together, the foil sorts right after the step that made that copy, so each button's "was opened..." and its finish sit together. Removed: every foil sorting after all of that moment's copies. Applies to every new copy, not only packs.
+- Entries already sealed are not touched (the order only decides what is sealed next).
+- **Checked:** not recorded in the commit. **Not checked (this backfill):** the live ledger. No test suite in this repo.
+- `public/index.html`: v0.46.2.
+
 ## v0.46.1
 **Tue Oct 20, 2026 · 1:33 AM HST**
 
@@ -81,6 +91,63 @@ Decisions (owner, thread "shared registry ideas", Oct 20): "every game writes ma
 - **Not checked:** the live database (how many copies, so how long the backfill takes and how many ledger entries it adds); whether 88x31's mystery rule should hide finish marks on rares and up on the public ledger (the page shows the sentence, e.g. "a mystery button #3 has a Gold foil", but not the button).
 - **Checked:** no test suite in this repo. A scratch script (not committed) ran `syncRegistry` on `schema.sql` in Node SQLite with a fake registry: a pack copy made on Aug 12 2026 (a real solar eclipse, so a new moon) and traded got new, eclipse_solar, pulled_pack, first_copy, foil_holo, pattern_etched, effect_crt_vhs, traded; a welcome First Print on Oct 26 got full, welcome_gift, first_print; a second pass made no calls; a later gift and trade added gifted and traded once; a budget that ran out mid-copy finished on the next pass.
 - `public/index.html`: v0.46.
+
+## v0.45.12
+**Mon Oct 19, 2026 · 11:56 PM HST** (no migration)
+
+v0.45.2 to v0.45.12 are backfilled Oct 20 from the git history and the public changelog; the owner's words for them are not recorded here, and none of these commits records a test run (no test suite in this repo).
+- **Pack shines (88fe14b, 6fea83f):** new `.holo` and `.glitter` shines in `public/style.css`. Club packs twinkle (`.spark`), Series Alpha gets the drifting holo, and club packs whose source is the webmaster get glitter. Spent packs and reduced motion hide all three (spent packs didn't hide `.spark` before). Removed: the gleam on club packs, the webmaster's packs and Series Alpha; the Free Pack's glitter from the first commit (it ends with no shine).
+
+## v0.45.11
+**Mon Oct 19, 2026 · 11:49 PM HST**
+- **Drag threshold (05d2e5d):** a touch has to move 12px before it counts as a drag along the lined-up packs, so a tap's wobble opens the pack under the finger. Removed: treating any finger movement as a drag.
+- **Zoom (6d61c97):** the collection zoom gets a 10-across step. Removed: the 9-across limit.
+
+## v0.45.10
+**Mon Oct 19, 2026 · 11:45 PM HST**
+- **Touch drag (318ef84, `public/app.js`):** with the packs lined up, dragging a finger brings the pack under it to the front; the click after a drag opens nothing. Removed: sideways finger scrolling of the lined-up row, and tearing from it (the spread-out layout still tears).
+
+## v0.45.9
+**Mon Oct 19, 2026 · 11:43 PM HST**
+- **Front pack (fbd2510):** grows to 1.25x with 20px above the row, and a click anywhere on the page puts it back. Removed: 1.15x, the 14px space, and a pack staying in front until another was picked.
+
+## v0.45.8
+**Mon Oct 19, 2026 · 11:36 PM HST**
+- **Lined-up packs (3c16e8d, 4344077, 792e70d):** the first click on a covered pack brings it to the front (scaled 1.08, then 1.15 with 14px of room above the row); the second opens it. The top pack still opens on one click. Removed: one-click (and tear) opening of a covered pack in the lined-up row.
+- Blank lines under the lined-up packs, the collection's zoom buttons and its last row.
+
+## v0.45.7
+**Mon Oct 19, 2026 · 11:23 PM HST**
+- **Collection zoom (823a3e8):** 1 to 9 buttons per row, on a computer and a phone. Removed: the 2-across minimum on a computer and every level past 9 across.
+- **Packs panel zoom (261abe9):** [+] and [-] with a saved setting; [-] lines every pack up in one overlapping row, hover brings a pack forward. Then (3b24ac5, 2c0abe7) covered packs briefly showed only colour strips, and went back to their own art and writing; (c6b849c) a stacking layer per pack slot stops z-indexed pack art (rosettes, windows, crimps, gleams) poking through the pack on top.
+
+## v0.45.6
+**Mon Oct 19, 2026 · 11:19 PM HST** (from git; the public changelog says 11:30 PM)
+- **Zoom by buttons per row (b08ec9e, 0173fae):** first a 0.25x level and a margin that shrinks with the zoom, then a zoom level per buttons-per-row (2 to about 30 across, 1 to 15 on a phone). Removed: the fixed levels (0.5x to 4x and the phone's), the dense and two-a-row classes, the 6px column margin, and the saved zoom keys (everyone's zoom reset).
+
+## v0.45.5
+**Mon Oct 19, 2026 · 11:10 PM HST**
+- **Zoomed-out collection (b62e144, ada27cb):** a grid with a set number of equal columns and tighter spacing at 0.5x and 0.75x. Removed: the loose flex wrapping, and (second commit) the edition captions at those sizes, including the 9px captions the first commit added.
+- The Registry line moves from Fair Play's Ledger Status panel to The Ledger panel.
+
+## v0.45.4
+**Mon Oct 19, 2026 · 11:03 PM HST**
+- **Guestbook (9a4b759, `functions/api/guestbook.js`):** bots' messages go back to everyone with the [BOT] tag; only webmasters get the "show bot messages" checkbox, starting ticked. Removed: the players-only bot filter.
+- **Zoom:** desktop 0.5x; phone 0.5x, 0.75x and one-to-a-row; zoom saved per device. Removed: the 1x-4x steps, the zoom-1 rule and v0.45.3's `col-zoom` setting.
+- **Fair Play (c241164):** a Ledger Status line linking to `/registry`.
+
+## v0.45.3
+**Mon Oct 19, 2026 · 10:55 PM HST**
+- **Bonus pack tile (1cf439f):** `/api/summary` returns `bonus_waiting` while today's bonus pack is still open, and the Packs panel shows a "bonus pack!" tile that opens it like a daily pack (`/api/pull` already served it). Removed: the dead end where an unopened bonus pack had no tile and the daily tiles were greyed out.
+- **Guestbook (b5bb45e, then f4e24d2):** bots' entries left out of `GET /api/guestbook` for players; webmasters get them behind a "show bot messages" checkbox (off by default). Bots still sign and stamp, so gifts still move. Removed: the players' checkbox, its localStorage toggle and CSS, and the [BOT] badge for players.
+- **Packs panel (f4e24d2):** pack-opening messages show in `#pack-msg` at the top of the panel. Removed: those messages at the bottom of the page, and the `#pull-odds` line (the odds stay on the Odds page). "Trades" link renamed "Trades & Requests".
+- **Collection zoom (117a649):** `drawCollection` (the collection loop moved out of `showPage`) and a [+]/[-] bar, 1x to 4x, starting at 2x. Nothing removed.
+
+## v0.45.2
+**Mon Oct 19, 2026 · 10:20 PM HST**
+- **Singles (79d45a0, then 6ca96ca):** the Strawberry Milk look is replaced, first by the starry grey box, then by the v0.37 white link-page look (`.th-fp-c`, copied from before 0335df6) for Singles whose number picks look b. Removed: Strawberry Milk and the starry grey box's `.th-fp-b` CSS.
+- **Registry right after a keep (52ddfef, `functions/api/packs.js`, `lib/registry.js`):** a successful pack keep runs a background registry pass, the same one the webmaster button runs. Births are keyed per copy, so an overlapping page-load pass makes no second copy. Removed: waiting for the next `/api/me`.
+- **Commons always visible (6ec4b9d, `functions/api/designs.js`, `functions/api/ledger.js`):** commons never count as a mystery for a player, on the Wall or the Fair Play ledger. Removed: the ledger's separate rare-and-up mystery list for logged-out visitors, so logged out now sees only commons in both places (uncommons were shown on the ledger but hidden on the Wall). The registry side is dungeon-items' Oct 19, 10:35 PM entry.
 
 ## v0.45.1
 **Mon Oct 19, 2026 · 10:10 PM HST** (no migration)
