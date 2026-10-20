@@ -7,7 +7,10 @@ Newest first. Times are Hawaii time (HST).
 
 ---
 
-## Unreleased (after v0.18; branch only, no version bump until ryan says push) — Oct 19, 2026 · 8:25 PM HST
+## v0.19 — "Twenty-Four"
+**Mon Oct 19, 2026 · 8:15 PM HST** (no migration)
+
+`engine/version.js` 0.18 to 0.19, matching `CHANGELOG.md`; 43 tests pass.
 - **24-hour time everywhere** (owner's ask, all games): `hm`, `hms` and the new ledger page's stamps use `hourCycle: "h23"` (were `hour: "numeric"`, 12-hour in US locales; the ledger stamp was the locale default). `clock()` moved from `hour12: false` to `hourCycle: "h23"`, which never prints "24:05" after midnight. No test covers page text; syntax checked. Removed: nothing.
 
 ## v0.18 — "Open Book"
