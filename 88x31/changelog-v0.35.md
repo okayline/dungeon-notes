@@ -6,7 +6,7 @@ The public repo keeps a shorter, general changelog. Newest first. Times are Hawa
 ---
 
 ## v0.46
-**Tue Oct 20, 2026 · 12:55 AM HST** (migration 029, run before the push; needs dungeon-items' HTTP `addMark` live first). NOT ON MAIN YET: held on branch claude/project-thread-ecf8mr until migration 029 runs on the live 88x31-db.
+**Tue Oct 20, 2026 · 12:55 AM HST** (migration 029, run before the push; needs dungeon-items' HTTP `addMark` live first). Migration 029 run by the owner in the D1 console (Oct 20, 12:34 AM HST), then pushed to main.
 
 Decisions (owner, thread "shared registry ideas", Oct 20): "every game writes marks", "let's stamp as much info as possible !", "yeah can we work on 88x31 marks next?". The 4Dungeon side chose "once per copy" for lived-through marks; the same here.
 - **Step 7 of `syncRegistry` (`lib/registry.js`): marks.** With the budget left after steps 1-6, oldest instances first, for a copy the registry has with its owner here (`registry_copy > 0`, not spent or consumed, not away `locked != -1`, `owner_id = registry_owner`) whose marks were never stamped or whose `ownership_history` has grown since. `copyMarks(c, hist)` lists [kind, value]:
