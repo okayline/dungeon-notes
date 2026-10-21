@@ -19,9 +19,9 @@ Times are Hawaii time (HST).
 - **Page.** I first added a "Who beats who" panel (min asked for a place that explains it), then min saw the board row
   with 😏🗿🗿 and asked: "no, less labels in general. Get rid of 'Who beats who' and 'the same style is a draw'. maybe
   delete all the explainer text under AURA FARM, or make it very very short and simple?" So the panel is gone. The Farm
-  tab has one line ("Pick a style. Farm aura while it's up."); the Board, Today and Ledger tabs, the take screen and
+  tab has one line, min's wording ("+10,000 Aura per hour while your Farm is up", the number from `A.STAND_PER_HOUR`); the Board, Today and Ledger tabs, the take screen and
   your own farm show only their title. Farm list lines say "N an hour" instead of a sentence.
-  Removed: "beats X" on every style, the "Who beats who" panel (`rules()`), `A.label` in `aura.js` (only the panel used
+  Removed: "beats X" on every style, the "Who beats who" panel (`rules()`), the unused `STAKE` constant in `app.js`, `A.label` in `aura.js` (only the panel used
   it), the peek button and text, the 👀 VIBES counter in the header, the `.card .s` CSS, and every explainer paragraph.
   The rules are still in the README. Easy to put back if players are lost.
 - **Passkey login (You screen).** min: put "Log in with a passkey" on the right instead of text below the save code
