@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.1
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.2
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,19 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.2 — "Stutter"
+**Wed Oct 21, 2026 · 8:51 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "WOW both the gun AND the turn look great. can you make the turn not so smooth, a little more stuttered/low fps?"
+
+### What was built
+- `along()` in `public/engine/corridor.js`: the eased turn fraction is rounded to `TURN_STEPS = 6` steps, so a 90° turn goes 0, 15, 30 ... 90°. Through a turn at s = 5 to 9 (centre 7) the heading came out 0 0 0 0 0 15 30 30 45 60 60 75 90 90 90 90 90 at quarter-tile steps. Where you stand still moves smoothly; only the facing jumps. The frame rate itself is unchanged.
+- Removed: the smooth turn.
+
+### Tests
+- The `along()` test now also checks every heading through a turn is a whole number of 15° steps. 9 pass.
 
 ## v0.5.1 — "Rib Lines"
 **Wed Oct 21, 2026 · 8:49 AM HST** (no migration)
