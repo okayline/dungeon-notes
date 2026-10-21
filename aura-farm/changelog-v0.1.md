@@ -78,7 +78,7 @@ Times are Hawaii time (HST).
   - `namesOf(ids)` is one `IN` query for up to 100 ids.
   - The board and leaderboard went from 1+2N or 1+3N queries to 2-3 queries.
   - `/today` builds live rows from the row itself (no `duelView`) and joins the opponent's name.
-  - `findPlayer` writes `seen_at` (players and sessions) only when it is an hour old or more (`SEEN_EVERY`).
+  - `findPlayer` writes `seen_at` (players and sessions) only when it is 15 minutes old or more (`SEEN_EVERY` = 900; ryan picked 15 minutes over an hour).
   - `settleStale` runs once per UTC day per Worker instance (`settledDay`), and again if it hit its 20-duel limit.
   - The page loads `/today` and the tab in parallel (`Promise.all`).
   - Removed: `auraLife` and `/today`'s `life` field (the page never read it), `nameOf`, and `standingOn`.
@@ -86,7 +86,7 @@ Times are Hawaii time (HST).
 
   | Call | Statements | Writes |
   | --- | --- | --- |
-  | `/api/today` | 4 | 0 (1 when seen_at is an hour old) |
+  | `/api/today` | 4 | 0 (1 when seen_at is 15 minutes old) |
   | `/api/board` | 3 | 0 |
   | `/api/leaderboard` | 2 | 0 |
   | `/api/ledger` | 1 | 0 |
@@ -95,7 +95,7 @@ Times are Hawaii time (HST).
   calls at the same time.
 
 ### Tests
-- 17 pass. Three are new: an ordinary click writes no `seen_at` within the hour; a checkpoint per finished duel with public facts and no player; and a save code loading the
+- 17 pass. Three are new: an ordinary click writes no `seen_at` within 15 minutes; a checkpoint per finished duel with public facts and no player; and a save code loading the
   player on a second device, then logout refused without a way in, logout allowed after, and passkey login back in.
 - Fake Accounts and Registry were copied from scoundrel.exe's tests.
 - Browser check (local worker plus node:sqlite, headless Chromium, 390 px wide): made a save code in one browser, logged
