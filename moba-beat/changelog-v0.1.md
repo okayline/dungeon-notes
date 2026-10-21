@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.3
+# moba-beat — Dev Changelog — v0.1–v0.4
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,25 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.4 — "Lights Off"
+**Wed Oct 21, 2026 · 10:41 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner asked for a page or visual, then "can we do a modern style not the ascii style please", "remember its also going to be a moba auto battler", and "can we do dark mode please, and put a version number on it somewhere".
+- I made the page always dark (no light theme, no following the device setting).
+
+### What was built
+- `public/index.html`, `style.css`, `app.js`: the lane (your squad blue on the left, the ghost squad coral on the right; Clutch diamond, Feed circle, Tilt triangle, working names), today's beat as 16 bars in 4 measures (strong tall amber, normal light, rest hollow) with a key and the BPM, and a Play/Stop button. Play clicks once a beat with Web Audio (880 Hz on strong, 520 Hz on normal, nothing on a rest) at the day's BPM, moves a highlight along the bars, and pulses the squads on each beat (more on strong). Reduced motion: no pulsing. The fight is not built; a line on the page says so.
+- Colours: page #151a2e, lane #1f2640, text #e7ebf5, muted #98a2b8, your squad #5b82ff, ghost #ff6b8a, strong #ffb020. Font: the device's system font (Avenir Next, Segoe UI, system-ui); a custom font couldn't be downloaded in the workspace.
+- `public/version.js` `VERSION = "v0.4"`, shown next to the name. New test: it matches the newest `CHANGELOG.md` entry.
+- `wrangler.jsonc`: serves `public/` as static assets, `/api/*` goes to the Worker first (as CFT). Removed: JSON-only answers at `/`.
+
+### Checks
+- Headless Chromium against a stand-in `/api/today` (a real beat, 118 BPM): no sideways scroll at 390 px or 1280 px, no page errors; after Play and about 1.9 s the highlight was on beat 4, as the tempo gives. A first look showed the first bar of each measure squeezed (a margin inside the grid); the bars are now grouped by measure and even.
+
+### Not checked
+- The sound by ear; the page against the live Worker.
 
 ## v0.3 — "The Beat"
 **Wed Oct 21, 2026 · 10:34 AM HST** (no migration; local until pushed)
