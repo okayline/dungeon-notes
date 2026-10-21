@@ -1,9 +1,117 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.5
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.7
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
 Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date with every decision). Newest first.
 Times are Hawaii time (HST).
+
+---
+
+## v0.7 — "Fewer Labels"
+**Tue Oct 20, 2026 · 10:35 PM HST** (built and committed locally, not pushed; migration 005 not run on live aura-db)
+
+### Decisions (the owner's)
+- min, after trying v0.6: "hehe this is kinda weirdly fun. can we get rid of VIBES mechanic for now. can we get rid of
+  'beats X' on all the cards? and add a place that explains 'MOG beats DRIP'". I read "for now" as: delete it (the
+  working rules say delete, don't park); it can come back as a new thing later.
+
+### What was built
+- **Page.** I first added a "Who beats who" panel (min asked for a place that explains it), then min saw the board row
+  with 😏🗿🗿 and asked: "no, less labels in general. Get rid of 'Who beats who' and 'the same style is a draw'. maybe
+  delete all the explainer text under AURA FARM, or make it very very short and simple?" So the panel is gone. The Farm
+  tab has one line, min's wording ("+10,000 Aura per hour while your Farm is up", the number from `A.STAND_PER_HOUR`); the Board, Today and Ledger tabs, the take screen and
+  your own farm show only their title. Farm list lines say "N an hour" instead of a sentence.
+  Removed: "beats X" on every style, the "Who beats who" panel (`rules()`), the unused `STAKE` constant in `app.js`, `A.label` in `aura.js` (only the panel used
+  it), the peek button and text, the 👀 VIBES counter in the header, the `.card .s` CSS, and every explainer paragraph.
+  The rules are still in the README. Easy to put back if players are lost.
+- **Passkey login (You screen).** min: put "Log in with a passkey" on the right instead of text below the save code
+  place, then (after I put a "Passkey" chip beside "Log in"): "put the passkey button where it belongs", meaning the
+  row with New save code and Add a passkey. Then: "is there a way to make it fit on one line?" The row is "🔑 New code", "👆 Add passkey",
+  "👆 Use passkey", with 12 px text and a 6 px gap (`.keys` in `index.html`) so it fits at 390 px.
+  Removed: the "or log in with a passkey" link, the chip beside "Log in", and the longer labels ("New save code", "Add a passkey").
+- **Server (`src/worker.js`).** Removed: `POST /api/vibes`, `vibesStmt`, `vibesFrom`, the loser's +1 VIBES insert in
+  `take`, and `vibes` / `peek` in `/api/today` and `farmView` (which now batches two statements instead of four).
+  `aura.js` loses `VIBES_START` and `VIBES_MAX`.
+- **Database (`migrations/005_no_vibes.sql`, `schema.sql`).** `DROP TABLE peeks; DROP TABLE vibes;`. The Worker no longer
+  reads either table, so v0.7 runs whether or not 005 has been run; 005 is cleanup and loses the day's VIBES balances.
+- `VERSION` 0.7, CHANGELOG and README updated.
+
+### Tests
+- 14 pass. The whole-farm test now checks there is no peek and `/api/vibes` is a 404; the VIBES assertions are gone.
+  The migration test applies 004 then 005 to the v0.5 schema and compares with `schema.sql`.
+- Browser check (headless Chromium, 390 px): the Farm tab shows the one line, the You screen shows the passkey chip in the
+  save code row, no page errors. Not re-run after the trim: a full farm and take.
+- Not checked: the live site.
+
+---
+
+## v0.6 — "AURA FARM"
+**Tue Oct 20, 2026 · 10:20 PM HST** (built and committed locally, not pushed; migration 004 not run on live aura-db)
+
+### Decisions (the owner's)
+- min: "the card-based gameplay isnt working out for me maybe. what are some other ideas, keeping the async and ledger
+  aspects?" I offered four (Hold the Spot, Blind Flex, Stare-down, Fit Check). min chose #1, said "i really liked
+  MOG / FIT / RIZZ but the cards just didnt seem right", picked a secret style, then (after I built Hold the Spot
+  locally and raised its leak: a fixed pose is given away by any result) "this isn't entirely working for me either".
+  Asked what the best moment is, min: "maybe flexing. choosing which out of DRIP/RIZZ/MOG to play against the other
+  player." I proposed Flex Off (one sealed style each, public record of revealed styles): "ooh this one sounds
+  interesting!!". Name: "maybe it's FARM !! because while it's up, the person is gaining currency"; "yeah let's build
+  it as FARM". Wording from min: "AURA FARM" as the action, "Your time is up", "Someone mogged your aura" (then "i dont
+  like 'mogged your aura'"); chose COOKED from my list ("i like COOKED !").
+- The Hold the Spot build (one spot, reigns, tries, sealed misses) was committed locally as f7760d6 and dropped before
+  any push: `git reset --hard a35b001`, then rebuilt on v0.5. Nothing of it was ever live.
+- My picks, built as stated and easy to change: win +100,000 / lose -100,000 / draw 0 (first built at 10,000); standing 10,000 an hour (first 1,000) while a
+  farm is untaken, 3 open a day, expiring at midnight UTC ("Your time is up": my reading of min's phrase); VIBES = the
+  taker spends 1 to see one style the poster did NOT pick (random of the two, stored, so asking again shows the same
+  one; I proposed "peek at their most-played style" but the public record already shows that), +1 per farm lost, max 3;
+  the record is a player's latest 10 revealed styles, both roles, newest first; captions AURA FARMED / COOKED /
+  MUTUAL MOG.
+
+### What was built
+- **Rules (`public/engine/aura.js`).** `RULES = 4`. `farm(a, b)` returns `{winner, how, deltas}`; `caption`;
+  `record(rows)`; `STYLES`, `isStyle`, `label`, `RECORD = 10`. `standing` unchanged. Removed: `DECK`, `deal`, the
+  sfc32 `rng`, `lineupCards`, `faceOff`, `totals`, `duel`, `ROUNDS`, `BONUS`, the CAP and its emoji, `isCap`, `style`
+  (the card helper), and the NO CAP / TOTAL MOG captions.
+- **Ledger (`src/ledger.js`).** `commitment(style, salt)` = sha256("D|salt"). `chainInsert` takes `farmId` and writes
+  kind "farm" into `farm_id`. Record: `{kind: "farm", rules, day, farm, players, commits, styles, salts, result, winner,
+  deltas, caption, t}`. Removed: the lineup commitment (`cards.join(",")`).
+- **Server (`src/worker.js`).** Routes: `POST /api/farm {style}` (post, sealed, 3 open a day in one guarded INSERT),
+  `GET /api/farm?id=`, `GET /api/board` (each poster's `record`), `POST /api/take {id, style}` (one batch: farm done,
+  ledger entry, loser's VIBES; retries on a ledger-head clash; then the checkpoint), `POST /api/vibes {id}`.
+  `recordsStmt` reads any number of players' latest styles in one query (`json_each`). `farmView` shows the poster
+  their own sealed style, others never; a taker sees VIBES and their peek; a done farm shows both styles, captions
+  and both records; a card duel finished before v0.6 shows its cards and captions from its ledger record.
+  Checkpoint detail: `{day, farm, result, styles, winner: "poster" | "taker" | null, aura}`.
+  `/api/today` lists your farms, and your expired ones for a day. Removed: `draft`, `post`, `duel`, `duelView`,
+  `cardsOf`, `lockIn`, `duelSeed`, `hmacHex`, the `DAILY_SECRET` check (the secret can stay set on Cloudflare
+  harmlessly, or be deleted), and the lineup/hands/peeks-by-round logic.
+- **Database (`migrations/004_aura_farm.sql`, `schema.sql`).** `duels` becomes `farms`: open and draft duels are
+  expired, `c_slots` and `t_slots` dropped, `c_style` and `t_style` added, indexes renamed `farms_*`. `ledger.duel_id`
+  becomes `farm_id`. `peeks` is rebuilt as `(farm_id, player_id, not_style)`. Every old ledger row and finished duel
+  stays as sealed. Removed: draft status, the card columns, the old `peeks`.
+- **Page.** Tabs: Farm, Board, Today, Ledger. The Farm tab has the three style buttons, "🌾 AURA FARM" and your farms
+  ("Farming", "vs name" with the caption, "Your time is up"). The board shows each poster's record as emoji. A taker
+  sees the poster's record, a peek button, the three styles and "😤 STARE DOWN". The result shows both styles and
+  the caption, with each side's record. Removed: the 5-card pick screen, card faces and backs, the round-by-round
+  result, and their CSS.
+- `VERSION` 0.6; CHANGELOG, README and the `wrangler.jsonc` secret comment updated.
+
+### Tests
+- 14 pass (5 engine, 9 worker). Hand-worked: all six wins, draws, captions, the record, standing; a whole farm (post,
+  peek is DRIP or MOG for a RIZZ farm and free the second time, take, VIBES 2 and 0, both commitments and the hash
+  recomputed with node:crypto, records on the board, leaderboard 100,000 and -80,000); a draw earns no VIBES; the 3-farm
+  limit and midnight expiry ("Your time is up" for two farms); a checkpoint per farm with exact details; migration
+  004 run on the v0.5 schema (from git) keeps a sealed duel and its ledger row, expires an open one, and ends with the
+  same tables and column order as `schema.sql`. Removed: the card, deal, lineup, CAP and old-rules tests.
+- Browser check (headless Chromium, 390 px, local Node server + node:sqlite): post RIZZ, two hours later a second
+  player peeks ("It's not DRIP"), takes with DRIP and wins; the first player sees COOKED and -80,000; a third sees the
+  first player's record (😏) on the board; the ledger tab drew; 1 checkpoint; no page errors.
+- Not checked: the live site, the real Accounts and Registry, real phones, and how the registry page shows the new
+  checkpoint details.
+
+### Before it can go live (needs the owner)
+- Run migration 004 on live aura-db, then push. The migration cancels any open challenges (nothing paid) and renames
+  tables; old duel history stays.
 
 ---
 
