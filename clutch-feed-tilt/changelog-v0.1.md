@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4.2
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4.3
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,22 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.4.3 — "Cover Plate"
+**Wed Oct 21, 2026 · 8:35 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "yeah way better with the gun! can it not move up and down so much? and a bit more detailed (but accurate)? you can make it bigger if necessary."
+
+### What was built
+- `GUN` in `public/app.js`: 18 x 9 (was 14 x 7). Top to bottom: front sight post in the rear notch (`_||_`), rear sight with its two white dots (`___o|    |o___`), the slide's top edge (`|==============|`), the slide cover plate on its back (a box inside the slide), the slide's bottom, the frame (`|__________|`), the top of the textured grip (`|########|`).
+- `render()`: the gun is one row lower only once `|lean| > GUN_SWING / 2`, plus one row while it fires. Removed: the `round(lean² / 32)` dip (up to 2 rows).
+
+### Findings
+- Checked locally (Playwright): pointer at 2%, 30%, 50% and 98%; at 50% the gun sits on the bottom 9 rows, at 98% one row lower; no page errors. Not checked on a phone. The drawing is from my memory of a Glock's back, not from a reference picture.
+
+### Tests
+- 8 pass.
 
 ## v0.4.2 — "Glock"
 **Wed Oct 21, 2026 · 8:33 AM HST** (no migration)
