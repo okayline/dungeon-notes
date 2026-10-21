@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.5
+# moba-beat — Dev Changelog — v0.1–v0.6
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,27 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.6 — "By Ear"
+**Wed Oct 21, 2026 · 11:30 AM HST** (no migration; today's sealed hash is unchanged, but what it plays changed again)
+
+### Decisions (the owner's)
+- "can you remove 'clap on 4' explainer text", then "can you remove parry 2 beats after a wind up text": no help text left.
+- "i think we shouldn't show the full beat until afterwards?" I answered that the beat is derivable from the public day hash and sent whole by `/api/today`; the owner chose "hide the grid please!" (hidden in the page only, not secret).
+- The sound was "too 'beep boop' robotic" and "each beat/note is completely distinct". Options I gave: samples, a continuous layer, reverb, groove, humanizing, mixing, envelopes. The owner picked the continuous layer and reverb, "as long as the continuous layer isn't just one note the entire time", "use music theory please", and asked whether 8 measures should all differ: I recommended a drum loop with fills, A A A B | A A A C, from the standard 8-measure shapes (loop with fills, period, AABA). "build!"
+- The owner: questions get answers, building and pushing only when asked.
+
+### What was built
+- `src/beat.js`: drums in A A A B | A A A C (bytes 0, 1, 2 mod 108; a fill equal to A moves to the next pattern). Harmony: key = byte 3 mod 12 (semitones above C, major), progression = byte 4 mod 6 from I V vi IV, I vi IV V, vi IV I V, I IV vi V, ii V I IV, I iii IV V; played twice, measure 8 replaced by I; every first half ends on IV or V. `chords` (root, quality), `pad` (the triad from C4, one per measure, held 4 beats), `bass` from `BASS[style]`: hip-hop root 0, root 1.5, fifth 2.5; electro root 0, 0.75, 1.5, fifth 2.25, root 2.5; disco octave bounce on every eighth but beat 4 (3.5 is allowed); each note holds until the next; from C2. Nothing starts on beat 4. `beat()` now returns `key, chords, bass, pad` too. Removed: one independent pattern per measure.
+- `public/app.js`: one bus with a dry path, a convolver reverb from decaying noise (hip-hop 0.6 s at 0.16, electro 0.9 s at 0.14, disco 1.5 s at 0.22) and a compressor (-18 dB, 3:1). Bass synth per kit (sine 500 Hz lowpass, sawtooth 700, square 900), triangle pad at 0.035 per note with a swell. The grid and key (`#reveal`) are hidden during play and shown with the results. Removed: the help line, the grid before playing.
+- `public/version.js` v0.6.
+
+### Checks
+- Tests by hand: the A A A B | A A A C drums, a fill that would equal A, key of D with I V vi IV (D A Bm G D A Bm D), the first hip-hop bass notes with their lengths, the D major and B minor triads, nothing starting on beat 4 in any kit, every progression's measure 4 on IV or V. 16 pass.
+- Headless: grid hidden before and during play, shown after, hidden again on Play again; no page errors. Today: disco in F, 95 BPM, F B♭ Dm C F B♭ Dm F. The owner played the playtest: "i like that a lot".
+
+### Not checked
+- The mix by ear on more than the owner's device; the page against the live Worker before the push.
 
 ## v0.5 — "Your Beat"
 **Wed Oct 21, 2026 · 11:16 AM HST** (no migration; today's sealed hash is unchanged, but what it plays changed)
