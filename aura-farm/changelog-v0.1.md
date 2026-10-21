@@ -1,9 +1,61 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.7
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.9
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
 Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date with every decision). Newest first.
 Times are Hawaii time (HST).
+
+---
+
+## v0.9 — "FLEX"
+**Tue Oct 20, 2026 · 11:45 PM HST** (pushed with dungeon-items, which must deploy first)
+
+### Decisions (the owner's)
+- min started a thread "for some animations"; I suggested animating the reveal after taking a farm, and mocked up three
+  (Flip, Slam, Glow up) at https://claude.ai/artifact/WM4HGFmPJ1cDaf184WeKAn. min: "the other players card is face down
+  and it flips and reveals? i like the animation in #1." Then: "can we animate the emojis interacting ... if DRIP wins,
+  the diamond rains on the other emoji?"
+- Matchup bits, tuned by min over several rounds: RIZZ win = 😏 grows and sways, "not wink, and not send the heart"; MOG
+  sits there, then shakes and crumbles. MOG win = 🗿 leans in "just a little bit", gets big and holds still; DRIP
+  crumbles. MUTUAL MOG = first "they should just stare at each other and .... thats it", then "no need the . . . .", then
+  "one side stay the same and sparkle, then other side sparkle, then MUTUAL MOG", then "only one or two sparkles".
+  Everything "20% slower".
+- Lines: min asked for "text lines that describe the win, like MOG couldn't handle the RIZZ.", then "a few different
+  lines for each one", edited mine (e.g. "MOG blushed. gg, out-RIZZed.", "Two DRIPS. One Love.", "A DRIPPY / MOGGY /
+  RIZZY standoff."), asked for more, and edited five of those. Eight per matchup.
+- Timing of the text, min's: the line first, a beat, AURA FARMED., a beat, +100,000 aura; a beat between a line's two
+  sentences and two after the line; "stamp down but only bounce back a tiny bit"; the amount bigger, on the same line
+  but vertically centred against AURA FARMED.
+- Other asks: "instead of STARE DOWN can we have it say FLEX?"; on the finished screen "take out the emoji history line",
+  "put the AURA FARMED +100,000 in the middle of screen", "an empty line under the emoji in the card".
+- min: "could you make the ledger remember those words and history too? the shared registry?" I read it as: seal each
+  farm's line in its ledger entry and send it with the registry checkpoint.
+
+### What was built
+- **`public/engine/aura.js`**: `LINES` (DR, RM, MD, tie; tie lines use {S} for the style and {Y} for DRIPPY/RIZZY/MOGGY)
+  and `line([a, b], farmId)`, which picks by `farmId % 8`. Every line fits the registry's word rule (checked by a test).
+- **`src/worker.js`**: `take` seals `line` in the ledger record; `farmView` returns the sealed `line` (farms before v0.9
+  have none); `checkpoint` sends `line` in the detail when the record has one. The card-duel branch of `farmView` reuses
+  the record it already parsed. No migration: the record is JSON.
+- **`public/reveal.js`** (new): plays once, right after FLEX, with the Web Animations API. Their card starts face down
+  (`.card.back` in a `.slot`), wobbles and flips; copies of both emoji in a fixed `.fx` layer play the matchup bit;
+  then the loser drains (and gets `.lost`), the winner's card glows, and the line's sentences, "AURA FARMED." and the
+  amount stamp in (scale 1.6 to 0.96 to 1). Times are the mockup's x1.25 (`PACE`). Phones set to reduce motion get the
+  finished screen at once. While it plays, a background refresh redraws only the header (`refreshMe`).
+  Removed: the CSS-only flip from earlier the same night (21fef85: `--t` delays, keyframes in `index.html`).
+- **`public/app.js`**: FLEX on the board row and the take button (was STARE DOWN); the finished screen has no record
+  line, puts the cap (line + caption, cut into sentences) between the two cards, and the Ledger tab shows each farm's line.
+  Removed: `recordLine` on the finished screen, the `.face .small` CSS.
+- **`public/index.html`**: `.card .e` gets 20 px under the emoji; `.cap .why`, `.cap .bit` (inline-block, middle),
+  `.cap .amt` 30 px; `.slot`, `.card.back`, `.fx`, `.shard`.
+- `VERSION` 0.9, CHANGELOG and README updated.
+
+### Tests
+- 15 pass (new: `line` for each matchup and a draw, hand-written strings, and every line matches the registry's word
+  rule; the take test checks the sealed `line` and the view's `line`; the checkpoint test checks `line` in the detail).
+- Browser check (headless Chromium, 390 px, mocked API): FLEX then the reveal for DRIP>RIZZ, MOG>DRIP, RIZZ>MOG and a
+  draw, screenshots at 1.2 to 10.5 s, no page errors. Not checked: a real phone, the Impact font (the fallback font
+  wraps "+100,000 aura"), the live site.
 
 ---
 

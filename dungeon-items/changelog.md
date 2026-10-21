@@ -5,6 +5,21 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
+## Oct 20, 11:45 PM HST: checkpoint words may have ' and , ; aura-farm entries end with the farm's line (with aura-farm v0.9; pushed)
+- min (thread "Aura farm animations"): "could you make the ledger remember those words ... the shared registry?" aura-farm
+  v0.9 gives every farm a line ("MOG couldn't handle the RIZZ.", "MOG blushed. gg, out-RIZZed.") and sends it as
+  `detail.line` on its checkpoint.
+- `src/registry.js` `isWord`: also allows `'` and `,` (was `#A-Za-z0-9_ .-`), so those lines pass `detailOk`. Still 40
+  characters at most; `<` and other punctuation are still refused. Deploy this before aura-farm v0.9, or checkpoints whose
+  line has `'` or `,` are refused (the farm still finishes; the next checkpoint covers it).
+- `src/public-ledger.js` `farmWords`: a win ends with the line instead of "MOG got COOKED." ("Farm #16: RIZZ beat MOG.
+  +100,000 aura. MOG couldn't handle the RIZZ."); a draw is "Farm #17: DRIP met DRIP. MUTUAL MOG. Mirror match. No notes.",
+  or "Farm #18: MOG met MOG. Respect. MUTUAL MOG." when the line already starts with "MOG met MOG." Checkpoints without a
+  line read as before. Removed: "got COOKED." and "Nobody blinked." on farms that have a line.
+- No migration. 80 tests pass (the checkpoint test takes a `'` and a `,` line and refuses `<b>`; `farmWords` tested with a
+  line on a win and two draws, hand-written strings). Not checked: the live page.
+- (The entry below was pushed with aura-farm v0.8.)
+
 ## Oct 20, 10:55 PM HST: the registry page words an aura-farm checkpoint (not pushed)
 - min (thread "aura farm"), with a screenshot of checkpoints #884-#887 all reading "aura-farm sealed its ledger here": "yeah can you add wording please?" The checkpoints were already arriving; the page only had no words for them. (The detail shape from aura-farm v0.6+ is `day, farm, result, styles, winner, aura`; `detailOk` accepts it, checked on a win and a draw.)
 - `src/public-ledger.js`: `farmWords` tells a checkpoint from the two styles and never a player ("Farm #14: RIZZ beat MOG. 100,000 aura farmed, the loser got COOKED.", or "Farm #13: DRIP met DRIP. MUTUAL MOG. Nobody blinked."); the entry's game reads "Aura Farm" and its heading "Aura Farm · farm finished". A checkpoint in another shape keeps the old line. Removed: nothing; aura-farm checkpoints no longer fall back to "aura-farm sealed its ledger here" and the bare "aura-farm · checkpoint" heading.
