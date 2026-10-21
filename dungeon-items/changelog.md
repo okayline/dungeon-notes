@@ -5,6 +5,13 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
+## Oct 20, 11:59 PM HST: Aura Farm heading on the registry page is the same size as the other games'
+- min: "can you make the header text line the appropriate size please" (screenshot: "AURA FARM · FARM FINISHED"
+  far bigger than "Dawn Baton · Baton came home").
+- `src/public-ledger.js` `.aura > .h`: 11 px with .08em letter spacing, like `.panel > .h` and `.baton .h`. Removed: the
+  20 px heading. Kept: Impact, capitals and the glow.
+- No migration. 80 tests pass. Checked in headless Chromium with a mocked ledger. Not checked: the live page.
+
 ## Oct 20, 11:55 PM HST: Aura Farm entries wear Aura Farm's look and link to the farm (with aura-farm v0.10; pushed)
 - min: "can you make the ledger entries on /registry show up in the Aura Farm page style please?" and "can we somehow
   connect whatever page i click on here, with the ledger entries ... with the registry entries?"
