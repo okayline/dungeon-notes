@@ -22,7 +22,7 @@ Times are Hawaii time (HST).
   like 'mogged your aura'"); chose COOKED from my list ("i like COOKED !").
 - The Hold the Spot build (one spot, reigns, tries, sealed misses) was committed locally as f7760d6 and dropped before
   any push: `git reset --hard a35b001`, then rebuilt on v0.5. Nothing of it was ever live.
-- My picks, built as stated and easy to change: win +10,000 / lose -10,000 / draw 0; standing 1,000 an hour while a
+- My picks, built as stated and easy to change: win +100,000 / lose -100,000 / draw 0 (first built at 10,000); standing 10,000 an hour (first 1,000) while a
   farm is untaken, 3 open a day, expiring at midnight UTC ("Your time is up": my reading of min's phrase); VIBES = the
   taker spends 1 to see one style the poster did NOT pick (random of the two, stored, so asking again shows the same
   one; I proposed "peek at their most-played style" but the public record already shows that), +1 per farm lost, max 3;
@@ -61,12 +61,12 @@ Times are Hawaii time (HST).
 ### Tests
 - 14 pass (5 engine, 9 worker). Hand-worked: all six wins, draws, captions, the record, standing; a whole farm (post,
   peek is DRIP or MOG for a RIZZ farm and free the second time, take, VIBES 2 and 0, both commitments and the hash
-  recomputed with node:crypto, records on the board, leaderboard 10,000 and -8,000); a draw earns no VIBES; the 3-farm
+  recomputed with node:crypto, records on the board, leaderboard 100,000 and -80,000); a draw earns no VIBES; the 3-farm
   limit and midnight expiry ("Your time is up" for two farms); a checkpoint per farm with exact details; migration
   004 run on the v0.5 schema (from git) keeps a sealed duel and its ledger row, expires an open one, and ends with the
   same tables and column order as `schema.sql`. Removed: the card, deal, lineup, CAP and old-rules tests.
 - Browser check (headless Chromium, 390 px, local Node server + node:sqlite): post RIZZ, two hours later a second
-  player peeks ("It's not DRIP"), takes with DRIP and wins; the first player sees COOKED and -8,000; a third sees the
+  player peeks ("It's not DRIP"), takes with DRIP and wins; the first player sees COOKED and -80,000; a third sees the
   first player's record (😏) on the board; the ledger tab drew; 1 checkpoint; no page errors.
 - Not checked: the live site, the real Accounts and Registry, real phones, and how the registry page shows the new
   checkpoint details.
