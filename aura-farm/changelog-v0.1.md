@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.37
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.38
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing game built from 4Dungeon's AURA
 (cards in v0.1-v0.5, three sealed styles since v0.6). Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -9,6 +9,35 @@ Times are Hawaii time (HST).
 
 v0.24 to v0.37 were written up afterwards from the commit diffs (`8b81ced` to `9acfe34`); the screens were not run in a
 browser for these notes.
+
+## v0.38: Oct 21, 4:20 AM HST: the win/lose amount and the farm's hourly rate grow with the hours it stood
+Decisions (min, in the thread): both grow. The win/lose amount is 100,000 + 10,000 per whole hour the farm stood when
+it was taken. The hourly rate is 10,000 in the first hour, +1,000 each hour after. Farms up together still earn once.
+My first reading was only the amount; min meant the rate and then asked for both. Not built yet when min said "both
+numbers are good": the step sizes are min's, the overlap rule below is mine.
+- `public/engine/aura.js`: `STAKE_PER_HOUR` (10,000), `STAND_STEP` (1,000), `stake(hours)`, `earned(hours)` =
+  `10,000h + 1,000·h(h-1)/2` and `rate(hours)`. `farm(a, b, hours = 0)` moves `stake(hours)`; it throws on a non-whole or
+  negative `hours`. `RULES` 4 -> 5 (old records keep 4 and their sealed deltas). Removed: the flat `deltas` of 100,000.
+- `standing(spans)` now takes `[from, to, posted]` and pays by each farm's own age: sorted oldest first, a farm earns
+  only the part of its span not already covered by an older one, and the hours that finish in that part
+  (`earned(floor((to-posted)/3600)) - earned(floor((from-posted)/3600))`). So farms up together earn once, from the
+  oldest; when it comes down the next carries on from its own age; a UTC midnight split loses no hour. Removed: the
+  union-of-spans total at a flat rate.
+- `src/worker.js` `take()`: hours = `floor((t - posted_at) / 3600)` passed to `A.farm`; the sealed record already holds
+  `deltas`, so no schema change and no migration. `aurasFrom` passes `posted_at` into each span.
+- `public/app.js`: "Earned so far" uses `A.earned`; "Earning" and the Farming rows' hourly line show the rate right now
+  (`data-rate`, ticking with the existing 20 s timer); "At most" is 516,000; the FLEX panel's "If you win / If you lose"
+  show the amount right now (`data-stake`). The home panel says "+10,000 Aura in the first hour, then 1,000 more each
+  hour". The reveal and captions read the sealed `deltas`, so they follow with no change.
+- `public/app.js`: min asked for the new numbers in the Details panels. Your open farm's Details gain "If you win", "If you lose" (live, `data-stake`) and "Goes up"; the FLEX Details gain "Goes up" (+10,000 every hour it stands). Nothing removed.
+- Findings: the amount is fixed on the server at the moment of the take, so a FLEX tap just after an hour ticks over can
+  pay 10,000 more than the panel showed. Waiting is worth much more than winning late: by hour 23 a farm has earned
+  about 480,000 standing and moves 330,000 if taken. Said to min; kept as asked.
+- Tests: 20 pass (`npm test`). Hand-worked: `earned` 1/2/3/12/24 = 10,000/21,000/33,000/186,000/516,000; `farm` after
+  1/12/23 hours = 110,000/220,000/330,000; standing cases for partial hours, two farms an hour apart, a younger farm
+  inside an older one, a span starting mid-farm. Worker tests re-worked: take after 2 hours moves 120,000, board shows
+  21,000; the midnight test is 280,000 on Jan 1 and 236,000 on Jan 2 (take at 16 whole hours moves 260,000).
+- Open questions: none raised by min. Not run in a browser; the live site was not checked.
 
 ## v0.37: Oct 21, 3:20 AM HST: reload stays on the same tab; only the top 3 leaderboard portraits glow (PR #20, `9acfe34`)
 - `public/app.js` `syncAddress`: The Farm, Today and Ledger put `?tab=board|top|ledger` in the address (replaceState);
