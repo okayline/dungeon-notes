@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.38
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.39
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing game built from 4Dungeon's AURA
 (cards in v0.1-v0.5, three sealed styles since v0.6). Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -9,6 +9,12 @@ Times are Hawaii time (HST).
 
 v0.24 to v0.37 were written up afterwards from the commit diffs (`8b81ced` to `9acfe34`); the screens were not run in a
 browser for these notes.
+
+## v0.39: Oct 21, 4:30 AM HST: FARM AURA is greyed out when 3 farms are up
+- `public/app.js` `farmsTab`: the button is `disabled` unless a style is picked and fewer than `A.MAX_OPEN` of your farms
+  have status `open` (the existing `.go:disabled` look, opacity .4). Removed: the button looking ready at 3 up and the
+  server's "3 up" answer being the only warning. The server limit (`postFarm`) is unchanged.
+- Asked by min after v0.38 merged. Tests: 20 pass; the button is page code with no test of its own. Not run in a browser.
 
 ## v0.38: Oct 21, 4:20 AM HST: the win/lose amount and the farm's hourly rate grow with the hours it stood
 Decisions (min, in the thread): both grow. The win/lose amount is 100,000 + 10,000 per whole hour the farm stood when
