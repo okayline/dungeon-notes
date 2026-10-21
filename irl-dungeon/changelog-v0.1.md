@@ -33,7 +33,9 @@ The public repo keeps a shorter changelog (`CHANGELOG.md`). Newest first. Times 
   4Dungeon chooses to accept them.
 - **Not done (listed for the owner):** finds numbered before v0.22 have no marks (no backfill); dungeon-items'
   `/ledger` copy page has no words for `found_outside` (it falls back to "got a mark in irl-dungeon: found outside.");
-  4Dungeon's `DEED_WORDS` has no words for it either.
+  4Dungeon's `DEED_WORDS` has no words for it either. (Update Oct 21: the ledger copy page now has words for it,
+  "was found outside, in the real world", dungeon-items `src/public-ledger.js` line 144. 4Dungeon's `rules.js` has no
+  `found_outside` at all: still open.)
 - **Finding:** NOON in `test/find.test.mjs` (Oct 16 2026, 22:00 UTC) sits on the mean moon's crescent/quarter line
   (age 5.53 days), so the mark test compares against `nightOf`, and a separate test checks three calendar dates.
 - **Tests:** 220 pass (4 new: the marks and their retry; the calendar phases; occasions and copy #100; the copy link). The fake registry gained `addMark`.

@@ -7,7 +7,47 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.17: Oct 21, 12:40 AM HST: the farm page carries its whole ledger entry; registry panels open it (with dungeon-items)
+## v0.23: Oct 21, 1:45 AM HST: the farm page shows its whole ledger entry again (v0.17's aura-farm half; branch `claude/ledger-entry-v0.23`)
+- min, after the rollback: "yeah i think the 'switch anyway?' thing messed it up. so can we skip that one. can we do 0.17?"
+  v0.16 is skipped for good; min later: "can we not do anything about that logging out stuff? that was a bad thread".
+- `src/worker.js` `farmView`: `ledger` is `{ entry, record, prev, hash }` (one more subselect, `prev_hash`, in the same
+  query). `public/app.js` `seal`: "📜 Ledger entry #N", "On The Registry ›", then "record … / prev … / hash …" in small
+  monospace (`.seal` in index.html). Removed: the hash shown alone in a `<code>` line. Same code as v0.17's `fa84e18`,
+  ported onto v0.22 (no `leaveOk`, no browser confirm).
+- NOT built: v0.17's dungeon-items half (an Aura Farm registry panel opening `https://aura.88x31.app/?farm=N` when
+  tapped anywhere, and its seal lines removed). The registry page still only links "Farm #N" at the start of the
+  sentence (`src/public-ledger.js` line 344, seen, not changed).
+- VERSION 0.23. Test: the take test checks `ledger` against raw SQL and that sha256(prev + "|" + record) = hash
+  (node:crypto). 17 pass; with a shallow clone the migration test fails on `git show a35b001:schema.sql` (needs the
+  history: `git fetch --depth=300 origin main`), on the code before this change too. Checked in headless Chromium at
+  390 px with a mocked /api: the three lines show, no standalone hash, no sideways scroll, no page errors. Not checked:
+  the live site.
+
+## v0.22: Oct 21, 1:30 AM HST: more random names (live, PR #16)
+- From the public CHANGELOG and the commits (`a957a85` to `84d2e41`); the code was not re-read for these notes.
+- 22 new first words and 17 new last words. Removed: the old last words Bean, Cat, Rat, Pigeon, Raccoon, Possum, Frog,
+  Shrimp and Capybara (the animals). `src/names.js`.
+
+## v0.21: Oct 21, 1:24 AM HST: each browser keeps its own player (live, PR #15)
+- From the public CHANGELOG, commit `d2507bc` and the comments in `src/worker.js` (lines 109, 451-471, 533-544); the
+  behaviour was not run for these notes.
+- A browser's own player (one with no save code or passkey) is remembered in a second cookie while the browser is logged
+  in as someone else; log out goes back to it. If that player was deleted or has since got a save code or passkey, log
+  out starts fresh. Removed: a new empty player after every log out.
+
+## v0.20: Oct 21, 1:18 AM HST: log out on one tap; forget/remove ask in the page (live, PR #14)
+- From the public CHANGELOG, commit `d8ef6e3` and `public/app.js` line 12 (`ask`); not run for these notes.
+- Log out takes one tap. Forgetting a save code and removing a passkey ask "are you sure?" on the page itself (Yes / No).
+  Removed: the browser pop-ups for all three.
+
+## v0.18 and v0.19: Oct 21, about 12:48 and 12:56 AM HST: log-out changes (NOT live)
+- v0.18 (`d78b14b`): log out set the cookie to "out", and `needPlayer` refused to make a player for a logged-out browser
+  until it logged in. v0.19 (`2a5e65f`): the browser's own player kept in a second cookie (`afh`), log out switched back to
+  it; removed v0.18's log-in-first ask and v0.16's confirm.
+- Both were reverted (`f801bc6`, `3719077`: "Revert Merge pull request #10 / #11"). Then `d755476` rolled the whole tree back
+  to v0.15, which also removed v0.16 and v0.17. The commit messages give no reason. v0.20 and v0.21 came after, on v0.15.
+
+## v0.17: Oct 21, 12:40 AM HST: the farm page carries its whole ledger entry; registry panels open it (with dungeon-items) (ROLLED BACK in `d755476`, not live; the aura-farm half came back as v0.23)
 - min: "in the shared registry, if i click on the panel can it link to the game ledger entry? like
   https://aura.88x31.app/?farm=33" and "in the shared registry panel there is tons of text for the record and hashes. is
   there any way to put that info on the ledger entry page instead?"
@@ -22,7 +62,7 @@ Times are Hawaii time (HST).
 - VERSION 0.17. 15 tests pass (dungeon-items 81). Checked in Chromium with mocked APIs: the farm page shows the entry;
   the registry panel has no seal lines and a tap goes to https://aura.88x31.app/?farm=33. Not checked: the live sites.
 
-## v0.16: Oct 21, 12:35 AM HST: "Switch anyway?" before leaving an unsaved player
+## v0.16: Oct 21, 12:35 AM HST: "Switch anyway?" before leaving an unsaved player (ROLLED BACK in `d755476`, not live; min: "i think the 'switch anyway?' thing messed it up", skipped for good)
 - min: "it doesnt remember me in the browser? it's giving me a new account every time". Live aura-db: Crunchy Opp
   (08:55 UTC), Unbothered Ghost (09:50), Rare Frog (10:21) and Mid Himbo (10:30) were each made by FARM AURA and never
   used again. Cause, confirmed with min: logging in as kura with a save code switches the cookie, and the unsaved player
@@ -641,10 +681,12 @@ Times are Hawaii time (HST).
 - Not checked: real passkeys (the tests use a fake), the live site, the real Accounts and Registry services.
 
 ### Still open (raised once, no action)
-- Midnight UTC cuts late duels short (a missing pick counts as a DIP).
+- Midnight UTC cuts late duels short (a missing pick counts as a DIP). (Update Oct 21: no longer true. Card duels were
+  replaced by farms in v0.6, and since v0.15 a farm stays up 24 hours from when it is posted.)
 - Impact isn't on some phones, so the fallback is Arial Black.
-- Extras, not done: add aura-farm to dungeon-items `ACCOUNTS.md` "Games using it", and give it a friendly name on the
-  registry page (it shows the raw game name until then).
+- Extras, not done: add aura-farm to dungeon-items `ACCOUNTS.md` "Games using it" (Oct 21: `ACCOUNTS.md` has no mention
+  of aura, so still open), and give it a friendly name on the registry page (Oct 21: done, `sayGame` in dungeon-items
+  `src/public-ledger.js` line 132 has "aura-farm": "Aura Farm").
 
 ## v0.1 — "Stand There"
 **Tue Oct 20, 2026 · 7:35–7:43 PM HST** (schema.sql run by the owner in the D1 console)
