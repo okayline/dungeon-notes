@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.4
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.5
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,23 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.5 — "Every Shot"
+**Wed Oct 21, 2026 · 9:03 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "i think shots should matter even when you are just walking. you should lower your accuracy if you are just shooting randomly maybe" and "it should make you tilt if you just shoot randomly maybe".
+
+### What was built
+- `shoot()` in `public/app.js`: every click is a shot (`P.shots++`, a log line, and a miss adds to `P.streak`, which drives the TILT meter and crosshair shake). Removed: the early return that made a click free when no enemy was out or stepping.
+- `label()` is unchanged (TILT if shots > 2.5 x hits), so random shots now push a run toward TILT.
+- `MAX_SHOTS` in `src/worker.js` went from 500 to 2000, since clicking while walking can pass 500 and the run would then fail the "possible" check and not be sealed. That's my call, not the owner's; listed in the reply.
+
+### Findings
+- Playwright on the playtest copy: 5 clicks at the start while walking gave shots 5, hits 0, log 5, streak 5, and the panel showed `SHOTS 05 ... ACC 0%` and `TILT [#####]`. With shots set to 1234 the panel line is still 80 columns.
+
+### Tests
+- No new test. 9 pass.
 
 ## v0.5.4 — "Pan"
 **Wed Oct 21, 2026 · 9:02 AM HST** (no migration)
