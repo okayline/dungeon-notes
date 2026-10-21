@@ -7,6 +7,20 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.13: Oct 21, 12:15 AM HST: a farm's address is ?farm=N; back buttons work (not pushed)
+- min (screenshot of Home's finished rows): "when i click on these cards, what screen does that open? can that open the
+  registry or ledger entry instead?" Answer: they already open the farm, which is its ledger entry page (v0.10), the same
+  page the Ledger tab opens, with "On The Registry ›" at the bottom. Nothing changed there.
+- min: "how come i can't see the ?farm=N links when i click it?" then "yeah, and then if i press back, it will work
+  properly?" Tapping only fetched the farm; `?farm=N` was read once on load and never written.
+- `public/app.js`: `openFarm(id, step = true)` pushes `?farm=N` (state `{ farm }`) after a tap; a load from a link or
+  a browser back/forward opens in place (`step` false). `syncAddress()` in `draw()` replaces the address to match the
+  screen (a farm: `?farm=N`; a tab or the you screen: bare). In-game "back" calls `history.back()` when we pushed the
+  step, otherwise shows the tab. A `popstate` listener opens `?farm=N` or shows the tab. Removed: nothing.
+- VERSION 0.13. 15 tests pass. Checked in Chromium with a mocked /api: tap row, browser back, forward, game back,
+  row then Ledger tab, a ?farm=7 link and game back from it all land on the right screen and address. Not checked: the
+  live site.
+
 ## v0.12: Oct 21, 12:05 AM HST: your Farming rows show their style; space above the ledger entry (pushed)
 - min: "could you put an emoji of what it's actually farming, next to "Farming" text ?" and "could you put a couple blank
   lines above "Ledger entry" line please ? and push"
