@@ -1,9 +1,72 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.5
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.6
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
 Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date with every decision). Newest first.
 Times are Hawaii time (HST).
+
+---
+
+## v0.6 — "Hold the Spot"
+**Tue Oct 20, 2026 · 10:00 PM HST** (built and committed locally, not pushed; migration 004 not run on live aura-db)
+
+### Decisions (the owner's)
+- min: "the card -based gameplay isnt working out for me maybe. what are some other ideas, keeping the async and ledger
+  aspects?" Four offered (Hold the Spot, Blind Flex, Stare-down, Fit Check); min: "let's try #1!" and "i really liked
+  MOG / FIT / RIZZ but the cards just didnt seem right". Also: "aura battle = aura farm! same thing".
+- On a card, min chose "Style is the secret" (over a secret number, or both).
+- I raised the leak: a fixed pose is given away by any result (a lost RIZZ means DRIP). Fix proposed and accepted ("yeah
+  it should be close to rock-paper-scissors haha, yeah lets try building it that way!"): one try per player per reign,
+  a draw counts as a miss, tries sealed until the spot changes hands.
+- My picks, built as stated and easy to change: taking the spot costs nothing (no aura either way), a miss is -10,000 /
+  +10,000; the new holder picks their pose in the same move; the spot never resets at midnight; the holder can't
+  re-pose; VIBES kept as a peek at one style the holder isn't in (1 a day, +1 per miss, max 3), chosen at random from the
+  two and stored, so asking again shows the same one.
+
+### What was built
+- **Rules (`public/engine/aura.js`).** `RULES = 4`. `clash(hit, pose)` gives "took" / "lost" / "draw";
+  `tryDeltas(how)`; `caption(how, side)` (a miss is only ever "miss" before the reveal); `STYLES`, `isStyle`, `label`.
+  `standing()` unchanged. Removed: `DECK`, `deal`, the sfc32 `rng`, `lineupCards`, `faceOff`, `totals`, `duel`,
+  `ROUNDS`, `BONUS`, `MAX_OPEN`, `isCap`, the CAP's emoji, and the old captions (NO CAP, TOTAL MOG, MUTUAL MOG).
+- **Ledger (`src/ledger.js`).** Entries are `hold`, `try` (a miss: the hit's commitment only) and `take` (ends the reign
+  and reveals the pose, every try's hit, result and salt), each keyed by a UNIQUE `ref` ("hold:3", "try:12",
+  "take:3"). A take and the new holder's hold are two entries in one batch: `chainInsert` now returns `{ stmt, hash }` so
+  the second chains from the first. `commitment(style, salt)` = sha256("D|salt"). Old duel entries are `ref` "duel:<id>".
+- **Server (`src/worker.js`).** Routes: `GET /api/today` (now includes the spot), `POST /api/stand {pose}`,
+  `POST /api/try {reign, hit, pose}`, `POST /api/vibes {reign}`. `spotView` shows the pose only to the holder, a try
+  only as "miss", and a non-holder's peek and VIBES. A try names the reign it aims at, so it never lands on a new holder.
+  Every write retries on a UNIQUE clash (ledger head or ids) and sends a registry checkpoint; detail is
+  `{kind, reign, result, aura}` for a try and `{kind, reign, pose, hit, tries, hours}` for a take, never a player.
+  Aura for a day = full hours on the spot that day (`standing`) plus every try's delta on both sides.
+  Removed: `draft`, `post`, `board`, `duel`, `take`, `duelView`, `cardsOf`, `getDuel`, `sideOf`, `lockIn`,
+  `settleStale` (nothing expires now), `duelSeed`, `hmacHex` and the `DAILY_SECRET` check (the deal is gone; the secret
+  can stay set on Cloudflare harmlessly, or be deleted).
+- **Database (`migrations/004_hold_the_spot.sql`, `schema.sql`).** New `reigns` (with a unique partial index so only
+  one reign stands), `tries` (UNIQUE reign + player) and `peeks (reign_id, player_id, not_style)`. The ledger is rebuilt
+  with `ref TEXT NOT NULL UNIQUE` in place of `duel_id`, copying every row as it is (id, record, hashes). Drops `duels`
+  and the old `peeks`. `vibes` unchanged.
+- **Page.** Tabs are Spot, Today, Ledger. The Spot screen: empty (pick a pose, STAND HERE), holding (your pose, time
+  held, tries all missed), or someone else's (peek, "Hit them with", "If you take it, hold as", STARE DOWN). Taking the
+  spot shows their pose and every try at them. The ledger draws hold, try, take and old duel entries. Removed: the
+  Duels and Board tabs, the 5-card pick screen, the duel screen, and the CSS for 5-card rows, card backs and pick
+  numbers. Chips no longer wrap mid-word.
+- `VERSION` 0.6, CHANGELOG, README and the `wrangler.jsonc` secret comment updated.
+
+### Tests
+- 10 pass (3 engine, 7 worker), hand-worked: the whole reign test (stand, peek, a loss and a draw both just "miss", one
+  try each, the take reveals ["M", "lost"], ["R", "draw"], ["D", "took"], aura 22,000 / -10,000 / -10,000 / 0, VIBES,
+  every hash and commitment rechecked with node:crypto); a checkpoint per write with exact details; migration 004 run
+  on the v0.5 schema (from git) keeps a sealed duel entry byte for byte and ends with the same tables as `schema.sql`.
+  Removed: the card, deal, lineup and old-rules-duel tests.
+- Browser check (headless Chromium, 390 px, local Node server + node:sqlite): stand as RIZZ, two hours later a second
+  player peeks ("not DRIP"), misses with MOG, a third takes it with DRIP and holds as MOG; the reveal, ledger and today
+  screens drew; the first player showed +12,000; 3 checkpoints; no page errors.
+- Not checked: the live site, the real Accounts and Registry, and whether the registry page shows the new checkpoint
+  details well.
+
+### Before it can go live (needs the owner)
+- Migration 004 drops `duels` and the old `peeks` on live aura-db. Duel history stays on the ledger, but today's aura
+  from duels goes. That can't be undone, so it waits for an explicit go-ahead, then the push.
 
 ---
 
