@@ -363,3 +363,53 @@ KURA is out of breath. She stays where she is.
 Not yet. KURA catches her breath.
 KURA is out of breath. She stays where she is.
 ```
+
+## 2026-10-21  -  B3F, day 2  (latest v1.39)
+
+```
+KURA wakes on B3F.
+KURA searches the WEST wall... Nothing but dust.
+KURA searches the WEST wall... A scrap of writing, pinned to the wall.
+KURA searches the WEST wall... Faded paint. A number, or a sigil.
+KURA goes NORTH into a cleared room.
+KURA searches the NORTH wall... Nothing.
+She wants something rare, given by a friend, under a waxing gibbous.
+KURA goes WEST into a cleared room.
+A locked door. A smell of solder leaks around the frame.
+KURA is out of breath.
+KURA unlocks the NORTH door. The way is clear.
+KURA goes EAST into a cleared room.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+```

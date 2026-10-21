@@ -372,3 +372,68 @@ The DEADLINK strikes KURA down.
 
 posted, rank 7
 ```
+
+## 2026-10-21  -  B3F, day 1  (latest v1.39)
+
+```
+KURA searches the NORTH wall... The wall gives nothing away.
+KURA searches the EAST wall... Fingers come away gray.
+KURA searches the EAST wall... A STATIC RAT wanders in!
+  The STATIC RAT strikes ELF. -8 HP
+  The party strikes. -7 HP
+  The STATIC RAT comes off as HUM.
+  STATIC RAT: "ACCESS DENIED. go away"
+  The STATIC RAT strikes PIXIE. -7 HP
+  The STATIC RAT strikes CU SITH. -6 HP
+  The party strikes. -8 HP
+  KURA runs WEST. The STATIC RAT blocks the door.
+  The STATIC RAT strikes ELF. -8 HP
+  The STATIC RAT strikes KURA. -8 HP
+  The party strikes. -6 HP
+  The party strikes. -8 HP
+  The STATIC RAT falls.  +30 ICHOR
+  It drops a rosary of fiber optic beads.
+  It drops a spent battery.
+KURA searches the EAST wall... KURA hears a soft knock. Or her own pulse.
+KURA goes SOUTH into a new room.
+KURA searches the WEST wall... Mortar, mostly. Some is older.
+KURA searches the WEST wall... Something ticks, very softly.
+KURA searches the WEST wall... Faded paint. A number, or a sigil.
+KURA searches the WEST wall... KURA finds a page of a burned book.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+KURA goes WEST into a new room.
+KURA searches the SOUTH wall... A dead cable runs in and stops.
+KURA searches the SOUTH wall... Nothing.
+KURA works the worn wall, steady.
+A hatch of heavy drawers, shut tight. It can be used. Two doors.
+The drawers slide open. 99 SILVER.
+KURA searches the SOUTH wall... Someone has looked here before.
+KURA searches the SOUTH wall... A dead cable runs in and stops.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes WEST into a new room.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA goes EAST into a cleared room.
+KURA searches the SOUTH wall... A DAEMON wanders in!
+  KURA runs NORTH. The DAEMON blocks the door.
+  The DAEMON strikes KURA. -6 HP
+  The DAEMON comes off as SIGNAL.
+  DAEMON: "0000000000000000"
+  The DAEMON strikes KURA. -2 HP
+  The DAEMON strikes ELF. -6 HP. FALLS
+  The party strikes. -12 HP
+  The DAEMON strikes KURA. -6 HP
+  The party strikes. -7 HP
+  The party strikes. -6 HP
+  The DAEMON falls.  +30 ICHOR
+  It drops a subway token.
+KURA searches the SOUTH wall... KURA hears a soft knock. Or her own pulse.
+KURA goes EAST into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall... Only stone.
+KURA searches the WEST wall... A small sound, there and gone.
+KURA searches the WEST wall... 112 SILVER, loose in the rubble.
+KURA goes NORTH into a cleared room.
+```

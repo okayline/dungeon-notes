@@ -445,3 +445,60 @@ ATOM SLASHER strikes KURA down.
 
 posted, rank 2
 ```
+
+## 2026-10-21  -  B3F, day 1  (latest v1.39)
+
+```
+(a new run begins)
+KURA wakes in the dark. B3F.
+KURA searches the NORTH wall... Salt along the base, in a line.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA unlocks the SOUTH door. The way is clear.
+KURA searches the NORTH wall... KURA finds a tin of old matches. Two doors.
+KURA searches the NORTH wall... Fingers come away gray.
+KURA goes SOUTH into a new room.
+KURA searches the EAST wall... A dead cable runs in and stops.
+KURA searches EAST... Something behind the stone shifts, just once.
+KURA searches EAST... A hatch of heavy drawers, shut tight. It can be used.
+KURA goes SOUTH into a new room.
+KURA searches the WEST wall... Faded paint. A number, or a sigil.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA searches the WEST wall... A small sound, there and gone.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA searches the WEST wall... KURA finds an ID card, face scratched.
+KURA searches the WEST wall... Nothing.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA searches the WEST wall... KURA finds a VR visor, lens cracked.
+She wants something rare, given by a friend, under a waxing gibbous.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA searches the WEST wall... Fingers come away gray.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... Nothing yet.
+KURA searches the WEST wall... The wall gives nothing away.
+KURA searches the WEST wall... Mortar, mostly. Some is older.
+KURA searches the WEST wall... Salt along the base, in a line.
+KURA goes NORTH into a cleared room.
+The drawers slide open. 80 SILVER.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Fingers come away gray.
+KURA searches the EAST wall... A WORM wanders in!
+  The WORM comes off as STATIC.
+  WORM: "INPUT REJECTED"
+  The WORM strikes ELF. -9 HP
+  The WORM strikes ELF. -8 HP
+  The party strikes. -9 HP
+  WORM: "INPUT REJECTED"
+  The WORM strikes KURA. -5 HP
+  KURA runs NORTH and leaves the WORM behind.
+KURA searches the NORTH wall... A crack. It goes nowhere.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+Not yet. KURA catches her breath.
+KURA is out of breath. She stays where she is.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+KURA needs a moment before she moves on.
+Not yet. KURA catches her breath.
+```

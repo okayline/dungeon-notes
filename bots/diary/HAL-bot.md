@@ -449,3 +449,58 @@ KURA goes EAST into a new room.
 KURA searches the NORTH wall... Someone has looked here before.
 She wants something neutral, given by a friend, under a waxing gibbous.
 ```
+
+## 2026-10-21  -  B3F, day 3  (latest v1.39)
+
+```
+KURA wakes on B3F.
+KURA searches the SOUTH wall... A dead cable runs in and stops.
+KURA searches the SOUTH wall... Nothing but dust.
+KURA searches the SOUTH wall... Damp. The smell of old pipes.
+KURA searches the NORTH wall... A dead cable runs in and stops.
+KURA searches the NORTH wall... A scrap of writing, pinned to the wall.
+A torn tag: LOOSE GEAR, HOT AIR. TAKE WHAT YOU CAN CARRY.
+KURA goes WEST into a cleared room.
+KURA searches WEST... A hatch of heavy drawers, shut tight. It can be used.
+KURA goes SOUTH into a cleared room.
+KURA goes SOUTH into a new room.
+KURA goes EAST into a new room.
+KURA searches the EAST wall... Nothing yet.
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA searches the EAST wall... The wall gives nothing away.
+KURA searches the SOUTH wall... A PACKET wanders in!
+  The PACKET comes off as SIGNAL.
+  PACKET: "INPUT REJECTED"
+  The PACKET strikes PIXIE. -6 HP
+  The PACKET strikes CU SITH. -10 HP
+  The party strikes. -9 HP
+  PACKET: "INPUT REJECTED"
+  The PACKET strikes KURA. -7 HP
+  The party strikes. -15 HP
+  The party strikes. -13 HP
+  The PACKET falls.  +31 ICHOR
+  It drops a scratched data disc.
+  It drops a subway token.
+KURA searches the SOUTH wall... Faded paint. A number, or a sigil.
+KURA searches the SOUTH wall... Nothing but dust.
+KURA searches the SOUTH wall... A scrap of writing, pinned to the wall.
+KURA searches the SOUTH wall... A crack. It goes nowhere.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall... Cold stone, cold hands.
+KURA searches the WEST wall... Salt along the base, in a line.
+KURA searches WEST... Something ticks, deeper in the wall than the rest.
+A scarred workbench, its tools cold and laid out. It can be used.
+KURA works at the bench. Nothing needs mending.
+KURA searches the WEST wall... Only stone.
+KURA goes SOUTH into a new room.
+KURA searches the EAST wall... Salt along the base, in a line.
+KURA searches the EAST wall... KURA hears a soft knock. Or her own pulse.
+A locked door. The air at the door is clean, and still.
+A locked door. Something inside turns, slowly, with a tick.
+KURA unlocks the WEST door. The way is clear.
+KURA goes WEST into a new room.
+KURA goes SOUTH into a new room.
+KURA goes NORTH into a cleared room.
+KURA goes SOUTH into a cleared room.
+KURA goes NORTH into a cleared room.
+```
