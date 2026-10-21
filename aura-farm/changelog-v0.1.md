@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.2.1
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.5
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -7,7 +7,59 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.4 — "Three Styles" (committed, not pushed)
+## v0.5 — "Cards vs Cards"
+**Tue Oct 20, 2026 · 8:50 PM HST** (migration 003, run on live aura-db before the push)
+
+### Decisions (the owner's)
+- "i think that the player actions are too much maybe. can it just be, the player picks 3 out of 5 cards, and the
+  cards order. and then that cards order can battle another player card's order? the card vs. the card ?"
+- Asked how the bluff survives; ryan: "hmm, no let's just have bluffing be the order they pick. can you build that
+  version please!" Then: "you can push too!"
+- My picks, built as stated and easy to change: win +10,000 / lose -10,000; TOTAL MOG (3-0) +100,000; NO CAP (the
+  winner's 3 include the CAP) +500,000; VIBES = the taker spends 1 to see the poster's card for one round before
+  taking, earned 1/day and +1 per duel lost (max 3); 1 CAP, so 19 cards.
+
+### What was built
+- **Rules (`public/engine/aura.js`).** `RULES = 3`. `DECK` is D1-D6, R1-R6, M1-M6, X1. New `duel(a, b)` returns
+  `{winner, how: "win"|"tie", won, deltas, bonuses}`; `STAKE = 10000`; `BONUS = {totalMog, noCap}`. Captions: NO CAP,
+  TOTAL MOG, AURA FARMED, MOGGED, MUTUAL MOG. `faceOff` no longer has a two-CAPs case. Removed: `MOVES`, `START_POT`,
+  `play()`, `done()`, `crashedOut`, `dippedWinner`, and the DIP captions.
+- **Ledger (`src/ledger.js`).** `commitment(cards, salt)` = sha256("cards|salt") for both sides. Removed: the `plan`
+  argument (older records' poster commitments covered "cards|plan|salt"; noted in the file header).
+- **Server (`src/worker.js`).**
+  - `take` decides the duel in one batch: UPDATE to done (guarded `status = 'open'`), the ledger insert and the
+    loser's +1 VIBES, both guarded on `id, status 'done', t_id, ended_at`. It retries on a UNIQUE clash (ledger head),
+    then sends the registry checkpoint. Record: rules 3, players, seed, commits, lineups, salts (always revealed),
+    result, winner, won, deltas, bonuses, caption, t. Checkpoint detail: `{day, duel, result, score, winner, aura,
+    bonuses}`.
+  - `/api/vibes {id, slot}` works on an open challenge for anyone but the poster (makes a player if needed). It
+    charges only for a round not already peeked at (`NOT EXISTS` in the UPDATE, then the peek INSERT `WHERE changes() = 1`).
+  - `duelView`: an open challenge shows a non-poster their VIBES and peeks; a done duel shows `lineups`, `result` and
+    `captions`. Older-rules records show `lineups ?? flipped` padded with nulls, and their own captions.
+  - `settleStale` only expires drafts and open challenges.
+  - Removed: `/api/move`, `playRound`, `finish`, live-duel handling, the `'live'` status, and `t_reads`.
+- **Database (`migrations/003_cards_vs_cards.sql`).** Expires draft/open/live duels (they were dealt from the 20-card
+  deck) and sets `taken_at` so standing stops. Drops `c_plan`, `moves`, `n`, `t_reads`. Adds `peeks (duel_id,
+  player_id, slot)`. Checked locally: v0.4 schema + 003 gives the same `duels`, `peeks` and `vibes` columns as the new
+  `schema.sql`.
+- **Page.** The pick screen for a taker has a row of their 3 as ? cards to peek at. The result screen shows their 3
+  above yours with YOU / THEM / DRAW per face-off, "rounds N-N" and the caption. The ledger tab shows lineups as emoji
+  and the score. Removed: the planner, move buttons, the pot, `MOVE_WORD`, and the `.pot`, `.moves`, `.mv` and
+  `.card.ghost` CSS.
+
+### Findings (200,000 random deals, random lineups)
+- 23.2% of duels are a MUTUAL MOG; 10.0% are TOTAL MOG; 4.0% are NO CAP.
+- 26.2% of hands hold the CAP; the CAP is played in 31.7% of duels.
+
+### Tests
+- 16 pass (8 engine, 8 worker). Engine tests rewritten with hand-worked lineups. The whole-duel worker test works out
+  the result with its own beats table, and checks peeks, the VIBES for losing, and both commitments with node:crypto.
+- Browser check (Playwright, local Node server + node:sqlite): post, peek, take, result screen, ledger tab, save code
+  on a second browser. No page errors.
+
+---
+
+## v0.4 — "Three Styles" (pushed with v0.5)
 **Tue Oct 20, 2026 · 8:45 PM HST** (no migration)
 
 ### Decisions (the owner's)
