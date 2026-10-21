@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.6
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.7
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,28 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.7 — "Replay"
+**Wed Oct 21, 2026 · 12:22 PM HST** (8de026a, no migration)
+
+### Decisions (the owner's)
+- Owner: "okay can we do server-side replay please", after the ledger thread explained that the server only checked a run was possible. The page sends its inputs; the Worker plays the day's seed plus those inputs again and seals what it computed (like scoundrel.exe's `G.replay`). Smallest change, the game should feel the same.
+
+### What was built
+- `public/engine/corridor.js`: the fight moved here from `public/app.js` `step()`/`shoot()`. `newRun(cor)` (state: tick, s, tt, hp, shots, hits, streak, calm, phase, over, log, enemies), `tick(R)` (one 1/15 s step; returns `["hurt"]` when an enemy hits you), `fire(R, col, row)` (true/false/null; aim kept to 2 decimals; logs `[tick, col, row, hit]`), `replay(cor, shots)` (checks `[[tick, col, row]]`: whole ticks in order, col 0–93, row 1–21, at most 2,000 shots; plays to the end, at most 9,000 ticks; null if not a finished run). `cast()` (one column's ray) and `enemyBox()` are shared by the hit test and the drawing, so what you see is what is checked.
+- Fixed ticks: FPS = 15; timers count ticks. Turn 36 ticks (was 2.4 s), step out 7 ticks (0.45 s), dying 8 (0.5 s), enemy fire first at `round(fire × 15)`, then every 25 ticks (was 1.7 s, now 1.67 s). Walk 1.25/15 tiles a tick. 1 v 3 at `ceil((t0 + 3.9) × 15)`.
+- Own `sincos` and `atan2` from + − × ÷ and `Math.sqrt` only (range reduction plus series), used by `along()`, `cast()` and `enemyBox()`. `ang()` uses them too. No `Math.sin/cos/atan2/hypot/random` left in corridor.js. Within 1e-15 of Math's; exact at 0 and the quarter turns.
+- Tilt shake: `(tri(tick, 4) + tri(tick, 5)) × (min(5, streak) − 1) × 0.35`, zig-zags the same width as the old sines. Removed: `sin(23t) + sin(37t)`.
+- `public/app.js`: `P` is the engine's run plus page fields (aim, flash, hurt, left, script). Each frame runs as many whole ticks as the time that passed (`lag`); banners, gun easing and flashes stay on frame time. The page sends `{ day, shots }`; if the server's hp/shots/hits differ, the page shows the server's. Removed: the page's own raycast, enemy boxes, `e.sx`/`e.sy`/`e.sd`, and `P.t`.
+- `src/worker.js` `saveRun`: `C.replay(C.corridor(seed, day), b.shots)`, seals that run's hp, shots, hits, label and log. Removed: the "is it possible" check and trusting the page's hp/shots/hits.
+- Ledger run record: `log` is now `[tick, col, row, hit]` (col, row = the aim before the shake). Runs sealed before v0.7 keep `[seconds, column, row, hit]`.
+
+### Findings
+- One replay takes about 1–2 ms in Node on this machine. Live Worker CPU time not measured.
+- Chromium (Playwright, a stub server that replays with the same engine): 330 clicks, the page showed 2 hits, HP 0, FEED; the server's replay of the sent shots gave the same. Firefox and Safari not tried.
+
+### Tests
+- New: sincos/atan2 against Math; a run played live (shots between ticks, like the page) and its replay match exactly (hp, shots, hits, tick, log) on 4 maps; no shots = FEED with 0 hits; bad shots refused (out of order, after the end, off the view, below reach, fractional tick). The Worker run test now posts a live-played run's shots and checks the sealed numbers and record hash; the page's claimed hp/hits are ignored. 13 pass.
 
 ## v0.6 — "B3F"
 **Wed Oct 21, 2026 · 9:20 AM HST** (migration 003)
