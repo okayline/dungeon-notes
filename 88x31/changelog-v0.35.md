@@ -1,9 +1,16 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.12
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.13
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.13
+**Wed Oct 21, 2026 · 12:02 AM HST**
+
+Decisions (min, Oct 21, thread "Aura farm animations"): "for the On the Registry link, it doesn't link to the actual registry entry?" then "can you push what you have". An Aura Farm checkpoint's `head` is that farm's own ledger hash (aura-farm `src/worker.js` `checkpoint` sends `rows[rows.length - 1].hash` with rows ending at the farm's entry), so the registry can find the entry by that hash; no new column or migration.
+- **`lib/registry-view.js`**: `/api/registry/ledger` forwards `head` as well as `before` and `limit`. Removed: nothing. The `/registry` page itself needs no new parameter (it reads `?head=` from its own address).
+- With dungeon-items (`publicLedger` `?head=`, the page opening there) and aura-farm v0.11 (the link). Deploy dungeon-items first. No tests in this repo; `node --check` passes. Checked the page in headless Chromium with a mocked ledger. Not checked: the live site.
 
 ## v0.46.12
 **Tue Oct 20, 2026 · 10:58 AM HST** (migration 033, run before the push)
