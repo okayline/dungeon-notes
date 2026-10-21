@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.7
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.9
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,46 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.9 — "Ledger"
+**Wed Oct 21, 2026 · 1:00 PM HST** (083f138, no migration; `REGISTRY` binding added)
+
+### Decisions (the owner's)
+- Owner: "yep checkpoint please! can we also get a [L]EDGER menu option", after the ledger thread found that CFT's ledger had no page and sent no checkpoint (so its runs weren't on the registry's page or under the hourly Bitcoin stamp). Owner: "you're tilting..." should read "you're tilted".
+- Ghost teammates are no longer a must ("we don't have to stick so strongly to the ghosts"); not built.
+
+### What was built
+- `src/worker.js` `checkpoint(env)`, called after a run is sealed: reads the whole ledger, checks the chain (`verifyChain`, new in `src/ledger.js`), and sends `REGISTRY.checkpoint({ game: "clutch-feed-tilt", entries, head })`. No detail and no name. A missing, refusing or failing registry is logged and never stops the run; the next run's checkpoint covers it. Copied from moba-beat's `checkpoint`.
+- `wrangler.jsonc`: service binding `REGISTRY` to the dungeon-items Worker, entrypoint `Registry` (same as moba-beat and aura-farm).
+- `[L]EDGER` button next to `[U]SER` (and the L key): opens `https://88x31.app/registry` in a new tab, the registry's public ledger page. A mouse opens it on pointerdown and a finger on pointerup, because browsers only allow a new tab from those presses. Always the plain page, not the player's own entry.
+- "you're tilted" replaces "you're tilting..." (the 3-misses message).
+
+### Findings
+- The registry's page tells an unknown game's checkpoint as "<game> sealed its ledger here." (`dungeon-items/src/public-ledger.js` line 258 and `g()`); CFT shows as "clutch-feed-tilt". No CFT line added there. Not seen on the live page.
+- The page's public address is 88x31.app/registry (the 88x31 Pages Function passes through); `/ledger` is the registry Worker's own path.
+
+### Tests
+- The Worker run test checks the registry got `{ game, entries: 2, head: <the run's hash> }`, with the expected values built from the day record by hand, and that a throwing registry still seals the next run. 13 pass.
+
+## v0.8.2 — "Walls"
+**Wed Oct 21, 2026 · 12:57 PM HST** (0654137, no migration)
+
+- Owner: "could you also draw all the minimap walls", then "no dont draw every room from the start? it should be like 4dungeon's minimap". The minimap still shows only the rooms walked through, as 4Dungeon's does.
+- `public/app.js` `minimap()`: a door to a room that isn't in today's corridor is left out of the view's doors, so it is drawn as wall (as in the 3D view); a locked door (no room) still shows `#`. `corridor()` returns `shown` (the room numbers drawn today). `public/engine/floor.js` unchanged.
+- Removed: minimap gaps that led nowhere.
+
+## v0.8.1 — "Up"
+**Wed Oct 21, 2026 · 12:47 PM HST** (84db0cb, no migration)
+
+- Owner: "on the minimap, can it start out pointing UP instead of down?"
+- `public/app.js` `minimap()` turns the floor with `FLOOR.symTransform` (floor.js's own turn-by-quarter helper) so the first leg of the rails goes up, and turns the facing the same way. In 120 test days the first leg went N 38, E 34, S 27, W 21 times before. `floor.js` unchanged.
+
+## v0.8 — "Shorter"
+**Wed Oct 21, 2026 · 12:47 PM HST** (f132c93, no migration)
+
+- Owner: "can we have the corridor be a little shorter?" and, after trying it, "yeah good length".
+- `RUN_WINGS` 3 to 2 in `public/engine/corridor.js`: the run goes through two wings, ending with the day's own (or the first two early in a quarter). Over a year with 3 seeds per day: 4 to 7 rooms became 3 to 5 (1.5% are 3 rooms), and travel time with no stops fell from 36.7 s to 24.0 s on average. Three 3-room maps played to the end (14 to 18 s). README says "two wings".
+- The floor itself still lasts the whole moon quarter; only the day's stretch of it changed.
 
 ## v0.7 — "Replay"
 **Wed Oct 21, 2026 · 12:22 PM HST** (8de026a, no migration)
