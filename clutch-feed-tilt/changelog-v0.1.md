@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.3
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.4
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,27 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.4 — "Pan"
+**Wed Oct 21, 2026 · 9:02 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "the wall characters still move a lot", "only have the vertical lines move when turning, no horizontal", "nothing inbetween the vertical panel borders should be moving at all".
+
+### What was built
+- `along(path, s, e = 0)` in `public/engine/corridor.js`: you face the way the stretch you are on goes. On the centre of a room where the rails turn you still face the way in, and `e` (0 to 1) turns you `floor(e * TURN_STEPS) / TURN_STEPS` of the way round. New `turns(path)`: the path indexes where the rails turn. Removed: the eased turn over the 3 tiles around the centre.
+- `step()` in `public/app.js`: you walk to the centre of the next turning room (`P.turns`), stop, and turn there over `TURN_TIME = 0.8` s (6 jumps, 2 frames each at 15 fps), then walk on. Turns wait while enemies are out, as walking did.
+- `render()`: the projection is cylindrical. Column x looks `(x + 0.5 - 47) * COL` round from your facing, with `COL = 15° / 21`, so the view is 67.1° wide (was 2·atan(0.66) = 66.8°). Rays are unit length, so the DDA depth is the true distance. A 15° jump moves the whole picture exactly 21 columns.
+- Wall panels: each face of a wall block is drawn flat, as tall as `H / distance to the face's middle`, one RAMP character all over (by that distance), `_` on its top and bottom rows within 12 tiles, and `|` on its first column (when the face differs from the column to its left) within 9 tiles. Removed: wall height by per-column depth, and seams at `frac < 0.06 || frac > 0.94` of the hit.
+- Floor dots: the axis is from the rails (`along(path, s)`, no turn), not the facing, so it doesn't flip halfway through a turn.
+- Enemies: placed by angle from your facing (`atan2` less the facing, over `COL`) and sized by true distance; skipped when more than 90° off. `e.sd` (used by `shoot()` against `zbuf`) is now true distance, like `zbuf`.
+
+### Findings
+- Playwright on the playtest copy, frozen on the first turning room's centre at each of the 6 steps: the view text of each step, shifted 21 columns, matched the next step everywhere in columns 25–69 of rows 0–19 except the crosshair (10 to 13 cells, which stays put on screen).
+- A scripted run (random clicks) walked through both turns of that map (rooms 2 and 4) and finished TILT at s = 42.
+
+### Tests
+- The `along()` test is rewritten: `turns()` is `[1]`; on the centre it faces 0° at e = 0, 45° at 0.5, 75° at 0.99; past it 90°. 9 pass.
 
 ## v0.5.3 — "Fifteen"
 **Wed Oct 21, 2026 · 8:58 AM HST** (no migration)
