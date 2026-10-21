@@ -467,3 +467,56 @@ The TRACER strikes KURA down.
 
 posted, rank 7
 ```
+
+## 2026-10-21  -  B3F, day 1, the run ended  (latest v1.39)
+
+```
+(a new run begins)
+KURA wakes in the dark. B3F.
+KURA searches the NORTH wall... Someone has looked here before.
+KURA goes SOUTH into a new room.
+A locked door. Nothing to search here.
+KURA unlocks the WEST door. The way is clear.
+KURA goes WEST into a new room.
+KURA searches the WEST wall... Nothing.
+KURA searches WEST... A hatch of heavy drawers, shut tight. It can be used.
+She wants something half alive, from a demon, under a waxing gibbous.
+An arch to another room. It is small and snug, with a light left on.
+Something large shifts in the dark.
+The drawers slide open. 83 SILVER.
+KURA searches the WEST wall... Cold stone, cold hands.
+She wants something half alive, from a demon, under a waxing gibbous.
+KURA searches the WEST wall... Salt along the base, in a line.
+KURA searches the WEST wall... Nothing.
+KURA searches the WEST wall... KURA finds a tangle of fiber cable.
+KURA searches the WEST wall... A dead cable runs in and stops.
+KURA searches the WEST wall... Old tally marks, in groups of five.
+KURA searches the WEST wall... Nothing but dust.
+KURA searches the WEST wall... Nothing yet.
+KURA searches the WEST wall... Nothing but dust.
+KURA needs a moment before she moves on.
+KURA is out of breath. She stays where she is.
+KURA searches the WEST wall... A CRON wanders in!
+  The CRON comes off as SIGNAL.
+  CRON: "0000000000000000"
+  The CRON strikes PIXIE. -5 HP
+  CRON: "0000000000000000"
+  The CRON strikes KURA. -9 HP
+  KURA holds up a tangle of fiber cable.
+  CRON: "NOTED. NO CHANGE."
+  The CRON strikes CU SITH. -10 HP
+  The CRON strikes KURA. -10 HP
+  The party strikes. -12 HP
+  KURA holds up a tangle of fiber cable.
+  CRON: "THANK YOU. CONTINUING."
+  The CRON strikes KURA. -2 HP
+  KURA holds up a tangle of fiber cable.
+  CRON: "INPUT LOGGED. THREAT UNCHANGED."
+  The CRON strikes CU SITH. -6 HP
+  The CRON strikes KURA. -9 HP. FALLS
+  KURA falls. The run is over.
+  The party strikes. -8 HP
+The CRON strikes KURA down.
+
+posted, rank 7
+```

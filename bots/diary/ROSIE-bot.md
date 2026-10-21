@@ -510,3 +510,68 @@ KURA searches the EAST wall... A STATIC RAT wanders in!
   It drops a spent battery.
   It drops a bag of loose screws.
 ```
+
+## 2026-10-21  -  B3F, day 3  (latest v1.39)
+
+```
+KURA searches the WEST wall... The wall gives nothing away.
+KURA searches the WEST wall... A WORM wanders in!
+  The WORM strikes PIXIE. -2 HP
+  The party strikes. -6 HP
+  KURA runs SOUTH. The WORM blocks the door.
+  The WORM strikes KURA. -8 HP
+  The WORM comes off as STATIC.
+  WORM: "AWAITING INPUT"
+  The WORM notices something in KURA's bag.
+  WORM: "THOSE OBJECTS. TRANSFER ONE?"
+  KURA keeps her things.
+  The WORM loses interest. 01000010 01011001 01000101
+KURA searches the EAST wall... Old tally marks, in groups of five.
+KURA searches the WEST wall... Only stone.
+KURA searches the WEST wall... Someone has looked here before.
+KURA goes SOUTH into a cleared room.
+An arch to another room. It glows faintly at one wall.
+She wants something common, found in a wall, under a waxing gibbous.
+KURA searches the WEST wall... Only stone.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... Only stone.
+She wants something common, found in a wall, under a waxing gibbous.
+KURA searches the WEST wall... Nothing.
+KURA searches the WEST wall... Deep in the stone, something gives.
+KURA is out of breath.
+KURA searches the WEST wall... Mortar, mostly. Some is older.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA searches the WEST wall... Nothing.
+KURA goes SOUTH into a cleared room.
+KURA searches the EAST wall... A STATIC RAT wanders in!
+  The STATIC RAT strikes CU SITH. -5 HP
+  The party strikes. -7 HP
+  KURA runs NORTH and leaves the STATIC RAT behind.
+KURA needs a moment.
+KURA is out of breath.
+KURA goes EAST into a cleared room.
+KURA needs a moment.
+KURA goes SOUTH into a new room.
+KURA is out of breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA searches the SOUTH wall... The wall gives nothing away.
+KURA is out of breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+KURA needs a moment.
+KURA needs a moment before she moves on.
+KURA is out of breath.
+KURA needs a moment.
+KURA searches the WEST wall... Damp. The smell of old pipes.
+KURA searches the WEST wall... Fingers come away gray.
+KURA searches the SOUTH wall... Damp. The smell of old pipes.
+Not yet. KURA catches her breath.
+KURA is out of breath.
+KURA needs a moment.
+Not yet. KURA catches her breath.
+```
