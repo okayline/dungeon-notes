@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.7
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.8
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,23 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.3.8 — "Over the Gun"
+**Wed Oct 21, 2026 · 8:02 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "the crosshair shouldn't be able to go underneath the gun".
+
+### What was built
+- `GUN` moved to the top of `public/app.js`; `aimAt()` stops the crosshair's row at `H - GUN.length - 2` (row 25), so its bottom arm (one row below) is still above the gun's top row (27). Was `H - 2`.
+- Removed: the crosshair being able to sit behind the gun.
+
+### Findings
+- My first edit put a `//` comment before the closing `};` of `aimAt`, which broke the whole page script ("Unexpected end of input"). `npm test` still passed because no test loads `app.js`. Found by loading the page in a browser, fixed with `node --check`, before the commit. There is no test or check that would catch this again.
+- Checked locally: mouse at the very bottom of the view puts the crosshair on row 25.
+
+### Tests
+- 7 pass.
 
 ## v0.3.7 — "Big Gun"
 **Wed Oct 21, 2026 · 8:00 AM HST** (no migration)
