@@ -7,6 +7,17 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.14: Oct 21, 12:20 AM HST: "beats X" under each style card (not pushed)
+- min (screenshot of Home): "on this screen somewhere, can we have an explanation of what beats what? maybe just the
+  emoji > emoji, or RIZZ > MOG or something?" I first built one line under "+10,000 Aura per hour" ("💎 DRIP > 😏 RIZZ >
+  🗿 MOG > 💎 DRIP"); min: "hmm how about over each button an explanation?" So the line is gone and each card has a label; then "could you put it below the box, above FLEX?" and "can i see without the RIZZ and MOG words ?"
+  (v0.7 removed "beats 😏" from inside each card; this puts it back, under the card.)
+- `public/app.js` `styles()`: a row of "beats <emoji>" labels, read off `A.BEATS`, in the same 3-column grid
+  under the cards, above FARM AURA / FLEX. `styles()` is used on Home and the FLEX screen, so both have it. `public/index.html`: `.cards.beats`
+  centred, -4px margin-top. Removed: the one-line `beatsLine()` (never pushed).
+- VERSION 0.14. 15 tests pass. Checked in Chromium with a mocked /api: labels sit under the right cards on Home and FLEX.
+  Not checked: the live site.
+
 ## v0.13: Oct 21, 12:15 AM HST: a farm's address is ?farm=N; back buttons work (not pushed)
 - min (screenshot of Home's finished rows): "when i click on these cards, what screen does that open? can that open the
   registry or ledger entry instead?" Answer: they already open the farm, which is its ledger entry page (v0.10), the same
