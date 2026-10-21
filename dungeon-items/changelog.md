@@ -5,6 +5,16 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
+## Oct 20, 11:55 PM HST: Aura Farm entries wear Aura Farm's look and link to the farm (with aura-farm v0.10; pushed)
+- min: "can you make the ledger entries on /registry show up in the Aura Farm page style please?" and "can we somehow
+  connect whatever page i click on here, with the ledger entries ... with the registry entries?"
+- `src/public-ledger.js`: an aura-farm checkpoint gets `.aura` (aura-farm's dark purple panel with a radial glow, a
+  20 px Impact heading in capitals with the purple and pink glow, the sentence in system-ui), like Dawn Baton's and
+  scoundrel.exe's own looks. "Farm #N" at the start of its sentence links to https://aura.88x31.app/?farm=N (pink).
+  Removed: the plain 88x31-style panel for aura-farm entries.
+- No migration. 80 tests pass (no new test: page drawing). Checked in headless Chromium with a mocked ledger (two
+  aura-farm entries, a Dawn Baton one, an old aura-farm one without a line). Not checked: the live page.
+
 ## Oct 20, 11:45 PM HST: checkpoint words may have ' and , ; aura-farm entries end with the farm's line (with aura-farm v0.9; pushed)
 - min (thread "Aura farm animations"): "could you make the ledger remember those words ... the shared registry?" aura-farm
   v0.9 gives every farm a line ("MOG couldn't handle the RIZZ.", "MOG blushed. gg, out-RIZZed.") and sends it as
