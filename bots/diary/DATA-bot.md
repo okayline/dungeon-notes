@@ -400,3 +400,61 @@ KURA goes NORTH into a cleared room.
 An arch to another room. It is only a narrow way through, bare and echoing.
 She wants something common, found in a wall, under a waxing gibbous.
 ```
+
+## 2026-10-20  -  B3F, day 4, the run ended  (latest v1.39)
+
+```
+KURA wakes on B3F.
+KURA searches the WEST wall... Someone has looked here before.
+KURA searches the WEST wall... A DEADLINK wanders in!
+  The DEADLINK comes off as HUM.
+  Something is pulling at you.
+  DEADLINK: "still here. still running"
+  DEADLINK: "I have stuff. you want one?"
+  LEAVE THEIR OFFER ON THE TABLE?
+  IT WON'T BE BACK.
+  KURA leaves the offer on the table.
+  The DEADLINK takes its things and goes. SHUTTING DOWN. bye
+KURA searches the WEST wall... The wall gives nothing away.
+KURA searches the WEST wall... A small sound, there and gone.
+KURA works the worn wall, steady.
+KURA goes SOUTH into a cleared room.
+KURA searches the SOUTH wall... Something ticks, very softly.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Salt along the base, in a line.
+KURA searches the SOUTH wall... KURA hears something. Then nothing.
+KURA goes NORTH into a cleared room.
+KURA searches the WEST wall... A DEADLINK wanders in!
+  The DEADLINK comes off as HUM.
+  DEADLINK: "ACCESS DENIED. go away"
+  The DEADLINK strikes KURA. -7 HP
+  The DEADLINK stops mid-swing.
+  DEADLINK: "ooh. can I have one of those?"
+  KURA keeps her things.
+  DEADLINK: "cute. one more round."
+  The DEADLINK strikes CU SITH. -6 HP
+  The DEADLINK stops mid-swing.
+  DEADLINK: "ooh. can I have one of those?"
+  KURA keeps her things.
+  DEADLINK: "cute. one more round."
+  The DEADLINK strikes KURA. -5 HP
+  The DEADLINK stops mid-swing.
+  DEADLINK: "ooh. can I have one of those?"
+  KURA keeps her things.
+  DEADLINK: "cute. one more round."
+  The DEADLINK strikes ELF. -2 HP
+  The DEADLINK strikes KURA. -7 HP
+  The party strikes. -9 HP
+  Something old leans toward KURA. [FRL]
+  The DEADLINK stops mid-swing.
+  DEADLINK: "ooh. can I have one of those?"
+  KURA keeps her things.
+  DEADLINK: "cute. one more round."
+  The DEADLINK strikes KURA. -2 HP
+  The DEADLINK strikes KURA. -9 HP. FALLS
+  KURA falls. The run is over.
+  The party strikes. -11 HP
+The DEADLINK strikes KURA down.
+
+posted, rank 2
+```

@@ -391,3 +391,66 @@ The moon turned. The dark rose and closed over KURA.
 
 posted, rank 1
 ```
+
+## 2026-10-20  -  B3F, day 1, the run ended  (latest v1.39)
+
+```
+(a new run begins)
+KURA wakes in the dark. B3F.
+KURA searches the SOUTH wall... Fingers come away gray.
+KURA searches the SOUTH wall... Nothing yet.
+KURA searches the SOUTH wall... 77 SILVER, loose in the rubble. Two doors.
+KURA searches the SOUTH wall... A DAEMON wanders in!
+  The DAEMON strikes KURA. -7 HP
+  The party strikes. -10 HP
+  Something old leans toward KURA. [FRL]
+  The DAEMON strikes KURA. -3 HP
+  The party strikes. -10 HP
+  The party strikes. -13 HP
+  The DAEMON falls.  +13 ICHOR
+  It drops a scratched data disc.
+  It drops an ID card, face scratched.
+KURA searches the SOUTH wall... The wall gives nothing away.
+KURA unlocks the NORTH door. The way is clear.
+KURA goes EAST into a new room.
+KURA searches the NORTH wall... Mortar, mostly. Some is older.
+KURA searches the NORTH wall... Old tally marks, in groups of five.
+KURA searches the NORTH wall... Someone has looked here before.
+KURA searches the NORTH wall... KURA finds a cracked hand mirror.
+KURA searches the NORTH wall... Nothing.
+KURA searches the NORTH wall... Fingers come away gray.
+KURA searches the NORTH wall... A crack. It goes nowhere.
+KURA searches the NORTH wall... Nothing but dust.
+KURA searches the NORTH wall... Cold stone, cold hands.
+KURA goes WEST into a cleared room.
+KURA searches the WEST wall... A crack. It goes nowhere.
+KURA searches the SOUTH wall... Cold stone, cold hands.
+KURA goes EAST into a cleared room.
+KURA goes WEST into a cleared room.
+KURA goes NORTH into a new room.
+KURA searches the EAST wall... Faded paint. A number, or a sigil.
+KURA searches the EAST wall... Cold stone, cold hands.
+KURA searches the EAST wall... Nothing.
+KURA goes WEST into a new room.
+KURA searches the WEST wall... Only stone.
+KURA goes EAST into a cleared room.
+KURA searches the EAST wall... A SCRAPPER appears! Two doors.
+  The SCRAPPER strikes KURA. -9 HP
+  The party strikes. -8 HP
+  The SCRAPPER strikes KURA. -6 HP
+  The party strikes. -14 HP
+  The party strikes. -10 HP
+  The SCRAPPER falls.  +30 ICHOR
+  It drops a vial of medicine.
+  It drops a dead pager.
+KURA searches the EAST wall... Someone has looked here before.
+KURA searches the EAST wall... A TRACER wanders in!
+  The TRACER strikes PIXIE. -7 HP
+  The party strikes. -5 HP
+  The TRACER strikes KURA. -5 HP. FALLS
+  KURA falls. The run is over.
+  The party strikes. -9 HP
+The TRACER strikes KURA down.
+
+posted, rank 7
+```
