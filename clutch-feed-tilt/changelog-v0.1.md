@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.1
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,21 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.1 — "Rib Lines"
+**Wed Oct 21, 2026 · 8:49 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can you put more lines on the top going vertically down the gun".
+
+### What was built
+- `GUN` rows 2 and 3 in `public/app.js`: `/:|  |:\` and `/: |  | :\`. The `|` pair runs up from the rear sight's notch to the front sight; the `:` lines run beside the slide's edges toward the front. Removed: the empty top of the slide.
+
+### Findings
+- Checked locally (Playwright): pointer in the middle of the view; no page errors. Not checked on a phone. A real Glock's slide top is plain; these lines are drawn for the look, not copied from the gun.
+
+### Tests
+- 9 pass.
 
 ## v0.5 — "Wings"
 **Wed Oct 21, 2026 · 8:46 AM HST** (no migration)
