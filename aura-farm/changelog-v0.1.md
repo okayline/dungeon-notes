@@ -7,6 +7,47 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.4 — "Three Styles" (committed, not pushed)
+**Tue Oct 20, 2026 · 8:45 PM HST** (no migration)
+
+### Decisions (the owner's)
+- "i think somwhere along the way it got too complicated? ... i think paring it with the 52 card deck might have been
+  a mistake. can we go back to the 3 qualities only ?"
+- I proposed 6 each of DRIP/RIZZ/MOG plus 2 CAPs, no numbers, rounds won decide, and everything else kept. ryan:
+  "sounds a lot simpler!!! yeah can we pivot and do this please".
+
+### What was built
+- **Rules (`public/engine/aura.js`).**
+  - `DECK` has 20 codes: D1-D6, R1-R6, M1-M6, X1, X2. `BEATS` is D>R>M>D.
+  - `faceOff(a, b)`: a CAP loses to any style, two CAPs draw, same style draws.
+  - `totals()` counts rounds won.
+  - `RULES = 2` is written on every new ledger record. Records without it used the 54-card deck (git history before
+    v0.4 re-deals them).
+  - Removed: `SUIT`, `RANKS`, `aura()`, `worth()`, YAP, and the `untouched` bonus and its caption (with no numbers
+    there is no best card).
+- **Server (`src/worker.js`).** `duelView` reads the ledger record in its existing batch. For a done duel whose record
+  lacks `rules: 2`, it shows `shown`/`mine` from the record (`lineups ?? flipped`), sets `hands: null`, and takes
+  `pot`/`flipped` from the record. Live had 2 such duels (ryan's own tests, ledger entries 1-2).
+- **Page.**
+  - A card shows its style name, a big emoji and "beats 💎/😏/🗿" (a CAP says "loses to all"). Old codes like "QH" show
+    as text.
+  - A "Rounds: you N · them N" line sits under the caption.
+  - FARM's emoji is now 🌾, because 🗿 is MOG's. Removed: the `--C` (YAP orange) colour.
+- **Other.** README and design doc updated: cards section, style table (YAP row and rank table deleted), stare-down
+  steps, Decided list and the scoring table ("untouched" row deleted). `VERSION` is 0.4.
+
+### Findings (100,000 random deals, random lineups)
+- 22.2% of duels end even (it was about 7% with the 54-card deck), and 24.3% of rounds are draws.
+- The challenger wins 38.9% and the taker 38.9%.
+- 44.8% of 5-card hands hold a CAP (about 1 in 6 before), so NO CAP will be much more common.
+- Raised with ryan once, not changed.
+
+### Tests
+- 20 pass. The engine tests were rewritten with hand-worked 3-style examples. One new worker test: an old-rules duel
+  is shown from its record, with no hands.
+- Browser check: the planner shows style cards, the taker's duel shows the rounds-won line, and there were no page
+  errors.
+
 ## v0.3.1–v0.3.3
 **Tue Oct 20, 2026 · 8:20–8:28 PM HST** (no migrations)
 
