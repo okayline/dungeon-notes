@@ -7,66 +7,73 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.6 — "Hold the Spot"
-**Tue Oct 20, 2026 · 10:00 PM HST** (built and committed locally, not pushed; migration 004 not run on live aura-db)
+## v0.6 — "AURA FARM"
+**Tue Oct 20, 2026 · 10:20 PM HST** (built and committed locally, not pushed; migration 004 not run on live aura-db)
 
 ### Decisions (the owner's)
-- min: "the card -based gameplay isnt working out for me maybe. what are some other ideas, keeping the async and ledger
-  aspects?" Four offered (Hold the Spot, Blind Flex, Stare-down, Fit Check); min: "let's try #1!" and "i really liked
-  MOG / FIT / RIZZ but the cards just didnt seem right". Also: "aura battle = aura farm! same thing".
-- On a card, min chose "Style is the secret" (over a secret number, or both).
-- I raised the leak: a fixed pose is given away by any result (a lost RIZZ means DRIP). Fix proposed and accepted ("yeah
-  it should be close to rock-paper-scissors haha, yeah lets try building it that way!"): one try per player per reign,
-  a draw counts as a miss, tries sealed until the spot changes hands.
-- My picks, built as stated and easy to change: taking the spot costs nothing (no aura either way), a miss is -10,000 /
-  +10,000; the new holder picks their pose in the same move; the spot never resets at midnight; the holder can't
-  re-pose; VIBES kept as a peek at one style the holder isn't in (1 a day, +1 per miss, max 3), chosen at random from the
-  two and stored, so asking again shows the same one.
+- min: "the card-based gameplay isnt working out for me maybe. what are some other ideas, keeping the async and ledger
+  aspects?" I offered four (Hold the Spot, Blind Flex, Stare-down, Fit Check). min chose #1, said "i really liked
+  MOG / FIT / RIZZ but the cards just didnt seem right", picked a secret style, then (after I built Hold the Spot
+  locally and raised its leak: a fixed pose is given away by any result) "this isn't entirely working for me either".
+  Asked what the best moment is, min: "maybe flexing. choosing which out of DRIP/RIZZ/MOG to play against the other
+  player." I proposed Flex Off (one sealed style each, public record of revealed styles): "ooh this one sounds
+  interesting!!". Name: "maybe it's FARM !! because while it's up, the person is gaining currency"; "yeah let's build
+  it as FARM". Wording from min: "AURA FARM" as the action, "Your time is up", "Someone mogged your aura" (then "i dont
+  like 'mogged your aura'"); chose COOKED from my list ("i like COOKED !").
+- The Hold the Spot build (one spot, reigns, tries, sealed misses) was committed locally as f7760d6 and dropped before
+  any push: `git reset --hard a35b001`, then rebuilt on v0.5. Nothing of it was ever live.
+- My picks, built as stated and easy to change: win +10,000 / lose -10,000 / draw 0; standing 1,000 an hour while a
+  farm is untaken, 3 open a day, expiring at midnight UTC ("Your time is up": my reading of min's phrase); VIBES = the
+  taker spends 1 to see one style the poster did NOT pick (random of the two, stored, so asking again shows the same
+  one; I proposed "peek at their most-played style" but the public record already shows that), +1 per farm lost, max 3;
+  the record is a player's latest 10 revealed styles, both roles, newest first; captions AURA FARMED / COOKED /
+  MUTUAL MOG.
 
 ### What was built
-- **Rules (`public/engine/aura.js`).** `RULES = 4`. `clash(hit, pose)` gives "took" / "lost" / "draw";
-  `tryDeltas(how)`; `caption(how, side)` (a miss is only ever "miss" before the reveal); `STYLES`, `isStyle`, `label`.
-  `standing()` unchanged. Removed: `DECK`, `deal`, the sfc32 `rng`, `lineupCards`, `faceOff`, `totals`, `duel`,
-  `ROUNDS`, `BONUS`, `MAX_OPEN`, `isCap`, the CAP's emoji, and the old captions (NO CAP, TOTAL MOG, MUTUAL MOG).
-- **Ledger (`src/ledger.js`).** Entries are `hold`, `try` (a miss: the hit's commitment only) and `take` (ends the reign
-  and reveals the pose, every try's hit, result and salt), each keyed by a UNIQUE `ref` ("hold:3", "try:12",
-  "take:3"). A take and the new holder's hold are two entries in one batch: `chainInsert` now returns `{ stmt, hash }` so
-  the second chains from the first. `commitment(style, salt)` = sha256("D|salt"). Old duel entries are `ref` "duel:<id>".
-- **Server (`src/worker.js`).** Routes: `GET /api/today` (now includes the spot), `POST /api/stand {pose}`,
-  `POST /api/try {reign, hit, pose}`, `POST /api/vibes {reign}`. `spotView` shows the pose only to the holder, a try
-  only as "miss", and a non-holder's peek and VIBES. A try names the reign it aims at, so it never lands on a new holder.
-  Every write retries on a UNIQUE clash (ledger head or ids) and sends a registry checkpoint; detail is
-  `{kind, reign, result, aura}` for a try and `{kind, reign, pose, hit, tries, hours}` for a take, never a player.
-  Aura for a day = full hours on the spot that day (`standing`) plus every try's delta on both sides.
-  Removed: `draft`, `post`, `board`, `duel`, `take`, `duelView`, `cardsOf`, `getDuel`, `sideOf`, `lockIn`,
-  `settleStale` (nothing expires now), `duelSeed`, `hmacHex` and the `DAILY_SECRET` check (the deal is gone; the secret
-  can stay set on Cloudflare harmlessly, or be deleted).
-- **Database (`migrations/004_hold_the_spot.sql`, `schema.sql`).** New `reigns` (with a unique partial index so only
-  one reign stands), `tries` (UNIQUE reign + player) and `peeks (reign_id, player_id, not_style)`. The ledger is rebuilt
-  with `ref TEXT NOT NULL UNIQUE` in place of `duel_id`, copying every row as it is (id, record, hashes). Drops `duels`
-  and the old `peeks`. `vibes` unchanged.
-- **Page.** Tabs are Spot, Today, Ledger. The Spot screen: empty (pick a pose, STAND HERE), holding (your pose, time
-  held, tries all missed), or someone else's (peek, "Hit them with", "If you take it, hold as", STARE DOWN). Taking the
-  spot shows their pose and every try at them. The ledger draws hold, try, take and old duel entries. Removed: the
-  Duels and Board tabs, the 5-card pick screen, the duel screen, and the CSS for 5-card rows, card backs and pick
-  numbers. Chips no longer wrap mid-word.
-- `VERSION` 0.6, CHANGELOG, README and the `wrangler.jsonc` secret comment updated.
+- **Rules (`public/engine/aura.js`).** `RULES = 4`. `farm(a, b)` returns `{winner, how, deltas}`; `caption`;
+  `record(rows)`; `STYLES`, `isStyle`, `label`, `RECORD = 10`. `standing` unchanged. Removed: `DECK`, `deal`, the
+  sfc32 `rng`, `lineupCards`, `faceOff`, `totals`, `duel`, `ROUNDS`, `BONUS`, the CAP and its emoji, `isCap`, `style`
+  (the card helper), and the NO CAP / TOTAL MOG captions.
+- **Ledger (`src/ledger.js`).** `commitment(style, salt)` = sha256("D|salt"). `chainInsert` takes `farmId` and writes
+  kind "farm" into `farm_id`. Record: `{kind: "farm", rules, day, farm, players, commits, styles, salts, result, winner,
+  deltas, caption, t}`. Removed: the lineup commitment (`cards.join(",")`).
+- **Server (`src/worker.js`).** Routes: `POST /api/farm {style}` (post, sealed, 3 open a day in one guarded INSERT),
+  `GET /api/farm?id=`, `GET /api/board` (each poster's `record`), `POST /api/take {id, style}` (one batch: farm done,
+  ledger entry, loser's VIBES; retries on a ledger-head clash; then the checkpoint), `POST /api/vibes {id}`.
+  `recordsStmt` reads any number of players' latest styles in one query (`json_each`). `farmView` shows the poster
+  their own sealed style, others never; a taker sees VIBES and their peek; a done farm shows both styles, captions
+  and both records; a card duel finished before v0.6 shows its cards and captions from its ledger record.
+  Checkpoint detail: `{day, farm, result, styles, winner: "poster" | "taker" | null, aura}`.
+  `/api/today` lists your farms, and your expired ones for a day. Removed: `draft`, `post`, `duel`, `duelView`,
+  `cardsOf`, `lockIn`, `duelSeed`, `hmacHex`, the `DAILY_SECRET` check (the secret can stay set on Cloudflare
+  harmlessly, or be deleted), and the lineup/hands/peeks-by-round logic.
+- **Database (`migrations/004_aura_farm.sql`, `schema.sql`).** `duels` becomes `farms`: open and draft duels are
+  expired, `c_slots` and `t_slots` dropped, `c_style` and `t_style` added, indexes renamed `farms_*`. `ledger.duel_id`
+  becomes `farm_id`. `peeks` is rebuilt as `(farm_id, player_id, not_style)`. Every old ledger row and finished duel
+  stays as sealed. Removed: draft status, the card columns, the old `peeks`.
+- **Page.** Tabs: Farm, Board, Today, Ledger. The Farm tab has the three style buttons, "🌾 AURA FARM" and your farms
+  ("Farming", "vs name" with the caption, "Your time is up"). The board shows each poster's record as emoji. A taker
+  sees the poster's record, a peek button, the three styles and "😤 STARE DOWN". The result shows both styles and
+  the caption, with each side's record. Removed: the 5-card pick screen, card faces and backs, the round-by-round
+  result, and their CSS.
+- `VERSION` 0.6; CHANGELOG, README and the `wrangler.jsonc` secret comment updated.
 
 ### Tests
-- 10 pass (3 engine, 7 worker), hand-worked: the whole reign test (stand, peek, a loss and a draw both just "miss", one
-  try each, the take reveals ["M", "lost"], ["R", "draw"], ["D", "took"], aura 22,000 / -10,000 / -10,000 / 0, VIBES,
-  every hash and commitment rechecked with node:crypto); a checkpoint per write with exact details; migration 004 run
-  on the v0.5 schema (from git) keeps a sealed duel entry byte for byte and ends with the same tables as `schema.sql`.
-  Removed: the card, deal, lineup and old-rules-duel tests.
-- Browser check (headless Chromium, 390 px, local Node server + node:sqlite): stand as RIZZ, two hours later a second
-  player peeks ("not DRIP"), misses with MOG, a third takes it with DRIP and holds as MOG; the reveal, ledger and today
-  screens drew; the first player showed +12,000; 3 checkpoints; no page errors.
-- Not checked: the live site, the real Accounts and Registry, and whether the registry page shows the new checkpoint
-  details well.
+- 14 pass (5 engine, 9 worker). Hand-worked: all six wins, draws, captions, the record, standing; a whole farm (post,
+  peek is DRIP or MOG for a RIZZ farm and free the second time, take, VIBES 2 and 0, both commitments and the hash
+  recomputed with node:crypto, records on the board, leaderboard 10,000 and -8,000); a draw earns no VIBES; the 3-farm
+  limit and midnight expiry ("Your time is up" for two farms); a checkpoint per farm with exact details; migration
+  004 run on the v0.5 schema (from git) keeps a sealed duel and its ledger row, expires an open one, and ends with the
+  same tables and column order as `schema.sql`. Removed: the card, deal, lineup, CAP and old-rules tests.
+- Browser check (headless Chromium, 390 px, local Node server + node:sqlite): post RIZZ, two hours later a second
+  player peeks ("It's not DRIP"), takes with DRIP and wins; the first player sees COOKED and -8,000; a third sees the
+  first player's record (😏) on the board; the ledger tab drew; 1 checkpoint; no page errors.
+- Not checked: the live site, the real Accounts and Registry, real phones, and how the registry page shows the new
+  checkpoint details.
 
 ### Before it can go live (needs the owner)
-- Migration 004 drops `duels` and the old `peeks` on live aura-db. Duel history stays on the ledger, but today's aura
-  from duels goes. That can't be undone, so it waits for an explicit go-ahead, then the push.
+- Run migration 004 on live aura-db, then push. The migration cancels any open challenges (nothing paid) and renames
+  tables; old duel history stays.
 
 ---
 
