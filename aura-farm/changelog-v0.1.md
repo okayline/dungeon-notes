@@ -29,6 +29,7 @@ numbers are good": the step sizes are min's, the overlap rule below is mine.
   (`data-rate`, ticking with the existing 20 s timer); "At most" is 516,000; the FLEX panel's "If you win / If you lose"
   show the amount right now (`data-stake`). The home panel says "+10,000 Aura in the first hour, then 1,000 more each
   hour". The reveal and captions read the sealed `deltas`, so they follow with no change.
+- `public/app.js`: min asked for the new numbers in the Details panels. Your open farm's Details gain "If you win", "If you lose" (live, `data-stake`) and "Goes up"; the FLEX Details gain "Goes up" (+10,000 every hour it stands). Nothing removed.
 - Findings: the amount is fixed on the server at the moment of the take, so a FLEX tap just after an hour ticks over can
   pay 10,000 more than the panel showed. Waiting is worth much more than winning late: by hour 23 a farm has earned
   about 480,000 standing and moves 330,000 if taken. Said to min; kept as asked.
