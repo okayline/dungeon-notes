@@ -7,37 +7,6 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.19: Oct 21, 1:05 AM HST: logging out goes back to this browser's own player
-- ryan (Oct 21, after the log-in-first release): "hmm... i don't like that. i want it to make an empty character, but
-  not a new one every time. is there a way to do that? i dont like the login ask thing". Picked "Remember it in the
-  browser" (a second cookie) over "remember it on the server" (a sessions column and a migration in four games). Asked
-  whether to roll back first; answered no: this version deletes the log-in-first code, so it ends up the same.
-- Change: `enter` (login) checks the browser's current player before switching. If it has no account and is left
-  behind, its token goes into a second cookie, ``afh`` (same flags as the player cookie). `logout` reads ``afh``; if
-  it still finds a player (and not the one logging out), the player cookie is set back to that token, else cleared;
-  ``afh`` is always cleared. So a browser only ever makes one guest. `json` now takes a list of set-cookie values.
-  Removed: the "out" cookie and the 401 "log in first" in the player-making code (v0.18). Also removed v0.16's "Switch anyway?" confirm in `public/app.js`: switching no longer loses this browser's player, so its words were wrong.
-- Test: one new test (a browser's own player, log in with a code, log out: back on it twice, 2 players in all); the
-  test browser keeps several cookies. VERSION 0.19. 16 tests pass. No migration. Not pushed. Not checked: the live site in a real browser.
-
-## v0.18: Oct 21, 12:52 AM HST: log in first after a log out (no new empty players)
-- ryan: "it happened just now again. i logged in to my passkey. then "log out of this browser". then i lost the Mid
-  Himbo account", "no i dont want to keep making new characters every time", then "can we have it not make new empty
-  characters every time???"; picked "Log in first after a log out" on the decision card, for all four games (aura-farm,
-  scoundrel.exe, Dawn Baton, irl-dungeon), and confirmed "okay #1".
-- Investigation (thread "Aura Farm logout losing account"): login/logout code is the same in aura-farm, scoundrel.exe,
-  Dawn Baton, irl-dungeon and 4Dungeon's accounts. A passkey or code login replaces the browser's cookie, so a guest
-  player with no account can't be reached afterwards; logout cleared the cookie, so the next play made a new player.
-  Live examples: aura-farm Mid Himbo; scoundrel players 18 Hushed Fern and 19 Warm Kingfisher (no account, no sessions).
-- Change: logout sets the cookie to "out" (too short to match the token pattern, so no player is found) instead of
-  clearing it. Making a player (``needPlayer``) throws 401 "You logged out of this browser. Log in with your save code or
-  passkey first." when the cookie is "out". Logging in overwrites the cookie as before. A browser with no cookie still
-  gets a player on its first play. Removed: the Max-Age=0 clear cookie on logout.
-- Known gap: cleared cookies or a private window look brand new, so playing there before logging in still makes a player.
-  A logged-out browser can't start a second, new player without clearing cookies.
-- Test: one assert in the logout test (playing after logout is 401). VERSION 0.18. 15 tests pass. No migration. Not pushed. Not checked: the
-  live sites in a real browser.
-
 ## v0.17: Oct 21, 12:40 AM HST: the farm page carries its whole ledger entry; registry panels open it (with dungeon-items)
 - min: "in the shared registry, if i click on the panel can it link to the game ledger entry? like
   https://aura.88x31.app/?farm=33" and "in the shared registry panel there is tons of text for the record and hashes. is
