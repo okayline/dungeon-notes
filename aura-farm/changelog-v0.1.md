@@ -1,9 +1,38 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.6
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.7
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
 Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date with every decision). Newest first.
 Times are Hawaii time (HST).
+
+---
+
+## v0.7 — "Who Beats Who"
+**Tue Oct 20, 2026 · 10:35 PM HST** (built and committed locally, not pushed; migration 005 not run on live aura-db)
+
+### Decisions (the owner's)
+- min, after trying v0.6: "hehe this is kinda weirdly fun. can we get rid of VIBES mechanic for now. can we get rid of
+  'beats X' on all the cards? and add a place that explains 'MOG beats DRIP'". I read "for now" as: delete it (the
+  working rules say delete, don't park); it can come back as a new thing later.
+
+### What was built
+- **Page.** A "Who beats who" panel (built from `A.STYLES`, `A.BEATS` and `A.label`, so it can't disagree with the
+  rules) sits on the Farm tab under the style buttons and on the take screen. Style buttons show only their name and
+  emoji. The take screen no longer says "the same style is a draw" twice (the panel does).
+  Removed: "beats X" on every style, the peek button and text, the 👀 VIBES counter in the header, the `.card .s` CSS.
+- **Server (`src/worker.js`).** Removed: `POST /api/vibes`, `vibesStmt`, `vibesFrom`, the loser's +1 VIBES insert in
+  `take`, and `vibes` / `peek` in `/api/today` and `farmView` (which now batches two statements instead of four).
+  `aura.js` loses `VIBES_START` and `VIBES_MAX`.
+- **Database (`migrations/005_no_vibes.sql`, `schema.sql`).** `DROP TABLE peeks; DROP TABLE vibes;`. The Worker no longer
+  reads either table, so v0.7 runs whether or not 005 has been run; 005 is cleanup and loses the day's VIBES balances.
+- `VERSION` 0.7, CHANGELOG and README updated.
+
+### Tests
+- 14 pass. The whole-farm test now checks there is no peek and `/api/vibes` is a 404; the VIBES assertions are gone.
+  The migration test applies 004 then 005 to the v0.5 schema and compares with `schema.sql`.
+- Browser check (headless Chromium, 390 px): the panel shows on the Farm tab and the take screen, no "beats" on a card,
+  no VIBES text anywhere, a full farm and take worked, no page errors.
+- Not checked: the live site.
 
 ---
 
