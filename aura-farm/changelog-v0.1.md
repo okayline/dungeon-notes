@@ -7,7 +7,7 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.3.1–v0.3.3 (committed, not pushed)
+## v0.3.1–v0.3.3
 **Tue Oct 20, 2026 · 8:20–8:28 PM HST** (no migrations)
 
 ### Decisions (the owner's)
