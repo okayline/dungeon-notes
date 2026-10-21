@@ -25,8 +25,9 @@ Times are Hawaii time (HST).
   it), the peek button and text, the 👀 VIBES counter in the header, the `.card .s` CSS, and every explainer paragraph.
   The rules are still in the README. Easy to put back if players are lost.
 - **Passkey login (You screen).** min: put "Log in with a passkey" on the right instead of text below the save code
-  place. It is a "👆 Passkey" chip beside "Log in" (the longer label squashed the code box at 390 px). Removed: the
-  "or log in with a passkey" link.
+  place, then (after I put a "Passkey" chip beside "Log in"): "put the passkey button where it belongs", meaning the
+  row with New save code and Add a passkey. It is a "👆 Log in with a passkey" chip in that row, which wraps to a second
+  line at 390 px. Removed: the "or log in with a passkey" link, and the short-lived chip beside "Log in".
 - **Server (`src/worker.js`).** Removed: `POST /api/vibes`, `vibesStmt`, `vibesFrom`, the loser's +1 VIBES insert in
   `take`, and `vibes` / `peek` in `/api/today` and `farmView` (which now batches two statements instead of four).
   `aura.js` loses `VIBES_START` and `VIBES_MAX`.
@@ -37,8 +38,8 @@ Times are Hawaii time (HST).
 ### Tests
 - 14 pass. The whole-farm test now checks there is no peek and `/api/vibes` is a 404; the VIBES assertions are gone.
   The migration test applies 004 then 005 to the v0.5 schema and compares with `schema.sql`.
-- Browser check (headless Chromium, 390 px): the Farm tab shows the one line, the You screen shows the Passkey chip on
-  the Log in row with the code box intact, no page errors. Not re-run after the trim: a full farm and take.
+- Browser check (headless Chromium, 390 px): the Farm tab shows the one line, the You screen shows the passkey chip in the
+  save code row, no page errors. Not re-run after the trim: a full farm and take.
 - Not checked: the live site.
 
 ---
