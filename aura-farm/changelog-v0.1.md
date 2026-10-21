@@ -7,6 +7,22 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.16: Oct 21, 12:35 AM HST: "Switch anyway?" before leaving an unsaved player
+- min: "it doesnt remember me in the browser? it's giving me a new account every time". Live aura-db: Crunchy Opp
+  (08:55 UTC), Unbothered Ghost (09:50), Rare Frog (10:21) and Mid Himbo (10:30) were each made by FARM AURA and never
+  used again. Cause, confirmed with min: logging in as kura with a save code switches the cookie, and the unsaved player
+  (no save code or passkey) is then unreachable; "log out of this browser" afterwards leaves no player, so the next FARM
+  AURA makes a new one (`needPlayer`). No bug in the cookie (same as scoundrel.exe's).
+- On min's ask ("can you delete rare frog?"): deleted live player 5 Rare Frog and its 3 open farms (#37-#39); none were
+  on the ledger. Crunchy Opp and Unbothered Ghost have finished farms on the ledger, so they stay.
+- min: "yeah do "switch anyway?" please". `public/app.js` `leaveOk()`: before "Log in" with a code or "Use passkey",
+  if this browser's player has no save code or passkey, confirm("<name> has no save code or passkey. If you switch, you
+  won't be able to get back to it. Switch anyway?"). Uses the account already loaded on the you screen. It also asks in
+  the one case where nothing is lost (the code's account has no player here yet, so `enter` keeps this one), which is
+  harmless. Removed: nothing.
+- VERSION 0.16. 15 tests pass. Checked in Chromium with a mocked /api: no code + cancel = no login; no code + OK = login;
+  player with a code = no question. Not checked: the live site; whether the other games have the same gap.
+
 ## v0.15: Oct 21, 12:30 AM HST: farms stay up 24 hours (not pushed)
 - min: "how do we tie this game into the real world time? first of all, i dont think the farms should expire at 00:00
   UTC haha. i think they should be up for 24 hours"
