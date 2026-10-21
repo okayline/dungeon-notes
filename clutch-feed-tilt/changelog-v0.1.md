@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.9
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.10
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,18 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.10 — "Steadier"
+**Wed Oct 21, 2026 · 9:12 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can the amount the crosshair moves during tilt be like, half overall".
+
+### What was built
+- `step()` in `public/app.js`: the shake `P.jit = (sin(23t) + sin(37t)) * (min(5, streak) - 1) * k` has k = 0.35 (was 0.7). The widest swing at 5 misses goes from about ±5.6 to ±2.8 columns. It still starts at 2 misses, and the shot still lands on the drawn crosshair. Removed: k = 0.7.
+
+### Tests
+- 9 pass.
 
 ## v0.5.9 — "Run It Back"
 **Wed Oct 21, 2026 · 9:12 AM HST** (no migration)
