@@ -7,6 +7,21 @@ Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.26 — "Home Browser"
+**Wed Oct 21, 2026 · 1:05 AM HST** (no migration)
+
+- ryan (Oct 21, after the log-in-first release): "hmm... i don't like that. i want it to make an empty character, but
+  not a new one every time. is there a way to do that? i dont like the login ask thing". Picked "Remember it in the
+  browser" (a second cookie) over "remember it on the server" (a sessions column and a migration in four games). Asked
+  whether to roll back first; answered no: this version deletes the log-in-first code, so it ends up the same.
+- Change: `enter` (login) checks the browser's current player before switching. If it has no account and is left
+  behind, its token goes into a second cookie, ``bbh`` (same flags as the player cookie). `logout` reads ``bbh``; if
+  it still finds a player (and not the one logging out), the player cookie is set back to that token, else cleared;
+  ``bbh`` is always cleared. So a browser only ever makes one guest. `json` now takes a list of set-cookie values.
+  Removed: the "out" cookie and the 401 "log in first" in the player-making code (v0.25).
+- Test: one new test (a browser's own player, log in with a code, log out: back on it twice, 2 players in all); the
+  test browser keeps several cookies. VERSION 0.26. 48 tests pass. No migration. Not pushed. Not checked: the live site in a real browser.
+
 ## v0.25 — "Log In First"
 **Wed Oct 21, 2026 · 12:52 AM HST** (no migration)
 
