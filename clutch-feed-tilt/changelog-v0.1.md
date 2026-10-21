@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.4
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.5
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,26 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.3.5 — "Log Lines"
+**Wed Oct 21, 2026 · 7:52 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can you make it match 4dungeon's layout please, with the 3 log lines yes". Then: "once any text box pops up i cant click it off" and "the crosshair starts going crazy waving back and forth as the run goes on or as i click more".
+
+### What was built
+- `frame()` in `public/app.js`: under the view, `+===+`, three log lines, `+---+`, the status/buttons row, `+===+` (4Dungeon's bottom, daily-dungeon `screen.js:443-466`). The screen is 27 rows, was 23. The log lines are the kill feed (last 3, up to 77 characters); the squad panel keeps its 6 blank rows where the feed was.
+- `.banner[hidden] { display: none }`: `.banner` had `display: flex`, which beat the `hidden` attribute, so an empty full-view overlay was always there (it only worked because it had `pointer-events: none`). With clicks now going to the banner, it would have eaten every shot. The whole banner area closes on `pointerdown`.
+- `shoot()`: a click with no enemy stepping out or out fires the gun (flash) but doesn't count as a shot, a miss or tilt. v0.3.3 counted those, so early clicks piled up the miss streak.
+- Jitter: `(min(5, streak) - 1) * 0.7` per sine pair, was `(streak - 1) * 1.4` with no cap, so it grew without limit. The most it moves now is about 5.6 cells.
+- Removed: the kill feed panel, shots counted with nothing to shoot at, the uncapped jitter, the always-present overlay.
+
+### Findings
+- Checked locally: 27 rows, all 80 wide, no page errors. An early click: SHOTS 00. The 1v3 box closed from a click in its corner. Many misses: TILT meter full, no errors. Not looked at on a phone beyond the row count.
+- Not changed: the banner can still cover a shot meant for an enemy while the 1v3 box is up (about 1.6 s); a click closes it.
+
+### Tests
+- 7 pass.
 
 ## v0.3.4 — "Aim Up"
 **Wed Oct 21, 2026 · 7:45 AM HST** (3f41327, no migration)
