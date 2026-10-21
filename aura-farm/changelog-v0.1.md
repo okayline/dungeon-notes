@@ -7,7 +7,7 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.2.1 — "Name Tag" (committed, not pushed)
+## v0.2.1 — "Name Tag"
 **Tue Oct 20, 2026 · 8:03 PM HST** (no migration)
 
 ### Decisions (the owner's)
