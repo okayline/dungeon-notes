@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.11
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.12
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -6,6 +6,15 @@ Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date w
 Times are Hawaii time (HST).
 
 ---
+
+## v0.12: Oct 21, 12:05 AM HST: your Farming rows show their style; space above the ledger entry (pushed)
+- min: "could you put an emoji of what it's actually farming, next to "Farming" text ?" and "could you put a couple blank
+  lines above "Ledger entry" line please ? and push"
+- `src/worker.js` `/api/today`: an open or expired farm's row carries `style` (c_style) when you posted it (side 0);
+  /api/today only ever answers the cookie's own player, and /api/board is unchanged, so no one else sees it.
+- `public/app.js`: an open row reads "Farming 😏"; the emoji at the right is now for finished rows only. `seal` has
+  margin-top 3em. Removed: nothing.
+- VERSION 0.12. 15 tests pass (one new assert: the poster's /api/today row has the style). Not checked: the live site.
 
 ## v0.11: Oct 21, 12:02 AM HST: "+10,000 an hour"; "On The Registry" lands on the farm's entry (pushed)
 - min: "could this say +10,000 an hour" (screenshot of the Farming rows); "for the On the Registry link, it doesn't link
