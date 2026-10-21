@@ -7,6 +7,50 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.15: Oct 21, 12:30 AM HST: farms stay up 24 hours (not pushed)
+- min: "how do we tie this game into the real world time? first of all, i dont think the farms should expire at 00:00
+  UTC haha. i think they should be up for 24 hours"
+- Chosen by min (decision card, "On the day it happens"): aura still counts by UTC day (the AURA LEADERBOARD and "aura today" stay daily),
+  and each thing counts on the day it happens: standing hours split at midnight, a win or loss on the day the farm was
+  taken (before: the day it was posted). Side effect: standing rounds down to full hours per day, so a farm standing
+  23:30-00:30 earns 0 for each day.
+- `public/engine/aura.js`: `LIFE = 24 * 3600`. `src/worker.js`: `farmEnd(d)` = posted_at + LIFE. Expiry
+  (`settleStale`) is now `posted_at <= now - LIFE`, at most once a minute per Worker instance (was once per UTC day);
+  every read checks the time itself too (board, take, the take UPDATE's `AND posted_at > ?`, `farmView`, `/api/today`
+  rows), so a farm is never shown or taken past its 24 hours. Max 3 open counts farms up now, not farms posted today.
+  `aurasFrom` clips spans to the day and counts deltas by `taken_at`; `auraStmt`/`aurasStmt` read farms posted that
+  day or the day before (`day IN (?, ?)`). `/api/today` lists open farms, farms taken today, and farms expired in the
+  last day. `deadline` is the farm's 24-hour end. No schema change and no migration (schema.sql comments only).
+  README updated. Removed: the midnight UTC expiry and "3 a day".
+- Test: the 3-farm/expiry test now checks a farm is still up and takeable past midnight, gone at 24 hours, and ann's
+  aura on each day against hand-worked values (Jan 1: first take + 16h = 160,000; Jan 2: second take + 8h = 80,000).
+- VERSION 0.15. 15 tests pass. Not checked: the live site; the design doc still says farms end at midnight UTC.
+
+## v0.14: Oct 21, 12:20 AM HST: "beats X" under each style card (not pushed)
+- min (screenshot of Home): "on this screen somewhere, can we have an explanation of what beats what? maybe just the
+  emoji > emoji, or RIZZ > MOG or something?" I first built one line under "+10,000 Aura per hour" ("💎 DRIP > 😏 RIZZ >
+  🗿 MOG > 💎 DRIP"); min: "hmm how about over each button an explanation?" So the line is gone and each card has a label; then "could you put it below the box, above FLEX?" and "can i see without the RIZZ and MOG words ?"
+  (v0.7 removed "beats 😏" from inside each card; this puts it back, under the card.)
+- `public/app.js` `styles()`: a row of "beats <emoji>" labels, read off `A.BEATS`, in the same 3-column grid
+  under the cards, above FARM AURA / FLEX. `styles()` is used on Home and the FLEX screen, so both have it. `public/index.html`: `.cards.beats`
+  centred, -4px margin-top. Removed: the one-line `beatsLine()` (never pushed).
+- VERSION 0.14. 15 tests pass. Checked in Chromium with a mocked /api: labels sit under the right cards on Home and FLEX.
+  Not checked: the live site.
+
+## v0.13: Oct 21, 12:15 AM HST: a farm's address is ?farm=N; back buttons work (not pushed)
+- min (screenshot of Home's finished rows): "when i click on these cards, what screen does that open? can that open the
+  registry or ledger entry instead?" Answer: they already open the farm, which is its ledger entry page (v0.10), the same
+  page the Ledger tab opens, with "On The Registry ›" at the bottom. Nothing changed there.
+- min: "how come i can't see the ?farm=N links when i click it?" then "yeah, and then if i press back, it will work
+  properly?" Tapping only fetched the farm; `?farm=N` was read once on load and never written.
+- `public/app.js`: `openFarm(id, step = true)` pushes `?farm=N` (state `{ farm }`) after a tap; a load from a link or
+  a browser back/forward opens in place (`step` false). `syncAddress()` in `draw()` replaces the address to match the
+  screen (a farm: `?farm=N`; a tab or the you screen: bare). In-game "back" calls `history.back()` when we pushed the
+  step, otherwise shows the tab. A `popstate` listener opens `?farm=N` or shows the tab. Removed: nothing.
+- VERSION 0.13. 15 tests pass. Checked in Chromium with a mocked /api: tap row, browser back, forward, game back,
+  row then Ledger tab, a ?farm=7 link and game back from it all land on the right screen and address. Not checked: the
+  live site.
+
 ## v0.12: Oct 21, 12:05 AM HST: your Farming rows show their style; space above the ledger entry (pushed)
 - min: "could you put an emoji of what it's actually farming, next to "Farming" text ?" and "could you put a couple blank
   lines above "Ledger entry" line please ? and push"
