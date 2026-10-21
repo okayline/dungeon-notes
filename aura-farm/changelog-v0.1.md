@@ -7,8 +7,8 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.3 — "Play the Plan" (committed, not pushed)
-**Tue Oct 20, 2026 · 8:25 PM HST** (migration `002_plans.sql`: it must run on the live aura-db before the push)
+## v0.3 — "Play the Plan"
+**Tue Oct 20, 2026 · 8:25 PM HST** (migration `002_plans.sql`, run on the live aura-db through the Cloudflare connector at 8:16 PM HST, before the push; checked: c_plan added, 3 columns gone, duels 1-3 expired)
 
 ### Decisions (the owner's)
 - ryan got stuck on a live duel waiting for the other side's pick: "oh, this isn't asynchronous?? this is live", then
