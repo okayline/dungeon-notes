@@ -1,13 +1,103 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.12
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.37
 
-Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
-AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
+Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing game built from 4Dungeon's AURA
+(cards in v0.1-v0.5, three sealed styles since v0.6). Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
 Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date with every decision). Newest first.
 Times are Hawaii time (HST).
 
 ---
 
-## v0.23: Oct 21, 1:45 AM HST: the farm page shows its whole ledger entry again (v0.17's aura-farm half; branch `claude/ledger-entry-v0.23`)
+v0.24 to v0.37 were written up afterwards from the commit diffs (`8b81ced` to `9acfe34`); the screens were not run in a
+browser for these notes.
+
+## v0.37: Oct 21, 3:20 AM HST: reload stays on the same tab; only the top 3 leaderboard portraits glow (PR #20, `9acfe34`)
+- `public/app.js` `syncAddress`: The Farm, Today and Ledger put `?tab=board|top|ledger` in the address (replaceState);
+  a farm is still `?farm=N` and Home the bare address. On load, `?tab=` opens that tab unless `?farm=` is there too.
+  Removed: reloads always landing on Home.
+- `boardOfDay`: the portrait halo glow is `[18, 11, 5][i] ?? 0`, so places 1-3 glow less each and 4 and below don't.
+  Removed: the same glow on every row.
+
+## v0.36: Oct 21, 3:10 AM HST: each row in The Farm says how long the farm has been up (PR #19, `d56dc91`)
+- `src/worker.js` `board`: each row has `up`, the seconds it has stood (from the server, so the phone's clock doesn't
+  matter). `public/app.js` `upText`: "Up for 5 hrs" ("min" in the first hour, "hr" for one), under FLEX or FARMING, and
+  the 20-second timer updates it (`data-upfor`). Removed: nothing.
+- Test: "The Farm lists…" also checks `up` is [7200, 3600, 0] for farms an hour apart.
+
+## v0.35: Oct 21, 3:08 AM HST: no "DRIP beats RIZZ…" in the FLEX Details panel (PR #19, `a153052`)
+- `takeInfo`: removed the sentence "DRIP 💎 beats RIZZ 😏, RIZZ 😏 beats MOG 🗿, MOG 🗿 beats DRIP 💎." The style cards
+  above it still say what each beats (v0.14). Added: nothing.
+
+## v0.34: Oct 21, 3:08 AM HST: The Farm lists whoever has been farming the longest first (PR #19, `9f995dc`)
+- `board`: `ORDER BY d.posted_at, d.id` (oldest first). Removed: `ORDER BY d.posted_at DESC` (newest first).
+- New test: three farms posted an hour apart come back oldest first.
+
+## v0.33: Oct 21, 3:05 AM HST: the home screen's farm panels are a size bigger (PR #18, `805bd5f`)
+- `.item.home` (index.html): padding 17px 16px, radius 16px, 18px text, 14px small text, on Home's list only. Removed:
+  the smaller size there. The Farm, Today and Ledger lists are unchanged.
+
+## v0.32: Oct 21, 3:04 AM HST: "Earned so far" in an open farm's Details (PR #18, `61867db`)
+- `earnText`: 10,000 for each whole hour since the farm went up, capped at 24 hours, updated by the timer
+  (`data-earn`). It counts this farm on its own, so farms up together each show the full amount, while the player's
+  total counts overlapping time once. Removed: nothing.
+
+## v0.31: Oct 21, 3:03 AM HST: three explainer sentences removed (PR #18, `729e454`)
+- Removed from the open farm page: "Nobody has taken it yet. It comes down on its own when the time is up.", "Farms up
+  at the same time earn once, not twice." and "Sealed with this fingerprint of your style…". Removed from the FLEX
+  panel: "Sealed with this fingerprint of their style…". The fingerprints stay. Added: nothing.
+
+## v0.30: Oct 21, 3:03 AM HST: details panels start rolled up; a farm opens at its top (PR #18, `e998852`)
+- `rolled()` in app.js: the FLEX Details, the open farm's Details and the finished farm's Results are `<details>`
+  panels that start closed. Which are open is kept in `openBoxes` while the same screen redraws and cleared when a
+  different farm (or the You screen) opens. Opening a different farm scrolls to the top. Removed: the panels always
+  open, and the page keeping the list's scroll position.
+
+## v0.29: Oct 21, 3:00 AM HST: a panel of public info under the FLEX button (PR #18, `975dc49`)
+- `takeInfo`: farm number, who put it up, put up / comes down, time left, stood for, if you win / lose / same style,
+  your aura today, your farms up (of 3), the "beats" sentence (removed again in v0.35) and their style's fingerprint.
+  Their style is never in it. Removed: nothing. The commit says an "earned so far" line under FARMING on The Farm was
+  dropped before release.
+
+## v0.28: Oct 21, 2:57 AM HST: profile pics on the AURA LEADERBOARD; Ledger heading "Legends of AURA" (PR #18, `d90ca82`)
+- `boardOfDay`: `halo(pic(name))` beside each name. `ledgerTab`: heading "Legends of AURA". Removed: rows with only rank
+  and name, and the heading "The ledger". The tab itself is still called "Ledger".
+
+## v0.27: Oct 21, 2:34-2:37 AM HST: a bigger bottom menu; profile pics from the name (PR #17, `8d89d81`, `3297a31`)
+- Tabs: the emoji (28px) above the name (16px); `.app` bottom padding 90px to 118px.
+  Removed: emoji and name on one small line.
+- `pic(name)`: one of 24 emojis by an FNV-1a hash of the lower-cased name, so a player has the same one on every screen
+  and redraw. Used on The Farm, the take screen, the face-off and the open farm page. Removed: 😎 for everyone else and
+  🧍 for you. A renamed player gets a new pic (it follows the name, not the player id).
+- The finished farm's Results panel has margin-top 30px (was 14px).
+
+## v0.26: Oct 21, 2:28-2:31 AM HST: a finished farm's page is detailed (on main, no PR: `ab8f56f`, `34c27fd`, `87f90f7`, `e87158e`)
+- `pastDetails`: Result, put up by / taken by with style and aura each, put up, taken, stood for, rules version, both
+  players' latest styles, and each side's commitment with "then showed STYLE|salt" from the sealed record. Hidden
+  (`.detail.wait`) until the reveal ends (`reveal.js` `end` removes it). `farmView` sends `takenAt`, and `left` only
+  while open. Removed: the face-off with only the seal under it.
+- Tried and removed inside v0.26: past-game cards on Home with WON/LOST/TIE, both styles, farm number and time
+  (`ab8f56f`, trimmed in `87f90f7`, gone in `e87158e`), and an explainer paragraph about salts above the proof. Home's
+  cards are as in v0.25.
+- The open farm page no longer says "Only you can see it" (`34c27fd`).
+- Test: `takenAt - postedAt` is the 2 h 1 min the farm stood; a finished farm's `left` is null.
+
+## v0.25: Oct 21, 2:26 AM HST: time left on a farm; your open farm's page filled in (on main, no PR: `7e1e6b5`)
+- `farmView` and `/api/today` rows send `left` (seconds to the 24-hour end) and `postedAt`. The page stores when the
+  answer arrived (`_t`) and a 20-second timer rewrites only the `[data-end]`, `[data-since]` and `[data-bar]` spans;
+  when one runs out it refetches that farm (or `/api/today`). Home shows "+10,000 an hour · 21h 40m left".
+- `openFarmPage`: Farm #N, "(name) is farming", time left, a progress bar, the sealed style with what it beats and loses
+  to, and a panel: put up, comes down, up for, earning, at most +240,000, aura today, farms up of 3, record, fingerprint.
+  Removed: the bare "Farming" panel and card.
+- Test: a new farm has 86,400 s left; after 2 h 1 min both the Home row and the farm page count down to match.
+
+## v0.24: Oct 21, 2:22 AM HST: spacing around the line and caption; the reveal's emoji no longer drops (on main, no PR: `8b81ced`)
+- `.cap` gets `margin: 22px 0`. Removed: the tighter spacing.
+- `reveal.js` `pos`: the flying copy is centred on the emoji itself, leaving out the card's bottom padding. Removed: the
+  copy starting about 10px low and popping back up.
+
+Tests at v0.37 (`5fb74d8`): `npm test` 18 pass, 0 fail, run for these notes with the history fetched
+(`git fetch --depth=300 origin main`). Live site not checked.
+
+## v0.23: Oct 21, 1:45 AM HST: the farm page shows its whole ledger entry again (v0.17's aura-farm half; on main as `fd3694a`, no PR)
 - min, after the rollback: "yeah i think the 'switch anyway?' thing messed it up. so can we skip that one. can we do 0.17?"
   v0.16 is skipped for good; min later: "can we not do anything about that logging out stuff? that was a bad thread".
 - `src/worker.js` `farmView`: `ledger` is `{ entry, record, prev, hash }` (one more subselect, `prev_hash`, in the same
