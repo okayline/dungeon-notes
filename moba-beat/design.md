@@ -26,7 +26,8 @@ You pick a squad, the squad fights a ghost on its own, and you tap your units on
 
 - **BUILT** The ledger. The day's entry holds the date and the shared registry's chain head as of 00:00 UTC; the hash of that entry is the beat. It is fixed from midnight, differs every day, and anyone can recompute it from the public registry.
 - **BUILT** `beat(hash)`: the day's drumbeat, wind-ups, kit and tempo (see `changelog-v0.1.md`).
-- **DECIDED, not built** The game feeds the registry back with a checkpoint (entry count and head), like Dawn Baton and scoundrel.exe. The beat only uses the registry as of the day before, so today's play shapes tomorrow's music and nothing loops.
+- **BUILT** The game feeds the registry back with a checkpoint (entry count and head) after every seal, like Dawn Baton and scoundrel.exe. The beat only uses the registry as of the day before, so today's play shapes tomorrow's music and nothing loops.
+- **BUILT** Runs: the server scores the taps against the hidden beat; the first run of a player's day is sealed (taps and score), later ones are practice. Players are a cookie token, no names yet. A ledger page lists days and runs and checks the chain in the browser.
 - **OPEN** The moon phase as a dial on the beat's feel (sparser and slower toward a new moon, denser and faster toward a full one). It adds no randomness, only a slow arc over the month. Not built; leave out if it makes days feel too different.
 
 ## Async and verification

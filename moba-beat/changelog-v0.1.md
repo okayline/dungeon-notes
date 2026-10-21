@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.7
+# moba-beat — Dev Changelog — v0.1–v0.8
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,28 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.8 — "On the Record"
+**Wed Oct 21, 2026 · 11:52 AM HST** (migration 001_runs.sql run on the live D1 database before the push)
+
+### Decisions (the owner's)
+- Owner: "can we make a ledger page and is there anything to do with the registry?" I suggested: save runs first, then a ledger page, then registry checkpoints. Owner: "yep lets do that please!"
+
+### What was built
+- Runs: `POST /api/run {day, taps}`. Taps are ms from the song's first beat; the server works out the day's music (`public/beat.js`, moved from `src/`) and scores the taps with `public/score.js`, the page's own scoring. Refused: another day's beat (409), taps that aren't a list, more than 128, or outside -3 s to the end of the song (400). The first finished run of a player's day is sealed: a `runs` row and a ledger entry `{day, player, taps, perfect, good, miss}` in one D1 batch; later runs answer `{sealed: false, run, today}`. `/api/today` also returns your sealed run.
+- Players: a random token in an `mb` cookie (HttpOnly, Secure, SameSite=Lax, 400 days), made on your first run; table `players (id, token, created_at)`. No names, no save codes yet. Records hold the id.
+- `public/chain.js`: `GENESIS`, `sha256`, `verifyChain`, shared by `src/ledger.js` and the ledger page. `dayEntry` now returns `{hash, sealed}`; new `runInsert`.
+- `public/ledger.html`, `ledger.js`: entries newest first, 50 at a time; a day shows its kit, BPM, key and chords from `beat(hash)` and the registry head; a run shows the player number, score and tap count; "Check the chain" pages through every entry and runs `verifyChain` in the browser. The game page's "See the ledger" goes there. Removed: the link to raw `/api/ledger`.
+- Registry: `REGISTRY` service binding to dungeon-items (`Registry` entrypoint, as Dawn Baton, scoundrel.exe and aura-farm). After a day is sealed and after every sealed run, `checkpoint(env)` reads the whole chain, checks it, and sends `{game: "moba-beat", entries, head}` (copied from aura-farm's). A refusal or a registry that's away is logged and never stops a run.
+- Migration `001_runs.sql` (players, runs with UNIQUE (player_id, day)); `schema.sql` matches. Run on the live database through the Cloudflare connector, then checked: ledger, players and runs with the expected columns.
+- `public/version.js` v0.8.
+
+### Checks
+- `test/worker.test.mjs`: the day hash by hand from GENESIS; a run with the first target skipped and the second 50 ms late scores exactly that (n - 2 perfect, 1 good, 1 miss); the run's hash is SHA-256(day hash | record) with player 1; the cookie's shape; practice not sealed; a second player chains after the first run; four refusals; checkpoints sent at 1 and 2 entries; the migrations build the same tables as schema.sql. 18 pass.
+- End to end in headless Chromium against the real Worker code with an in-memory database: round 1 "Sealed on the ledger." with the server's score equal to the page's; round 2 "Practice"; the ledger page listed both entries and "All 2 entries check out."; no page errors.
+
+### Not checked
+- The live registry accepting the first moba-beat checkpoint (only a stand-in); the cookie on the live domain; the ledger page on the live site before the push.
 
 ## v0.7 — "Real Kits"
 **Wed Oct 21, 2026 · 11:35 AM HST** (no migration)
