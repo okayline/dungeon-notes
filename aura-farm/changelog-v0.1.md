@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.2
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.2.1
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -7,8 +7,24 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.2 — "Way Back In" (committed, not pushed)
-**Tue Oct 20, 2026 · 7:55 PM HST** (migration `001_accounts.sql`: it must run on the live aura-db before the push)
+## v0.2.1 — "Name Tag" (committed, not pushed)
+**Tue Oct 20, 2026 · 8:03 PM HST** (no migration)
+
+### Decisions (the owner's)
+- "could you put a version number somewhere on the app page please? (is it there already ?)". It wasn't: a search of
+  `public/` and `src/` for "version" found nothing, and CHANGELOG.md was the only place with a version.
+
+### What was built
+- `public/engine/version.js` (new) exports `VERSION = "0.2.1"`, the same pattern as dawn-baton's `engine/version.js`.
+- `public/app.js` `draw()` shows `v0.2.1` in small, dim text at the bottom of every screen.
+- CHANGELOG: v0.2 is dated Oct 20 2026 HST (released), and there is a new v0.2.1 entry. Removed: nothing.
+
+### Tests
+- 18 pass. One is new: the newest CHANGELOG heading matches `VERSION`.
+- Browser check: "v0.2.1" was seen at the bottom of the "you" screen.
+
+## v0.2 — "Way Back In"
+**Tue Oct 20, 2026 · 7:55 PM HST** (pushed 8:01 PM HST) (migration `001_accounts.sql`, run on the live aura-db through the Cloudflare connector at 8:00 PM HST, before the push)
 
 ### Decisions (the owner's)
 - "yeah can we do all that next please!!!", meaning hooking up the shared Accounts, sending a registry checkpoint after
