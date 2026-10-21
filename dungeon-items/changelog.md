@@ -5,7 +5,21 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
-## Oct 21, 12:40 AM HST: Aura Farm registry panels open the farm's page; no seal lines on them (with aura-farm v0.17)
+## Oct 21, 1:55 AM HST: Aura Farm registry panels open the farm's page again; no seal lines on them (with aura-farm v0.23; branch `claude/aura-panel-opens-farm`, not pushed)
+- min: "did you do the v0.17 update with the register entries?" then "yeah can you do that please !" (after v0.17 was rolled
+  back with aura-farm v0.16 and skipped v0.16 for good).
+- `src/public-ledger.js` `row`: an aura-farm checkpoint with a farm number removes its `.seal` lines, gets
+  `cursor: pointer`, and a tap anywhere on the panel (not on a link) opens `https://aura.88x31.app/?farm=N`. Same code as
+  `86fde43`, put back on top of the revert `e583ecc`. Removed: the seal lines on Aura Farm panels.
+- Order: aura-farm v0.23 (the farm page shows its whole ledger entry: record, prev, hash) must be live first. Without it,
+  the farm page has no seal lines, so neither page would show them (that is why `e583ecc` put them back).
+- No migration. 80 tests pass, 1 skipped (the "4Dungeon's generated items.js matches the committed seed" test, skipped
+  before this change too). Checked in headless Chromium at 390 px with a mocked ledger (an Aura Farm checkpoint and a
+  Dawn Baton one): the Aura Farm panel has no seal lines and a pointer cursor, a tap on its top line and a tap on "Farm #33"
+  both request `https://aura.88x31.app/?farm=33`, the Dawn Baton panel keeps its seal line, no page errors. Not checked:
+  the live page.
+
+## Oct 21, 12:40 AM HST: Aura Farm registry panels open the farm's page; no seal lines on them (with aura-farm v0.17) (REVERTED Oct 21 in `e583ecc`: "Aura Farm panels show their seal lines again (revert PR #7)", because aura-farm v0.15 doesn't show them on the farm page; back as the entry above)
 - min: "in the shared registry, if i click on the panel can it link to the game ledger entry?" and asked to move the
   record and hash text to the farm's page.
 - `src/public-ledger.js` `row`: an aura-farm checkpoint with a farm number: tapping the panel anywhere (except a link)
