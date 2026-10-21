@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.9
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.9.5
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,40 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.9.5 — "Plus Corners"
+**Wed Oct 21, 2026 · 1:10 PM HST** (20a9a89, no migration)
+
+- Owner: "why can't you just do corners like + ? and make it like 4dungeon minimap?", then, after the playtest, "yeah i think you did fix it !"
+- `public/app.js` `minimap()`: after floor.js draws the map, a `+` goes on all four corners of every room walked through, even beside a door. `public/engine/floor.js` unchanged. Removed: the `-` and `|` that 4Dungeon's code draws on a corner next to a door.
+
+## v0.9.4 — "Not Turned"
+**Wed Oct 21, 2026 · 1:09 PM HST** (85a8fe9, no migration)
+
+- Owner: "LOL now you just have it going straight in a line, so there are no corners on the minimap". Finding: the minimap window is 29 x 5, and turning the map so the run starts going up (v0.8.1) put the route along the short side, so it showed a column of `|` walls with no corners.
+- `public/app.js` `minimap()` hands floor.js the floor as it is, not turned; the arrow starts pointing whichever way the route goes. Removed: v0.8.1's turn (`symTransform`).
+- Checked (Oct 21 map, day hash 35bf0455…): CFT's minimap and 4Dungeon's `daily-dungeon/floor.js` `minimap` gave the same output for every room on the route and all 4 facings.
+
+## v0.9.3 — "Told on the Registry"
+**Wed Oct 21, 2026 · 1:08 PM HST** (b7182f8, no migration)
+
+- Owner: the "registry thing" meant a CFT line on the registry's ledger page.
+- `src/worker.js` `checkpoint(env, detail)`: the checkpoint also carries the run's `{ day, label, hp, hits, shots }`. No player and no shot log. dungeon-items (daf9d8e, separate repo) tells it on the `/ledger` page as "A CLUTCH run. 3 hits from 5 shots, 2 HP left." in the ASCII frame, heading "run sealed". Removed: the plain "sealed its ledger here" line for this game.
+- Push dungeon-items first, so the page can read the detail when CFT's first detailed checkpoint arrives.
+
+## v0.9.2 — "Same Minimap"
+**Wed Oct 21, 2026 · 1:07 PM HST** (80f967c, no migration)
+
+- Owner: "the corners should be the 4dungeon minimap corners", "can you please make the minimap, look like 4dungeon's minimap?"
+- `public/app.js` `minimap()` hands floor.js every door again; `corridor()` no longer returns `shown`. Removed: v0.8.2's change that drew wall where the 3D view has one.
+
+## v0.9.1 — "In-game Ledger"
+**Wed Oct 21, 2026 · 1:04 PM HST** (e57c177, no migration)
+
+- Owner: "lol the LEDGER menu should open : in game. and open CFT's own ledger?"
+- New `public/ledger.js`: a panel in the 3D view like USER's, showing CFT's own ledger newest first (number, day or run in words, the first 16 characters of the hash), 30 at a time with [SHOW OLDER]. The run waits while it's open; [ESC] CLOSE. New `GET /api/ledger?before=ID&limit=N` (N up to 100) in `src/worker.js`; records hold player ids, never names. Removed: v0.9's [L]EDGER link to 88x31.app/registry in a new tab.
+- Test: the run test checks `/api/ledger` lists the run, run and day entries newest first with the sealed hashes, and pages with `before` and `limit`. 13 pass.
+- v0.9.1 to v0.9.5 were made in one thread and moved to another as patch files (base 6ffef89), applied unchanged.
 
 ## v0.9 — "Ledger"
 **Wed Oct 21, 2026 · 1:00 PM HST** (083f138, no migration; `REGISTRY` binding added)
