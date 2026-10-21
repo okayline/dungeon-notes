@@ -7,6 +7,48 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.3.1–v0.3.3 (committed, not pushed)
+**Tue Oct 20, 2026 · 8:20–8:28 PM HST** (no migrations)
+
+### Decisions (the owner's)
+- "for the random names, could we get gen-z slang name generator? haha"
+- "the whole site feels heavy or laggy... is there anything we could do?" I recommended instant tabs and one D1 trip
+  per call; ryan: "yeah can we do the first two please!"
+- One-of-each moves per plan: I advised against it, because a forced DIP makes every poster fold (`play()` ends on any
+  DIP). Not built.
+- Planning round 2 was hard ("i don't know what i'm responding to"). Per-round picks by the poster would bring back
+  waiting. Ghost duels (both sides play recorded moves) still need a first mover who plans blind, which ryan agreed was
+  the problem. ryan picked showing the card for each round: "let's try that ! showing the cards".
+
+### What was built
+- **v0.3.1:** `src/names.js` now has 40 slang adjectives and 40 nouns, giving 1,466 pairs of 16 characters or fewer.
+  Existing names are kept. The test's name check was loosened to any 2-16 characters ("NPC" is all caps).
+- **v0.3.2, server.** Each call's reads are one `env.DB.batch`:
+  - `/today` batches aura, VIBES and the duels list.
+  - `/board` batches the list and everyone's aura (`aurasStmt`, now joined with names).
+  - `/leaderboard` is one query.
+  - `duelView` batches names and VIBES.
+  - `findPlayer` is one UNION over players and sessions.
+  - Removed: `auraOn`, `aurasOn`, `vibesOf` and `namesOf` (replaced by statement builders: `auraStmt`, `aurasStmt`,
+    `vibesStmt`, `namesFrom`, `vibesFrom`).
+- **v0.3.2, page.**
+  - `showTab` draws at once from the tab's cache (or "Loading…"), then fetches only that tab.
+  - `refreshMe` updates the header in the background after actions.
+  - Removed: `loadTab`, and the /today fetch on every tab switch.
+  - Test fake D1 `batch` now returns rows for reads, like D1.
+- **v0.3.3:** `planPicker(mine)` shows one round at a time, with that round's card and three move buttons. Planned
+  rounds are listed as "Round N · card → move" (tap to replan). Changing the lineup resets the plan. Removed: the 3x3
+  move grid.
+
+### Findings
+- Headless Chromium, locally, a tab switch took about 60 ms. With 120 ms added per API call it took about 220 ms, and
+  after v0.3.2 about 45 ms whatever the delay. Scrolling caused no layout or style recalculation.
+- D1 trips per call (local count): /today 2 (3 when `seen_at` is written), /board 2 (findPlayer, then one batch),
+  /leaderboard 1, /ledger 1.
+
+### Tests
+- 19 pass. Browser check: a full duel with the new planner, a save-code login, no page errors, and 1 checkpoint sent.
+
 ## v0.3 — "Play the Plan"
 **Tue Oct 20, 2026 · 8:25 PM HST** (migration `002_plans.sql`, run on the live aura-db through the Cloudflare connector at 8:16 PM HST, before the push; checked: c_plan added, 3 columns gone, duels 1-3 expired)
 
