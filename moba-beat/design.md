@@ -16,11 +16,11 @@ You pick a squad, the squad fights a ghost on its own, and you tap your units on
 ## The beat and the tap (Rhythm Tengoku for GBA)
 
 - **DECIDED** The model is Rhythm Tengoku (GBA): play by sound, cues you answer, a beat you never hear. The owner: "this game should basically be rhythm tengoku for GBA".
-- **BUILT** A daily song over a hidden metronome: drums play beats 1, 2 and 3 of every measure and beat 4 is silent; the player claps on 4. 8 measures shaped A A A B | A A A C (a loop with fills). A bassline and soft chords play a real progression in the day's key, ending home; nothing new starts on beat 4. Reverb and a compressor. Tempo 70 to 130 BPM. One of three kits a day: hip-hop, electro, disco. The grid is hidden until you've played (in the page only).
+- **BUILT** A daily song over a hidden metronome: drums play beats 1, 2 and 3 of every measure and beat 4 is silent; the player claps on 4. 8 measures shaped A A A B | A A A C (a loop with fills). A bassline and soft chords play a real progression in the day's key, ending home; nothing new starts on beat 4. Reverb and a compressor. Tempo 70 to 130 BPM. One of three kits a day: hip-hop, electro, disco, played from CC0 drum samples (Boochi44/free-drum-samples). The grid is hidden until you've played (in the page only).
 - **BUILT** Cue, then wait: in about half the measures (never the first) an enemy winds up on beat 1 and its attack lands 2 beats later; the player taps then to parry.
 - **BUILT** Scoring against the hidden beat: perfect within 35 ms, good within 80 ms (owner: don't change the timing). A countdown -3, -2, -1 on the same tempo, then 1, 2, 3 shown and nothing on 4.
 - **IDEAS** Other parries: different wait lengths, double strikes, fake-outs, off-beat landings, counters, role-based wind-ups (Clutch slow and huge, Feed quick, Tilt off-beat). Other Tengoku patterns: on-beat to off-beat switch (attack vs defend), copy the call (answer the ghost), a twist halfway, a weekly remix.
-- **OPEN** Try Again / OK / Superb ratings; device delay calibration; whether each day becomes its own minigame; real drum samples (needs audio files).
+- **OPEN** Try Again / OK / Superb ratings; device delay calibration; whether each day becomes its own minigame.
 
 ## Where the beat comes from
 

@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.6
+# moba-beat — Dev Changelog — v0.1–v0.7
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,23 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.7 — "Real Kits"
+**Wed Oct 21, 2026 · 11:35 AM HST** (no migration)
+
+### Decisions (the owner's)
+- The owner linked https://github.com/Boochi44/free-drum-samples and said "yeah can we try!". Its README: "All samples in this repository are released under the Creative Commons Zero (CC0 1.0) license"; many are derived from Edward Loveall's TR-808 recordings (CC0).
+
+### What was built
+- `public/samples/<kit>/{kick,snare,hat,clap}.wav`, 12 files, about 540 KB in all (a visit loads one kit, 44 to 253 KB). Hip-hop: 03-soulful-vintage kick-01, snare-01, closed hat-01, clap-01 (22.05 kHz, 0.25 s each). Electro: 02-bounce kick-01, snare-01, closed hat-01, clap-01. Disco: 02-bounce kick-02, 02-bounce claps/cp as the snare, 03-soulful-vintage open hat-01, 01-hard-trap clap-01. `public/samples/README.md` records the source and license.
+- `public/app.js`: the AudioContext is made at load (paused), the day's four samples are fetched and decoded before Play is enabled; Play resumes the context. `sample()` plays a buffer through the bus (reverb and compressor). Removed: the synthesized kick, snare, hat and clap (`KITS`, `noise`). The cue, bass and chords are still oscillators.
+- `public/version.js` v0.7.
+
+### Checks
+- Headless Chromium over a local server: all four disco samples returned 200, Play enabled after loading, a full round finished, no page errors. 16 tests pass. The playtest artifact was published with the 12 sample files beside it.
+
+### Not checked
+- How the samples sound with the reverb and the bass (the owner's ears); load time on a slow phone.
 
 ## v0.6 — "By Ear"
 **Wed Oct 21, 2026 · 11:30 AM HST** (no migration; today's sealed hash is unchanged, but what it plays changed again)
