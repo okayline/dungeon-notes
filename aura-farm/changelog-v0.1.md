@@ -26,8 +26,9 @@ Times are Hawaii time (HST).
   The rules are still in the README. Easy to put back if players are lost.
 - **Passkey login (You screen).** min: put "Log in with a passkey" on the right instead of text below the save code
   place, then (after I put a "Passkey" chip beside "Log in"): "put the passkey button where it belongs", meaning the
-  row with New save code and Add a passkey. It is a "👆 Log in with a passkey" chip in that row, which wraps to a second
-  line at 390 px. Removed: the "or log in with a passkey" link, and the short-lived chip beside "Log in".
+  row with New save code and Add a passkey. Then: "is there a way to make it fit on one line?" The row is "🔑 New code", "👆 Add passkey",
+  "👆 Use passkey", with 12 px text and a 6 px gap (`.keys` in `index.html`) so it fits at 390 px.
+  Removed: the "or log in with a passkey" link, the chip beside "Log in", and the longer labels ("New save code", "Add a passkey").
 - **Server (`src/worker.js`).** Removed: `POST /api/vibes`, `vibesStmt`, `vibesFrom`, the loser's +1 VIBES insert in
   `take`, and `vibes` / `peek` in `/api/today` and `farmView` (which now batches two statements instead of four).
   `aura.js` loses `VIBES_START` and `VIBES_MAX`.
