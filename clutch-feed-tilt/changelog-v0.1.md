@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.5
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.6
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,19 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.3.6 — "Boxed In"
+**Wed Oct 21, 2026 · 7:55 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner sent a screenshot of the CLUTCH box with no words. I read it as the box looking wrong (my reading, not confirmed): it had no right border, and the text sat left of centre.
+
+### What was built
+- `showBanner()` in `public/app.js`: every line is padded to the box width with the text centred and closed with `|`. The width is the longest line plus 4.
+- Removed: the 1.6x width for the "big" style (there is no `.big` rule in the CSS, so the box was wider than its text) and the open right side.
+
+### Tests
+- 7 pass. Checked the 1v3 box text as rendered: all rows the same width.
 
 ## v0.3.5 — "Log Lines"
 **Wed Oct 21, 2026 · 7:52 AM HST** (no migration)
