@@ -5,6 +5,15 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
+## Oct 21, 12:40 AM HST: Aura Farm registry panels open the farm's page; no seal lines on them (with aura-farm v0.17)
+- min: "in the shared registry, if i click on the panel can it link to the game ledger entry?" and asked to move the
+  record and hash text to the farm's page.
+- `src/public-ledger.js` `row`: an aura-farm checkpoint with a farm number: tapping the panel anywhere (except a link)
+  opens https://aura.88x31.app/?farm=N; the panel's seal lines (this registry entry's record, prev and hash) are removed.
+  aura-farm v0.17 shows the farm's own ledger entry (record, prev, hash) on that page. The registry entry's own seal is
+  still in /api/registry/ledger. Removed: the seal lines on Aura Farm panels.
+- No migration. 81 tests pass. Checked in headless Chromium with a mocked ledger. Not checked: the live page.
+
 ## Oct 21, 12:02 AM HST: the registry page opens at a game's checkpoint with ?head=HASH (with aura-farm v0.11; pushed)
 - min: "for the On the Registry link, it doesn't link to the actual registry entry?"
 - `src/public-ledger.js` `publicLedger`: `?head=<64 hex>` finds the first checkpoint whose record names that fingerprint
