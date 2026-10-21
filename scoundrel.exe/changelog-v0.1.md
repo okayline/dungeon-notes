@@ -6,6 +6,26 @@ shorter changelog. Newest first. Times are Hawaii time (HST).
 
 ---
 
+## v0.8.14 — "Log In First"
+**Wed Oct 21, 2026 · 12:52 AM HST** (no migration)
+
+- ryan: "it happened just now again. i logged in to my passkey. then "log out of this browser". then i lost the Mid
+  Himbo account", "no i dont want to keep making new characters every time", then "can we have it not make new empty
+  characters every time???"; picked "Log in first after a log out" on the decision card, for all four games (aura-farm,
+  scoundrel.exe, Dawn Baton, irl-dungeon), and confirmed "okay #1".
+- Investigation (thread "Aura Farm logout losing account"): login/logout code is the same in aura-farm, scoundrel.exe,
+  Dawn Baton, irl-dungeon and 4Dungeon's accounts. A passkey or code login replaces the browser's cookie, so a guest
+  player with no account can't be reached afterwards; logout cleared the cookie, so the next play made a new player.
+  Live examples: aura-farm Mid Himbo; scoundrel players 18 Hushed Fern and 19 Warm Kingfisher (no account, no sessions).
+- Change: logout sets the cookie to "out" (too short to match the token pattern, so no player is found) instead of
+  clearing it. Making a player (``needPlayer``) throws 401 "You logged out of this browser. Log in with your save code or
+  passkey first." when the cookie is "out". Logging in overwrites the cookie as before. A browser with no cookie still
+  gets a player on its first play. Removed: the Max-Age=0 clear cookie on logout.
+- Known gap: cleared cookies or a private window look brand new, so playing there before logging in still makes a player.
+  A logged-out browser can't start a second, new player without clearing cookies.
+- Test: one assert in the logout test (playing after logout is 401). VERSION v0.8.14 (public/app.js). 46 tests pass. No migration. Not pushed. Not checked: the
+  live sites in a real browser.
+
 ## v0.8.13 — "Pocket Guide"
 **Tue Oct 20, 2026 · 8:11 AM HST** (no migration)
 
