@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4.4
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,30 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5 — "Wings"
+**Wed Oct 21, 2026 · 8:46 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can we import the 4dungeon minimap and wing generator into this. and have the ledger make a map that has turns in it?" and "it will still be on-rails". Picked "Two steps: map first" on the card: this release is the map, the turning view and the minimap, still seeded by the date; the ledger-made seed is the next step.
+- Owner: "can we share the wing code? or what's up with reusing the code". There is no shared place for code (each repo builds and deploys alone); 4Dungeon's `floor.js` has the wing logic mixed with room kinds, offers, lures and bonus rooms. My recommendation, given to the owner: copy irl-dungeon's trimmed copy byte for byte now, and decide on a shared repo (git submodule) separately. Not checked: whether Workers Builds fetches submodules.
+
+### What was built
+- `public/engine/floor.js`: irl-dungeon `public/floor.js` (db6e8d5) copied unchanged; `cmp` against it is clean. CLAUDE.md says not to edit it here.
+- `public/engine/corridor.js` `corridor(seed)`: `FLOOR.generate(seed, seed, { days: 3 })` (4 wings), then at every offer the seed opens one of the two locked doors (`growDoor`) until none is left. The rails are the shortest way through open doors from room 0 to the stairs room (4 to 7 rooms over 2,000 seeds, median 6; 35 tiles at the median, the old corridor was 39). Each room is 7 x 7 tiles: wall on its edge, 5 x 5 inside, a 3-wide door through the edge to every built neighbour; a locked door nobody opened stays wall. Rooms off the rails (dead ends) are open to look into.
+- Enemies: one in the 2nd or 3rd room on the rails, two in the last room. Each waits in a 1-tile notch in a wall with no door that isn't the one you came in by: a side wall 2 tiles past the room's centre, or the far wall's middle; it steps 1.35 tiles into the room. `s` is how far along the rails it is; you stop 4 short of it and it steps out within 4.2, as before.
+- `along(path, s)`: where you are and the way you face; at a room where the rails turn you turn with them over the 3 tiles around its centre (smoothstep).
+- `public/app.js`: the raycaster faces any way (`dir` from `along`, the plane to your right; was fixed facing +y, which also drew the world mirrored). Rays step both ways on both axes. Enemies are placed by depth along the facing and the plane. Floor dots run along whichever axis you face more (no lines scroll toward you). The run is `P.s` along the rails (was `P.y`).
+- Minimap (`minimap()`): 4Dungeon's, from floor.js, in the squad panel's 6 empty rows: the rooms of the rails you've passed, door gaps, `#` for locked doors, an arrow for your facing, `@` in bright. floor.js draws hallways out of every doorless wall of room 0 (an irl-dungeon rule), so it is handed the floor with every room number moved up by one.
+- Removed: the 7 x 46 straight corridor (`MW`, `ML`, `START`, `END`), its alcoves and the fixed-forward camera.
+
+### Findings
+- Checked locally (Playwright, today's seed 4261358203, 2026-10-21): a scripted run clicking across the middle of the view killed all 3 and ended TILT at s = 42 with no page errors; screenshots along the way show the rooms, doors and the minimap. Not looked at on a phone. Not looked at mid-turn frame by frame.
+- First try used `days: 4` (5 wings, 5 to 9 rooms): a run took about 40 s of walking. Cut to 3.
+- Enemies first stepped 0.85 into the room and stood near the edge of the view; now 1.35.
+
+### Tests
+- The corridor test now checks, for 5 seeds: at least 4 rooms; every step on the rails is one room N/E/S/W through open tiles; the rails turn at least once; 3 enemies, each in an open notch stepping onto an open tile. New: `along()` on a hand-made east-then-south path (halfway along, at the turn facing south-east, after it facing south). 9 pass.
 
 ## v0.4.4 — "Sight Line"
 **Wed Oct 21, 2026 · 8:47 AM HST** (no migration)
