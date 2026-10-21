@@ -7,6 +7,25 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.2.2 — "Reroll" (committed, not pushed)
+**Tue Oct 20, 2026 · 8:08 PM HST** (no migration)
+
+### Decisions (the owner's)
+- "can you make the random name reroll optiton, and not have the user able to input it ?"
+
+### What was built
+- `POST /api/name` now ignores its body and calls `giveName(env, player, { reroll: true })` (`src/names.js`), which
+  picks a free two-word pair different from the current one. This is the same as scoundrel.exe's reroll.
+- Removed: typed names, `NAME_RE`, `RESERVED` and the `prompt()` box.
+- The "you" screen's "change name" became "🎲 reroll name", and the note line shows "You're <name> now."
+- `names.js` comments were updated. `VERSION` is 0.2.2.
+- Existing names are kept until rerolled. Live aura-db has one player, id 1, named "kura" (typed at v0.1), and it stays
+  as it is.
+
+### Tests
+- 19 pass. One is new: posting a typed name gets a random two-word name instead, different from the old one.
+- Browser check: the reroll button changed the header name ("Shy Tide" to "Amber Finch"), with no page errors.
+
 ## v0.2.1 — "Name Tag"
 **Tue Oct 20, 2026 · 8:03 PM HST** (no migration)
 
