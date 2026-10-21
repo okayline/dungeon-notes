@@ -7,7 +7,7 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.7 — "Who Beats Who"
+## v0.7 — "Fewer Labels"
 **Tue Oct 20, 2026 · 10:35 PM HST** (built and committed locally, not pushed; migration 005 not run on live aura-db)
 
 ### Decisions (the owner's)
@@ -16,10 +16,17 @@ Times are Hawaii time (HST).
   working rules say delete, don't park); it can come back as a new thing later.
 
 ### What was built
-- **Page.** A "Who beats who" panel (built from `A.STYLES`, `A.BEATS` and `A.label`, so it can't disagree with the
-  rules) sits on the Farm tab under the style buttons and on the take screen. Style buttons show only their name and
-  emoji. The take screen no longer says "the same style is a draw" twice (the panel does).
-  Removed: "beats X" on every style, the peek button and text, the 👀 VIBES counter in the header, the `.card .s` CSS.
+- **Page.** I first added a "Who beats who" panel (min asked for a place that explains it), then min saw the board row
+  with 😏🗿🗿 and asked: "no, less labels in general. Get rid of 'Who beats who' and 'the same style is a draw'. maybe
+  delete all the explainer text under AURA FARM, or make it very very short and simple?" So the panel is gone. The Farm
+  tab has one line ("Pick a style. Farm aura while it's up."); the Board, Today and Ledger tabs, the take screen and
+  your own farm show only their title. Farm list lines say "N an hour" instead of a sentence.
+  Removed: "beats X" on every style, the "Who beats who" panel (`rules()`), `A.label` in `aura.js` (only the panel used
+  it), the peek button and text, the 👀 VIBES counter in the header, the `.card .s` CSS, and every explainer paragraph.
+  The rules are still in the README. Easy to put back if players are lost.
+- **Passkey login (You screen).** min: put "Log in with a passkey" on the right instead of text below the save code
+  place. It is a "👆 Passkey" chip beside "Log in" (the longer label squashed the code box at 390 px). Removed: the
+  "or log in with a passkey" link.
 - **Server (`src/worker.js`).** Removed: `POST /api/vibes`, `vibesStmt`, `vibesFrom`, the loser's +1 VIBES insert in
   `take`, and `vibes` / `peek` in `/api/today` and `farmView` (which now batches two statements instead of four).
   `aura.js` loses `VIBES_START` and `VIBES_MAX`.
@@ -30,8 +37,8 @@ Times are Hawaii time (HST).
 ### Tests
 - 14 pass. The whole-farm test now checks there is no peek and `/api/vibes` is a 404; the VIBES assertions are gone.
   The migration test applies 004 then 005 to the v0.5 schema and compares with `schema.sql`.
-- Browser check (headless Chromium, 390 px): the panel shows on the Farm tab and the take screen, no "beats" on a card,
-  no VIBES text anywhere, a full farm and take worked, no page errors.
+- Browser check (headless Chromium, 390 px): the Farm tab shows the one line, the You screen shows the Passkey chip on
+  the Log in row with the code box intact, no page errors. Not re-run after the trim: a full farm and take.
 - Not checked: the live site.
 
 ---
