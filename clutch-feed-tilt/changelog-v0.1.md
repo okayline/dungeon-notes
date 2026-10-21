@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.8
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,217 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.8 — "Quiet"
+**Wed Oct 21, 2026 · 9:07 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can you take the explainer text off the bottom".
+
+### What was built
+- `public/index.html`: removed the `<p class="note">` under the game ("Today's corridor is the same for everyone. Tap or click the enemies. / One run a day: it's sealed on the ledger, and a new corridor opens at midnight UTC.") and its `.note` style, which nothing else used.
+- The playtest build (project files `clutch-feed-tilt/playtest/build.sh`) no longer adds its "PLAYTEST COPY" note either.
+
+### Tests
+- 9 pass.
+
+## v0.5.7 — "Cool Down"
+**Wed Oct 21, 2026 · 9:05 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can one hit make it go down half maybe, and two hits down all the way?"
+
+### What was built
+- `shoot()` in `public/app.js`: new `P.calm`, hits since your last miss. A hit adds 1 to it and sets `P.streak` to `floor(min(5, streak) / 2)`, or to 0 on the second hit in a row. A miss sets `P.calm` back to 0 and adds 1 to the streak as before. Removed: `P.streak = 0` on every hit.
+
+### Findings
+- Playwright on the playtest copy (frozen, two enemies placed 3 tiles ahead): 5 misses gave a meter of 5; a hit 2; a second hit 0; then a miss 1. Hits 2.
+
+### Tests
+- No new test (page only). 9 pass.
+
+## v0.5.6 — "Slow Pan"
+**Wed Oct 21, 2026 · 9:04 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner, after v0.5.4: "OOH THE TURN IS MUCH BETTER" then "just a lot slower?". Read as "make the turn a lot slower" (my reading, said in the reply).
+
+### What was built
+- `TURN_TIME` in `public/app.js` went from 0.8 to 2.4 s, the time the v0.5.2 turn took while walking its 3 tiles at 1.25 tiles/s. Each of the 6 jumps holds for 0.4 s (6 frames at 15 fps). Removed: the 0.8 s turn.
+
+### Tests
+- No new test. 9 pass.
+
+## v0.5.5 — "Every Shot"
+**Wed Oct 21, 2026 · 9:03 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "i think shots should matter even when you are just walking. you should lower your accuracy if you are just shooting randomly maybe" and "it should make you tilt if you just shoot randomly maybe".
+
+### What was built
+- `shoot()` in `public/app.js`: every click is a shot (`P.shots++`, a log line, and a miss adds to `P.streak`, which drives the TILT meter and crosshair shake). Removed: the early return that made a click free when no enemy was out or stepping.
+- `label()` is unchanged (TILT if shots > 2.5 x hits), so random shots now push a run toward TILT.
+- `MAX_SHOTS` in `src/worker.js` went from 500 to 2000, since clicking while walking can pass 500 and the run would then fail the "possible" check and not be sealed. That's my call, not the owner's; listed in the reply.
+
+### Findings
+- Playwright on the playtest copy: 5 clicks at the start while walking gave shots 5, hits 0, log 5, streak 5, and the panel showed `SHOTS 05 ... ACC 0%` and `TILT [#####]`. With shots set to 1234 the panel line is still 80 columns.
+
+### Tests
+- No new test. 9 pass.
+
+## v0.5.4 — "Pan"
+**Wed Oct 21, 2026 · 9:02 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "the wall characters still move a lot", "only have the vertical lines move when turning, no horizontal", "nothing inbetween the vertical panel borders should be moving at all".
+
+### What was built
+- `along(path, s, e = 0)` in `public/engine/corridor.js`: you face the way the stretch you are on goes. On the centre of a room where the rails turn you still face the way in, and `e` (0 to 1) turns you `floor(e * TURN_STEPS) / TURN_STEPS` of the way round. New `turns(path)`: the path indexes where the rails turn. Removed: the eased turn over the 3 tiles around the centre.
+- `step()` in `public/app.js`: you walk to the centre of the next turning room (`P.turns`), stop, and turn there over `TURN_TIME = 0.8` s (6 jumps, 2 frames each at 15 fps), then walk on. Turns wait while enemies are out, as walking did.
+- `render()`: the projection is cylindrical. Column x looks `(x + 0.5 - 47) * COL` round from your facing, with `COL = 15° / 21`, so the view is 67.1° wide (was 2·atan(0.66) = 66.8°). Rays are unit length, so the DDA depth is the true distance. A 15° jump moves the whole picture exactly 21 columns.
+- Wall panels: each face of a wall block is drawn flat, as tall as `H / distance to the face's middle`, one RAMP character all over (by that distance), `_` on its top and bottom rows within 12 tiles, and `|` on its first column (when the face differs from the column to its left) within 9 tiles. Removed: wall height by per-column depth, and seams at `frac < 0.06 || frac > 0.94` of the hit.
+- Floor dots: the axis is from the rails (`along(path, s)`, no turn), not the facing, so it doesn't flip halfway through a turn.
+- Enemies: placed by angle from your facing (`atan2` less the facing, over `COL`) and sized by true distance; skipped when more than 90° off. `e.sd` (used by `shoot()` against `zbuf`) is now true distance, like `zbuf`.
+
+### Findings
+- Playwright on the playtest copy, frozen on the first turning room's centre at each of the 6 steps: the view text of each step, shifted 21 columns, matched the next step everywhere in columns 25–69 of rows 0–19 except the crosshair (10 to 13 cells, which stays put on screen).
+- A scripted run (random clicks) walked through both turns of that map (rooms 2 and 4) and finished TILT at s = 42.
+
+### Tests
+- The `along()` test is rewritten: `turns()` is `[1]`; on the centre it faces 0° at e = 0, 45° at 0.5, 75° at 0.99; past it 90°. 9 pass.
+
+## v0.5.3 — "Fifteen"
+**Wed Oct 21, 2026 · 8:58 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "hmmm, when its turning, the walls are all moving, they all have moving characters all over them. could you make them more static?" then "there's still a lot of motion, could you actually make it like 15fps ?"
+
+### What was built
+- `loop()` in `public/app.js`: steps and draws only when 1000/15 ms (less 2 ms of slack) have passed since the last drawn frame, so 15 frames a second. `dt` is now capped at 0.1 s (was 0.05, below one 15 fps frame). A MutationObserver on `#screen` counted 15 updates a second in Chromium. Removed: drawing on every animation frame.
+- Wall shading in `render()`: the RAMP character, the seam cut-off (9), the top and bottom edge cut-off (12) and the dim/trail colours now use the distance from you to the centre of the wall block the ray hit, not the ray's perpendicular depth. Turning on the spot doesn't change that distance, so each block keeps its character through a turn. Seams were already at fixed spots on the walls. Removed: per-column depth bands, which slid across the walls when the facing changed.
+- `TURN_STEPS = 6` is unchanged.
+
+### Tests
+- No new test (drawing only). 9 pass. Checked with Playwright screenshots at six points through the first turn of the playtest map.
+
+## v0.5.2 — "Stutter"
+**Wed Oct 21, 2026 · 8:51 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "WOW both the gun AND the turn look great. can you make the turn not so smooth, a little more stuttered/low fps?"
+
+### What was built
+- `along()` in `public/engine/corridor.js`: the eased turn fraction is rounded to `TURN_STEPS = 6` steps, so a 90° turn goes 0, 15, 30 ... 90°. Through a turn at s = 5 to 9 (centre 7) the heading came out 0 0 0 0 0 15 30 30 45 60 60 75 90 90 90 90 90 at quarter-tile steps. Where you stand still moves smoothly; only the facing jumps. The frame rate itself is unchanged.
+- Removed: the smooth turn.
+
+### Tests
+- The `along()` test now also checks every heading through a turn is a whole number of 15° steps. 9 pass.
+
+## v0.5.1 — "Rib Lines"
+**Wed Oct 21, 2026 · 8:49 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can you put more lines on the top going vertically down the gun".
+
+### What was built
+- `GUN` rows 2 and 3 in `public/app.js`: `/:|  |:\` and `/: |  | :\`. The `|` pair runs up from the rear sight's notch to the front sight; the `:` lines run beside the slide's edges toward the front. Removed: the empty top of the slide.
+
+### Findings
+- Checked locally (Playwright): pointer in the middle of the view; no page errors. Not checked on a phone. A real Glock's slide top is plain; these lines are drawn for the look, not copied from the gun.
+
+### Tests
+- 9 pass.
+
+## v0.5 — "Wings"
+**Wed Oct 21, 2026 · 8:46 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can we import the 4dungeon minimap and wing generator into this. and have the ledger make a map that has turns in it?" and "it will still be on-rails". Picked "Two steps: map first" on the card: this release is the map, the turning view and the minimap, still seeded by the date; the ledger-made seed is the next step.
+- Owner: "can we share the wing code? or what's up with reusing the code". There is no shared place for code (each repo builds and deploys alone); 4Dungeon's `floor.js` has the wing logic mixed with room kinds, offers, lures and bonus rooms. My recommendation, given to the owner: copy irl-dungeon's trimmed copy byte for byte now, and decide on a shared repo (git submodule) separately. Not checked: whether Workers Builds fetches submodules.
+
+### What was built
+- `public/engine/floor.js`: irl-dungeon `public/floor.js` (db6e8d5) copied unchanged; `cmp` against it is clean. CLAUDE.md says not to edit it here.
+- `public/engine/corridor.js` `corridor(seed)`: `FLOOR.generate(seed, seed, { days: 3 })` (4 wings), then at every offer the seed opens one of the two locked doors (`growDoor`) until none is left. The rails are the shortest way through open doors from room 0 to the stairs room (4 to 7 rooms over 2,000 seeds, median 6; 35 tiles at the median, the old corridor was 39). Each room is 7 x 7 tiles: wall on its edge, 5 x 5 inside, a 3-wide door through the edge to every built neighbour; a locked door nobody opened stays wall. Rooms off the rails (dead ends) are open to look into.
+- Enemies: one in the 2nd or 3rd room on the rails, two in the last room. Each waits in a 1-tile notch in a wall with no door that isn't the one you came in by: a side wall 2 tiles past the room's centre, or the far wall's middle; it steps 1.35 tiles into the room. `s` is how far along the rails it is; you stop 4 short of it and it steps out within 4.2, as before.
+- `along(path, s)`: where you are and the way you face; at a room where the rails turn you turn with them over the 3 tiles around its centre (smoothstep).
+- `public/app.js`: the raycaster faces any way (`dir` from `along`, the plane to your right; was fixed facing +y, which also drew the world mirrored). Rays step both ways on both axes. Enemies are placed by depth along the facing and the plane. Floor dots run along whichever axis you face more (no lines scroll toward you). The run is `P.s` along the rails (was `P.y`).
+- Minimap (`minimap()`): 4Dungeon's, from floor.js, in the squad panel's 6 empty rows: the rooms of the rails you've passed, door gaps, `#` for locked doors, an arrow for your facing, `@` in bright. floor.js draws hallways out of every doorless wall of room 0 (an irl-dungeon rule), so it is handed the floor with every room number moved up by one.
+- Removed: the 7 x 46 straight corridor (`MW`, `ML`, `START`, `END`), its alcoves and the fixed-forward camera.
+
+### Findings
+- Checked locally (Playwright, today's seed 4261358203, 2026-10-21): a scripted run clicking across the middle of the view killed all 3 and ended TILT at s = 42 with no page errors; screenshots along the way show the rooms, doors and the minimap. Not looked at on a phone. Not looked at mid-turn frame by frame.
+- First try used `days: 4` (5 wings, 5 to 9 rooms): a run took about 40 s of walking. Cut to 3.
+- Enemies first stepped 0.85 into the room and stood near the edge of the view; now 1.35.
+
+### Tests
+- The corridor test now checks, for 5 seeds: at least 4 rooms; every step on the rails is one room N/E/S/W through open tiles; the rails turn at least once; 3 enemies, each in an open notch stepping onto an open tile. New: `along()` on a hand-made east-then-south path (halfway along, at the turn facing south-east, after it facing south). 9 pass.
+
+## v0.4.4 — "Sight Line"
+**Wed Oct 21, 2026 · 8:47 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "keep the one you made, it feels great to shoot" (v0.4.3, over a still of a fixed 45° viewmodel that was not built in). Asked for a bit of barrel in front; I added a muzzle over the front sight as a first v0.4.4, then the owner said "can you make it like it was before ... for the gun barrel". That commit was never pushed and was dropped (both repos), not reverted.
+- Owner then sent a sketch: an outline rising from the rear sight's outer edges, stepping up to a small top at the front sight, and "make it accurate to reality? of what that slight angle would look like?"
+
+### What was built
+- `GUN` in `public/app.js`, top 4 rows: the top of the slide seen from a little above, `_.||._` (front end with the front sight post), then `/      \` and `/        \` widening toward you, then the rear sight across the slide's back edge, `_/_o_|  |_o_\_`. 18 x 11 (was 18 x 9). The top 4 rows flash gold when it fires (was 2).
+- How the shape was worked out: a box model of a Glock 17 in mm (slide 186 x 25.5 x 30, sights, frame, guard, grip at 22°) ray-cast into the game's 94 x 34 view with the walls' projection (71 columns and 34 rows per unit at depth 1), eye 15 cm behind the slide and 4 cm above its top, looking along the bore. The top of the slide came out 3 to 4 rows tall, 12 columns wide at the back and about 5 at the front (0.45 of the width); the drawing keeps those proportions at the gun's 16-column slide. The front sight (3.6 mm) is under one column at that distance, so it is drawn as `||`. The script is not in the repo.
+- Removed: `_||_` (the front sight in the notch) and `___o|    |o___`.
+
+### Findings
+- Checked locally (Playwright): pointer in the middle of the view; no page errors. Not checked on a phone.
+
+### Tests
+- 8 pass.
+
+## v0.4.3 — "Cover Plate"
+**Wed Oct 21, 2026 · 8:35 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "yeah way better with the gun! can it not move up and down so much? and a bit more detailed (but accurate)? you can make it bigger if necessary."
+
+### What was built
+- `GUN` in `public/app.js`: 18 x 9 (was 14 x 7). Top to bottom: front sight post in the rear notch (`_||_`), rear sight with its two white dots (`___o|    |o___`), the slide's top edge (`|==============|`), the slide cover plate on its back (a box inside the slide), the slide's bottom, the frame (`|__________|`), the top of the textured grip (`|########|`).
+- `render()`: the gun is one row lower only once `|lean| > GUN_SWING / 2`, plus one row while it fires. Removed: the `round(lean² / 32)` dip (up to 2 rows).
+
+### Findings
+- Checked locally (Playwright): pointer at 2%, 30%, 50% and 98%; at 50% the gun sits on the bottom 9 rows, at 98% one row lower; no page errors. Not checked on a phone. The drawing is from my memory of a Glock's back, not from a reference picture.
+
+### Tests
+- 8 pass.
+
+## v0.4.2 — "Glock"
+**Wed Oct 21, 2026 · 8:33 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "gun could you make it more stiff? have the sides more straight. also, could you base the design off a real gun?"
+
+### What was built
+- `GUN` in `public/app.js`: a Glock 17 seen from behind, 14 x 7: front sight post in the rear sight's notch (`_||_`), rear sight, slide serrations (`|========|`), slide, frame (`|___##___|`), top of the grip. Every side is `|`.
+- `render()`: the gun is drawn as one block, offset by `lean` (still at most 8 cells, `(P.gx - W / 2) * 0.2`) and dipping `round(lean² / 32)` rows. Removed: the per-row skew and the `/` `\` barrel from v0.4.1, and the flared `/##\` drawing.
+
+### Findings
+- Checked locally (Playwright): pointer at 2%, 30%, 50% and 98% across the view; the gun moved as one piece, 2 rows lower at both edges; no page errors. Not checked on a phone.
+
+### Tests
+- 8 pass.
+
+## v0.4.1 — "Swing"
+**Wed Oct 21, 2026 · 8:24 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "for the gun, could it not move so much, and have it attached at the middle of the screen and like move in an arc?"
+
+### What was built
+- `render()` in `public/app.js`: the gun's bottom row stays centred at `W / 2`. `lean = clamp((P.gx - W / 2) * 0.2, ±GUN_SWING)` with `GUN_SWING = 8`; each row shifts by `lean * (rows above the grip) / 6`, so the muzzle moves most and the grip not at all; the gun drops `round(lean² / 32)` rows (2 at full swing); the two barrel rows draw `/` or `\` once `|lean| > 2`. `P.gx` still eases toward the pointer in `step()`.
+- Removed: the whole gun following the pointer across the view (v0.3.7).
+
+### Findings
+- First try was a 12-cell swing with `lean² / 48` and `* 0.3`: at full swing the gun dropped 3 rows and most of it went below the view. Cut to the numbers above.
+- Checked locally (Playwright): pointer at 2%, 30%, 50% and 98% across the view; the muzzle leaned 8 left, 4 left, straight and 8 right; no page errors. Not checked on a phone.
+
+### Tests
+- 8 pass (no new test: the page code has no tests).
 
 ## v0.4 — "Sealed"
 **Wed Oct 21, 2026 · 8:11 AM HST** (migration 002, not yet run live)
