@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.10
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.11
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -6,6 +6,17 @@ Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date w
 Times are Hawaii time (HST).
 
 ---
+
+## v0.11: Oct 21, 12:02 AM HST: "+10,000 an hour"; "On The Registry" lands on the farm's entry (pushed)
+- min: "could this say +10,000 an hour" (screenshot of the Farming rows); "for the On the Registry link, it doesn't link
+  to the actual registry entry?"; "can you push what you have when you can too please !"
+- `public/app.js`: an open farm's row says `+${HOUR} an hour`. Removed: the bare "10,000 an hour".
+- `public/app.js` `seal`: the link is https://88x31.app/registry?head=<this farm's ledger hash>. The farm's checkpoint
+  carries that hash as `head` (`checkpoint` in `src/worker.js` sends the hash of the farm's own entry), so the registry
+  finds the entry without a new column. Correction: in v0.10 I said this needed the registry entry id and a migration.
+  It doesn't. With dungeon-items (`?head=`) and 88x31 v0.46.13 (forwards `head`); deploy those first. A farm whose
+  checkpoint never reached the registry gets "That isn't on the registry yet." Removed: the link to the top of the registry.
+- VERSION 0.11. 15 tests pass. Not checked: the live site.
 
 ## v0.10 — "Every Farm Has a Page"
 **Tue Oct 20, 2026 · 11:55 PM HST** (pushed with dungeon-items)

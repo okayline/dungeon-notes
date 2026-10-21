@@ -5,6 +5,17 @@ The shared core every game binds to: the item table, the copy registry, marks an
 **Backfilled Oct 19 2026** from the git history, the README, `ACCOUNTS.md` and the live `items-db` (queried read-only). Dates and commit ids are from git; "why" lines come from commit messages and docs, so they are the short version. Migrations 001 to 005 are all run on the live database. New entries go at the top, with the migration (if any) and the test count.
 
 
+## Oct 21, 12:02 AM HST: the registry page opens at a game's checkpoint with ?head=HASH (with aura-farm v0.11; pushed)
+- min: "for the On the Registry link, it doesn't link to the actual registry entry?"
+- `src/public-ledger.js` `publicLedger`: `?head=<64 hex>` finds the first checkpoint whose record names that fingerprint
+  (`json_extract(record, '$.head')`), returns `at` (its id) and the entries from it down. Unknown hash: `at: null`, no
+  entries. The page with `?head=` lists from that entry, outlines it in pink and scrolls to it, and says "One game's
+  checkpoint, and everything before it." (or "That isn't on the registry yet. ..."), with a link to the whole ledger;
+  "Older" carries on below. Removed: nothing.
+- No migration. 81 tests pass (1 new: ?head= finds the right checkpoint, checked against raw SQL ids). Page checked in
+  headless Chromium with a mocked ledger. Not checked: the live page, or how fast the json_extract scan is on the live
+  ledger (no index on it).
+
 ## Oct 20, 11:59 PM HST: Aura Farm heading on the registry page is the same size as the other games'
 - min: "can you make the header text line the appropriate size please" (screenshot: "AURA FARM · FARM FINISHED"
   far bigger than "Dawn Baton · Baton came home").
