@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.6
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.7
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,24 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.3.7 — "Big Gun"
+**Wed Oct 21, 2026 · 8:00 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can you have the gun at the bottom, a little bigger, and follow the crosshair from left to right?" and "could you not have the horizontal lines scroll downwards on the floor".
+
+### What was built
+- `render()` in `public/app.js`: the gun is a 7-row, 14-column drawing at the bottom of the view, centred on `P.gx`, which `step()` eases toward the pointer column (`P.gx += (P.aim - P.gx) * min(1, dt * 14)`). It drops a row and its barrel turns gold while the gun flashes. Was 3 rows, fixed at the right.
+- The floor grid keeps the lines running along the corridor (`fx < 0.05`) and drops the cross lines (`fy < 0.07`), which moved toward you as you walked.
+- Removed: the small fixed gun and the cross lines on the floor.
+
+### Findings
+- Checked locally: the gun's left edge was at column 8 with the mouse at 15% of the view and 74 at 85%; no page errors. Not checked on a phone.
+- While the USER panel is open the run is paused, so the gun stays where it was.
+
+### Tests
+- 7 pass.
 
 ## v0.3.6 — "Boxed In"
 **Wed Oct 21, 2026 · 7:55 AM HST** (no migration)
