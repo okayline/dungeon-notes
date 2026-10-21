@@ -7,6 +7,31 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.8 — "Home and The Farm"
+**Tue Oct 20, 2026 · 10:50 PM HST** (built and committed locally, not pushed)
+
+### Decisions (the owner's)
+- min: "i think 'board' should be 'The Farm', and the current 'Farm' should be .. Home?" Done as asked, with 🏠 Home and 🌾 The Farm as the tab icons (my pick).
+
+### What was built
+- **Page.** The tab bar is 🏠 Home, 🌾 The Farm, 🏆 Today, 📜 Ledger, and the open-farms screen's title is "The Farm". The Home screen keeps its "AURA FARM" title. Removed: the tab names "Farm" and "Board" and the title "The board". README says "The Farm tab".
+- **FARM AURA stays on Home.** min: "if i click MOG then FARM AURA, it takes me to a different screen. can it not take
+  me to a different screen please". The button posts the farm and refreshes the list ("Farming · 10,000 an hour");
+  tapping the row still opens the farm. Removed: the jump to the farm screen after posting (`view = ...` in the
+  `farm` action).
+- **Finished-farm screen.** min: "on this screen could you please center it and make it look nicer please". I made two
+  columns; min saw it and asked: "could you have it vertically stacked like before? and maybe black and white the one
+  that lost?" So it is a centered stack (`.duel`, `.face` in `index.html`): the other player's avatar, name, record and
+  style card, then yours, with "Farm #N" above and the caption below. The loser's block is grayscale and dimmed
+  (`.face.lost`); a draw greys nobody. Removed: the left-aligned rows, the right-aligned "Farm #N", the `shown` wrapper
+  for this screen, and the short-lived two-column layout.
+- `VERSION` 0.8, CHANGELOG updated.
+
+### Tests
+- 14 pass. Browser check (390 px): the tab bar fits, The Farm shows its title, picking MOG and tapping FARM AURA stays on Home with the farm in the list, no page errors. Not checked: the live site.
+
+---
+
 ## v0.7 — "Fewer Labels"
 **Tue Oct 20, 2026 · 10:35 PM HST** (built and committed locally, not pushed; migration 005 not run on live aura-db)
 
