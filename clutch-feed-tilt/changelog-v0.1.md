@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.8
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.9
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,23 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.9 — "Run It Back"
+**Wed Oct 21, 2026 · 9:12 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "okay can we add a replay" then "like a way for the player to replay the game after the sealed run". So it means playing again, not watching the run back.
+
+### What was built
+- `public/app.js`: `runItBack()` rebuilds today's corridor (`build()`), marks the run `P.practice`, closes the end banner and says "Practice run: it isn't sealed. Your sealed run stays as it was." in the feed. `finish()` on a practice run sets `P.seal = "PRACTICE, NOT SEALED."` and doesn't call `seal()`, so nothing is sent to `/api/run`. The server would refuse a second run that day anyway (409).
+- The status row shows `[R]UN IT BACK` left of `[U]SER` whenever the run is over: after a fresh seal, after reloading a sealed day (`showSealed`), and after a practice run. A click on it or the R key starts one. No server change.
+- Removed: nothing. (v0.4 removed the old RUN IT BACK button when runs became one a day; this one only plays practice.)
+
+### Findings
+- Playwright on the playtest copy: ending the first run gave `RUN OVER. SEALED: LEDGER ENTRY #1 ... [R]UN IT BACK  [U]SER` (80 columns). The button gave a fresh run (practice true, shots 0). Ending that one gave `RUN OVER. PRACTICE, NOT SEALED.`, and the R key started another.
+
+### Tests
+- No new test (page only). 9 pass.
 
 ## v0.5.8 — "Quiet"
 **Wed Oct 21, 2026 · 9:07 AM HST** (no migration)
