@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.9.5
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.10
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,19 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.10 — "Double Tap"
+**Wed Oct 21, 2026 · 1:50 PM HST** (CFT PR #7, merge 4397db2, no migration)
+
+- Owner: "i want at least 2-3 shots to kill a guy with bodyshots, and can we have headshots?", then "have to double tap to kill? chest then head? no instant headshot?", "could it be harder to get headshots from a distance?", "can we have tilt grow slower if you dont see an enemy, but if you miss a shot on an enemy it grows more?", "it should be at least half tilt bar", "can we have the TILT [..] bar be the original size please?", "when im out of combat it shouldn't grow much anyways", "can we rewrite all the text lines too, to be 90's gamery", and (via another thread) hide the desktop mouse pointer over the crosshair.
+- Finding first (scripted shooters, 200 runs each, 20 days): with one-hit kills even the worst shooter won 192/200. Flat 3 body shots: worst shooter FEEDs 81-85/200, good and average never die. Chest 2/legs 3 zones (75), first enemy 2 HP (64) and slower enemy fire every 35 ticks (66) changed little; zones not built.
+- `public/engine/corridor.js`: `ENEMY_HP = 3`, `HEAD_DMG = 2`; enemies carry `hp`; the run carries `kills` and `heads`; `hits` counts every landed shot. `onHead(b, c, r)`: rows `top` to `top + HEAD * sh` (HEAD 0.22), middle `HEAD_W` 0.2 of columns, which is the `@` app.js draws; no spare row above, so far away (head 1-2 rows) it is a hard shot. `fire()` returns false (shot at nothing), "miss" (enemy on view), "body", "head", "kill", "headkill". Removed: every hit killing.
+- Tilt: `TILT_SEEN 1.5`, `TILT_BLIND 0.25`, `TILT_HALF 3`: a miss with an enemy on the view sets tilt to max(3, tilt + 1.5); a shot at nothing adds 0.25. Removed: every miss adding 1. The bar went to 10 cells and back to 5 in the same release (owner).
+- Bug found in the playtest: misses wrote no feed line, so the last kill line stayed up and every head click seemed to say "HEADSHOT kill". Now a miss on view says "YOU whiffed".
+- `public/app.js`: 90s shooter wording (fragged, tagged, nailed in the head, HEADSHOT!!, gibbed, LAST MAN STANDING, SQUAD IS MOVING IN, CLICK TO FRAG, YOU GOT FRAGGED., YOU WON BY SPRAYING AND PRAYING., PRACTICE MODE, CONNECTION LOST). K column shows kills (it showed hits). A sealed FEED run no longer says how many enemies were up (the runs table keeps hits, not kills). `public/index.html`: `cursor: none` on `.view`; no pointer lock.
+- Tests: 15 pass (new: 3 body shots / head 2 + body 1, the head box, tilt amounts). worker.test expects `kills` 3 and the replayed `hits`.
+- Not changed, noted once: enemies are drawn in their notch before stepping out, and shots at them there always miss.
+- Playtest https://claude.ai/artifact/Vpe8G8xgXjnitVbvtwd59s = v0.10.
 
 ## v0.9.5 — "Plus Corners"
 **Wed Oct 21, 2026 · 1:10 PM HST** (20a9a89, no migration)
