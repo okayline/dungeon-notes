@@ -1,9 +1,43 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.9
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.10
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing card game built from 4Dungeon's
 AURA and VIBES. Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
 Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date with every decision). Newest first.
 Times are Hawaii time (HST).
+
+---
+
+## v0.10 — "Every Farm Has a Page"
+**Tue Oct 20, 2026 · 11:55 PM HST** (pushed with dungeon-items)
+
+### Decisions (the owner's)
+- min: "could we have it say (username)'s AURA FARM" (Home's heading). Uses the player's name as it is (lowercase stays
+  lowercase); no name yet shows "AURA FARM".
+- The Today tab's title: min asked for "AURA MASTERS or what is something funny"; I offered MAIN CHARACTERS,
+  AURA-ISTOCRACY, AURA KINGS, NO NPCs ALLOWED; min: "AURA LEADERBOARD for now. boring! haha".
+- min: "the bottom menu Home The Farm, can we make the text bigger please".
+- min: "can we somehow connect whatever page i click on here, with the ledger entries (do they have a page? theres
+  nothing to click on in Ledger page), with the registry entries?" then, with the finished-farm screen: "this page should
+  be the ledger entry page?" So the farm screen is the entry's page.
+- Not built (my opinion, said to min): a link from a farm to its exact registry entry. The game doesn't learn the
+  registry's entry id (`checkpoint` answers `{ ok, created }`), so it would need dungeon-items to return it, aura-farm
+  to store it (a migration) and 88x31's pass-through to forward a new parameter. The farm links to The Registry's top.
+
+### What was built
+- **`public/app.js`**: Home's heading `${name}'s AURA FARM`; Today's title AURA LEADERBOARD (was "Most aura today");
+  Ledger tab entries are buttons (`look:<farm>`) that open the farm; the finished farm shows `seal(v)`: "📜 Ledger entry
+  #N", the full fingerprint and "On The Registry ›" (https://88x31.app/registry); `?farm=N` on the address opens that
+  farm after loading; someone who wasn't in the farm (`side` -1) sees it from the winner's side (draw: the taker's)
+  with both names. Removed: "Most aura today", the non-tappable ledger rows, "you" on other people's farms.
+- **`src/worker.js`** `farmView`: also returns `ledger: { entry, hash }` for a finished farm (two more subselects in
+  the same query).
+- **`public/index.html`**: `.tab` 15 px (was 12 px), `white-space: nowrap`; fits at 360 and 390 px.
+- `VERSION` 0.10, CHANGELOG updated. No migration.
+
+### Tests
+- 15 pass (the take test checks `ledger` against the row's id and hash from raw SQL).
+- Browser check (headless Chromium, mocked API): Ledger tab, tapping an entry, the spectator view with the seal, and
+  `?farm=16`; the tab bar at 360 and 390 px. No page errors. Not checked: the live site.
 
 ---
 
