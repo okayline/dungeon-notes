@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.2
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.3
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,20 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.3 — "Fifteen"
+**Wed Oct 21, 2026 · 8:58 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "hmmm, when its turning, the walls are all moving, they all have moving characters all over them. could you make them more static?" then "there's still a lot of motion, could you actually make it like 15fps ?"
+
+### What was built
+- `loop()` in `public/app.js`: steps and draws only when 1000/15 ms (less 2 ms of slack) have passed since the last drawn frame, so 15 frames a second. `dt` is now capped at 0.1 s (was 0.05, below one 15 fps frame). A MutationObserver on `#screen` counted 15 updates a second in Chromium. Removed: drawing on every animation frame.
+- Wall shading in `render()`: the RAMP character, the seam cut-off (9), the top and bottom edge cut-off (12) and the dim/trail colours now use the distance from you to the centre of the wall block the ray hit, not the ray's perpendicular depth. Turning on the spot doesn't change that distance, so each block keeps its character through a turn. Seams were already at fixed spots on the walls. Removed: per-column depth bands, which slid across the walls when the facing changed.
+- `TURN_STEPS = 6` is unchanged.
+
+### Tests
+- No new test (drawing only). 9 pass. Checked with Playwright screenshots at six points through the first turn of the playtest map.
 
 ## v0.5.2 — "Stutter"
 **Wed Oct 21, 2026 · 8:51 AM HST** (no migration)
