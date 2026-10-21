@@ -7,7 +7,60 @@ Times are Hawaii time (HST).
 
 ---
 
-## v0.2.2 — "Reroll" (committed, not pushed)
+## v0.3 — "Play the Plan" (committed, not pushed)
+**Tue Oct 20, 2026 · 8:25 PM HST** (migration `002_plans.sql`: it must run on the live aura-db before the push)
+
+### Decisions (the owner's)
+- ryan got stuck on a live duel waiting for the other side's pick: "oh, this isn't asynchronous?? this is live", then
+  "is there a way to make the gameplay faster? not turn-based ... save the user's cards as a pattern and match it up
+  against another user's pattern later?"
+- Recommended: the poster saves a 3-move plan and the taker plays it live. Rejected: both sides plan, because then the
+  taker has no decisions after picking cards. ryan: "yeah you play against the plan!"
+- On the taker's edge (they react to earlier flips, the plan can't): kept, with standing aura as the poster's side of
+  the trade. ryan: "ok yeah let's build this and see how it goes !"
+- "can you also put text glow back like you had it before please haha... tone it down on the large white text".
+
+### What was built
+- **Server (`src/worker.js`).**
+  - `post` takes `plan` (3 moves from `A.MOVES`, else 400) and stores it in `duels.c_plan`.
+  - `lockIn` passes the plan to `commitment(cards, salt, plan)` (`src/ledger.js`), which is now
+    sha256("cards|plan|salt") for the poster and sha256("cards|salt") for the taker, as before.
+  - `move` is taker-only; the poster gets 400. It calls the new `playRound(env, d, takerMove)`, which pairs
+    `[plan[n], takerMove]`, plays it, and either finishes the duel or saves the round under the `n` guard.
+  - `settleStale` DIPs a taker who left halfway, against the plan's move for that round.
+  - `duelView` gives the poster their `plan`, and the taker gets `reads` and `vibes`. `/today` live rows have
+    `yourMove = side === 1`. `vibes` is taker-only.
+  - The ledger record gains `plan`, revealed at a showdown or tie like the lineups.
+  - Removed: `resolve` (it waited for both picks), the `COL` helper, `myMove`/`theyMoved`, and the poster's peeks.
+- **Database.**
+  - `schema.sql`: added `c_plan`; removed `c_move`, `t_move` and `c_reads`.
+  - `migrations/002_plans.sql` sets open and live duels to expired (they have no plan) and sets `taken_at` on the open
+    ones, so their standing aura stops at the migration. It then adds `c_plan` and drops the three columns.
+  - Tested on the v0.1 schema plus 001: the columns match schema.sql afterwards. Live had 2 open duels and 1 live one
+    (#3, ryan against himself), which will be cancelled with nothing paid.
+- **Page (`public/app.js`).**
+  - The post screen has a "Your plan" picker: 3 rows of LOCK IN / FARM / DIP. Post needs 3 cards and 3 moves.
+  - The taker's move buttons are always on. The caption shows the last round ("They 🗿 FARM · you 🔒 LOCK IN").
+  - The poster sees their plan on the open or live screen.
+  - Removed: the 10-second polling, "waiting on them", and "picking…".
+- **Glow (`public/index.html`).**
+  - The v0.1 file is back, from ef69f86.
+  - Softer: `.title`, a new `.big.glow` rule for headings, `.go`'s text-shadow and `.pot .n`.
+  - Removed: v0.2's toned-down values everywhere else.
+- **Other.** `VERSION` is 0.3, and v0.2.2 (reroll) was folded into the v0.3 CHANGELOG entry since it was never pushed.
+  README updated. Design doc: the stare-down and async sections describe the plan, and "Decided" gains the plan and
+  random names.
+
+### Tests
+- 19 pass.
+  - The whole-duel test now posts with a plan: a short plan gets 400, the taker can't see the plan, the poster can't
+    move, and a round plays at once. The poster's commitment checks against sha256("cards|farm,lock,lock|salt").
+  - The reset test now checks a taker who left halfway is DIPped and loses.
+- Browser check: posted with plan FARM/LOCK/FARM, the taker played 3 rounds in a row ("AURA FARMED. +40,000 aura"),
+  1 checkpoint was sent, and there were no page errors.
+- Not checked: how often posters lose against live takers, and the live site.
+
+## v0.2.2 — "Reroll" (released inside v0.3)
 **Tue Oct 20, 2026 · 8:08 PM HST** (no migration)
 
 ### Decisions (the owner's)
