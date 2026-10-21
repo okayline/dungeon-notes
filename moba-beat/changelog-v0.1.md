@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.8
+# moba-beat — Dev Changelog — v0.1–v0.9
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,26 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.9 — "Same You"
+**Wed Oct 21, 2026 · 12:01 PM HST** (migration 002_accounts.sql run on the live D1 database before the push)
+
+### Decisions (the owner's)
+- Owner: "can you do the shared accounts?", then "umm look at dawn-baton maybe". Built after Dawn Baton's version (no names, no legacy save-code table, no HOME cookie).
+
+### What was built
+- `src/worker.js`: `ACCOUNTS` service binding (dungeon-items `Accounts` entrypoint) next to `REGISTRY`. Routes copied from dawn-baton src/worker.js "save codes and passkeys": `GET /api/account` ({player, id, codes, passkeys, devices}), `POST /api/codes` (new, remove), `POST /api/load`, `POST /api/passkey` (register_options, register, login_options, login, remove), `POST /api/logout` (only with a way back in). Game name `moba-beat`. Logging in reuses the account's player here, else this browser's player if it has no account, else a new one (rate-limited, 20 an hour per hashed IP); each loaded device gets its own session token.
+- Players: the cookie token is now 32 random bytes (base64url) and only its SHA-256 is stored (`players.token_hash`, `sessions.token_hash`). A v0.8 player, whose plain token was stored, is found by it once and upgraded to the hash. The routes moved into one table with an error type (`Oops`), as in Dawn Baton. Removed: the plain token column, the UUID token.
+- Migration `002_accounts.sql`: `ALTER TABLE players RENAME COLUMN token TO token_hash`; `sessions`; `rate_limits`. `schema.sql` matches. Live: 1 player (the owner) and 1 run before; columns checked after.
+- `public/account.js`: the Account panel (button in the header), after Dawn Baton's accountScreen: player number and devices, a new save code shown once with Copy and Download, save codes and passkeys with Forget, log in with a code or a passkey, log out. After logging in or out the page shows that player's sealed run.
+- `public/version.js` v0.9.
+
+### Checks
+- Tests (with a stand-in Accounts copied from clutch-feed-tilt's tests): save code, loading on a second device (own token, 2 devices), passkey added there and seen on the first, logout, passkey login back to player 1, no second player made, logout refused without a way in; the v0.8 plain token found and upgraded; migrations equal schema.sql column by column. 20 pass.
+- Headless end to end against the real Worker code: sealed run, save code made and shown, logout, log back in with the code as player 1 with today's sealed run shown; no page errors.
+
+### Not checked
+- Real passkeys on beat.88x31.app; the live Accounts service with moba-beat (first use).
 
 ## v0.8 — "On the Record"
 **Wed Oct 21, 2026 · 11:52 AM HST** (migration 001_runs.sql run on the live D1 database before the push)
