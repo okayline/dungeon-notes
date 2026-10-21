@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.6
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.7
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,21 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.7 — "Cool Down"
+**Wed Oct 21, 2026 · 9:05 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can one hit make it go down half maybe, and two hits down all the way?"
+
+### What was built
+- `shoot()` in `public/app.js`: new `P.calm`, hits since your last miss. A hit adds 1 to it and sets `P.streak` to `floor(min(5, streak) / 2)`, or to 0 on the second hit in a row. A miss sets `P.calm` back to 0 and adds 1 to the streak as before. Removed: `P.streak = 0` on every hit.
+
+### Findings
+- Playwright on the playtest copy (frozen, two enemies placed 3 tiles ahead): 5 misses gave a meter of 5; a hit 2; a second hit 0; then a miss 1. Hits 2.
+
+### Tests
+- No new test (page only). 9 pass.
 
 ## v0.5.6 — "Slow Pan"
 **Wed Oct 21, 2026 · 9:04 AM HST** (no migration)
