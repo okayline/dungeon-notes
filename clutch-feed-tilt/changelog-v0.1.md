@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.7
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.8
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,19 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.8 — "Quiet"
+**Wed Oct 21, 2026 · 9:07 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can you take the explainer text off the bottom".
+
+### What was built
+- `public/index.html`: removed the `<p class="note">` under the game ("Today's corridor is the same for everyone. Tap or click the enemies. / One run a day: it's sealed on the ledger, and a new corridor opens at midnight UTC.") and its `.note` style, which nothing else used.
+- The playtest build (project files `clutch-feed-tilt/playtest/build.sh`) no longer adds its "PLAYTEST COPY" note either.
+
+### Tests
+- 9 pass.
 
 ## v0.5.7 — "Cool Down"
 **Wed Oct 21, 2026 · 9:05 AM HST** (no migration)
