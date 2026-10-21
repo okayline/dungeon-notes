@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.4
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.8
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,74 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.3.8 — "Over the Gun"
+**Wed Oct 21, 2026 · 8:02 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "the crosshair shouldn't be able to go underneath the gun".
+
+### What was built
+- `GUN` moved to the top of `public/app.js`; `aimAt()` stops the crosshair's row at `H - GUN.length - 2` (row 25), so its bottom arm (one row below) is still above the gun's top row (27). Was `H - 2`.
+- Removed: the crosshair being able to sit behind the gun.
+
+### Findings
+- My first edit put a `//` comment before the closing `};` of `aimAt`, which broke the whole page script ("Unexpected end of input"). `npm test` still passed because no test loads `app.js`. Found by loading the page in a browser, fixed with `node --check`, before the commit. There is no test or check that would catch this again.
+- Checked locally: mouse at the very bottom of the view puts the crosshair on row 25.
+
+### Tests
+- 7 pass.
+
+## v0.3.7 — "Big Gun"
+**Wed Oct 21, 2026 · 8:00 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can you have the gun at the bottom, a little bigger, and follow the crosshair from left to right?" and "could you not have the horizontal lines scroll downwards on the floor".
+
+### What was built
+- `render()` in `public/app.js`: the gun is a 7-row, 14-column drawing at the bottom of the view, centred on `P.gx`, which `step()` eases toward the pointer column (`P.gx += (P.aim - P.gx) * min(1, dt * 14)`). It drops a row and its barrel turns gold while the gun flashes. Was 3 rows, fixed at the right.
+- The floor grid keeps the lines running along the corridor (`fx < 0.05`) and drops the cross lines (`fy < 0.07`), which moved toward you as you walked.
+- Removed: the small fixed gun and the cross lines on the floor.
+
+### Findings
+- Checked locally: the gun's left edge was at column 8 with the mouse at 15% of the view and 74 at 85%; no page errors. Not checked on a phone.
+- While the USER panel is open the run is paused, so the gun stays where it was.
+
+### Tests
+- 7 pass.
+
+## v0.3.6 — "Boxed In"
+**Wed Oct 21, 2026 · 7:55 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner sent a screenshot of the CLUTCH box with no words. I read it as the box looking wrong (my reading, not confirmed): it had no right border, and the text sat left of centre.
+
+### What was built
+- `showBanner()` in `public/app.js`: every line is padded to the box width with the text centred and closed with `|`. The width is the longest line plus 4.
+- Removed: the 1.6x width for the "big" style (there is no `.big` rule in the CSS, so the box was wider than its text) and the open right side.
+
+### Tests
+- 7 pass. Checked the 1v3 box text as rendered: all rows the same width.
+
+## v0.3.5 — "Log Lines"
+**Wed Oct 21, 2026 · 7:52 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "can you make it match 4dungeon's layout please, with the 3 log lines yes". Then: "once any text box pops up i cant click it off" and "the crosshair starts going crazy waving back and forth as the run goes on or as i click more".
+
+### What was built
+- `frame()` in `public/app.js`: under the view, `+===+`, three log lines, `+---+`, the status/buttons row, `+===+` (4Dungeon's bottom, daily-dungeon `screen.js:443-466`). The screen is 27 rows, was 23. The log lines are the kill feed (last 3, up to 77 characters); the squad panel keeps its 6 blank rows where the feed was.
+- `.banner[hidden] { display: none }`: `.banner` had `display: flex`, which beat the `hidden` attribute, so an empty full-view overlay was always there (it only worked because it had `pointer-events: none`). With clicks now going to the banner, it would have eaten every shot. The whole banner area closes on `pointerdown`.
+- `shoot()`: a click with no enemy stepping out or out fires the gun (flash) but doesn't count as a shot, a miss or tilt. v0.3.3 counted those, so early clicks piled up the miss streak.
+- Jitter: `(min(5, streak) - 1) * 0.7` per sine pair, was `(streak - 1) * 1.4` with no cap, so it grew without limit. The most it moves now is about 5.6 cells.
+- Removed: the kill feed panel, shots counted with nothing to shoot at, the uncapped jitter, the always-present overlay.
+
+### Findings
+- Checked locally: 27 rows, all 80 wide, no page errors. An early click: SHOTS 00. The 1v3 box closed from a click in its corner. Many misses: TILT meter full, no errors. Not looked at on a phone beyond the row count.
+- Not changed: the banner can still cover a shot meant for an enemy while the 1v3 box is up (about 1.6 s); a click closes it.
+
+### Tests
+- 7 pass.
 
 ## v0.3.4 — "Aim Up"
 **Wed Oct 21, 2026 · 7:45 AM HST** (3f41327, no migration)
