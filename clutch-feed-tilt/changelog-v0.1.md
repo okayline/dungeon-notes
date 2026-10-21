@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4.1
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4.2
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,22 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.4.2 — "Glock"
+**Wed Oct 21, 2026 · 8:33 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "gun could you make it more stiff? have the sides more straight. also, could you base the design off a real gun?"
+
+### What was built
+- `GUN` in `public/app.js`: a Glock 17 seen from behind, 14 x 7: front sight post in the rear sight's notch (`_||_`), rear sight, slide serrations (`|========|`), slide, frame (`|___##___|`), top of the grip. Every side is `|`.
+- `render()`: the gun is drawn as one block, offset by `lean` (still at most 8 cells, `(P.gx - W / 2) * 0.2`) and dipping `round(lean² / 32)` rows. Removed: the per-row skew and the `/` `\` barrel from v0.4.1, and the flared `/##\` drawing.
+
+### Findings
+- Checked locally (Playwright): pointer at 2%, 30%, 50% and 98% across the view; the gun moved as one piece, 2 rows lower at both edges; no page errors. Not checked on a phone.
+
+### Tests
+- 8 pass.
 
 ## v0.4.1 — "Swing"
 **Wed Oct 21, 2026 · 8:24 AM HST** (no migration)
