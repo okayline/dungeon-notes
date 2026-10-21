@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.39
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.40
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing game built from 4Dungeon's AURA
 (cards in v0.1-v0.5, three sealed styles since v0.6). Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -9,6 +9,16 @@ Times are Hawaii time (HST).
 
 v0.24 to v0.37 were written up afterwards from the commit diffs (`8b81ced` to `9acfe34`); the screens were not run in a
 browser for these notes.
+
+## v0.40: Oct 21, 4:50 AM HST: a fade-only fight for Reduce Motion players
+- Why: min's phone has Reduce Motion on, and `reveal()` ended at once for it (`if (matchMedia(...)) return end()`), so the
+  fight never showed. min asked for something better than the static page; I proposed fade-only and min said yes.
+- `public/reveal.js`: step 3 (loser drains, winner glows, line / caption bits) became `settle(done, cleanup)`, shared by
+  both paths. With Reduce Motion: `.back` fades out at 800 ms instead of the flip, then `settle(1800)`; the bits fade
+  (opacity only) instead of stamping with a scale; no wobble, no emoji layer. Removed: the early `return end()`.
+- Tested: `npm test` 20 pass. Ran `reveal()` in headless Chromium on a mock of the markup (not the real page), once with
+  `reducedMotion: reduce` and once without: both finish and show all three bits (about 6.5 s calm, 9.5 s full), no page
+  errors. Not seen on a phone.
 
 ## v0.39: Oct 21, 4:30 AM HST: FARM AURA is greyed out when 3 farms are up
 - `public/app.js` `farmsTab`: the button is `disabled` unless a style is picked and fewer than `A.MAX_OPEN` of your farms
