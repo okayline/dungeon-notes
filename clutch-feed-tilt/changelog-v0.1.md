@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4.3
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4.4
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,24 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.4.4 — "Sight Line"
+**Wed Oct 21, 2026 · 8:47 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "keep the one you made, it feels great to shoot" (v0.4.3, over a still of a fixed 45° viewmodel that was not built in). Asked for a bit of barrel in front; I added a muzzle over the front sight as a first v0.4.4, then the owner said "can you make it like it was before ... for the gun barrel". That commit was never pushed and was dropped (both repos), not reverted.
+- Owner then sent a sketch: an outline rising from the rear sight's outer edges, stepping up to a small top at the front sight, and "make it accurate to reality? of what that slight angle would look like?"
+
+### What was built
+- `GUN` in `public/app.js`, top 4 rows: the top of the slide seen from a little above, `_.||._` (front end with the front sight post), then `/      \` and `/        \` widening toward you, then the rear sight across the slide's back edge, `_/_o_|  |_o_\_`. 18 x 11 (was 18 x 9). The top 4 rows flash gold when it fires (was 2).
+- How the shape was worked out: a box model of a Glock 17 in mm (slide 186 x 25.5 x 30, sights, frame, guard, grip at 22°) ray-cast into the game's 94 x 34 view with the walls' projection (71 columns and 34 rows per unit at depth 1), eye 15 cm behind the slide and 4 cm above its top, looking along the bore. The top of the slide came out 3 to 4 rows tall, 12 columns wide at the back and about 5 at the front (0.45 of the width); the drawing keeps those proportions at the gun's 16-column slide. The front sight (3.6 mm) is under one column at that distance, so it is drawn as `||`. The script is not in the repo.
+- Removed: `_||_` (the front sight in the notch) and `___o|    |o___`.
+
+### Findings
+- Checked locally (Playwright): pointer in the middle of the view; no page errors. Not checked on a phone.
+
+### Tests
+- 8 pass.
 
 ## v0.4.3 — "Cover Plate"
 **Wed Oct 21, 2026 · 8:35 AM HST** (no migration)
