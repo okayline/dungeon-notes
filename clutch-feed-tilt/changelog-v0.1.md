@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.10
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.6
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,31 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.6 — "B3F"
+**Wed Oct 21, 2026 · 9:20 AM HST** (migration 003)
+
+### Decisions (the owner's)
+- Owner: "can we do ledger making the map" (step 2 of the map plan, agreed with v0.5), then "is there a way to tie it into 4dungeon floors??" and "if we can play this on the actual 4dungeon wings, that'd be crazy" (decision card: tie into the 4Dungeon floor). Asked "can clutch feed tilt use an actual 4dungeon wing that already exists?": a wing isn't stored anywhere, since every 4Dungeon page rebuilds it from the quarter's shared seed, so these are the existing wings.
+- Considered and dropped by the owner ("nah i dont want the door thing"): opening the doors most 4Dungeon players took the day before, from 4Dungeon's door tallies (`daily-dungeon/leaderboard/worker.js` /tally, /gift). It would also have needed a daily-dungeon change (the key uses `st.climb`, not the level, and reads are limited to 4Dungeon's own pages).
+
+### What was built
+- `public/engine/corridor.js` `level(day)`: the moon quarter at 00:00 UTC that day, by 4Dungeon's mean moon (`QREF`, `QLEN` and the quarter from `daily-dungeon/screen.js:203–205`, copied unchanged). Returns `name` (B4F to B1F, `levelName` from `rules.js:277`), `seed` = `seedFrom(epoch, q + 1)` (`hash` and `seedFrom` from `rules.js:215` and `787`, as `arrive()` does at `rules.js:802`), and `wing`, the UTC days since the quarter began, capped at 6.
+- `corridor(seed, day)`: builds the 7-wing floor from `level(day).seed` (a player who arrives on a quarter's first day gets 7). The day's seed opens one door of each offer (`growDoor`, as before). The run goes through wings `max(0, wing - 2)` to `max(2, wing)`, from the first room of the first to the room behind the last one's opened door (or the stairs on wing 7). Only those rooms are drawn; doors to other rooms are wall. Returns `level` too. Removed: `DAYS = 3` (a 3-wing floor of its own), and rails always starting at room 0 and ending at the stairs.
+- Checked before building, in a script over both repos' `floor.js`: for 300 seeds, opening the same doors through all 7 wings, CFT's `floor.js` (irl-dungeon's trimmed copy) gave exactly 4Dungeon's rooms (`pos`), wing exits, stairs and room count. That held with a different private seed too, so the shape is the shared seed's alone.
+- `src/ledger.js` `dayEntry(db, day, level, t)`: the day's entry, sealed if it isn't on the chain yet. Record `{"day", "level", "floor", "wing"}` (wing 1 to 7), `hash = SHA-256(prev + "|" + record)`. It retries 3 times on a UNIQUE clash and then reads the winner's.
+- `src/worker.js` `daySeed(env, day)` = the first 4 bytes of that hash, so `/api/today` seals the day on its first call, and `saveRun` checks against `corridor(seed, day)`. Removed: `SHA-256("cft:" + day)`.
+- Migration `003_day_entries.sql`: `CREATE UNIQUE INDEX ledger_one_day ON ledger (day) WHERE kind = 'day'`. `schema.sql` matches. It must be run on the live `cft-db` before this is pushed.
+- Header: `2026-10-21  4DUNGEON B3F WING 4  SEED 7C73`. Removed: "DAILY CORRIDOR".
+- Playtest shim: seals a day entry in memory the same way, starting from GENESIS.
+- The day it goes live, today's corridor changes for anyone who hasn't played yet. Runs already sealed that day stay as they were.
+
+### Findings
+- Over Oct 1 to Jan 28 with 20 seeds a day (2,400 maps): routes of 4 rooms 4 times, 5 rooms 65, 6 rooms 620, 7 rooms 1,711. 78 (3%) never turn. Nothing failed.
+- Playwright on the playtest copy: a scripted run went through rooms 4,5,7,9,12,13,16 of B3F and finished TILT at s = 42.
+
+### Tests
+- New `level()` test with dates worked out from the mean moon (first quarter Oct 18 2026, full Oct 26): Oct 21 is B3F wing index 3, Oct 28 B2F index 2, one floor seed for a whole quarter. The map test passes days. The seed test now expects the first 4 bytes of `SHA-256(GENESIS | day record)` and one day entry after two players' visits. The ledger test chains the first run from the day's entry. The migration test runs 003. 10 pass.
 
 ## v0.5.10 — "Steadier"
 **Wed Oct 21, 2026 · 9:12 AM HST** (no migration)
