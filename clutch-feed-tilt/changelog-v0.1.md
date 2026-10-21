@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.3.8
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,32 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.4 — "Sealed"
+**Wed Oct 21, 2026 · 8:11 AM HST** (migration 002, not yet run live)
+
+### Decisions (the owner's)
+- Owner: "can we work on a ledger?" I proposed the smallest version and the owner picked "Build the smallest version" on the decision card: a `runs` table and a ledger, `POST /api/run`, the page sends the run and shows today's sealed run, one test. Not in it: a public ledger page, the registry checkpoint, ghosts from real runs.
+- Told the owner before building: the run is played in the browser with frame-time countdowns (`e.fire -= dt`), so the server can't replay it the way scoundrel.exe does (`G.replay`). A sealed record is what the page reported, checked only for being possible. A made-up possible run sent with curl would be sealed.
+
+### What was built
+- `migrations/002_ledger.sql` and `schema.sql`: `runs` (player_id, day, label, hp, shots, hits; `UNIQUE (player_id, day)`) and `ledger` (kind, day, run_id, record, `prev_hash UNIQUE`, `hash UNIQUE`; unique index on run_id for kind 'run').
+- `src/ledger.js`: `GENESIS`, `sha256`, `head`, `chainInsert`, `isUnique`, copied from aura-farm `src/ledger.js`. `chainInsert` finds the run id by (player, day) with `INSERT ... SELECT ... FROM runs`, so the entry goes in only if the run did. `verifyChain` was left out (nothing calls it yet).
+- `src/worker.js` `POST /api/run {day, hp, shots, hits, log}`: 409 if `day` isn't today's UTC day or the player already sealed today; 400 unless HP 0-3, shots 0-500, hits <= shots, hits = every enemy (3) when alive and fewer when dead, one `[t, col, row, hit]` per shot with times not going backwards, and hit flags adding up to `hits`. The label comes from `label()` on the server, never from the page. The run row and the ledger entry are one D1 batch; a `prev_hash` clash retries from the new head up to 3 times. Makes a player if there is none (`needPlayer`). Record: `{day, player, hp, shots, hits, label, log}` (player id, never the name).
+- `GET /api/today` also returns `run`: your sealed run today with its entry number and hash, or null.
+- `public/app.js`: `finish()` calls `seal()`; the status row says SEALING..., SEALED: LEDGER ENTRY #n or NOT SEALED., and a log line gives the entry and the first 8 hex of its hash, or the server's error. `showSealed()` shows today's sealed run on load (its banner, stats, everyone down) instead of a new run. The end banner moved to `endBanner()`.
+- `public/index.html`: note says one run a day.
+- Removed: the RUN IT BACK button with its `.controls` and `button` CSS (nothing else used them), unlimited runs, "RUNS AREN'T SAVED YET.", the schema comment calling names "two-word" (they're gamer tags since v0.3.1).
+
+### Findings
+- Checked locally (Playwright, Node server with SQLite for D1, no Accounts): left the run alone until the enemies killed me; it sealed as FEED, entry shown in the log. Reloaded: the sealed FEED banner and "TODAY'S RUN IS SEALED" showed, no new run. No page errors. A won run was not played through in the browser (the test covers CLUTCH). Not checked on a phone.
+- My first log line was longer than the 77 characters a log line fits, so it was cut; shortened before the commit.
+- The run timer keeps counting after a run ends (it did before too: `P.t += dt` comes before the `P.done` check). On the sealed view it counts from page load, not the run's time. Not changed.
+- Switching to another player with a save code during the day doesn't reload today's run; a finished run then gets a 409 if that player already sealed today. Not changed.
+- Migration 002 has to be run on the live `cft-db` before this is pushed.
+
+### Tests
+- One new test: impossible runs are refused (log disagrees with hits, wrong log length, dead with every enemy down, yesterday's day), the server's label wins over the page's, hashes match `node:crypto` SHA-256(prev + "|" + record) from GENESIS and then from the first entry, one run a day, `/api/today` shows the sealed run. The migrations test now runs 001 and 002. 8 pass.
 
 ## v0.3.8 — "Over the Gun"
 **Wed Oct 21, 2026 · 8:02 AM HST** (no migration)
