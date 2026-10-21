@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.4.1
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,23 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.4.1 — "Swing"
+**Wed Oct 21, 2026 · 8:24 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner: "for the gun, could it not move so much, and have it attached at the middle of the screen and like move in an arc?"
+
+### What was built
+- `render()` in `public/app.js`: the gun's bottom row stays centred at `W / 2`. `lean = clamp((P.gx - W / 2) * 0.2, ±GUN_SWING)` with `GUN_SWING = 8`; each row shifts by `lean * (rows above the grip) / 6`, so the muzzle moves most and the grip not at all; the gun drops `round(lean² / 32)` rows (2 at full swing); the two barrel rows draw `/` or `\` once `|lean| > 2`. `P.gx` still eases toward the pointer in `step()`.
+- Removed: the whole gun following the pointer across the view (v0.3.7).
+
+### Findings
+- First try was a 12-cell swing with `lean² / 48` and `* 0.3`: at full swing the gun dropped 3 rows and most of it went below the view. Cut to the numbers above.
+- Checked locally (Playwright): pointer at 2%, 30%, 50% and 98% across the view; the muzzle leaned 8 left, 4 left, straight and 8 right; no page errors. Not checked on a phone.
+
+### Tests
+- 8 pass (no new test: the page code has no tests).
 
 ## v0.4 — "Sealed"
 **Wed Oct 21, 2026 · 8:11 AM HST** (migration 002, not yet run live)
