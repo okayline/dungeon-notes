@@ -7,6 +7,21 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.17: Oct 21, 12:40 AM HST: the farm page carries its whole ledger entry; registry panels open it (with dungeon-items)
+- min: "in the shared registry, if i click on the panel can it link to the game ledger entry? like
+  https://aura.88x31.app/?farm=33" and "in the shared registry panel there is tons of text for the record and hashes. is
+  there any way to put that info on the ledger entry page instead?"
+- `src/worker.js` `farmView`: `ledger` now has `record` (the sealed JSON string, exactly as hashed) and `prev` as well
+  as `entry` and `hash` (same one-trip SELECT). `public/app.js` `seal`: "📜 Ledger entry #N" and "On The Registry ›",
+  then "record … / prev … / hash …" in small monospace (`.seal` in index.html). Removed: the hash on its own line.
+- dungeon-items `src/public-ledger.js`: an aura-farm checkpoint panel with a farm number opens
+  https://aura.88x31.app/?farm=N when tapped anywhere (links inside still work), and drops its seal lines. Note: those
+  were the registry's own record/prev/hash for that checkpoint, not the farm's; they're still in /api/registry/ledger,
+  but no longer shown on the page. The farm page shows the farm's own ledger entry.
+- Test: the take test checks `ledger` against raw SQL and that sha256(prev + "|" + record) = hash (node:crypto).
+- VERSION 0.17. 15 tests pass (dungeon-items 81). Checked in Chromium with mocked APIs: the farm page shows the entry;
+  the registry panel has no seal lines and a tap goes to https://aura.88x31.app/?farm=33. Not checked: the live sites.
+
 ## v0.16: Oct 21, 12:35 AM HST: "Switch anyway?" before leaving an unsaved player
 - min: "it doesnt remember me in the browser? it's giving me a new account every time". Live aura-db: Crunchy Opp
   (08:55 UTC), Unbothered Ghost (09:50), Rare Frog (10:21) and Mid Himbo (10:30) were each made by FARM AURA and never
