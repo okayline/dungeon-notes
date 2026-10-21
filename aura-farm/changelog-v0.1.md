@@ -7,6 +7,25 @@ Times are Hawaii time (HST).
 
 ---
 
+## v0.15: Oct 21, 12:30 AM HST: farms stay up 24 hours (not pushed)
+- min: "how do we tie this game into the real world time? first of all, i dont think the farms should expire at 00:00
+  UTC haha. i think they should be up for 24 hours"
+- Chosen by min (decision card, "On the day it happens"): aura still counts by UTC day (the AURA LEADERBOARD and "aura today" stay daily),
+  and each thing counts on the day it happens: standing hours split at midnight, a win or loss on the day the farm was
+  taken (before: the day it was posted). Side effect: standing rounds down to full hours per day, so a farm standing
+  23:30-00:30 earns 0 for each day.
+- `public/engine/aura.js`: `LIFE = 24 * 3600`. `src/worker.js`: `farmEnd(d)` = posted_at + LIFE. Expiry
+  (`settleStale`) is now `posted_at <= now - LIFE`, at most once a minute per Worker instance (was once per UTC day);
+  every read checks the time itself too (board, take, the take UPDATE's `AND posted_at > ?`, `farmView`, `/api/today`
+  rows), so a farm is never shown or taken past its 24 hours. Max 3 open counts farms up now, not farms posted today.
+  `aurasFrom` clips spans to the day and counts deltas by `taken_at`; `auraStmt`/`aurasStmt` read farms posted that
+  day or the day before (`day IN (?, ?)`). `/api/today` lists open farms, farms taken today, and farms expired in the
+  last day. `deadline` is the farm's 24-hour end. No schema change and no migration (schema.sql comments only).
+  README updated. Removed: the midnight UTC expiry and "3 a day".
+- Test: the 3-farm/expiry test now checks a farm is still up and takeable past midnight, gone at 24 hours, and ann's
+  aura on each day against hand-worked values (Jan 1: first take + 16h = 160,000; Jan 2: second take + 8h = 80,000).
+- VERSION 0.15. 15 tests pass. Not checked: the live site; the design doc still says farms end at midnight UTC.
+
 ## v0.14: Oct 21, 12:20 AM HST: "beats X" under each style card (not pushed)
 - min (screenshot of Home): "on this screen somewhere, can we have an explanation of what beats what? maybe just the
   emoji > emoji, or RIZZ > MOG or something?" I first built one line under "+10,000 Aura per hour" ("💎 DRIP > 😏 RIZZ >
