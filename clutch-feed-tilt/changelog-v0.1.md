@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.5
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.5.6
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,18 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.5.6 — "Slow Pan"
+**Wed Oct 21, 2026 · 9:04 AM HST** (no migration)
+
+### Decisions (the owner's)
+- Owner, after v0.5.4: "OOH THE TURN IS MUCH BETTER" then "just a lot slower?". Read as "make the turn a lot slower" (my reading, said in the reply).
+
+### What was built
+- `TURN_TIME` in `public/app.js` went from 0.8 to 2.4 s, the time the v0.5.2 turn took while walking its 3 tiles at 1.25 tiles/s. Each of the 6 jumps holds for 0.4 s (6 frames at 15 fps). Removed: the 0.8 s turn.
+
+### Tests
+- No new test. 9 pass.
 
 ## v0.5.5 — "Every Shot"
 **Wed Oct 21, 2026 · 9:03 AM HST** (no migration)
