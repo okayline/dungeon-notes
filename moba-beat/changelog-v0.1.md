@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.4
+# moba-beat — Dev Changelog — v0.1–v0.5
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,30 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.5 — "Your Beat"
+**Wed Oct 21, 2026 · 11:16 AM HST** (no migration; today's sealed hash is unchanged, but what it plays changed)
+
+### Decisions (the owner's)
+- The beat that played was "perfectly on beat"; the owner wanted a daily melody over a fixed beat, scored against the metronome, with the tempo set by the seed, "70-150bpm or something", and "the player shouldn't be able to hear the fixed beat".
+- "the melody shouldn't change perfectly on beat either": I first offset notes by 0 to 3 sixteenths, then tried a set of rhythms; the owner said the offset was the biggest problem and asked to "un-offset it". The owner then landed on "you let them hear 3 beats and they have to hit the 4th", and "less of a melody and more of a 'beat' like drumbeat". The melody was removed.
+- "this game should basically be rhythm tengoku for GBA". Research (Wikipedia Rhythm Tengoku; Retronauts on Lockstep; a DEV article on judgement windows): sound over visuals, teach then twist (on-beat to off-beat), remixes, Try Again / OK / Superb. The owner chose "cue then wait" and "123 clap" from the pattern list: enemy wind-ups to parry, and the squad's 1-2-3 with the player's clap.
+- More beats ("can we get more possible beats?"), then a cap at 130 BPM, the yellow box moved to beat 4, then "no 4 at all"; three kits ("hip-hop, electro, disco"); "take out 90% of explainer text"; a countdown "-3, -2, -1, 1, 2" on the same tempo; 32 measures tried and called "too long" and the owner meant unique measures, so 8 unique measures.
+- Timing: windows were widened to 50 / 120 ms after "widen the focus", then the owner said "dont change anything about the timing"; they are back at 35 / 80 ms.
+- Owner: questions are questions; build and push only when asked to.
+
+### What was built
+- `src/beat.js` `beat(hash)` returns `{measures: 8, bpm, style, hits, cues, targets}`. Bytes 0 to 7: one pattern per measure, value mod 108, read as digits base 3, 2, 3, 2, 3 for the "and" of 1 (nothing, hat, kick), beat 2 (snare, kick), the "and" of 2, beat 3 (kick, snare), the "and" of 3; beat 1 is always a kick; nothing on beat 4. Byte 10: bit m means a wind-up in measure m + 1 (never measure 1; none means the last measure), cue on beat 1, lands WAIT = 2 beats later; bytes 21 + m pick the ghost unit. Bytes 18, 19: tempo 70 + (value mod 61), so 70 to 130 BPM. Byte 20: style hip-hop, electro or disco. `targets`: a clap on every beat 4 and a parry where each wind-up lands. Removed: rest/normal/strong beats, `TAPS`, melodies, 80 to 120 BPM.
+- `public/score.js`: `score(targets, taps)` and `grade(err)`, perfect within 35 ms, good within 80 ms, nearest tap within 250 ms; written to be shared with the server later.
+- `public/app.js`: everything scheduled on the Web Audio clock and taps timed on it; three synthesized kits (`KITS`), the player's clap at tap time, the enemy cue (two square blips, the same in every kit); a 3-beat silent countdown shown as -3, -2, -1, then 1, 2, 3 and nothing on beat 4; the measure playing is outlined; a ghost unit leans in while winding up; a good parry pushes the ghost back, a good clap makes your squad glow; results as one dot per target (round clap, square parry) with totals and the average offset. Removed: the audible metronome, the line-by-line results, most explanatory copy.
+- `public/version.js` v0.5.
+
+### Checks
+- Headless Chromium with timed key presses: grades and misses matched the press times (a skipped target is a miss, parries not pressed are misses); the countdown read "", -3, -2, -1, 1, 2, 3, "", 1, 2, 3; no sideways scroll at 390 px; no page errors. A 32-measure run scored all 32 claps. A playtest copy with today's real beat was published as a private artifact for the owner, who played it.
+- Today's hash 4db34841... now gives disco at 95 BPM, wind-ups in measures 3, 5, 6 and 8.
+
+### Not checked
+- The kits by ear; device audio delay (no calibration yet); the page against the live Worker before the push.
 
 ## v0.4 — "Lights Off"
 **Wed Oct 21, 2026 · 10:41 AM HST** (no migration)

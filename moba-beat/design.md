@@ -13,19 +13,19 @@ You pick a squad, the squad fights a ghost on its own, and you tap your units on
 - **LEANING** Each role has its own feel when it acts: CLUTCH rare and huge, FEED fast and small, TILT erratic with high reward and a harsher miss.
 - **OPEN** The roster, the win condition (kill the squad, or hold an objective), fight length (60 to 90 seconds seems right, not tried), the name and look.
 
-## The beat and the tap
+## The beat and the tap (Rhythm Tengoku for GBA)
 
-- **DECIDED** One shared beat runs through the fight. Tapping a unit exactly on the beat makes its next action a crit. One crit per beat, so each beat is a choice: who gets it (a big hit, a chain, a heal, a parry on an enemy).
-- **DECIDED** 16 beats: 4 measures of 4, looping. Each beat is a rest (no crit can land), normal or strong (a bigger crit). Beat 1 of each measure is never a rest.
-- **LEANING** Enemy units can be tapped on the beat too, to interrupt or parry; the counter loop gives a bonus against the role it beats.
-- **LEANING** Several off-beat taps in a row make the squad tilt, so spamming doesn't work.
-- **OPEN** The loop is learnable, which can make it easy. Ideas: shift the pattern each repeat by hashing the hash; more units pulsing than beats allow. Not tried.
-- **OPEN** Timing windows, and how taps are logged. The log should be whole milliseconds (`[ms, unit id]`), not 15-per-second ticks, since rhythm judgment is tighter than that.
+- **DECIDED** The model is Rhythm Tengoku (GBA): play by sound, cues you answer, a beat you never hear. The owner: "this game should basically be rhythm tengoku for GBA".
+- **BUILT** A daily drumbeat over a hidden metronome: drums play beats 1, 2 and 3 of every measure and beat 4 is silent; the player claps on 4. 8 measures, each its own pattern (one of 108). Tempo 70 to 130 BPM. One of three kits a day: hip-hop, electro, disco.
+- **BUILT** Cue, then wait: in about half the measures (never the first) an enemy winds up on beat 1 and its attack lands 2 beats later; the player taps then to parry.
+- **BUILT** Scoring against the hidden beat: perfect within 35 ms, good within 80 ms (owner: don't change the timing). A countdown -3, -2, -1 on the same tempo, then 1, 2, 3 shown and nothing on 4.
+- **IDEAS** Other parries: different wait lengths, double strikes, fake-outs, off-beat landings, counters, role-based wind-ups (Clutch slow and huge, Feed quick, Tilt off-beat). Other Tengoku patterns: on-beat to off-beat switch (attack vs defend), copy the call (answer the ghost), a twist halfway, a weekly remix.
+- **OPEN** Try Again / OK / Superb ratings; device delay calibration; whether each day becomes its own minigame.
 
 ## Where the beat comes from
 
 - **BUILT** The ledger. The day's entry holds the date and the shared registry's chain head as of 00:00 UTC; the hash of that entry is the beat. It is fixed from midnight, differs every day, and anyone can recompute it from the public registry.
-- **BUILT** `beat(hash)`: 16 beats and a tempo of 80 to 120 BPM (see `changelog-v0.1.md`). The shares of rest, normal and strong, and the tempo range, are guesses.
+- **BUILT** `beat(hash)`: the day's drumbeat, wind-ups, kit and tempo (see `changelog-v0.1.md`).
 - **DECIDED, not built** The game feeds the registry back with a checkpoint (entry count and head), like Dawn Baton and scoundrel.exe. The beat only uses the registry as of the day before, so today's play shapes tomorrow's music and nothing loops.
 - **OPEN** The moon phase as a dial on the beat's feel (sparser and slower toward a new moon, denser and faster toward a full one). It adds no randomness, only a slow arc over the month. Not built; leave out if it makes days feel too different.
 
