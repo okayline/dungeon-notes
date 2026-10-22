@@ -1,4 +1,4 @@
-# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.18.1
+# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.18.2
 
 Detailed changelog for TILT.EXE, called CLUTCH FEED TILT until v0.10.1 (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,17 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.18.2 — "Light Check"
+**Wed Oct 21, 2026 · 7:40 PM HST** (CFT branch claude/project-thread-xee9fh, PR not merged when this was written; no migration)
+
+- Why: the moba-beat code review found every game's `checkpoint` read and re-hashed the whole ledger on each seal (raised for TILT.EXE in its own review too). Owner: "yeah can you do the fix for aura farm and tilt please!"
+- `src/worker.js` `checkpoint`: `ORDER BY id DESC LIMIT 2`, checked by `verifyTip`, and `entries` = the newest id. Removed: `SELECT ... FROM ledger ORDER BY id` (the whole ledger) and `verifyChain` over every row.
+- `src/ledger.js` `verifyTip(rows)`: the newest entry must hash right and chain from the one just before it (GENESIS for entry 1), with consecutive ids. Same code in aura-farm and moba-beat. Removed: `verifyChain`, which nothing else used.
+- Live check first (D1 API, read only): cft-db ledger has 5 rows, ids 1 to 5, so the id is the count.
+- Trade-off: no code re-checks old entries any more; each one is checked when it is the newest.
+- The corridor dead-end fix from the "TILT.EXE code review" thread is a separate branch; whichever merges second takes the next version number.
+- Tests: 26 pass (new `test/tip.test.mjs`). Not checked: the live deploy.
 
 ## v0.18.1 — "Spare Mag"
 **Wed Oct 21, 2026 · 7:25 PM HST** (CFT branch claude/project-thread-l0bhr8, commit 83cc2a8, PR not merged when this was written; no migration)
