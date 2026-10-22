@@ -1,0 +1,316 @@
+<title>Moba Beat Playtest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root {
+  color-scheme: dark;
+  --floor: #151a2e; --lane: #1f2640; --ink: #e7ebf5; --muted: #98a2b8; --you: #5b82ff; --ghost: #ff6b8a; --strong: #ffb020; --line: #3a4361; --ok: #3ddc97;
+  --font: "Avenir Next", "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; }
+html { background: var(--floor); }
+body { margin: 0 auto; max-width: 720px; background: var(--floor); color: var(--ink); font: 16px/1.45 var(--font);
+  padding-block: 20px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+:focus-visible { outline: 3px solid var(--you); outline-offset: 3px; }
+h1 { margin: 0; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+.sub { margin: 4px 0 16px; color: var(--muted); font-size: .95rem; max-width: 62ch; }
+.panel { background: var(--lane); border-radius: 20px; padding: 16px; margin-top: 12px; }
+button { font: inherit; color: var(--ink); cursor: pointer; }
+button.go { font-weight: 800; background: var(--you); border: 0; color: #0d1228; border-radius: 12px; padding: 12px 22px; min-height: 48px; }
+.side { display: grid; gap: 8px; }
+.side + .side { margin-top: 14px; }
+.who { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.who b { letter-spacing: .06em; font-size: .8rem; text-transform: uppercase; }
+.who.you b { color: var(--you); } .who.ghost b { color: var(--ghost); }
+.chips { min-height: 1.2em; color: var(--strong); font-size: .8rem; font-variant-numeric: tabular-nums; }
+.bar { position: relative; height: 26px; border-radius: 8px; background: var(--floor); overflow: hidden; }
+.bar i { position: absolute; inset: 0 auto 0 0; background: var(--you); transition: width .25s; }
+.ghost .bar i, .bar.ghost i { background: var(--ghost); }
+.bar b { position: absolute; inset: 0; display: grid; place-items: center; font-variant-numeric: tabular-nums; font-size: .9rem; }
+.heroes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.hero { height: 78px; overflow: hidden; background: var(--floor); border: 2px solid transparent; border-radius: 10px; padding: 6px 8px; min-width: 0; font-size: .85rem; }
+.hero b { display: block; }
+.hero span { color: var(--muted); font-variant-numeric: tabular-nums; }
+.hero small { display: block; color: var(--muted); overflow-wrap: anywhere; line-height: 1.25; }
+.hero.act { border-color: var(--strong); }
+.hero.par { border-color: var(--ok); }
+.turn { margin: 0; font-weight: 700; min-height: 4.3em; }
+.stage { height: 400px; overflow-y: auto; }
+.beats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
+.beats i { height: 34px; border-radius: 8px; background: var(--floor); display: grid; place-items: center; font-style: normal; font-weight: 800; color: var(--muted); border: 2px solid transparent; }
+.beats i.on { background: #2a3354; color: var(--ink); }
+.beats i.mark { border-color: var(--strong); }
+.acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.act, .parry { background: var(--floor); border: 2px solid var(--line); border-radius: 14px; padding: 12px 8px; height: 112px; overflow: hidden; min-width: 0; touch-action: manipulation; }
+.act b { display: block; font-size: 1.05rem; }
+.act small { display: block; color: var(--muted); font-size: .78rem; line-height: 1.25; margin-top: 4px; }
+.act em { font-style: normal; color: var(--strong); font-size: .7rem; }
+.parry { width: 100%; margin-top: 12px; height: 112px; border-color: var(--ok); font-weight: 800; font-size: 1.2rem; }
+.acts:not(.live) .act { opacity: .4; }
+.acts.live .act { border-color: var(--strong); background: #2a3354; }
+.parry:not(.live) { opacity: .4; }
+.parry.live { background: #1d3a37; }
+.act.hit, .parry.hit { transform: scale(.97); background: #26305a; }
+.flash { margin: 10px 0 0; height: 1.5em; overflow: hidden; font-weight: 800; font-variant-numeric: tabular-nums; }
+.flash.perfect { color: var(--ok); } .flash.good { color: var(--strong); } .flash.miss { color: var(--ghost); }
+.log { list-style: none; margin: 10px 0 0; padding: 0; height: 13.5em; overflow: hidden; display: grid; gap: 4px; font-size: .85rem; color: var(--muted); }
+.log li.you { color: #aebfff; } .log li.ghost { color: #ffb3c3; }
+.pickrow { margin-top: 10px; }
+.pickrow > b { display: block; }
+.picks { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 6px; }
+.pick { background: var(--floor); border: 2px solid var(--line); border-radius: 12px; padding: 10px; text-align: left; min-width: 0; }
+.pick b { display: block; } .pick small { color: var(--muted); display: block; margin-top: 2px; }
+.big { font-size: 2rem; font-weight: 800; margin: 0; }
+.note { margin-top: 16px; color: var(--muted); font-size: .85rem; max-width: 64ch; }
+details { margin-top: 12px; color: var(--muted); font-size: .85rem; }
+summary { cursor: pointer; }
+td, th { text-align: left; padding: 2px 12px 2px 0; font-weight: 400; vertical-align: top; }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } .act.hit, .parry.hit { transform: none; } }
+</style>
+
+<h1>Moba Beat Playtest</h1>
+<p class="sub">A mockup of the fight in design.md: three heroes a side, one shared bar, a ghost to fight. Every number in the fight is a guess, so judge how it feels, not the balance.</p>
+
+<section class="panel" id="intro">
+  <p style="margin:0">Press on <b>beat 4</b> of your measures: the button you press is the move. On the ghost's measures it cues on beat 1 and lands on <b>beat 3</b>: press anything to parry. The song plays three times, with a 2-measure break after the first two loops to spend levels. Keys: 1 CLUTCH, 2 FEED, 3 TILT; any of them parries.</p>
+  <p style="margin:12px 0 0"><button class="go" id="start" type="button">Start a fight</button></p>
+</section>
+
+<section class="panel" id="fight" hidden aria-label="Fight">
+  <div class="side">
+    <div class="who ghost"><b>Ghost</b><span class="chips" id="chips1"></span></div>
+    <div class="bar ghost"><i id="fill1"></i><b id="num1"></b></div>
+    <div class="heroes" id="heroes1"></div>
+  </div>
+  <div class="side">
+    <div class="who you"><b>You</b><span class="chips" id="chips0"></span></div>
+    <div class="bar"><i id="fill0"></i><b id="num0"></b></div>
+    <div class="heroes" id="heroes0"></div>
+  </div>
+  <p class="turn" id="turn" style="margin-top:16px"></p>
+  <div class="beats" id="beats"><i>1</i><i>2</i><i>3</i><i>4</i></div>
+  <div class="stage">
+    <div class="acts" id="acts"></div>
+    <button class="parry" id="parry" type="button" hidden>PARRY</button>
+    <div id="breakpanel" hidden></div>
+  </div>
+  <p class="flash" id="flash" aria-live="polite"></p>
+  <ol class="log" id="log" reversed></ol>
+</section>
+
+<section class="panel" id="result" hidden>
+  <p class="big" id="verdict"></p>
+  <p id="summary" style="margin:6px 0 0"></p>
+  <p style="margin:12px 0 0"><button class="go" id="again" type="button">Fight again</button></p>
+</section>
+
+<details>
+  <summary>The guesses in this mockup</summary>
+  <table>
+    <tr><th>Press</th><td>perfect within 35 ms, good within 80 ms of the metronome (the game's real windows, except where an upgrade widens them)</td></tr>
+    <tr><th>Base</th><td>CLUTCH 20 / 10 / 0 damage, FEED 12 / 6 / 0 heal, TILT weakens the enemy's next CLUTCH to 50% / 75% / 100% (perfect / good / miss)</td></tr>
+    <tr><th>Classes</th><td>DPS CLUTCH x1.5, SUPPORT FEED x1.5, TANK TILT x1.5, everything else x0.5 or x1, plus each class's twist shown on the buttons</td></tr>
+    <tr><th>Parry</th><td>perfect blocks all, good lets half through, miss lets it all through</td></tr>
+    <tr><th>Levels</th><td>perfect +1, good +0.5 per press; each whole level is one A/B pick at the breaks (auto-A if you don't choose)</td></tr>
+    <tr><th>Ghost</th><td>a bot, not a recorded player: random buttons weighted by class, about 45% perfect, 35% good, 20% miss</td></tr>
+  </table>
+</details>
+<p class="note">Timing uses the browser's audio clock minus its reported output latency; a Bluetooth speaker can still shift it. Nothing is saved or sealed.</p>
+
+<script type="module">
+/*BEAT*/
+/*ENGINE*/
+const SAMPLE_B64 = /*SAMPLES*/;
+const $ = (id) => document.getElementById(id);
+const KITNAME = { "hip-hop": "Boom bap", house: "House", bounce: "Bounce", "tech-house": "Tech house" };
+const COUNT_IN = 4, TOTAL = 28, STRIP = new Set(["kick", "snare", "clap"]);
+const WEIGHTS = { DPS: [60, 15, 25], SUPPORT: [25, 55, 20], TANK: [25, 30, 45] };
+let S, song, kit, spb, ctx, bus, start, raf = null, running = false, cur = -1, turn = null, samples = {}, counts, logs, actsKey = null;
+
+const seg = (gm) => gm < 8 ? { t: "turn", i: gm } : gm < 10 ? { t: "break", n: 0, k: gm - 8 } : gm < 18 ? { t: "turn", i: gm - 2 }
+  : gm < 20 ? { t: "break", n: 1, k: gm - 18 } : gm < 28 ? { t: "turn", i: gm - 4 } : { t: "end" };
+const tms = () => (ctx.currentTime - (ctx.outputLatency || 0) - start) * 1000;
+const rnd = (a, b) => a + Math.random() * (b - a);
+// the bot: about 45% perfect, 35% good, 20% miss
+function botErr() { const r = Math.random(); if (r < .45) return rnd(-30, 30); if (r < .8) return (Math.random() < .5 ? -1 : 1) * rnd(40, 78); return null; }
+function botButton(hero) {
+  const w = WEIGHTS[CLASSES[hero]].slice(); if (S.bars[1] < 40) w[1] += 40;
+  let r = Math.random() * w.reduce((a, b) => a + b); for (let k = 0; k < 3; k++) { r -= w[k]; if (r < 0) return BTN[k]; } return BTN[0];
+}
+
+function makeBus() {
+  const len = Math.floor(ctx.sampleRate * .7), ir = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = ir.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len) ** 3; }
+  const room = ctx.createConvolver(), wet = ctx.createGain(), glue = ctx.createDynamicsCompressor();
+  room.buffer = ir; wet.gain.value = .12; glue.threshold.value = -18; glue.ratio.value = 3;
+  bus = ctx.createGain(); bus.connect(glue); bus.connect(room); room.connect(wet); wet.connect(glue); glue.connect(ctx.destination);
+}
+async function decode(b64) { const bin = atob(b64), buf = new Uint8Array(bin.length); for (let k = 0; k < bin.length; k++) buf[k] = bin.charCodeAt(k); return ctx.decodeAudioData(buf.buffer); }
+async function load() {
+  samples.cue = samples.cue || await decode(SAMPLE_B64.cue);
+  if (samples[kit]) return;
+  samples[kit] = {};
+  await Promise.all(Object.entries(SAMPLE_B64[kit]).map(async ([d, b64]) => { samples[kit][d] = await decode(b64); }));
+}
+function sample(kind, t, vol = .9) {
+  const src = ctx.createBufferSource(), g = ctx.createGain();
+  src.buffer = kind === "cue" ? samples.cue : samples[kit][`${kind}-${song.voice[kind] + 1}`]; g.gain.value = vol;
+  if (kind === "hat" || kind === "open") src.playbackRate.value = HAT_RATE[kit];
+  src.connect(g).connect(bus); src.start(Math.max(t, ctx.currentTime));
+}
+
+async function begin() {
+  const bytes = Array.from(crypto.getRandomValues(new Uint8Array(32)));
+  bytes[20] = Math.floor(Math.random() * 4);
+  song = beat(bytes.map((b) => b.toString(16).padStart(2, "0")).join("")); kit = song.style; spb = 60 / song.bpm;
+  ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+  await ctx.resume(); await load(); makeBus();
+  start = ctx.currentTime + .2 + COUNT_IN * spb;
+  for (let k = 0; k < COUNT_IN; k++) sample("hat", start - (COUNT_IN - k) * spb, .5);
+  for (let gm = 0; gm < TOTAL; gm++) {
+    const s = seg(gm), base = gm * 4;
+    if (s.t === "turn") {
+      const m = s.i % 8;
+      for (const h of song.hits) if (Math.floor(h.at / 4) === m) sample(h.drum, start + (base + h.at % 4) * spb);
+      if (s.i % 2) sample("cue", start + base * spb, .6);
+    } else for (const h of song.hits) if (h.at < 4 && STRIP.has(h.drum)) sample(h.drum, start + (base + h.at) * spb);
+  }
+  S = newState(); cur = -1; turn = null; counts = { perfect: 0, good: 0, miss: 0 }; logs = [];
+  $("intro").hidden = true; $("result").hidden = true; $("fight").hidden = false; $("breakpanel").hidden = true; actsKey = null; $("log").innerHTML = ""; $("flash").textContent = "";
+  running = true; render(); raf = requestAnimationFrame(frame);
+}
+
+function enter(gm) {
+  const s = seg(gm);
+  if (s.t === "end") return finish();
+  if (s.t === "break") { if (s.k === 0) openBreak(); return render(); }
+  if (gm === 10 || gm === 20) closeBreak();
+  const i = s.i, side = i % 2, hero = heroOf(i);
+  S.loop = Math.floor(i / 8);
+  turn = { i, side, hero, target: (gm * 4 + (side ? 2 : 3)) * spb * 1000, press: null, done: false };
+  if (side) {
+    turn.bot = { button: botButton(hero), err: botErr() };
+    if (turn.bot.err !== null) sample(TAP[kit], start + gm * 4 * spb + 2 * spb + turn.bot.err / 1000, .8);
+  }
+  render();
+}
+function openBreak() {
+  turn = null;
+  for (let h = 0; h < 3; h++) while (owed(S, 1, h) > 0) pick(S, 1, h, Math.random() < .5 ? "A" : "B");
+  $("breakpanel").hidden = false; $("breakpanel").dataset.gm = "";
+}
+function closeBreak() {
+  for (let h = 0; h < 3; h++) while (owed(S, 0, h) > 0) { const t = S.ups[0][h].length; pick(S, 0, h, "A"); say("you", `Auto-picked ${UPS[CLASSES[h]][t][0][0]} for ${CLASSES[h]}`); }
+  $("breakpanel").hidden = true;
+}
+function say(who, text) {
+  logs.unshift([who, text]); logs.length = Math.min(logs.length, 7);
+  $("log").innerHTML = logs.map(([w, t]) => `<li class="${w}">${t}</li>`).join("");
+}
+function resolve() {
+  const t = turn; t.done = true;
+  const input = t.side === 0 ? { button: t.press ? t.press.button : null, err: t.press ? t.press.err : null, parryErr: botErr() }
+    : { button: t.bot.button, err: t.bot.err, parryErr: t.press ? t.press.err : null };
+  const rec = playTurn(S, t.i, input);
+  if (t.side === 0) counts[rec.grade]++;
+  say(t.side ? "ghost" : "you", `${t.side ? "Ghost" : "You"} ${CLASSES[t.hero]}: ${rec.ev.join(" · ")}`);
+  render();
+  if (S.over) finish();
+}
+
+function press(b) {
+  if (!running || !turn || turn.done || turn.press) return;
+  const err = tms() - turn.target; if (Math.abs(err) > 250) return;
+  turn.press = { button: BTN[b], err };
+  sample(TAP[kit], ctx.currentTime, .9);
+  const hero = turn.side === 0 ? turn.hero : heroOf(turn.i - 1);
+  const g = gradeErr(err, windows(S, 0, hero, turn.side === 0 ? "act" : "parry"));
+  $("flash").className = "flash " + g; $("flash").textContent = `${g.toUpperCase()}  ${err > 0 ? "late" : "early"} ${Math.abs(Math.round(err))} ms`;
+}
+
+function heroCards(side) {
+  const acting = turn && turn.side === side ? turn.hero : -1, parrying = turn && turn.side !== side ? heroOf(turn.i - 1) : -1;
+  return [0, 1, 2].map((h) => {
+    const names = S.ups[side][h].map((ab, t) => UPS[CLASSES[h]][t][ab === "A" ? 0 : 1][0]).join(", ");
+    return `<div class="hero ${h === acting ? "act" : ""} ${h === parrying ? "par" : ""}"><b>${CLASSES[h]}</b><span>Lv ${S.levels[side][h]}${owed(S, side, h) ? " · pick owed" : ""}</span><small>${names || "no upgrades"}</small></div>`;
+  }).join("");
+}
+function chips(side) {
+  const c = [];
+  if (S.weak[side] < 1) c.push(`next CLUTCH x${S.weak[side].toFixed(2)}`);
+  if (S.boost[side] > 1) c.push("next CLUTCH +25%");
+  if (S.wall[side]) c.push("next hit blocked");
+  return c.join(" · ");
+}
+function render() {
+  if (!S) return;
+  for (const s of [0, 1]) {
+    $("fill" + s).style.width = S.bars[s] + "%"; $("num" + s).textContent = S.bars[s];
+    $("heroes" + s).innerHTML = heroCards(s); $("chips" + s).textContent = chips(s);
+  }
+  const br = !$("breakpanel").hidden, mine = turn && turn.side === 0;
+  $("acts").hidden = !!(br || (turn && turn.side === 1)); $("parry").hidden = !(turn && turn.side === 1 && !br);
+  const hero = mine ? turn.hero : 0, c = CLASSES[hero];
+  const key = c; if (key !== actsKey) { actsKey = key;
+  $("acts").innerHTML = BTN.map((b, k) => `<button class="act" type="button" data-k="${k}"><b>${b}</b><small>${TEXT[c][b]}</small><em>key ${k + 1}</em></button>`).join(""); }
+  const ghostTurn = !!turn && turn.side === 1, canParry = ghostTurn && turn.bot.button !== "FEED";
+  $("acts").classList.toggle("live", !!mine); $("parry").classList.toggle("live", canParry);
+  $("parry").textContent = ghostTurn && !canParry ? "FEED: nothing to parry" : "PARRY";
+  if (turn) {
+    $("turn").textContent = mine ? `Your turn: ${c}. Press on beat 4.` : `Ghost ${CLASSES[turn.hero]} plays ${turn.bot.button}${turn.bot.err === null ? " (it will miss its timing)" : ""}. Parry on beat 3.`;
+    const t = Math.floor(turn.i / 8) + 1;
+    $("turn").textContent += `  Loop ${t} of 3.`;
+    [...$("beats").children].forEach((e, k) => e.classList.toggle("mark", k === (mine ? 3 : 2)));
+  } else if (br) { renderBreak(); }
+}
+function renderBreak() {
+  const rows = [];
+  for (let h = 0; h < 3; h++) {
+    const t = S.ups[0][h].length; if (owed(S, 0, h) <= 0) continue;
+    const [A, B] = UPS[CLASSES[h]][t];
+    rows.push(`<div class="pickrow"><b>${CLASSES[h]} (Lv ${S.levels[0][h]}): upgrade ${t + 1}</b><div class="picks">
+      <button class="pick" type="button" data-h="${h}" data-ab="A"><b>A: ${A[0]}</b><small>${A[1]}</small></button>
+      <button class="pick" type="button" data-h="${h}" data-ab="B"><b>B: ${B[0]}</b><small>${B[1]}</small></button></div></div>`);
+  }
+  $("breakpanel").innerHTML = `<p class="turn" style="margin-top:16px">Break: spend your levels before the next loop. Unchosen picks become A.</p>` + (rows.join("") || `<p class="sub">Nothing to spend: no hero has a whole new level yet.</p>`);
+  $("turn").textContent = "";
+}
+
+function frame() {
+  if (!running) return;
+  const bf = tms() / 1000 / spb;
+  if (bf < 0) { $("turn").textContent = `Get ready... ${Math.ceil(-bf)}`; }
+  else {
+    const gm = Math.floor(bf / 4);
+    while (cur < gm && running) { if (turn && !turn.done) resolve(); if (!running) return; cur++; enter(cur); }
+    if (turn && !turn.done && tms() > turn.target + 250) resolve();
+    const idx = Math.floor(bf) % 4;
+    [...$("beats").children].forEach((e, k) => e.classList.toggle("on", k === idx));
+  }
+  if (running) raf = requestAnimationFrame(frame);
+}
+function finish() {
+  running = false; cancelAnimationFrame(raf);
+  if (bus) { try { bus.disconnect(); } catch {} bus = null; }
+  $("breakpanel").hidden = true; $("acts").hidden = true; $("parry").hidden = true; $("turn").textContent = "Fight over.";
+  const w = winner(S);
+  $("verdict").textContent = w === 0 ? "You win" : w === 1 ? "The ghost wins" : "Draw";
+  $("summary").textContent = `Final bars: you ${S.bars[0]}, ghost ${S.bars[1]}. Your presses: ${counts.perfect} perfect, ${counts.good} good, ${counts.miss} missed. Kit: ${KITNAME[kit]} at ${song.bpm} BPM.`;
+  $("result").hidden = false;
+}
+
+$("start").addEventListener("click", begin);
+$("again").addEventListener("click", begin);
+$("fight").addEventListener("pointerdown", (e) => {
+  const a = e.target.closest(".act"), p = e.target.closest(".parry");
+  if (a) { e.preventDefault(); a.classList.add("hit"); setTimeout(() => a.classList.remove("hit"), 90); press(Number(a.dataset.k)); }
+  else if (p) { e.preventDefault(); p.classList.add("hit"); setTimeout(() => p.classList.remove("hit"), 90); press(0); }
+});
+$("breakpanel").addEventListener("click", (e) => {
+  const b = e.target.closest(".pick"); if (!b) return;
+  pick(S, 0, Number(b.dataset.h), b.dataset.ab); render();
+});
+document.addEventListener("keydown", (e) => {
+  const k = { Digit1: 0, Digit2: 1, Digit3: 2, Numpad1: 0, Numpad2: 1, Numpad3: 2 }[e.code];
+  if (k !== undefined && !e.repeat) { e.preventDefault(); press(k); }
+});
+</script>
