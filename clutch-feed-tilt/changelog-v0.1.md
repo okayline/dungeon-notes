@@ -15,7 +15,7 @@ Newest first. Times are Hawaii time (HST), from the commit times.
 - `public/index.html` title, the name in the screen header (`public/app.js` frame(), padded 8 more spaces so the rest of the line stays put), the save code file's first line and file name (`tilt-exe-save-code[-name].txt`, `public/account.js`), README, CHANGELOG heading, CLAUDE.md, and header comments in worker.js, corridor.js, wrangler.jsonc, schema.sql. `VERSION` 0.10.1. Removed: the name CLUTCH FEED TILT on screen. Older changelog entries keep the old name.
 - dungeon-items: the registry ledger page's name for the game (`sayGame` in `src/public-ledger.js`), its test and README. Removed: "CLUTCH FEED TILT" on the registry page.
 - Tests: 15 pass here, 82 in dungeon-items. Screenshot of the header: project files `clutch-feed-tilt/tilt-exe/tilt-exe-header.png` (taken on v0.11; the header line is the same code).
-- Also renamed: the rules Claude Doc title.
+- Not renamed: the rules Claude Doc "CLUTCH FEED TILT: rules" (not shared with this session, so it could not be opened).
 
 ## v0.10 — "Double Tap"
 **Wed Oct 21, 2026 · 1:50 PM HST** (CFT PR #7, merge 4397db2, no migration)
