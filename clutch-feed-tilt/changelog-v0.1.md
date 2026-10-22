@@ -1,4 +1,4 @@
-# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.12
+# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.12.1
 
 Detailed changelog for TILT.EXE, called CLUTCH FEED TILT until v0.10.1 (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,16 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.12.1 — "Outlines"
+**Wed Oct 21, 2026 · 2:55 PM HST** (CFT branch claude/project-thread-6owdur, on main after v0.12; no migration)
+
+- Owner, thread "3D view walls": "can we get one thread just to work on the walls in the 3d view please" (after "from far away it still looks like horizontal walls" in v0.11). Round 1, four screenshots of the same far view (now; no flat lines; no flat lines + 1.5x tall; + far walls edges only): owner "no horizontal lines on the walls", then sent a 4Dungeon view (outline walls, \ / edges, | corners, dotted far wall) as the look. Round 2 screenshots: "i think we're getting there", "push it !!".
+- Finding: far walls were drawn out of flat strokes. `RAMP = "@#%*+=-:"` put `=`, `-`, `:` on walls past about 10 tiles, and every wall within 12 tiles had `_` on its top and bottom row (`app.js` 66, 99).
+- `public/app.js` `render()`: walls are now outlines after 4Dungeon's `renderView` (daily-dungeon screen.js 18–43). Two passes: every column is cast first (`hits`, with the panel's distance `pd`, id and unrounded top `t = H/2 - H/d/2`); then each column draws its `|` where the panel changes, and its top edge in the rows it steps through between the halfway points to its neighbours on the same panel (`\` going down to the right, `/` up), mirrored as the bottom edge. A flat edge draws nothing. A panel facing you (its ray's component along the face normal > 0.8, about 37 degrees) gets sparse dots (`x % 3 == 0`, even rows, alternating), like 4Dungeon's dark end; a side-on panel is empty. Locked doors are `#` (grey); the shut exit is `#` in gold. Removed: `RAMP` and shaded fill, `_` top/bottom caps, the exit's `=` fill and `_` caps.
+- Kept: the floor grid dots, enemies, zbuf (same `d`), colours by distance (`d` > 14, `t` > 7).
+- Tests: 19 pass (no change; drawing only). Checked by 2 screenshots of the playtest build (start, and a few steps in down a long room).
+- Not checked: turning in motion, a phone; shallow edges show as separated steps, not compared side by side with 4Dungeon.
 
 ## v0.12 — "As Far As They've Gone"
 **Wed Oct 21, 2026 · 2:50 PM HST** (CFT branch claude/project-thread-t58w8o, on main after v0.11.1; no cft-db migration; new read-only D1 binding)
