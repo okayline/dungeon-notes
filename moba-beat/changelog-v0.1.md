@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.9
+# moba-beat — Dev Changelog — v0.1–v0.9.3
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,64 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.9.3 — "Kick Alone"
+**Wed Oct 21, 2026 · 5:54 PM HST** (merged as okayline/moba-beat PR #3)
+
+### Decisions (the owner's)
+- Owner: "for house, you are playing the bass every beat, not the kick. The kick is unchanging, low drum hit", then "the kick should be a thump!", "it sounds like double hits in general", "one clean kick on beats 1 2 3 and 4, nothing else on the kick", "take the bass synth out for now too". Then "YOU MADE HOUSE MUSIC" and "super fun to groove to the Bounce one".
+- I measured the sampled house kick: 67 Hz but gone in 0.04 s, a short click. The first fix (bass on the off-beats, the longer bounce kick) was replaced by a made thump after "it should be a thump".
+
+### What was built
+- `public/app.js`: house's kick is a made thump, `tone(t, 150, 45, 0.08, 0.3, 0.9)` (a sine that drops from 150 to 45 Hz), the same every time; `THUMP_KITS` (in `beat.js`) lists the kits that do it. The bass synth (`bassNote`, `BASS_SOUND`) and its scheduling are gone.
+- `public/beat.js`: `BASS`, `BASS_NOTE`, `BASS_LOW` and the `bass` array in `beat()` are gone (git history has them); house keeps only the day pattern's off-beat hats (`fourOnTheFloor`), not its off-beat kicks, which sat next to the beat kicks and doubled them. `KIT_DRUMS.house` is snare and hat; the sampled house kick (`public/samples/house/kick.wav`) is deleted.
+- Tests: 26 pass. The bass checks are gone; the tap-sound test accepts a made thump.
+
+### Not checked
+- How the thump sounds beyond what the owner said in the Kit Lab (a copy of the song maker with a kit picker, https://claude.ai/artifact/YbE6VZVoYyJ883LzgoKnaC), the live deploy, and whether the double hits he heard were the off-beat kicks (the likely cause) or the kick and snare together on beat 2 (still there).
+
+## v0.9.2 — "House, Tech House, Boom Bap and Bounce"
+**Wed Oct 21, 2026 · 5:43 PM HST** (merged as okayline/moba-beat PR #2; the public CHANGELOG.md says 5:55 PM, which is wrong, and was not fixed)
+
+### Decisions (the owner's)
+- Owner: "house: kick on all 4 beats, snare on 2 and 4", "hip hop: snare on 2 and 4". Beat 4 is silent so the player can tap into it, so I put it to him on a card; he chose "Your tap makes the sound": beat 4 stays silent and the tap plays the kit's sound. Owner: "oh I wasn't thinking of the game! haha".
+- Owner on trap: "I don't like trap, it's too slow", then "make trap into hip-hop bpm", then "i decided against trap again HAHA ... hip hop bpm, but not boom bap". He chose West Coast bounce ("OMG MUSTARD"). Hip-hop became boom bap ("boom bap!!! yessss").
+- Owner: "can we have the daily seed randomize all this stuff every day?" The seed picks the kit, tempo, key, progression, bass, and each kit's drum variations. Owner asked if there were enough variations; I counted and suggested more hat and bass variety, not built.
+- Owner: "for house, do you know tech-house?", references Vintage Culture and Cassian, "its always 128 locked", "can we do both normal house, and tech house?". Four kits. Owner: "no need to rename" (the boom bap kit stays `hip-hop` in the code).
+- Sources read: Beats to Rapon (boom bap kicks at 1, 7, 9, 12 of 16 steps, snare 5 and 13), Violet Recording, Rappad (Mustard about 110 BPM, kick on 1 and the "and" of 3, snare on 2 and 4, open hats), EDMProd (tech house 125 to 128 BPM, clap on 2 and 4, hat on the off-beats), MusicRadar (kick on every quarter note). I could not open the Vintage Culture or Cassian pages, so tech house is built from the articles, not from those DJs.
+
+### What was built
+- `public/beat.js`: `STYLES` is `hip-hop`, `house`, `bounce`, `tech-house` (byte 20 mod 4). Each kit makes its drums from the day's three patterns A, B and C (`pick`, value mod 108; mod 32 for the kits below):
+  - `boomBap(pick)` (hip-hop): snare on beat 2, hats on every eighth, kick on beat 1 and the day's others from the "a" of 1, "and" of 2, beat 3, "and" of 3, "a" of 3 (5 bits; fewer than 2 gets the "and" of 2 and beat 3).
+  - `fourOnTheFloor(hits)` (house): kick on beats 1, 2 and 3, snare on beat 2, and the pattern's off-beat hats and kicks.
+  - `bounce(pick)`: clap on beat 2, kick on 1 and the "and" of 3, hats on every eighth with one possibly open, 3 extra kicks (the "a" of 1, 2, 3) by bits.
+  - `techHouse(pick)`: kick on 1, 2 and 3, clap on beat 2, closed hats on the off-beats only, 2 syncopated hats and one open hat by bits.
+  - `TEMPO` per kit: hip-hop 80 to 100, house 128, bounce 90 to 100, tech-house 128. `TAP` (what the tap plays): snare, kick, clap, kick. `KIT_DRUMS`: the samples each kit loads. `BASS` for bounce (as trap had it) and tech-house (root on the off-beats 0.5, 1.5, 2.5, 3.5).
+  - Removed: `PATTERNS`-driven drums for hip-hop, a shared tempo range, the trap kit.
+- `public/app.js`: the tap plays `TAP[style]` (was always the clap); samples load from `KIT_DRUMS` (was a fixed four); reverb and bass sound for bounce and tech-house. `public/samples/`: `electro` renamed `house`; `bounce` and `tech-house` added; `trap` removed; the hip-hop and house clap files removed (nothing plays them); `README.md` lists the sources, all CC0 from Boochi44/free-drum-samples (bounce: bounce-kick-02, clap-01, closed hat, open hat from 02-bounce; tech-house: hard-kick-03, clap-01, closed hat, open hat from 01-hard-trap).
+- Tests: 26 pass (from 21). New: boom bap, house, bounce and tech-house drum rules, every kit's tap sound is one of its samples, tempo by kit. The hand-worked pattern test now checks `pattern()` by hand and a house day's off-beats.
+
+### Checks
+- 20,000 random seeds gave 20,000 different songs (kit, tempo, key, chords, drums, bass, wind-ups). Whole-song drum variations seen in 30,000 seeds: about 6,300 in hip-hop, 7,700 in house, 9,800 in trap (before it was removed); one bass rhythm per kit.
+- The page's script parsed with `node --check`; the Kit Lab artifact (a copy of the song maker with a kit picker) was published but not opened in a browser.
+
+### Not checked
+- How any of it sounds (no one listened yet), the live deploy, and whether tech house sounds like Vintage Culture or Cassian.
+
+## v0.9.1 — "Trap"
+**Wed Oct 21, 2026 · 5:23 PM HST** (merged as okayline/moba-beat PR #1)
+
+### Decisions (the owner's)
+- Owner: "can we take the disco sound out?", then "it sounds too dorky", then "can we still do another genre with the samples we have?". I found the pack's unused 01 Hard Trap kit and made a trap kit; the download of four samples was blocked until he approved it ("yeah if you request it").
+- Owner: "trap should be slower maybe, look up normal trap beats" and "hip hop is like 70-90 bpm?". Sources: trap is written at 130 to 160 but feels like 65 to 80 (half-time), hip-hop is mostly 85 to 95. Per-kit tempo ranges: hip-hop 80 to 100, trap 70 to 85, electro 128 ("it's the house tempo").
+
+### What was built
+- `public/beat.js`: `TEMPO` per kit (was one 70 to 130 range from `BPM_MIN` and `BPM_MAX`); `STYLES` hip-hop, electro, trap; trap bass (root on beat 1, 1.75, fifth on 2.5). Removed: the disco kit, its octave-bounce bass (and the octave note), its reverb and bass sound, its samples, `BPM_MIN` and `BPM_MAX`.
+- `public/samples/trap/` (hard-kick-01, hard-snare-01, closed hat, clap-01 from 01-hard-trap); `public/app.js` trap reverb (0.8 s) and bass sound.
+- Tests: 21 pass; a trap tempo test by hand.
+
+### Not checked
+- How it sounds, the live deploy.
 
 ## v0.9 — "Same You"
 **Wed Oct 21, 2026 · 12:01 PM HST** (migration 002_accounts.sql run on the live D1 database before the push)
