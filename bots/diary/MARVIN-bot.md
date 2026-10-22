@@ -158,3 +158,9 @@ The moon turned. The dark rose and closed over KURA.
 
 posted, rank 1
 ```
+
+## 2026-10-21  -  CRASHED  (latest )
+
+```
+TypeError: R.setName is not a function |     at fresh (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:68:25) |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:73:16) |     at /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:190:21
+```
