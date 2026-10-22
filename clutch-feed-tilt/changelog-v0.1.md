@@ -1,6 +1,6 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.11
+# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.11
 
-Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
+Detailed changelog for TILT.EXE, called CLUTCH FEED TILT until v0.10.1 (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
 called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public repo keeps a short changelog.
 Newest first. Times are Hawaii time (HST), from the commit times.
@@ -22,6 +22,16 @@ Newest first. Times are Hawaii time (HST), from the commit times.
 - Tests: 17 pass (engine 11, worker 6). New: map shape and 5 notches, walking and walls, label with escaped, live vs replay on 5 maps with `test/bot.mjs`, body/head damage, tilt, no waking through walls (idle run times out at 2700 ticks, FEED), refused inputs, ghosts in /api/today (newest 2 others, old-style left out, query plan uses `runs_day`).
 - Fix (playtest, owner: "it captures the mouse, but not the keyboard!"): `pointerdown` on the view calls `preventDefault()`, which also stops the click focusing the page, so inside a frame the keys went to the page around it (checked: in a parent page with a focused input, W typed "w" into it). Now the view has `tabindex="-1"` and the click calls `window.focus()` and `view.focus()`; the same test walks.
 - Not checked: real pointer lock turning (headless Chrome sends fake recentring moves), a real phone, the live database.
+
+## v0.10.1 — "TILT.EXE"
+**Wed Oct 21, 2026 · 2:25 PM HST** (CFT branch claude/project-thread-fm7924, on main without v0.11 Free Roam; no migration)
+
+- Owner: "ooh TILT.EXE sounds kinda good" (the name Clutch Feed Kill is kept for a mini-moba), then "yeah can we push this name change as long as its ok with the other commits !".
+- Decision: only the player-facing name changes. Kept: repo `okayline/clutch-feed-tilt`, Worker `clutch-feed-tilt`, D1 `cft-db`, cookie `cft`, Accounts game name and registry game id `clutch-feed-tilt`, ledger records, and the run labels CLUTCH, FEED and TILT. Released on its own, ahead of v0.11 Free Roam (which waits on migration 004); the Free Roam and enemy-look branches merge with it with one conflict each in CHANGELOG.md and version.js (both add a top entry: keep both, take their version).
+- `public/index.html` title, the name in the screen header (`public/app.js` frame(), padded 8 more spaces so the rest of the line stays put), the save code file's first line and file name (`tilt-exe-save-code[-name].txt`, `public/account.js`), README, CHANGELOG heading, CLAUDE.md, and header comments in worker.js, corridor.js, wrangler.jsonc, schema.sql. `VERSION` 0.10.1. Removed: the name CLUTCH FEED TILT on screen. Older changelog entries keep the old name.
+- dungeon-items: the registry ledger page's name for the game (`sayGame` in `src/public-ledger.js`), its test and README. Removed: "CLUTCH FEED TILT" on the registry page.
+- Tests: 15 pass here, 82 in dungeon-items. Screenshot of the header: project files `clutch-feed-tilt/tilt-exe/tilt-exe-header.png` (taken on v0.11; the header line is the same code).
+- Not renamed: the rules Claude Doc "CLUTCH FEED TILT: rules" (not shared with this session, so it could not be opened).
 
 ## v0.10 — "Double Tap"
 **Wed Oct 21, 2026 · 1:50 PM HST** (CFT PR #7, merge 4397db2, no migration)
