@@ -1,9 +1,32 @@
-# moba-beat — Dev Changelog — v0.1–v0.9.3
+# moba-beat — Dev Changelog — v0.1–v0.9.4
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
 The public repo keeps a short changelog. The design is in `design.md` here. Newest first. Times are Hawaii time (HST), from the commit times.
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
+
+---
+
+## v0.9.4 — "More Sounds"
+**Wed Oct 21, 2026 · 7:11 PM HST** (merged as okayline/moba-beat PR #4; no migration)
+
+### Decisions (the owner's)
+- Owner: "all the different songs sound like using the exact same instruments", "can you use all the samples we have", then "one pack per kit, days seed picks which kit ... and the beat pattern".
+- Owner on the chord pad: "literally every song starts with the same synth tone ... please its driving me crazy", then "take that instrument out and never use it again", then "no browser oscillators ever, only samples". I first moved the pad to measure 2 instead of removing it; he caught that ("you just put it on the second measure"), and it was removed fully.
+- Owner on the fight: turn-based, one measure per turn, three heroes a side on one shared bar, CLUTCH / FEED / TILT as the button you press on beat 4. The full decisions are in `design.md`.
+
+### What was built
+- `public/beat.js`: the day picks which recording of each drum its kit plays (`VOICES`, `VOICE_BYTE`); `HAT_RATE` pitches the one shared hi-hat per kit. Removed: the pad (`PADS`, `PAD_LOW`), `THUMP_KITS`. The key and chords stay as the ledger page's record.
+- `public/app.js`: `sample()` plays everything, the cue is `samples/cue.wav`. Removed: `tone`, `drum`, `padChord`, `hz` and every oscillator.
+- `public/samples/`: one pack per kit (CC0, Boochi44/free-drum-samples), README with sources. Removed: the 13 single samples per kit.
+- `public/fight.js` + `test/fight.test.mjs`: the fight as a pure function, not wired into the page. It has the flat +10% per level; the 3x3 twists and A/B upgrades are only in `design.md` and in `mockup/` here.
+- `mockup/`: source of the playable fight mockup (artifact), numbers all guesses.
+
+### Tests
+- 33 pass (`npm test`).
+
+### Not checked
+- How any of it sounds by ear on my side (the owner played the Kit Lab and the mockup), the live deploy of v0.9.4, phone timing.
 
 ---
 
