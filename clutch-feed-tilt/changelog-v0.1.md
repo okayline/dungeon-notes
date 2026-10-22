@@ -1,4 +1,4 @@
-# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.11
+# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.12
 
 Detailed changelog for TILT.EXE, called CLUTCH FEED TILT until v0.10.1 (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,18 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.12 — "As Far As They've Gone"
+**Wed Oct 21, 2026 · 2:50 PM HST** (CFT branch claude/project-thread-t58w8o, on main after v0.11.1; no cft-db migration; new read-only D1 binding)
+
+- Owner, thread "Clutch feed tilt updates": "i think the map is too big", "should we do doors like 4dungeon?", then "how about we not do keys in CFT. but the 4dungeon people open the doors, and CFT just has that many wings open?", "no keys lets just take the floor size", "count only yes" (a card: count only, the day seed still picks which door of each pair). Cross-game keys and shared doors were discussed and dropped (TILT.EXE's map is one for everyone; 4Dungeon's doors are per player, in the save).
+- `src/worker.js` `wingsOpened(env, day, L)`: asked only when the day's entry is sealed. `SELECT k FROM tallies WHERE k >= 'first:' AND k < 'today+1:'` on 4Dungeon's board (binding `DUNGEON`, D1 `daily-dungeon-board` a6dedccb-…, read only); tally keys are `omenDay:climb:wing` (daily-dungeon rules.js 1393, leaderboard/worker.js tallyDoor). The furthest wing w in the quarter's days so far gives `wing = w + 2` (1-based, the wing w's door builds), clamped to RUN_WINGS..WINGS; no rows or no binding gives 2. The query is a range on the primary key (test checks the plan). Live tallies on Oct 22 UTC (4 rows): furthest this quarter 2 (20747:1:2), so `wing` would be 4.
+- `src/ledger.js` `dayEntry(db, day, level, t, wingOf)`: returns `{hash, wing}` and reads `record` with the hash; the record's `wing` is now how far the floor is open (was the calendar day's wing + 1; older entries keep theirs and are read as the same field). `daySeed()` returns `{seed, wing}`; `/api/today` adds `wing`.
+- `public/engine/corridor.js` `corridor(seed, day, wing)`: `b = max(RUN_WINGS - 1, wing - 1)`, `a = b - 1`; opens `b + 1` doors (was: up to 20, until none were left). A sealed door is plain wall (not in `locked`). `level()` adds `first` (the quarter's first UTC day number). Removed: the whole floor open every day.
+- `public/app.js`: `WING` from /api/today, passed to `corridor()` and shown in the header (was `level().wing + 1`).
+- Today's (Oct 22) entry was sealed before this with wing 5, so today's live map goes from 24 rooms (all) to 18 on deploy; runs started before the deploy may fail to seal and today's earlier ghosts replay on the new map. From Oct 23 the wing comes from the tallies.
+- Tests: 19 pass (engine 12, worker 7). New: the tally read (hand keys: last quarter, this quarter, today, tomorrow; record on the ledger; fixed once sealed; no board gives 2; key-range plan). Map test now runs wings 2, 3, 4, 6, 7 and checks wings built and sealed doors as wall. `level().first` checked by hand (day 20747 minus wing 3).
+- Not checked: the binding on the deployed Worker before it runs; whether every 4Dungeon player today is on the quarter's level (the key's climb part is ignored).
 
 ## v0.11.1 — "Drones"
 **Wed Oct 21, 2026 · 2:40 PM HST** (CFT branch claude/project-thread-jvs11c, on main after v0.11; no migration)
