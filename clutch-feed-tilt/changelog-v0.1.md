@@ -1,4 +1,4 @@
-# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.12.1
+# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.15.0
 
 Detailed changelog for TILT.EXE, called CLUTCH FEED TILT until v0.10.1 (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,59 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.15.0 — "Magazine"
+**Wed Oct 21, 2026 · 4:14 PM HST** (CFT branch claude/magazine, PR #17 merged as 90d6a06; no migration)
+
+- Owner, thread "clips/ammo": "can we get clips/ammo. what is the real glock's clip size?", then "17 rounds, but the run is 30-40 secs? one magazine?" (Claude: one magazine would run dry on most runs, so recommended 17 with a 1.5 s reload; owner: "lets do your way !"). Also "two perfect headshots to kill not one" and "two non-crown headshots, two in the chest one in the head all kill", "two crown, three non-crown headshots. two in the chest, one two in the head? double double tap?".
+- `public/engine/corridor.js`: `MAG = 17`, `RELOAD_TICKS = 23` (1.5 s). `reload(R)`: R key, refused with a full magazine or while reloading, logs `[tick, 3, 0]`; an empty magazine reloads by itself. `fire()` returns `"dry"` (no shot, nothing logged) while reloading. `replay()` refuses a shot during a reload and a reload with a full magazine. `CROWN_DMG` 10 to 5 (half of `ENEMY_HP` 10). Removed: unlimited shots, and the crown dropping an enemy at once.
+- `public/app.js`: the TILT row ends with the ammo (`17/17`, yellow at 3 or fewer, red `RELOAD` while reloading); R does a reload in play (and runs it back after a run); "RELOADING" in the feed. Removed: nothing on screen for ammo.
+- Sealed runs: a reload is a new input kind (3) in the log, so runs that fired more than 17 shots without a reload don't replay and drop out of the ghosts.
+- Tests: 24 pass. New: magazine of 17 with a dry click not logged, reload 23 ticks, reload refused with a full magazine, replay refuses a shot during reload; crown 5 (two drop it, 2 chest + 2 head = 12).
+- Not checked: how the ammo readout and reload feel in play; touch has no reload button yet; a sealed run with a reload through the live Worker.
+
+## v0.14.0 — "No Fog"
+**Wed Oct 21, 2026 · 4:06 PM HST** (CFT branch claude/no-fog, PR #16 merged as eb5da87; no migration)
+
+- Owner, thread "exit in view": "can we never have the exit in view of the spawn??", "ooh that's why, can we not have that fog of war", "not have the exit directly in front of the player, shouldn't be able to see 24 tiles in front either?? there are walls", "every day is 2 wings right? can we just make the exit spawn in the 2nd wing" (answered: the exit is already in the second wing; the spawn was the problem). Then "can we make enemies harder to kill", "increase inaccuracy at distance", "no camera shake please", "that's a LOT better ! feels fun to kill people", "slower drone !".
+- `public/app.js`: `SIGHT` (9 tiles) removed with every use: walls, floor and ceiling, the holo gate and enemies are drawn at any distance. Removed: the darkness past 9 tiles.
+- `public/engine/corridor.js` `corridor()`: the start is the first room of the first wing whose middle can't see the exit (`sees()`, a straight line of open tiles); falls back to the first room when none can. Checked over 14,000 generated corridors: the exit is visible from the spawn in 543. Removed: always starting in the first wing's first room, which could look straight down a run of doors at the exit (about 15% of corridors).
+- `ENEMY_HP` 6 to 10. `DMG` unchanged (`@` 4, `#` and `=` 2, `|` 1, `O` 6). The crown is the dead centre of the middle `@` (`CROWN_ROW` 0.25 of a cell). Removed: the crown as the whole top row of the head.
+- `scatter(R)`: a shot at an enemy further than `NEAR` (5) tiles lands wider, `SPREAD` 0.2 columns (and under half as many rows) per tile past 5, up to 10 tiles. It doesn't move the crosshair or the view. Removed: a far shot landing exactly on the crosshair when you aren't tilting.
+- `FIRE_TICKS` for a drone is `DRONE_FIRE_TICKS` 50; other enemies still 25. Removed: a drone firing as often as the rest.
+- Tests: 21 pass. New: a drone fires every 50 ticks, the others 25.
+- Not checked: the scatter's feel at 8 to 12 tiles in play; the upper and lower rows of a crown at range; the 1-in-26 days where every first-wing room sees the exit (those start in the first room, unchanged).
+
+## v0.13.0 — "Two Wings"
+**Wed Oct 21, 2026 · 3:50 PM HST** (CFT branch claude/two-wings, PR #15 merged as f21b624; no migration)
+
+- Owner, thread "enemies and length": "all 5 enemies came up at the very end haha", "it still feels too long. it was 1 minute 42. 30-40 seconds felt good before", "just a little run. this feels like I'm running through a long maze", "maybe just have them run on 4dungeon's current wing? or 2 wings max?", "yeah can we try that please !".
+- `public/engine/corridor.js`: `RUN_WINGS` 2. Only the run's wings and the goal are built (`shown`). A door into another wing's room is plain wall (`if (!shown.has(+j)) continue`). Removed: every wing 4Dungeon's players had opened being built and walkable (18 rooms, now 7 on the day tested).
+- Enemies: the 2 guards are in the room before the exit; the other 3 are dealt to rooms on the way there (`onWay`), then off the way (`offWay`) when the way is short. Removed: them being dealt to any room of the wings, most of them at the end.
+- Start: facing the next room on the way (`start.a`). Removed: always facing north, which could be a wall.
+- `app.js`: `SIGHT` 9 tiles, a room and into the next. Removed: seeing all the way down a straight run to the exit from the start.
+- The exit is the grey holo gate in the middle of its 3 tiles, with a bright `|` post each side and a field of `: ' .` between them, in a plain wall. Removed: the gold `#` on the exit's 3 tiles and gold walls (the gold gate was reverted in 4a11d0b; not released).
+- Tests: 19 pass. Updated: the map test (only the run's wings built, doors into other wings are wall, enemies on the way, start facing the next room), the kinds test (drones by helper), the tilt test (turns until the enemy is left of the crosshair).
+- Not checked: the live deploy (confirmed later, see v0.14.0); in-motion feel; a human-paced run time.
+
+## v0.12.3 — "High Ceilings"
+**Wed Oct 21, 2026 · 3:38 PM HST** (CFT branch claude/tall-walls, PR #14 merged as c64370a; no migration)
+
+- Owner, thread "walls and ceiling": "can i ask you to do something next? it will be, draw the walls 2 x high, and then draw a ceiling ?", then "omg that's amazing!!!", "wow, actually great".
+- `public/app.js`: `TALL = 2`: walls stand on the same floor as the enemies and rise above you, with their own `\` and `/` top edge. A ceiling above them, a dotted grid running the way you face, like the floor's. Removed: walls only as high as from the floor to your eye and back, and the empty space above them.
+- Shots are checked as before (drawing only).
+- Tests: 19 pass.
+- Not checked: turning in motion; a phone.
+
+## v0.12.2 — "Side Walls"
+**Wed Oct 21, 2026 · 3:25 PM HST** (CFT branch claude/side-walls-v0122, PR #13 merged as 1ddb192; no migration)
+
+- Owner, thread "walls in the 3D view": "it was almost perfect before, just the way the side walls were drawn needed help", "don't put horizontal lines in the vertical walls!!!", "can we have some vertical lines please", "MUCH better", then "push !", "you put vertical lines in!!!!!!!!!!!!! yay!!".
+- Found: the earlier outline profile (from 4Dungeon's `renderView`, ported exactly) flipped as you turned, and `_` and `-` lines ran through every wall. Cardinal snapping, a wide FOV and a planar camera were tried and dropped.
+- `public/app.js` `render()`: a wall is one stretch from corner to corner. Blocks side by side along one wall share one `\` and `/` edge (`joined`, `h.line`, `h.at`). A corner gets a full-height `|` on the nearer column. A wall facing you gets a `|` at every block edge. A side wall's top and bottom edges are unbroken `\` and `/`, with a slope guard (under 0.25 a row is not drawn). Removed: the `|` between every block of a side wall (a fence of bars), gaps in a side wall's sloping edges, the field of dots on a facing wall, and the horizontal `_` and `-` lines.
+- The gun is solid (`for k` over the gun's columns), so the gaps inside it no longer show the wall or door behind. Removed: see-through gaps in the gun.
+- Tests: 19 pass.
+- Not checked: turning in motion; a phone.
 
 ## v0.12.1 — "Outlines"
 **Wed Oct 21, 2026 · 2:55 PM HST** (CFT branch claude/project-thread-6owdur, on main after v0.12; no migration)
