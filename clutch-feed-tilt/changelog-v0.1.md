@@ -1,4 +1,4 @@
-# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.10
+# CLUTCH FEED TILT — Dev Changelog — v0.1–v0.11
 
 Detailed changelog for CLUTCH FEED TILT (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,21 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.11 — "Free Roam"
+**Wed Oct 21, 2026 · 2:20 PM HST** (branch claude/project-thread-t58w8o, not merged; needs migration 004 run on live `cft-db` first)
+
+- Owner: plan note "free movement and mouse-look" (thread "CFT player agency ideas"), then in thread "Clutch feed tilt updates": the run ends at the end of the wing ("they open one of the doors?"), "lets just do 5 enemies for now", "5 enemies for you to shoot!", "build it!". Owner on the free D1 plan (10/10 databases, 1.39M of 5M rows read that day), so reads and CPU kept low.
+- Decisions: exit door ends the run, shut until the 2 enemies in the room before it are down (my suggestion, agreed "sounds good"); 3 minute hidden cap (`MAX_TICKS` 2700) instead of a visible timer; all 5 enemies are the player's; ghosts replace the scripted squad; desktop and touch controls both built (touch: left-half stick, right-half drag to turn, tap to shoot).
+- `public/engine/corridor.js`: the run is `{ x, y, a (TURN = 4096 units a circle), keys }`; `walk()` moves 3 tiles/s (`WALK`), strafe, diagonal x SQRT1_2, wall collision at radius 0.22 with x and y tried apart. `press(R, keys)` logs `[tick, 0, keys]` when keys change; `turn(R, d)` logs `[tick, 1, d]`, merged within a tick; `fire(R, row)` shoots at the middle column (`AIM` = 47) and logs `[tick, 2, row, hit]`. `replay(cor, inputs, onTick)` validates and replays all three kinds in order (`MAX_INPUTS` 12000, `MAX_SHOTS` 2000). Removed: `along()`, `turns()`, `turnAt()`, `TURN_STEPS`, `TURN_TICKS`, `SPEED`, `R.s`, `stopAt`, `phase`/`clutchTick`, `cor.path`/`end`/`squad`/`t0`, `NAMES`.
+- Map: `corridor()` keeps the 4Dungeon floor, door opening and shortest route, and adds `goal`, `blocks` (room per 7x7 block, `roomOf()`), `near` (a room and its open neighbours), `start` (first room centre, facing the next) and `exit` (the 3 door tiles on the guard room's side toward the goal). Enemies: 2 in notches of the room before the goal (`guard`), 3 dealt round-robin to the other shown rooms except the first and the goal (seeded shuffle), notch on a wall with no shown door at offset 0, -2 or +2, one enemy a notch.
+- Enemies: a hidden one steps out when `sees()` (you are in its room or a neighbour, within 8 tiles, line walked in quarter tiles with nothing blocked); an out one counts down `fire` only while it sees you, and waits at least 6 ticks after losing sight. Removed: waking by rails distance and hitting through walls. The exit is shut (`R.shut`, walls for walking, seeing and `cast`) until both guards are dying or dead; walking into the goal room ends the run with `escaped`. `label()` is FEED when hp 0 or not escaped.
+- `fire()`: a miss counts as "seen" (tilt 1.5, min 3) only if the enemy is in front of the wall on that column. Removed: enemies behind walls counting.
+- `src/worker.js`: `POST /api/run {day, inputs}`; record `{ day, player, hp, shots, hits, label, inputs }` (key `inputs`, so old `log` records are told apart). `GET /api/today` adds `ghosts`: up to 3 other players' runs that day, newest first, `{ name, inputs }`, through new index `runs_day (day, id)` (`migrations/004_runs_day.sql`, `schema.sql`); runs without `inputs` are dropped. Removed: `shots` in the run request.
+- `public/app.js`: pointer lock on click (Esc releases; first move after a lock change and any move over 400 px skipped, Chrome sends the jump; where lock fails the mouse turns you while over the view); mouse x turns 2 units/px, y moves the crosshair 0.06 rows/px; W A S D; touch stick and drag. Gold `=` door panels; floor grid along the facing axis; hidden enemies drawn within 9 tiles; ghosts drawn as `o`-headed figures in the ghost colour from `replay(..., onTick)` tracks, with feed lines (fragged ENEMY, was fragged, got out); squad panel lists up to 3 ghosts (HP, OUT/DEAD, K) or "NO GHOSTS YET TODAY"; minimap uses rooms entered. Removed: the timed teammate script, BOT_FEEDER, the 1v3 banner, aiming by pointer position.
+- Measured (node, this machine): a bot run replays in 1-4 ms; a 3 minute run turning every tick and shooting every 3rd tick replays in 1-7 ms with a 40 KB input log; a bot run is about 1 KB. Not checked on Workers.
+- Tests: 17 pass (engine 11, worker 6). New: map shape and 5 notches, walking and walls, label with escaped, live vs replay on 5 maps with `test/bot.mjs`, body/head damage, tilt, no waking through walls (idle run times out at 2700 ticks, FEED), refused inputs, ghosts in /api/today (newest 2 others, old-style left out, query plan uses `runs_day`).
+- Not checked: real pointer lock turning (headless Chrome sends fake recentring moves), a real phone, the live database.
 
 ## v0.10 — "Double Tap"
 **Wed Oct 21, 2026 · 1:50 PM HST** (CFT PR #7, merge 4397db2, no migration)
