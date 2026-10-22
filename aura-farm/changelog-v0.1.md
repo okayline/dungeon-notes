@@ -26,8 +26,9 @@ animals.
 - Names (`src/names.js`): back to the 40 + 40 words of v0.3.1 minus the 9 animals v0.22 removed, then min removed 23
   more from that list (13 first words: Delulu, Feral, Unhinged, Mid, Valid, Petty, Salty, Silly, Sleepy, Crunchy, Final
   Boss, Side Quest, Locked In; 10 last words: Gremlin, Menace, Pookie, Moai, Gremlin Era, Side Char, Main Char, Villain,
-  Hater, Sweat; min wrote "Gremin", read as Gremlin). Now 27 first words, 21 last words, 551 pairs of 16 characters or
-  fewer. Removed: 22 first words and 19 last words from v0.22 (e.g. Clutch, Fanum, Zaddy, Simp). Existing names stay
+  Hater, Sweat; min wrote "Gremin", read as Gremlin), then min asked for 6 of v0.22's words back (Gyatt, Lit, Dank,
+  Yeet first; Enjoyer, Ratio last). Now 31 first words, 23 last words, 695 pairs of 16 characters or fewer. Removed: the
+  other 18 first words and 17 last words from v0.22 (e.g. Clutch, Fanum, Zaddy, Simp). Existing names stay
   until rerolled.
 - Tests: `npm test` 23 pass (one new: a pick shows on today / account / board / farm / leaderboard, a non-pic emoji is
   refused, a reroll keeps the pic). Ran the real `public/` page in headless Chromium with the API mocked: tap the pic,
