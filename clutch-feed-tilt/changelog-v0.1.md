@@ -7,6 +7,19 @@ Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
 
+## v0.11.1 — "Drones"
+**Wed Oct 21, 2026 · 2:40 PM HST** (CFT branch claude/project-thread-jvs11c, on main after v0.11; no migration)
+
+- Owner, thread "Enemy looks and hitboxes": "can we change the hitbox please", "can we try to not have the spare cell around the figure, and keep the hitbox tight?", crown "only the 3 in the middle give an instant headshot ... the rest of the head is regular, double tap", then "make the headshot 1 shot hitbox like half the size"; "could we do leg shots and body shots too" (chose "Legs do half damage" on a decision card over feed text only); "short and fat, and tall and skinny"; a small flyer "with a hitbox in the middle", "one hit on middle O"; "a digital/cyber angle? not just classic fantasy?", 4Dungeon's glitch glyphs, "slow it down just a little", then "drone at a low glitch %"; "push !" and chose "Ship with free movement" (after v0.11) over porting to the rails game.
+- `public/engine/corridor.js`: `cell(b, c, r, spin)` is each kind's figure, used by both `render()` and `fire()`; a shot hits only a cell whose character is in `DMG`. Removed: the hit rectangle `l - 1 .. rr`, `top - 1 .. bot` (so the leg gap, the space beside the head, and the drone's rotors, mast, arms and legs miss).
+- Damage by part: `ENEMY_HP` 6, `DMG` `@` 4, `#` and `=` 2, `|` 1, `O` 6; `CROWN_DMG` 6 on `onCrown()`, the middle `@` of the head's top row (the middle 2 when it is an even width; first the middle 3). A chest shot still drops an enemy in 3 and head + chest is still a double tap; legs take 6. `fire()` returns `"leg"`; feed "YOU tagged ENEMY in the leg". Removed: `HEAD_DMG`, `ENEMY_HP` 3, every body cell doing 1.
+- Kinds: `KINDS` short, tall, drone, dealt `n % 3` in the enemy loop (no new random numbers, so the day's map is unchanged). `BUILD` sizes in tiles: short 0.66 x 0.62, tall 0.92 x 0.4 (gun on the left, lower; legs 0.4/0.6), drone 0.24 x 0.4 floating 0.52 off the floor, never under 4 rows (`DRONE_ROWS`) so its O is a row; ghosts keep the old 0.8 x 0.5 (`kind: "ghost"`). Drone glyphs avoid `|` and `=` (mast `:`, rotors `-` `~`) so only its O is in `DMG`. A bat (wings `/ \ ^`, flapping) came first and was replaced by the drone. Removed: one enemy size.
+- `public/app.js`: the enemy loop draws `C.cell` (ghost `@` shown as `o`); rotors turn every 3 frames (`SPIN_TICKS`). Glitch: `GLITCH_GLYPHS` is 4Dungeon's `VOICE_GLYPHS` (daily-dungeon index.html) less `@`, so only a head shows one; `GLITCH` short and tall 0.25, drone 0.1; a per-cell `noise()` holds each pick 2 frames (`GLITCH_HOLD`; first every frame by `Math.random`). Drawing only: the hitbox is `cell()`.
+- `test/bot.mjs`: `aimRow(b)` aims at the row nearest the middle where the middle column hits, since the old middle+1 row was the tall kind's leg gap and the drone's legs.
+- Mockup: https://claude.ai/artifact/MDzW5Z45HpA3woev52tLce (the three kinds glitching at 15 fps, distance and glitch sliders, hit-zone view, bat to compare).
+- Tests: 18 pass (engine 12, worker 6). New: shapes and crown worked by hand on fixed boxes (short, a 6-wide head, drone), and kinds in turn with a drone one-hit, leg-gap miss, 3 chest shots, head + chest, crown.
+- Not checked: enemies in a real browser (a headless run of the playtest loaded with no errors but never got an enemy on screen).
+
 ## v0.11 — "Free Roam"
 **Wed Oct 21, 2026 · 2:20 PM HST** (branch claude/project-thread-t58w8o, not merged; needs migration 004 run on live `cft-db` first)
 
