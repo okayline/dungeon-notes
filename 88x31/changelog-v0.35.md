@@ -1,9 +1,20 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.13
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.15
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.15
+**Wed Oct 21, 2026 · 8:05 PM HST** (migration 034, run live before the push through the Cloudflare D1 API, 06:1x UTC Oct 22)
+
+Decisions (min, Oct 22, thread "TILT.EXE code review"): asked whether the registry copy could run more often than every 5 minutes "while still being reasonable on the reads", recalled that once a minute is what hit the cap (88x31-db read 4.73M rows on Oct 20), asked whether a change check is future proof, then "okay yeah do 88x31 please!!". Claude said a check alone isn't future proof because each pass read every button: on Oct 21 each step read about 460 to 640 rows (D1 query analytics), about 2,800 a pass. Chosen: a 3-row check every minute and a partial index per step. Changed from the proposal: an hourly quiet pass instead of a "changed" counter bumped in `lib/accounts.js` and design edits (a pass is cheap now, so no extra code in those places), plus a daily full marks pass.
+- **`lib/registry.js` `syncIfDue`:** `EVERY` 300 → 60. The claim upsert returns the row's `value` (`RETURNING value`), which holds `{ seen, at, full, more }` of the last pass. It reads `MAX(id)` of ownership_history, instances and designs (3 rows). It passes only if that key changed, the last pass didn't finish (`more` or `stopped`), `QUIET` (3600 s) went by, or `FULL` (86400 s) went by (then `full: true`). Removed: a whole pass every 5 minutes whether or not anything changed.
+- **Migration 034** (and `schema.sql`): partial indexes `idx_designs_to_add`, `idx_designs_on_registry`, `idx_instances_unborn (design_id, edition)`, `idx_instances_to_move`, `idx_instances_to_spend`, `idx_designs_to_retire`, `idx_instances_away`. Each sync query repeats its index's WHERE and names it with `INDEXED BY`, so a query that stops matching fails instead of scanning. The ladder rarities and `AWAY` are written into the SQL (were bound). Births now go designs → instances (`CROSS JOIN`). `lib/travel.js` `settleReturns` uses `idx_instances_away`.
+- **Step 7 (marks):** only copies with ownership_history newer than meta `registry_marks` (a history id), which moves on only when the step got through every copy it found with budget left. `full` looks at every copy as before. Admin `registry_sync` is `full: true`. Removed: a scan of every copy each pass.
+- **Rows read on live 88x31-db** (each query run read-only after the migration): check 3, to add 1, births 112 (one per design on the registry), moves 2, spends 1, away 1, retire 1, marks 32 for 10 new history rows. About 150 a pass, against about 2,800.
+- **Checked:** HEAD's and the new `lib/registry.js` on the same synthetic data (node:sqlite 3.50.4, 88x31 `schema.sql`, 40 designs, 160 copies, a fake registry): seed, then gifts, a fusion, two copies away and home and two designs frozen, then a deleted account and a new design with a gifted copy, at budgets 500, 30 and 7. Same registry calls, same final registry columns and the same pass counts every time. No sync query scans a table (plans checked in the harness). `syncIfDue` with the clock moved: no pass at 30 s; none a minute later with nothing new; a pass after a gift (1 move, 1 mark); none after a design was frozen; the hourly pass retired it; the daily pass was full. `node --check` on the changed files.
+- **Not checked:** `RETURNING` on the upsert in D1 itself (checked in node:sqlite); the live site after the push; rows read per day after it. Seen while checking, not changed: ledger sealing scans `pack_openings` twice and `ring_walls` (`sealLedger`), about 18k and 10k rows read on Oct 21.
 
 ## v0.46.13
 **Wed Oct 21, 2026 · 12:02 AM HST**
