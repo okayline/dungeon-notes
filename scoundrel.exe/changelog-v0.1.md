@@ -1,8 +1,28 @@
-# scoundrel.exe — Dev Changelog — v0.1–v0.8.13
+# scoundrel.exe — Dev Changelog — v0.1–v0.8.15
 
 Detailed changelog for scoundrel.exe (public repo: okayline/scoundrel.exe): a daily seeded Scoundrel
 (Zach Gage & Kurt Bieg) where everyone plays the same deck each UTC day. The public repo keeps a
 shorter changelog. Newest first. Times are Hawaii time (HST).
+
+---
+
+## v0.8.15 — "Light Check"
+**Wed Oct 21, 2026 · 7:50 PM HST** (no migration)
+
+### Decisions (the owner's)
+- From the moba-beat code review (thread "moba-beat code review"): every game's `checkpoint` read and re-hashed the whole ledger on each seal. After the same fix went into moba-beat, aura-farm and TILT.EXE: "do scoundrel please. and push everything".
+
+### What was built
+- `src/worker.js` `checkpoint`: `WHERE id <= ? ORDER BY id DESC LIMIT 2` (the run's entry and the one before it), checked by `verifyTip`, and `entries: end.id`. Removed: `WHERE id <= ? ORDER BY id` (every entry up to the run) and `verifyChain` over all of them.
+- `src/ledger.js` `verifyTip(rows)`: the newest entry must hash right and chain from the one just before it (GENESIS for entry 1), with consecutive ids. Same code in aura-farm, clutch-feed-tilt and moba-beat. Removed: `verifyChain`, which nothing else used.
+- Live check first (D1 API, read only): scoundrel-db ledger has 117 rows, ids 1 to 117, so an entry's id is the count up to it. v0.8.14 was not in this log; this entry follows v0.8.13.
+- Trade-off: no code re-checks old entries any more; each one is checked when it is the newest.
+
+### Tests
+- 48 pass (new `test/tip.test.mjs`, hashes from node:crypto; the existing checkpoint test still gets `entries: end + 1`).
+
+### Not checked
+- The live deploy.
 
 ---
 
