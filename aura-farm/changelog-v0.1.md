@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.48
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.49
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing game built from 4Dungeon's AURA
 (cards in v0.1-v0.5, three sealed styles since v0.6). Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -6,6 +6,14 @@ Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date w
 Times are Hawaii time (HST).
 
 ---
+
+## v0.49: Oct 22, 12:20 AM HST: standing aura is a flat 10,000 an hour
+- Why: min: "can we have the farmers get a flat +10,000", then "per hour". Read as: the standing aura a farm earns while it is up stops rising each hour.
+- `public/engine/aura.js`: `earned(hours)` is `STAND_PER_HOUR * hours`. Removed: `STAND_STEP` (the extra 1,000 an hour) and `rate()`.
+- `public/app.js`: the "Earning" text is a fixed "+10,000 an hour" and the Home line says "+10,000 Aura every hour while your Farm is up". Removed: `rateSpan`, its timer redraw, and "Earning +1,000" in the farm's "Goes up" row (it now reads "Win/lose +10,000 every hour"). The win/lose stake still goes up 10,000 an hour: not changed.
+- A full 24 hours now earns 240,000 (was 516,000). Aura is computed from the farm rows every time, nothing is stored, so past days' standing aura recount at the flat rate too. No migration.
+- Tests: expected values worked by hand (2 hours 20,000; 24 hours 240,000; the younger of two overlapping farms 30,000 where it was 32,000; the Jan 1 / Jan 2 day split 160,000 / 80,000). 24 pass.
+- Not checked: the live site.
 
 ## v0.48: Oct 21, 7:40 PM HST: the registry checkpoint reads two ledger rows, not the whole ledger
 - Why: the moba-beat code review (thread "moba-beat code review") found every game's `checkpoint` read and re-hashed the
