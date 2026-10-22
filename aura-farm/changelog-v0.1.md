@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.40
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.47
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing game built from 4Dungeon's AURA
 (cards in v0.1-v0.5, three sealed styles since v0.6). Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -6,6 +6,34 @@ Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date w
 Times are Hawaii time (HST).
 
 ---
+
+## v0.47: Oct 21, 7:30 PM HST: pick your profile pic; the v0.22 name words removed
+Decisions (min, in the "Emoji profile picture" thread): the pic goes left of the name on the player screen; tapping it
+opens the 24 to pick from; no pencil badge on it (min, after the mockup). Stored per game in aura-db, not in the shared
+Accounts: names are per game (`players.name`) and no other repo has profile pics (grepped all 11 for avatar / profile
+pic / pfp), and a shared pic would need a call to the Accounts Worker on every board load. Then min asked to "undo
+those new words and go back to the original few": read as removing v0.22's additions, keeping v0.22's removal of the
+animals.
+- Pics: `A.PICS` and `A.isPic` moved into `public/engine/aura.js` (out of `public/app.js`) so the Worker can check a
+  pick. `pic(name, picked)` in `app.js` returns the picked pic, else the old FNV hash of the name (unchanged, so nobody's
+  pic changes until they pick). New `POST /api/pic {pic}` (`setPic`), refused unless `A.isPic`. `pic` is read in the
+  queries that already read the name (findPlayer, board, aurasStmt for the leaderboard, farmView, enter): same rows, no
+  new reads. Sent as `pic` on today / account / board rows / leaderboard rows and `pics: [c, t]` on a farm. The player
+  screen's heading is now a row: the halo as a button (`data-act="pics"`) and the name; picking closes the grid.
+  Removed: PICS in app.js, and the pic always following the name (a reroll changed it).
+- Migration `006_pics.sql`: `ALTER TABLE players ADD COLUMN pic TEXT`. `schema.sql` has `pic` last in `players` so a
+  migrated DB has the same shape (the migration test now runs 004-006 and compares).
+- Names (`src/names.js`): back to the 40 + 40 words of v0.3.1 minus the 9 animals v0.22 removed, then min removed 23
+  more from that list (13 first words: Delulu, Feral, Unhinged, Mid, Valid, Petty, Salty, Silly, Sleepy, Crunchy, Final
+  Boss, Side Quest, Locked In; 10 last words: Gremlin, Menace, Pookie, Moai, Gremlin Era, Side Char, Main Char, Villain,
+  Hater, Sweat; min wrote "Gremin", read as Gremlin), then min asked for 7 of v0.22's words back (Gyatt, Lit, Dank,
+  Yeet, Clutch first; Enjoyer, Ratio last). Now 32 first words, 23 last words, 718 pairs of 16 characters or fewer.
+  Removed: the other 17 first words and 17 last words from v0.22 (e.g. Fanum, Zaddy, Simp). Existing names stay
+  until rerolled.
+- Tests: `npm test` 23 pass (one new: a pick shows on today / account / board / farm / leaderboard, a non-pic emoji is
+  refused, a reroll keeps the pic). Ran the real `public/` page in headless Chromium with the API mocked: tap the pic,
+  the grid opens with the current one ringed, tap 🦊, one `POST /api/pic`, the grid closes and the fox shows. Not seen on
+  a phone or against the live Worker.
 
 v0.24 to v0.37 were written up afterwards from the commit diffs (`8b81ced` to `9acfe34`); the screens were not run in a
 browser for these notes.
