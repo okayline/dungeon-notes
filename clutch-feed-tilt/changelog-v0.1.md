@@ -1,4 +1,4 @@
-# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.15.0
+# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.18.1
 
 Detailed changelog for TILT.EXE, called CLUTCH FEED TILT until v0.10.1 (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,50 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.18.1 — "Spare Mag"
+**Wed Oct 21, 2026 · 7:25 PM HST** (CFT branch claude/project-thread-l0bhr8, commit 83cc2a8, PR not merged when this was written; no migration)
+
+- Owner, thread "Catch up on the repos": asked to fix two open items from the catch-up, phones having no reload button (noted under v0.15.0) and ghosts from runs sealed before a rules change playing out differently.
+- `public/app.js`: on touch, the ammo at the end of the TILT row is drawn as a button, `[15/17]` (class `btn`, `data-k="ammo"`), and a tap on it reloads (`C.reload`, "RELOADING" in the feed) while the run can be played. A keyboard still uses R. Removed: no way to reload on a phone before the magazine ran dry.
+- `public/engine/corridor.js` `ghostRun(cor, g, onTick)`: plays a ghost's inputs (`replay`) and returns the run only when its HP, shots and hits are the sealed ones. `app.js` builds the squad with it. `src/worker.js` `ghostsOf` now sends each ghost's sealed `hp`, `shots` and `hits` with its inputs. Removed: a run sealed earlier in the day under older rules (v0.15 reload input, v0.15.1, v0.16 and v0.18 crown and HP) playing as a ghost that does something it never did. No new constant to bump: any rules change that alters a run's ending drops it.
+- Playtest shim (`/mnt/project-files/clutch-feed-tilt/playtest/playtest.js`): its bot ghost now carries hp, shots and hits, or the new check would drop it.
+- Tests: 25 pass. New: `ghostRun` plays a run sealed under these rules and drops one whose hits or HP differ; the ghosts test checks the sent hp, shots and hits against the ledger record read with raw SQL.
+- Checked: in the playtest build in headless Chromium with touch, after two taps on the view the row read `[15/17]`, the bot ghost was in the squad, and a tap on the ammo showed `RELOAD` and "RELOADING".
+- Not checked: a real phone; how often a mid-day release leaves fewer than 3 ghosts (only the newest 3 runs are read, then filtered).
+
+## v0.18.0 — "Hard Targets"
+**Wed Oct 21, 2026 · 5:05 PM HST** (CFT branch claude/cursor, PR #21 merged as bceee87; Workers Build success 03:07 UTC; no migration)
+
+- Owner's words: this was built in a thread outside this project, so they aren't quoted here (not checked).
+- `public/engine/corridor.js`: `ENEMY_HP` 10 to 16, `CROWN_DMG` 5 to 8 (`DMG` unchanged: `@` 4, `#` and `=` 2, `|` 1, `O` 6). `CROWN_ROW` 0.09 to 0.04 (about 1px). `NEAR` 5 to 2 and `SPREAD` 0.2 to 0.4 (`FAR_MAX` 10 unchanged). Removed: 10 HP, the crown at 5, kills in 2 or 3 plain head shots, and exact shots inside 5 tiles.
+- `public/app.js`: HEADSHOT!! only for a kill on the crown; a crown hit that doesn't kill says CROWN!. The corridor melts in off a black screen. The mouse comes back 1.5 s after the FEED banner is in. Removed: HEADSHOT!! on any kill ending with a head hit, the start's title card, and the mouse coming back the moment the banner was in.
+- 6 WIP commits on the branch, each marked "(not released)".
+- Rules change: runs sealed before it replay differently as ghosts (handled in v0.18.1).
+- Tests: 24 in the test files at the merge (counted, not run here).
+
+## v0.17.0 — "Melt"
+**Wed Oct 21, 2026 · 4:54 PM HST** (CFT branch claude/death, PR #20 merged as 1e17d26; no migration)
+
+- Owner's words: built in a thread outside this project (not checked).
+- `public/app.js` (+110 lines), `public/index.html`: death after Doom's `P_DeathThink` (the view sinks red, the gun drops, you turn to the nearest enemy, a beat), then the screen melt after Doom's `f_wipe.c`: strips start at ragged times and speed up, a red glitch band at each top edge. The melt runs on the start, Run It Back, getting out and dying (dying at half speed); the fight waits while it runs. F R A G G E D holds, fades to black, a beat, then the FEED banner fades in over 1.2 s and the mouse comes back. Removed: the FEED banner at once on death, and the corridor and new runs appearing at once.
+- Drawing only: no rule change. None of it plays with Reduce Motion on.
+- 8 WIP commits on the branch, each "(not released)". Tests: 24 in the files (counted, not run here).
+
+## v0.16.0 — "Gibs"
+**Wed Oct 21, 2026 · 4:39 PM HST** (CFT branch claude/gibs, PR #19 merged as 70987d4; no migration)
+
+- Owner's words: built in a thread outside this project (not checked).
+- `public/app.js`: one gib per point of damage (legs 1, chest or gun 2, head 4, crown 5, drone O 6), 2-3 cells wide, 1-2 tall, glitching, gone in under a second; a downed enemy is wiped out over 1.2 s by a glitch band from the head down; reloading is two gun frames with the magazine falling and rising, and RELOADING blinks above the gun. Removed: hits showing only the feed line, the body shrinking to `%` signs, and no reload on the gun.
+- `public/engine/corridor.js`: `CROWN_ROW` 0.17 to 0.09 (about 2px). A rules change: older runs replay differently as ghosts.
+- 7 WIP commits on the branch, each "(not released)". Tests: 24 in the files (counted, not run here).
+
+## v0.15.1 — "Crown Box"
+**Wed Oct 21, 2026 · 4:27 PM HST** (CFT branch claude/crown-box, PR #18 merged as 9941208; no migration)
+
+- Owner's words: built in a thread outside this project (not checked).
+- `public/engine/corridor.js`: `CROWN_ROW` 0.25 to 0.17, so the crown is a box one column wide and about a third of a row tall (about 4px). Removed: the crown as the middle half of its row. A rules change: older runs replay differently as ghosts.
+- `test/engine.test.mjs` updated for the new crown. Tests: 24 in the files (counted, not run here).
 
 ## v0.15.0 — "Magazine"
 **Wed Oct 21, 2026 · 4:14 PM HST** (CFT branch claude/magazine, PR #17 merged as 90d6a06; no migration)
