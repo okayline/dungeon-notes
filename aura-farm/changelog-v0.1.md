@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.49
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.50
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing game built from 4Dungeon's AURA
 (cards in v0.1-v0.5, three sealed styles since v0.6). Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -6,6 +6,13 @@ Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date w
 Times are Hawaii time (HST).
 
 ---
+
+## v0.50: Oct 22, 12:35 AM HST: The Farm shows one row per player
+- Why: min: "can we make the 3 aura farm ,farm panels, into one panel per user?" Read as: on The Farm tab a player with 3 farms up had 3 rows (one per farm); now they get one.
+- `src/worker.js` `board`: rows are grouped by poster. Each player's row is their oldest open farm (the query is already ordered by `posted_at`), with `count` = how many farms they have up. FLEX on the row takes that oldest farm; once it is taken, the row points at their next oldest. Aura, record and "Up for" are per player as before (the "Up for" is the oldest farm's). Removed: one row per open farm.
+- `public/app.js` `boardTab`: the row says "N farms up". No other screen changed (Home still lists your own farms one by one).
+- No migration. Tests: the "at most 3 farms" test now expects ann's 3 farms as one row with count 3 pointing at her oldest, then one row with count 2 after it is taken. 24 pass.
+- Not checked: the live site; how it looks on a phone.
 
 ## v0.49: Oct 22, 12:20 AM HST: standing aura is a flat 10,000 an hour
 - Why: min: "can we have the farmers get a flat +10,000", then "per hour". Read as: the standing aura a farm earns while it is up stops rising each hour.
