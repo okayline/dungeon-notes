@@ -1,4 +1,4 @@
-# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.18.2
+# TILT.EXE (was CLUTCH FEED TILT) — Dev Changelog — v0.1–v0.18.3
 
 Detailed changelog for TILT.EXE, called CLUTCH FEED TILT until v0.10.1 (public repo: okayline/clutch-feed-tilt, cft.88x31.app): a daily seeded ASCII
 corridor shooter. One corridor per UTC day, the same for everyone; your squad of 4 falls, then you're 1v3; the run is
@@ -6,6 +6,16 @@ called CLUTCH, FEED or TILT. Worker `clutch-feed-tilt` + D1 `cft-db`. The public
 Newest first. Times are Hawaii time (HST), from the commit times.
 
 ---
+
+## v0.18.3 — "Dead End"
+**Wed Oct 21, 2026 · 7:46 PM HST** (CFT branch claude/project-thread-k0sfr5, commit 3b8b86d, PR #24; no migration)
+
+- Why: the TILT.EXE code review (thread "TILT.EXE code review") found `corridor()` throws on some floors. Owner: "we can also do #1!", then "push everything".
+- Cause: on some floors, the doors the day's seed opens lead to a last wing with no locked doors and no stairs (`floor.js` dead end). With the day's wing at 6 or 7, `goal = floor.stairs` was -1, and `rooms[-1].r` threw. The page showed "CAN'T REACH THE SERVER" and `/api/run` returned 500 for the rest of the UTC day. Example: 2026-01-03 (B3F), seed 748941, wing 7: the floor stops at 6 wings. On that day 59 of 2,000 seeds threw at wing 6 or 7. Across 2026, 6 of 730 (day, wing 6 or 7) pairs had a throwing seed among 200.
+- `public/engine/corridor.js`: `b` is now `let`. After the door-growing loop, `if (b + 1 >= floor.wings.length && !(floor.stairs >= 0)) b = floor.wings.length - 2`, then `a` is worked out from it. The run ends a wing sooner and the goal is the last wing's first room. The seeded draws are unchanged, so every other day's map is identical. Removed: the throw. `floor.js` is not edited.
+- Checked: 16,800 corridors (400 days of 2026, wings 1 to 7, 6 seeds each) against the old `corridor.js`. 16,799 are identical, and the 1 that threw now builds, with its goal a real room on the route.
+- Tests: 27 pass. New: the 2026-01-03 / 748941 floor builds at wings 6 and 7, with 6 wings, the goal at the last wing's first room, and 5 enemies. It fails on the old `corridor.js`.
+- Not checked: whether 4Dungeon itself can dead-end the same way for its players; the live deploy.
 
 ## v0.18.2 — "Light Check"
 **Wed Oct 21, 2026 · 7:40 PM HST** (CFT branch claude/project-thread-xee9fh, PR not merged when this was written; no migration)
