@@ -437,3 +437,9 @@ KURA searches the WEST wall... A small sound, there and gone.
 KURA searches the WEST wall... 112 SILVER, loose in the rubble.
 KURA goes NORTH into a cleared room.
 ```
+
+## 2026-10-22  -  CRASHED  (latest )
+
+```
+TypeError: R.setName is not a function |     at fresh (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:68:25) |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:73:16) |     at /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:190:21
+```
