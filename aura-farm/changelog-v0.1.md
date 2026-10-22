@@ -1,4 +1,4 @@
-# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.47
+# AURA FARMING SIMULATOR: NO CAP BATTLE EDITION 2027 — Dev Changelog — v0.1–v0.48
 
 Detailed changelog for aura-farm (public repo: okayline/aura-farm): an async bluffing game built from 4Dungeon's AURA
 (cards in v0.1-v0.5, three sealed styles since v0.6). Live at aura.88x31.app (Worker `aura-farm`, D1 `aura-db`). The public repo keeps a shorter changelog.
@@ -6,6 +6,21 @@ Design doc: https://claude.ai/artifact/9CGedPpAUHQ6wAD9cxGRfg (kept up to date w
 Times are Hawaii time (HST).
 
 ---
+
+## v0.48: Oct 21, 7:40 PM HST: the registry checkpoint reads two ledger rows, not the whole ledger
+- Why: the moba-beat code review (thread "moba-beat code review") found every game's `checkpoint` read and re-hashed the
+  whole ledger on each seal, so its D1 reads grow with the ledger on the free plan's shared cap. min: "yeah can you do
+  the fix for aura farm and tilt please!"
+- `src/worker.js` `checkpoint`: `WHERE id <= ? ORDER BY id DESC LIMIT 2` (that farm's entry and the one before it), checked
+  by `verifyTip`, and `entries: end.id`. Removed: `WHERE id <= ? ORDER BY id` (every entry up to the farm) and
+  `verifyChain` over all of them.
+- `src/ledger.js` `verifyTip(rows)`: the newest entry must hash right and chain from the entry just before it (or from
+  GENESIS when it is entry 1), and the ids must be consecutive. Same code in clutch-feed-tilt and moba-beat
+  (public/chain.js). Removed: `verifyChain`, which nothing else used.
+- Live check before the change (D1 API, read only): aura-db ledger has 52 rows, ids 1 to 52, so the id is the count the
+  registry already has. The registry only refuses a count that shrinks (dungeon-items `src/registry.js:197`).
+- Trade-off: no code re-checks old entries any more; each one is checked when it is the newest.
+- Tests: 24 pass (new `test/tip.test.mjs`, hashes from node:crypto). Not checked: the live deploy.
 
 ## v0.47: Oct 21, 7:30 PM HST: pick your profile pic; the v0.22 name words removed
 Decisions (min, in the "Emoji profile picture" thread): the pic goes left of the name on the player screen; tapping it
