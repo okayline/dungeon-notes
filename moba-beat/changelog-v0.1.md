@@ -1,9 +1,33 @@
-# moba-beat — Dev Changelog — v0.1–v0.9.4
+# moba-beat — Dev Changelog — v0.1–v0.9.5
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
 The public repo keeps a short changelog. The design is in `design.md` here. Newest first. Times are Hawaii time (HST), from the commit times.
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
+
+---
+
+## v0.9.5 — "Steady Hands"
+**Wed Oct 21, 2026 · 7:35 PM HST** (okayline/moba-beat branch claude/project-thread-xee9fh, PR not merged yet; no migration)
+
+### Decisions (the owner's)
+- Owner asked for a code review of moba-beat (Claude Doc "moba-beat code review", https://claude.ai/artifact/ToVWx3foMdFkcS25FDm91W), then "can you do your fixes please!". Done: the four high findings and the small clear bugs (M3, M4, L3, the comment calling the beat hidden). Not done, waiting on the owner: M2 (should a stray tap cost anything), L1 (clap and open-hat rows in the reveal grid), L2 (fills that sound the same as A), L4/L5, and the same checkpoint fix in aura-farm and clutch-feed-tilt.
+
+### What changed
+- `src/worker.js` `player()`: a new player needs the "new-guest" rate limit, 3 an hour per hashed address (copied from aura-farm `needPlayer`). Covers `/api/run`, `/api/codes` new and passkey register. Removed: unlimited anonymous players and sealed runs.
+- `src/worker.js` `checkpoint`: reads `ORDER BY id DESC LIMIT 2`, checks the newest entry's hash and that it chains from the one before, and sends `entries: last.id`. Removed: `SELECT ... FROM ledger ORDER BY id` (the whole ledger) and `verifyChain` over every row after each seal; the k-th seal read k rows.
+- `src/ledger.js` `seal(db, build)`: batch on the current head, on a `ledger.prev_hash`/`hash` clash read the head again and retry (up to 8), another UNIQUE clash returns `{ duplicate: true }` (copied from dawn-baton `seal`). `dayEntry` and `saveRun` use it; a duplicate run answers as practice with the sealed one. Removed: `head()` read once and a 500 for the loser of a race.
+- `src/worker.js` `saveRun`: taps are `Math.round`ed before `score()`, and the same array is sealed. Removed: scoring raw taps and sealing rounded ones.
+- `src/registry.js`: 5 s timeout per page and `r.ok` check; `sealToday` turns a failure into a 503 "Today's beat isn't ready yet". Still: the day isn't sealed until the registry answers.
+- `src/worker.js` `body()`: a body that isn't an object is a 400. Removed: a TypeError 500 on `null`.
+- `public/score.js` `MAX_TAPS = 128`, used by the Worker and the page. Removed: the Worker's own copy.
+- `public/app.js` `tap()`: time = `ctx.currentTime - (baseLatency + outputLatency) - start`, rounded; stops counting at `MAX_TAPS`. keydown ignores `e.repeat`. Removed: the uncompensated audio-clock time and a tap per key repeat.
+
+### Tests
+- 38 pass (`npm test`, about 1 s). New: two runs and two day seals at once, the new-player limit, the checkpoint's two-row check, rounded taps re-scoring to the sealed score, null body and registry away. Fixed: `test/ledger.test.mjs` compared `a.beats` (not a field) with itself; it compares `targets` now.
+
+### Not checked
+- Real device latency, and whether Safari reports `outputLatency` (the code uses 0 when it doesn't). CPU time in workerd. The live deploy.
 
 ---
 
