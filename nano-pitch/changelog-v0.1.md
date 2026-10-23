@@ -1,4 +1,4 @@
-# NANO PITCH (nano-pitch) — Dev Changelog — v0.1–v0.9.6
+# NANO PITCH (nano-pitch) — Dev Changelog — v0.1–v0.11.2
 
 Detailed changelog for Daily Pitch (repo okayline/nano-pitch): one daily 4-point cutthroat Pitch game, the same deal for everyone, against bots. Its `pitch_` tables are in the moba-beat D1. The public repo keeps a short `CHANGELOG.md`; the design is `pitch/daily-pitch-design.md` in the project files. Newest first. Times are Hawaii time (HST), from the commit times.
 
@@ -7,6 +7,24 @@ v0.1–v0.6 were written after the fact (Oct 22) from the commit messages. v0.7�
 **Words (set by the owner on Oct 22):** a *round* is one deal (6 tricks); a *hand* is one trick (each playing seat plays one card); a *game* is rounds until someone reaches 11. The page says Round / "takes hand". The code still uses `hand` for a round and `trick` for a hand (engine `HAND = 6`).
 
 ---
+
+(v0.10 and v0.11 have no entry here yet; see the public `CHANGELOG.md`.)
+
+## v0.11.2
+**Fri Oct 23, 2026 · 2:45 AM HST** (23edea2)
+- **Owner:** "(the card bounce thing still happens)" after v0.11.1, then "push the nano pitch fix please".
+- **Cause:** `draw()` rebuilds the whole table with `$app.innerHTML` (`public/app.js` line 301), several times while the bots move and the chat talks (`chatOn`, `replay` stages). Each rebuild made fresh card buttons at rest, so the hovered card dropped and lifted again.
+- **Changed:** `hotCard` (like `hotBid`) holds the `data-k` of the playable card under the mouse (`mouseover`; cleared on `mouseleave` and in `send`); the hand draws that card with class `hot`, and `.hand .pc.ok.hot` lifts like `:hover`. Removed: the drop on every redraw.
+- **Checked:** stand-in page with the real `style.css` in headless Chromium, pointer resting mid-card with half-pixel jitter, hand rebuilt every ~250 ms: before, the card was not fully lifted in 31 of 160 samples (down to rest); after, 0 of 160. 44 tests pass.
+- **Not checked:** the real app in a browser; the live site after deploy.
+
+## v0.11.1
+**Fri Oct 23, 2026 · 2:39 AM HST** (f3f2939)
+- **Owner:** "when i mouse hover over my card, the card jumps up and down (animation)?", then "push that for now".
+- **Cause:** `.hand .pc.ok:hover { transform: translateY(-6px); }` (`public/style.css` line 109) moves the hovered card itself, so a pointer on its bottom 6 px loses the hover when it lifts, and it drops back.
+- **Added:** `.hand .pc.ok::after`, a 6 px invisible strip under each playable card that lifts with it. Removed: the flicker at the bottom edge.
+- **Checked:** stand-in page in headless Chromium, pointer 2 px above the bottom edge with half-pixel jitter: 66 position changes in about 2 s before, 2 after. 44 tests pass.
+- **Not checked:** the real app; the redraw cause (found and fixed in v0.11.2).
 
 ## v0.9.6
 **Thu Oct 22, 2026 · 11:06 PM HST** (76d8b0f)
