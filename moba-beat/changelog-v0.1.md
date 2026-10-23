@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.2
+# moba-beat — Dev Changelog — v0.1–v0.10.3
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,15 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.3 — "Light up"
+**Fri Oct 23, 2026 · 12:20 PM HST**
+
+Kura: bright for perfect, normal for good, "Late!" but no "Early!".
+
+- `public/feed.js`: `flash(kind)` stores the kind and time; `drawFeed` lights the blue line for 260 ms (perfect: white, wider, big glow; good: blue, smaller glow) and draws "Late!" beside the line for 700 ms, fading.
+- `public/app.js` `tap()`: uses the `score()` result for the nearest target. Not a miss: `flash(grade)`. A miss with an error after the beat (so within WINDOW, 250 ms): `flash("late")`. An early miss, or a tap with no target within 250 ms, shows nothing. Timing and scoring unchanged.
+- Checked: `npm test` 47 pass; the three looks drawn through the real `flash` in the local browser run, no console errors. Not checked: the same looks from a real tap during play, real phones.
 
 ## v0.10.2 — "Beat bars only"
 **Fri Oct 23, 2026 · 12:12 PM HST**
