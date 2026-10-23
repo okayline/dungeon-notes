@@ -2,7 +2,9 @@
 
 As of **v1.27.1** (Oct 17 2026), with the gate review of Oct 18 in section 16. Earlier versions of this file are in git history.
 
-**What this is.** What the game is for and how it plays, in plain words. It does not repeat exact numbers: those live in `rules.js` and `floor.js`, and when the doc and the code disagree, the code is right and the doc is wrong. Per-release detail is in `CHANGELOG.md` (this repo). Unbuilt ideas are in `daily-dungeon-heat-notes.md` and `theorycrafting-notes.md`; the move to the server is in `4dungeon-server-move.md`. Voice rules are in `voice-guide.md`.
+Sections 17 and 18 are the former `theorycrafting-notes.md` (v11, Oct 17) and `daily-dungeon-heat-notes.md` (Oct 15), moved here on Oct 23 2026 with their text unchanged except heading levels. The originals are in `archive/`.
+
+**What this is.** What the game is for and how it plays, in plain words. It does not repeat exact numbers: those live in `rules.js` and `floor.js`, and when the doc and the code disagree, the code is right and the doc is wrong. Per-release detail is in `CHANGELOG.md` (this repo). Unbuilt ideas are in sections 17 (theorycrafting) and 18 (heat, verbs and patience) of this file; the move to the server is in `4dungeon-server-move.md`. Voice rules are in `voice-guide.md`.
 
 **Tags.** BUILT is in the game. PARKED is built but switched off. DECIDED is agreed but not built. LEANING means a direction, not a decision. OPEN means undecided.
 
@@ -250,3 +252,366 @@ A first pass over what is unbuilt or unsettled, read from these notes only (no c
 The "wait" rows mostly wait for the same thing: other players. 4Dungeon has one player, so the test that matters now is playing the four weeks.
 
 **Open.** What is at the top. How much heat is danger and how much is reward. Whether looking up costs a breath when the moon has set. The wording of rumors and KURA's last words. Whether Hold Omen returns.
+
+---
+
+## 17. Theorycrafting notes (ideas not built and not settled)
+**v11 — Oct 17 2026** (game at v1.24)
+
+Ideas that are **not built and not yet settled**. Anything shipped, or settled enough to build from, lives in `daily-dungeon-design.md`; per-release detail lives in the changelogs.
+
+**Since v10 (Oct 11, at v1.02), now in the design doc and no longer open here:** the signal room in every dead end, with the gift box and the door tallies (part 6, built v1.10 to v1.12; the exchange it was going to hold is parked); STANDBY, which part 9's `[W]AIT` idea assumed, was removed (v1.16); the free-action breath question (part 2) waits on breath, which is off on the server until it is retuned; the rested-day bonus (part 5) went with STANDBY. The Oct 17 direction (provenance, the moon's wish, walls as the space) is in the design doc's section 15, not here.
+
+These are working notes, not a spoiler-safe document.
+
+---
+
+### 1. Multiplayer / async ideas (none built)
+
+The leaderboard and faction seasons already give async players some shared context. This section is about going further. The design doc's Part 10 lists the same ideas in one line each; the detail is here.
+
+#### Bones (highest interest, explicitly wanted)
+NetHack-style: when a run ends, keep a small server-side snapshot (name, floor, party, cause of death, last words) attached to a **level and room kind** (the offers are shared, the doors are private, so bones have to live on the shared side to make sense across players). Later players in that room can find the remains: fixed flavor, maybe recoverable loot, never free text.
+
+#### Ghost demons
+A dead player's party member reappears as a nameable wild encounter (`PIPEDREAM's PIXIE`), keeping its personality and alignment, recruitable by someone else. The existing pact record (name, floor, day, active) already holds most of the data this needs.
+
+#### Counts by level
+The monthly counters shipped in v0.73 (design doc Part 11). Not built: the same tallies split by level (falls on B3F this moon), which would be more keys in the same table.
+
+#### Ghost routes (not started)
+- Since v0.77 everyone playing in a moon quarter is on the same level with the same offers, which is most of what a "shared floor-week" asked for. Sharing which door is which would still be a spoiler, so that part would have to be a **separate challenge mode**.
+- Softer version: record a compact **route** per run (room/day/search counts, a few hundred bytes, never the full log) and show faint traces of other players on the same level ("`PIPEDREAM` was here, day 3"). Informational only, so forgeable routes don't matter much.
+
+#### Bones, ghost routes and shared wards are one shape
+All three are the same record: small, anonymous, keyed to a level and room, read once a day inside the one-packet budget. Whichever is built first makes the other two cheap. That doesn't decide which goes first, only narrows the cost of building more than one.
+
+---
+
+### 2. Free actions & the Elbereth-style ward (none built)
+
+Came up together since **Mark** (below) and the ward are really the same
+idea. Everything in this section is unlimited and free — same category as
+SEARCH and turning, not the daily move.
+
+**Note:** with the CELL/charge system fully removed (v0.57.1) and
+the only remaining daily budget being the single locked-door step, adding
+more free actions here no longer raises the old "does this eat into my
+charge" design question — there's nothing left for a free action to compete
+with. Doesn't change the designs below, just means they're lower-risk to
+add than when this list was first drafted.
+
+**Update, v0.83 on:** that is no longer quite true. Searching, scrying, using an item and stepping between rooms now cost **breath** (design doc Part 1), so any new action here needs a decision: does it take a breath? Listen and Knock probably should; Mark and Read probably not.
+
+#### More free actions beyond search/turn
+- **Listen** (a form of this shipped in v0.72 as listening at the doors; this is the in-room version)**:** quieter than search — gives a noise-type tell (repetition vs.
+  lingering) without raising much heat. A softer, less precise read than
+  what search already gives.
+- **Knock:** narrows a secret's rough location, but is loud — adds more
+  heat than an ordinary search.
+- **Mark:** scratch a symbol on a wall or floor, purely a player note
+  ("I've exhausted this wall"). Near-zero cost, and the same scratch
+  mechanically becomes the ward below once it's meant to do something.
+- **Combine:** fixed recipes only, not open crafting — e.g. a dead pager +
+  red thread → a named hybrid item, matching the existing item-flavor
+  naming style.
+- **Leave an offering:** a cheaper, ordinary-wall version of the altar's
+  GIVE — drop an item at a corner for a small effect (a little heat
+  cooled, a recruit calmed slightly).
+- **Read/inspect an item:** flavor-only unless it has a hidden property —
+  NetHack-style identify-by-use.
+- **Pray / call out:** an alignment-flavored gamble — could draw a friendly
+  or hostile demon depending on the player's tag and the room's heat.
+- **Ask the room a question:** rare, moon-gated yes/no tell. Asking the moon herself shipped in v0.72 (design doc Part 8).
+
+#### The ward (Elbereth, reskinned)
+- Write a ward on the current room's floor; some monsters flee or
+  hesitate when they try to attack while it holds.
+- **Materials matter:** bare fingers = weak/fragile; chalk, grave salt, a
+  burned match = stronger, slower to smudge. Gives existing junk items (a
+  tin of matches, a jar of grave salt) a real mechanical use.
+- **Writing can fail/garble** — shown softly, e.g. "the letters came out
+  crooked," rather than silently failing with no feedback.
+- **Who respects it, mapped onto the existing monster ladder:**
+  - Folklore/Chaos-leaning demons respect it fully (old names scare old
+    things).
+  - Hybrids respect it partially (a chance to ignore it).
+  - Data/Law-leaning demons ignore it outright — would need a parallel
+    "lock" or "firewall mark" that only works on them, so both halves of
+    the 70/30 split get their own version of this.
+  - Bosses ignore it, or are only slowed.
+  - Could tie into alignment: an opposite-alignment monster might be less
+    impressed by a given player's ward than a same-alignment one.
+- **Smudges over time:** each time it scares something off, a chance it
+  fades; attacking while standing on it erases it immediately (keeps it
+  strictly defensive).
+- **Interacts with existing systems:** writing should cost a little heat,
+  not be free of any cost. A strong ward should make resting/skipping in a
+  hot room meaningfully safer (a large cut to the wandering-encounter
+  roll) — the natural answer to "I need to rest somewhere dangerous."
+- **Discoverability:** finding a scratched name while searching, or a
+  half-erased ward "someone else" left, is a good way to teach the
+  mechanic exists without an explicit tutorial.
+
+#### Shared visibility within the quarter
+- A ward written in a room could be visible to other players who reach
+  that same room on the same level during the same moon quarter — not functional for them,
+  just visible, like a trace that "someone wrote something here."
+- Slots directly into the existing multiplayer/read-budget framework
+  (section 1): same shape as a bones/ghost-route record — small,
+  anonymous, attached to a level and room, read as part of the one-packet-
+  a-day fetch. No new infra category needed, just another record type.
+- Open design fork, **still undecided — flagged for you, not resolved
+  here:** is the ward cosmetic-only when seen by someone else (safer,
+  simpler), or actually functional for whoever finds it (needs real
+  abuse-proofing)? A tempting shortcut would be a blanket house rule —
+  "anything visible to other players is flavor-only, never mechanical" —
+  which would answer this *and* pre-empt the same question coming up again
+  for bones/ghost-routes. That's a real design decision, not just
+  documentation, so it's left as open question 6 below rather than
+  adopted here.
+
+---
+
+### 3. ASCII first-person view mockups (exploration, not committed)
+
+Pure-visual exploration from this chat, 58×17, done before any real
+screenshots were shared — the actual game's look (per the changelog's
+`screenshots/v0.XX.png` references) may well have diverged. Keeping the
+notes in case they're useful as a style reference:
+
+- **Door view:** bold riveted back wall (`====`/`||`), thin smooth
+  diagonals (`` `-. ``/`.-'`) for side walls/ceiling/floor (steep single-step
+  `\`/`/` were tried first and looked jagged — the shallow multi-column
+  version reads better), a small door pad (`.--.`/`|88|`/`'*-'`), and
+  `[ :  : ]`-style slide-door handles pulled in tight to the center seam.
+- **Wall (turn) views:** same frame; a horizontal pipe-with-valve run across
+  the facing wall for a "blank wall" look; the wall you just turned from
+  shows as a narrow door-frame sliver in the near-side strip (mirrored
+  correctly for left vs. right turns — the near end of the strip is always
+  the side closer to the viewer).
+- Not yet drawn: stairs-down in this same bold style, multiple "blank wall"
+  variants (so a plain wall and a secret-holding wall look identical until
+  searched), the wall directly behind the player.
+
+---
+
+### 4. Leaderboard notes
+
+- Any new board-adjacent idea (bones, ghosts, counters) should extend the existing Worker and schema, which already handle name and run-id validation, per-sender rate limiting, and the admin delete path. Don't stand up a second one.
+- Full run-replay verification isn't possible under the free plan's 10ms CPU cap, which is why scores are openly unprovable. The $5/month paid plan, not a VPS, would be the way to unlock it if it's ever worth doing.
+- A richer board UI (Cleared / Dead / Graveyard tabs, pagination, a "YOU — #N of M" row) was mocked up once. Low priority; it will come naturally as bones and the other async pieces get built.
+
+---
+
+### 5. A named buff for the day after a held day
+
+Deferred and deliberately undesigned. There is already a real mechanic the player is never told about: `st.restedDay` gives a 25% search-effectiveness bonus the day after a held day. A named buff should be that bonus made legible, not a second one stacked on top.
+
+---
+
+### 6. Dead ends as a place for other players (discussed, nothing chosen)
+
+Every wing has a dead end; it holds the scrap that names one of the wing's two doors, and since v1.00 the exchange's screen (design doc Part 12), so any of the ideas below would share the room with it. Because wing shapes are shared, "the dead end of day 3's wing" is the same place for everyone on a level, which makes it a natural mailbox. Ideas floated:
+- **A message wall:** fixed-phrase notes, picked from a list, never typed.
+- **Bones:** a marker when a run ends on that level (a name, a day, last words), searchable for a small find.
+- **Tallies:** scratches for how many took each of that day's two doors. Popular, not which is which.
+- **A listening post:** the one room where she hears the rest of the level ("three others are on this level tonight").
+- **A cache:** leave one item, take what the last person left.
+- **A quiet room:** breath comes back faster and nothing wanders in.
+
+The suggestion on the table was to combine the wall, the tallies and the listening post into a "signal room", keeping the scrap. Open: whether leaving a mark costs anything (a breath, the key), how long marks last, flavor or true hints. Backend: one small table keyed by level, day and wing, read once on entering.
+
+(The bonus room and THE VOID, parked through the one-room releases, are live again since v0.80 and no longer a to-do.)
+
+---
+
+### 7. The escape: what is decided and not yet built
+
+Built in v0.77 and kept through the v0.80 rollback: the pit (B4F up to the surface), levels lost at the moon's quarters, waking on the level the dark has reached, play continuing past the surface. That also retired the late-week start rule.
+
+Still to build, as agreed:
+- **Getting out is a finish.** Reaching the surface completes the monthly climb; the player can stop there or go on.
+- **Past the surface is the endgame,** with no top. It could be harder as well as longer (corruption from the first day, the bonus room and THE VOID back, less time a level).
+- **Two boards.** This moon: who got out and how fast, then by levels climbed; resets each lunar month. All time: the highest anyone has climbed past the surface.
+- **Open:** what is at the top; drawing the moon larger in the sky view the higher she is.
+
+---
+
+### 8. A map of the shared level (tried several ways)
+
+The offers and wing shapes are shared, so a level could be drawn for everyone. What was tried on Oct 11:
+- A sideways strip (`[v]----< >----< >...[?]--[^]`) with room counts and the offers by feel. It shipped only on the end-of-run page, cut down to the room she took each day, because showing the week's offers would spoil them.
+- An upright "readout" with block bars, and a "circuit" with a node a room: liked the look, "doesn't look like a map".
+- Trees (symmetric, asymmetric, twiggy): set aside.
+- **What shipped (v0.93):** a line of the quarter's lunar days with a decorative branch off each, future days masked. It is the level's mark, not a map.
+
+Things learned: every wing has exactly three rooms, so "size" can't be shown honestly; and anything that draws wing shapes lets a player work out their own map rotation. A later step that needs the Worker: marks on each day for how many players are there (the presence ping already carries the level; it would need the day).
+
+---
+
+### 9. Other ideas from the same session
+
+- **What could take `[F]IGHT`'s old slot on the bar** (left empty): `[W]AIT` for STANDBY (the day's other big choice, currently buried in the bag), `[G]IVE`, `[R]EST` (get breath back faster at a cost such as heat), `[L]ISTEN` (a quieter, less informative search).
+- **Live presence:** built in v1.00 (design doc Part 10). Still open: a listening-post room, something small when several players are on a level at once.
+- **Names in the feed:** events now store the run's name. "HAL-BOT fell on B4F to a CHROME ONI" would make the typed line a world of people; it ends anonymity and needs the board's name filter.
+- **Per-level counts on the title** beyond presence (falls on B3F this moon).
+- **Breath levers:** a bigger bar, a faster refill, search time that grows as she tires (built in v0.84, removed), a `[R]EST` action.
+
+---
+
+### Open questions
+
+1. Bones or ghost demons next, now that faction seasons are built?
+2. Should a fully shared level (same doors for everyone) ever exist as a separate challenge mode, given the spoiler problem?
+3. Does the game still want an endgame distinction between Mythic and Moon rarity, now that the structure has changed so much from the original weekly-floor design?
+4. Ward materials: are chalk, salt or a match consumed on use, and which existing junk items double as them?
+5. Does the data-demon "firewall mark" need its own flavor and materials, or just a different name on the same mechanic?
+6. Shared wards, and by extension bones and ghost routes: cosmetic-only trace, or functional for whoever finds it? A blanket rule ("anything visible to other players is flavor-only, never mechanical") would settle all three at once. Not adopted without your go-ahead.
+
+---
+
+## 18. Heat, verbs and patience notes
+
+Oct 15 2026, written at v1.11. Ideas are marked **decided**, **leaning**, **proposed** (suggested, not confirmed) or **open**.
+
+**Status at v1.24 (Oct 17).** Built from these notes: a demon cools the room by a third when dealt with, heat colour on the map after a read, the safe-versus-gamble choices (v1.12); patience wear removed and patience renamed VIBES, with a quiet day instead of tension (v1.12, v1.15); WORD renamed TALK, and the AURA button folded into TALK (v1.15). Still open below: wavy minimap walls, WORD pairs by personality, what MOON does when she has set, and the split between heat as danger and heat as reward.
+
+### Decisions at a glance
+
+- **Heat:** a demon cools the room after you deal with it. No heat gauge. Searches in a hot room get a slower, heavier rhythm. Minimap walls are the leading way to show it (leaning).
+- **Patience:** something you build. Tension is removed. It only drops in a hot room. The bottom is CONTENT, with no negative feelings, no snapping and no leaving. Nagging remarks stay as flavor only.
+- **WORD:** always a decision, with no wrong answer. The two options give different kinds of equal-value good. Members offer different pairs by personality. Options are clearly labeled.
+- **Safe versus gamble:** appears on demon offers, on a worn wall (more often in hot rooms), on the moon at fuller phases, and in a hot room. Not on low breath.
+- **Not doing:** AURA as an on/off mode (too much programming for now), a +2 versus +1 match system, or letting the player pick which member to talk to (needs UI changes).
+- **Box at the end of a wing:** develop it more, as the multiplayer interaction.
+
+### Heat: what it does now
+
+From the internal changelog:
+
+- Every search warms the room (v0.18).
+- A demon's chance per search goes from about 1 in 24 in a cold room to about 1 in 4 in a hot one.
+- Heat halves overnight. It is the only cooling (real-time cooling was tried in v0.81 and reverted in v0.83).
+- Lingering in a hot room wears on clashing party members (v0.59). This is being reworked, see Patience below.
+- The player only sees it through the AURA room read (three tiers) and "it's warm" lines. The moon-strip gauge went away when breath replaced it.
+
+**The problem:** once a room is hot, demons keep coming and nothing cools it. The player also can't tell whether more demons is good or bad, because demons are both a threat and loot (they carry things and drop them when beaten).
+
+### Heat ideas
+
+1. **A demon cools the room after you deal with it.** (**decided**: "that makes sense".) Fight, WORD or run, then heat drops by a chunk. A hot room becomes a cycle (push, something comes, you handle it, you can search again) instead of a pile-up.
+2. **Heat changes who shows up, not what they hold.** (**open**.) A hotter room draws louder, older demons (the aura "pull" already does this). Louder demons carry a bit more. Nothing is made from nothing, which fits the fact that pockets are filled on first look.
+3. **No gauge.** (**decided**: too easy.) Replace the "it's warm" flavor lines where possible, since the goal is less text, not more.
+
+### Making heat visible without a gauge
+
+- **Minimap walls** (**leaning**, liked it). Rooms you've visited keep their own heat, so the map would also show which rooms were left hot.
+- **Search rhythm** (**decided**: slower when hot, "oppressive"). Keep it small: only the dots, roughly 200 ms each up to 300 to 400 ms at the hottest. The old search pause that grew with heat (up to 2 s, v0.81) was removed in v0.83, so this should stay light.
+- **3D panel art** (**later**): cracks and scratch marks creeping across the walls, dust on the floor, or warped door frames. It must be static (the standing rule: no glow or dimming).
+- Other options, not chosen: faster cursor blink, a mark by a party member's name, a word change in the room-name slot.
+
+#### Wavy walls on the minimap
+
+Three steps, matching the three heat tiers:
+
+| Tier | Horizontal walls | Vertical walls |
+|------|------------------|----------------|
+| Cool | `-` (as now) | `\|` (as now) |
+| Warm | `~` | `\|` |
+| Hot | `~` | alternating `(` and `)` |
+
+```
++~~~~~~~+
+(       (
+)       )
+(       (
++~~~~~~~+
+```
+
+- Corners stay `+` so the room still reads as a box.
+- For vertical walls, pick `(` or `)` by the row number (odd rows one, even rows the other), so two rooms sharing a wall line up with no seams.
+- Other pairs: `/` and `\` (sharper zigzag), `{` and `}` (softer curl). `:` would read as a broken wall, not a wavy one.
+- Check the characters in the page font (VT323) before committing. `~`, `(` and `)` are plain and should be safe.
+- Static only. A shimmer would be an animation, so ask first.
+
+### AURA, MOON and WORD
+
+**The problem:** all three work the same way (press a button, spend breath, get a line of text, sometimes pick one of two things). Splitting them by topic alone doesn't help, because a player still can't feel the difference.
+
+Overlaps found in the changelog: MOON's offer includes a door hunch (AURA's job), WORD's banter includes lines about your aura, and MOON and WORD both end in "pick one of two things".
+
+**WORD becomes a decision** (**leaning**, "could work"):
+
+- It reuses the party question flow from v1.10 (`[1]` or `[2]` buttons, two answers, patience effects), so it is mostly data changes.
+- **No wrong answer** (**decided**): both options are good.
+- **Different kinds of equal-value good** (**decided**): for example patience for the member, breath for you, an alignment lean, or an item. You can't have both, which is the trade-off.
+- **Members offer pairs by personality** (**decided**): the personality decides which pair appears, not which one wins. For example the gruff one usually offers breath or healing and the dreamy one offers an item or a lean. Current personalities: ELF is PRIM, PIXIE is DREAMY, CU SITH is GRUFF, and recruits take their family's personality.
+- **Clear labels** (**decided**): each option says plainly what it gives, so a player can judge by what they need.
+- **Skill is reading your own situation** (**proposed**): low breath makes the breath option worth more, a member close to the bottom makes patience worth more, and so on. Nobody ever gets "the lower one".
+- The aura banter lines would leave WORD (**proposed**).
+
+**Not chosen:** a +2 versus +1 match system (a player would feel bad about the lower one), and letting the player pick which member to talk to (needs UI changes).
+
+**AURA:**
+
+- **No on/off toggle mode** (**decided**, for now).
+- Still open: take AURA off the button bar by folding it into things you already do (door hunch into listening at a door, room read into a free line on entering a room, demon read onto the screen where the demon appears), or split by target (AURA for places and things, WORD for demons, party chatter happens by itself). Neither is chosen yet.
+
+**MOON:**
+
+- Today pressing [M]OON looks up, costs one breath and runs her answer. The remaining interaction is the breath cost, the pick-one-of-two offer, and repeat lines.
+- **Non-interactive idea** (**leaning**, "maybe"): looking up is the only action, and she does something or not by phase and position. Open: does looking up cost a breath or is it free? What happens when she has set (the changelog doesn't say whether she can still answer)?
+- The hunch option in her offers goes if MOON becomes a boon, since AURA covers hunches (**proposed**).
+
+### Safe versus gamble choices
+
+A choice between a small sure gain and a bigger gain that only sometimes lands. A fizzle gives nothing, never a penalty. It is only available sometimes, depending on context.
+
+- **Hot room** (**decided**).
+- **Demon offers** (**decided**): for example a SLY demon holds out a sure small thing against a mystery one.
+- **A worn wall** (**decided**): keep searching as usual, or dig deep for a better chance of a big find at the cost of more heat. Appears more often in hot rooms.
+- **The moon on fuller nights** (**decided**): a safe gift next to a rarer one that might not come through.
+- **Low breath** (**decided: no**).
+
+### Patience (rework)
+
+**Today** (from the changelog): patience is the only stored meter. Tension is not stored; it is worked out from alignment gaps (LAW against CHAOS is the big gap) and wears patience in fights with a clashing pair, in hot rooms, and on skipped days (that last one loses to the nightly regen). Patience also drops from nagging remarks, fiddling with items, breaking things a member loves, and CHAOS members lashing out. At zero a member can snap or leave. It currently drains too fast and members get upset (**decided**: dislikes that).
+
+**New shape** (**decided** unless marked):
+
+1. **Remove tension** as a source of wear (the alignment-gap check).
+2. **Patience only drops in a hot room.** Nagging, fiddling, breaking things and lash-outs no longer cost patience. The nagging remarks stay as flavor.
+3. **Patience builds up** from WORD, offers, truces and a night's rest, as now. Offers and confides already open up at higher patience.
+4. **The bottom is CONTENT.** No snapping, no lash-outs, no leaving. A content member goes calm and a bit less chatty, then returns to normal with a WORD or a night's rest (the calm and less chatty detail is **proposed**).
+5. **Reword the tired and tense lines** so they sound content, not unhappy (follow-up).
+
+A hot room now does two jobs: it wears on the party, and it brings more of the safe-versus-gamble choices.
+
+### Summary of the rest of the talk
+
+- **README opening paragraph.** Merged the repeated parts and dropped "seeded". Two versions: a plain one and a shorter, moodier one. Kept "the same for every player", and used "floor" for the place and "quarter" for the time.
+- **Weak points raised:**
+  - Items have alignment and inventories, but few real meanings yet.
+  - Breath does a lot of jobs. You rebalanced it to stop spam and give actions a cost.
+  - The information verbs (search, AURA, MOON) overlap.
+  - WORD could only help, so it risked becoming a button you just press.
+  - The real sky and the box are the most distinctive things, but they connect to little else.
+- **The box (end of a wing).** (**decided**: develop it more; it's the multiplayer interaction.) Idea: what you leave could carry its item's alignment, so the next player gets a hint of who was there.
+- **Connecting the sky to mechanics:**
+  - Make the moon's real position matter to [M]OON (**leaning**). Open: her silent or just weaker when set, since some players' schedules never line up.
+  - Give bright stars an alignment that pulls demons and items. Watch out: a player's sky depends on where they are, so this needs one fixed sky for everyone.
+  - Mark box items with the star that was highest when left.
+- **Information overload.** Three text lines plus on-screen events. Realized most of the information points at hidden systems (alignment, heat) that don't carry much weight. Each system either gets real, visible consequences or gets shrunk or cut, along with the lines that point at it. Test for every line: does it change what the player does next?
+
+### Next steps (open)
+
+- Choose how much of heat's effect is danger and how much is reward, and how much a demon cools the room.
+- Decide whether to add the "louder demons carry more" link.
+- Pick the minimap wall style and test the characters in the page font.
+- Define the WORD pairs for each personality (which rewards each member tends to offer) and write the labels.
+- Decide whether looking up at the moon costs a breath, and what happens when she has set.
+- Decide how to separate AURA from WORD now that WORD is a decision (fold AURA into other actions, or split by target).
+- Patience: remove tension, remove the other costs, add the CONTENT bottom, and reword the tired and tense lines.
+- Set where and how often the safe-versus-gamble choices appear.
+- Go through every on-screen line with the "does it change a decision?" test.
