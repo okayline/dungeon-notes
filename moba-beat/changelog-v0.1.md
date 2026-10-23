@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.3
+# moba-beat — Dev Changelog — v0.1–v0.10.4
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,14 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.4 — "Beat 4 gold"
+**Fri Oct 23, 2026 · 12:28 PM HST**
+
+Kura: gold line should be beat 4; mark beat 1 with a little 1 near the bottom of its line.
+
+- `public/feed.js`: the gold line (2 px) is now every beat with `b % 4 === 3`; beat 1 (`b % 4 === 0`, not the line after the last measure) is a normal beat line with a small muted "1" drawn just right of it, 8 px above the bottom. Nothing else changed.
+- Checked: `npm test` 47 pass; one local browser run showing the gold beat-4 lines and the "1" marks, no console errors. Not checked: real phones.
 
 ## v0.10.3 — "Light up"
 **Fri Oct 23, 2026 · 12:20 PM HST**
