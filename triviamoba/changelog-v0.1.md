@@ -1,10 +1,20 @@
-# TriviaMoba — Dev Changelog — v0.1–v0.3.1
+# TriviaMoba — Dev Changelog — v0.1–v0.4
 
 Detailed changelog for TriviaMoba (repo okayline/triviamoba, renamed from trivial-moba): trivia in three MOBA lanes. Worker `triviamoba`, connected to the repo. Since v0.3 a Worker with a backend in the moba-beat D1 (sharing SCATTER.EXE's tables); the page shows its version since v0.3.1. v0.1–v0.2 were numbered here from the commits. Newest first. Times are Hawaii time (HST).
 
 Written after the fact (Oct 22) from the commit messages; the owner's decisions are not recorded here.
 
 ---
+
+## v0.4 — "Creep Waves"
+**Fri Oct 23, 2026 · 4:05 AM HST** (not pushed when written)
+- **Owner's decisions (this night, in `design.md`):** lanes are topic and action in one: DEF (history, "for now"), STR (body, moon, Earth), INT (hard science and tech); player vs. map with creep waves, no tug of war; the ghost is a separate run compared on the board; the tower is the goal; INT heals "the lane the person is in first, then the lowest lane if their own lane is full" ("this mechanic might change"); right answers move "how you suggested" (CLUTCH +2, FEED +1, TILT +3 or −1); DEF places a shield on a lane you choose; DEF is played first. No hero weights ("just thinking about the systems themselves").
+- **Raised before building (rule 17):** with "DEF right only blocks", the DEF lane could never be won; the owner's answer was shields you place on any lane, and Claude proposed "DEF is won by holding space 3", built as such (not explicitly confirmed by the owner). Lanes are played one at a time (`next` handler), so DEF first lets its shields matter.
+- **Added:** `public/engine/lanes.js` (`play`, `healTarget`, `won`, constants), loaded by the page as a plain script and by `test/lanes.test.mjs` (5 tests, spaces worked by hand). Page: lane names and colours, 15 questions (5 per lane, written by Claude, facts not checked against sources), a shield picker after a right DEF answer, the ghost's dashed ring and "ghost: space N" on the board, per-lane result rows, v0.4.
+- **Wrong answer:** the call's penalty (CLUTCH −2, FEED 0, TILT −1) plus the wave −1, unless the lane has a shield (it blocks the wave and is used up). Spaces stay 1 to 5. A taken tower stays taken.
+- **Removed:** `match`, `pushOf`, the tug of war (`mine - theirs`), hero weights and their bar CSS (`.bars`, `.bar`), the SCI/ART/PLC/POP categories and their 20 questions, `imp` (the random mystery round), the early lane end at space 1 or 5, "Draw", net push.
+- **Checked:** 14 tests pass. Headless Chromium at 430 px, three full games (all right, all wrong, mixed): 15 rounds each, shields placed, INT healing another lane once its tower was taken, no page errors; the only "ghost" in the bottom panels was a crowd prompt's text.
+- **Not checked:** the trivia facts against sources; how hard a game feels; the live site.
 
 ## v0.3.1
 **Fri Oct 23, 2026 · 3:24 AM HST** (a5bf422, 6797a04, 91b12b5; not pushed when written)
