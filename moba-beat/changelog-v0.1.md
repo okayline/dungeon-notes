@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.5
+# moba-beat — Dev Changelog — v0.1–v0.10.6
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,15 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.6 — "No duel page"
+**Fri Oct 23, 2026 · 12:45 PM HST**
+
+Kura: get rid of the Duels links and page, keep the backend.
+
+- Deleted `public/duel.html`, `public/duel-page.js`, the footer "Duels" link in `index.html`, the "duel page" section at the end of `style.css`, and the two mentions of `duel.html` in the `app.js` header and `CLAUDE.md`.
+- Kept: the Worker's duel routes, `migrations/003_duels.sql` and the live tables, `public/duel.js`, `public/moves.js`, `public/audio.js` (the daily page uses it), and their tests. Nothing can reach the duel routes from the site now except by calling the API directly.
+- Checked: `npm test` 47 pass; the daily page loads and plays in the local browser run, no console errors; `duel.html` gives 404 locally. Not checked: the live site.
 
 ## v0.10.5 — "Beat numbers"
 **Fri Oct 23, 2026 · 12:35 PM HST**
