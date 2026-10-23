@@ -1,10 +1,17 @@
-# TriviaMoba — Dev Changelog — v0.1–v0.4
+# TriviaMoba — Dev Changelog — v0.1–v0.4.1
 
 Detailed changelog for TriviaMoba (repo okayline/triviamoba, renamed from trivial-moba): trivia in three MOBA lanes. Worker `triviamoba`, connected to the repo. Since v0.3 a Worker with a backend in the moba-beat D1 (sharing SCATTER.EXE's tables); the page shows its version since v0.3.1. v0.1–v0.2 were numbered here from the commits. Newest first. Times are Hawaii time (HST).
 
 Written after the fact (Oct 22) from the commit messages; the owner's decisions are not recorded here.
 
 ---
+
+## v0.4.1
+**Fri Oct 23, 2026 · 4:05 AM HST** (not pushed when written)
+- **Owner:** after the chunky tiles (v0.4, `HALF` 24, `PAD_R` 32) the three lanes' innermost tiles overlapped near the goal; "if we put the lanes further out from the goal, will it fix the clipping?", then "yes please!".
+- **Checked first on a copy:** D0 30, 50 and 62 with the frame grown to match: overlapping tile boxes between lanes 2, 0, 0 (screen bounding boxes, a rough test); board 750×363, 353, 349 px at 1280.
+- **Changed:** `D0` 30 → 50, `viewBox` to fit (`-43 4 486 229`); the whole drawing is inside the frame at 390 and 1280 px. VERSION v0.4.1. Removed: the overlap.
+- **Tests:** 14 pass. **Not checked:** the live site.
 
 ## v0.4 — "Creep Waves"
 **Fri Oct 23, 2026 · 4:10 AM HST** (not pushed when written)
