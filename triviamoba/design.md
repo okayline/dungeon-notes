@@ -13,7 +13,7 @@ Trivia in three MOBA lanes, and the game SCATTER.EXE folds into ("two halves of 
 - **BUILT** (v0.4, `public/engine/lanes.js`) Each lane is a topic and an action, named like MOBA stats. Played in order DEF, STR, INT:
   - **STR**: the physical world: the human body, the moon, planet Earth. A right answer **attacks**: pushes you forward, sized by the call.
   - **INT**: hard science and tech. A right answer **heals** +1: in the INT lane itself first, then your lowest lane once INT's tower is taken (owner, Oct 23).
-  - **DEF**: history, for now (the owner finds it cliché; "defense" in every sense was offered and set aside). A right answer places a **shield** on any lane you pick; it blocks the next wave there. DEF is won by holding space 3 or better (proposed by Claude, built, not explicitly confirmed).
+  - **DEF**: history, for now (the owner finds it cliché; "defense" in every sense was offered and set aside). A right answer pushes forward by the call, like STR, and places a **shield** on any lane you pick; it blocks the next wave there. Won at the tower like the other two (owner, Oct 23).
 - **DECIDED** CLUTCH, FEED and TILT stay as the calls: how big a risk you take on each answer, in every lane.
 - **DECIDED** No hero stats/weights for now ("just thinking about the systems themselves"). The stat words are the lanes, so the stat layer stays empty.
 - **DECIDED** Questions are straight "get it right or not" trivia, narrow, never generic or cliché. No negative questions, answers or headlines (no bad vibes).
@@ -22,7 +22,7 @@ Trivia in three MOBA lanes, and the game SCATTER.EXE folds into ("two halves of 
 
 - **BUILT** (v0.4) Player vs. map, not player vs. ghost. No tug of war.
 - **BUILT** (v0.4) Creep waves: a wrong answer lets the map's wave push you back 1 space, on top of the call's penalty (CLUTCH −2, FEED 0, TILT −1); a right answer beats the wave and does the lane's action. A shield (from DEF) blocks one wave.
-- **BUILT** (v0.4) The tower is the goal: reaching space 5 takes the far tower and wins the lane. Your own tower as a shield was offered and not chosen.
+- **BUILT** (v0.4) The board is flipped: the common goal is the hub at the top; the lanes start at the edges, you start on your lit start pad (space 0), and tiles light up as you move in. Reaching space 5 takes that lane's tower by the goal and wins the lane. Your own tower as a shield was offered and not chosen.
 - **OPEN** Wave size and tuning: a 1-space wave each round on a 5-space lane may be harsh.
 
 ## The ghost
