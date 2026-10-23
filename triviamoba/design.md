@@ -27,9 +27,7 @@ Trivia in three MOBA lanes, and the game SCATTER.EXE folds into ("two halves of 
 
 ## The ghost
 
-- **DECIDED** The ghost is a real player's earlier run of the same day's questions, sealed on the ledger. It plays the map on its own track and never moves your marker; you compare how far you each got.
-- **DECIDED** The ghost shows on the board only; the bottom panels (draft, rounds, results) never mention it. **BUILT** (v0.3.1, UI text only).
-- **BUILT** (v0.4) The prototype's ghost is a scripted 5-round run per lane on its own track (a dashed ring on the board).
+- **DECIDED** (Oct 23, later the same night) No ghost anywhere in the page: "all ghost references should be gone from the UI and game". The backend keeps its data. Earlier the same night: the ghost was another player's run compared on the board; that is now gone from the game.
 
 ## Crowd data
 
