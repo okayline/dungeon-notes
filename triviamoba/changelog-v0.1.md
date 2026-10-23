@@ -1,10 +1,25 @@
-# TriviaMoba — Dev Changelog — v0.1–v0.6
+# TriviaMoba — Dev Changelog — v0.1–v0.7
 
 Detailed changelog for TriviaMoba (repo okayline/triviamoba, renamed from trivial-moba): trivia in three MOBA lanes. Worker `triviamoba`, connected to the repo. Since v0.3 a Worker with a backend in the moba-beat D1 (sharing SCATTER.EXE's tables); the page shows its version since v0.3.1. v0.1–v0.2 were numbered here from the commits. Newest first. Times are Hawaii time (HST).
 
 Written after the fact (Oct 22) from the commit messages; the owner's decisions are not recorded here.
 
 ---
+
+## v0.7
+**Fri Oct 23, 2026 · 4:36 AM HST** (not pushed when written)
+- **Owner:** "does int move forward a square when it gives a heal??", Claude: only if you heal INT's own lane; owner: "int always moves forward a square with a right answer AND it gets a heal".
+- **Changed:** `lanes.js`: a right INT answer moves INT `INT_PUSH` (1) and heals `target` `HEAL` (1); new `healGain(target)` (2 for INT's own pad, else 1) used by the pad's "+N" and the heal glow; reveal verdict "Pushed, healed X", its note names both markers. Tests hand-worked: `[0,1,1]`, `[0,1,3]`, `[1,1,4]`, `[1,2,5]`.
+- **Simulation (20,000 games, one right-answer rate, fixed strategies), rounds to win at 50/70/90% right:** STR 8.0/4.7/3.4, DEF 6.6/4.3/3.3, INT healing itself 8.0/4.7/3.4 (the same as STR, since it moves 2 per right answer), INT healing the other lane that is furthest 10.0/7.2/5.6.
+- **Flagged to the owner:** healing INT itself moves INT 2, which is the speed the owner had just backed away from ("way too fast").
+- **Not checked:** how it feels at the owner's accuracy; mixed strategies.
+- **Owner:** "leave it as is with a note to balance please? and push what you have!" Left as built; the balance note is in `design.md` (open item 1).
+
+## v0.6.1
+**Fri Oct 23, 2026 · 4:33 AM HST** (not pushed when written)
+- **Owner:** "the game is way too fast already, we need to slow it down. the INT heal should only be +1". Before that Claude tried DEF at +1 (`DEF_PUSH`) on the owner's "yes please" and simulated it: DEF only, shielding itself, took 12.6/7.5/5.6 rounds at 50/70/90% right against STR's 8.0/4.7/3.4, so Claude reverted it uncommitted and recommended leaving DEF at +2 (owner did not pick it up).
+- **Changed:** `HEAL` 2 → 1 in `lanes.js` (the page text and the heal glow read `LANES.HEAL`); the INT test is back to hand-worked +1 spaces. **Removed:** the +2 heal.
+- **Open:** "too fast" is wider than INT: with +2 pushes a DEF or STR lane fills in 3 rights.
 
 ## v0.6 — "One Spoke"
 **Fri Oct 23, 2026 · 4:25 AM HST** (d7d42ed, 4d4fe31, 316e5d8; pushed 16ed460..316e5d8)

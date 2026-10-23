@@ -12,7 +12,7 @@ Trivia in three MOBA lanes, and the game SCATTER.EXE folds into ("two halves of 
 
 - **BUILT** (v0.4, `public/engine/lanes.js`) Each lane is a topic and an action, named like MOBA stats. Chosen each round (v0.6):
   - **STR**: the physical world: the human body, the moon, planet Earth. A right answer **attacks**: pushes you forward 2.
-  - **INT**: hard science and tech. A right answer **heals** +2 in the lane you pick: you hover a start pad to see "+2" and tap it (owner, Oct 23: "choose the lane to heal with INT", then "yes INT heal +2"). It was +1; a simulation (any lane at one right-answer rate, fixed strategies) gave INT-self 30 rounds at 50% against STR's 8, and at +2 INT-self equals STR.
+  - **INT**: hard science and tech. A right answer moves INT forward 1 **and** heals +1 in the lane you pick: you hover a start pad to see "+1" ("+2" on INT's own pad, since INT moves too) and tap it (owner, Oct 23: "int always moves forward a square with a right answer AND it gets a heal"). History: heal +1 in the lane you pick (v0.6), +2 (v0.6), +1 again (v0.6.1, "way too fast"), push 1 plus heal 1 (v0.7). INT healing itself fills in 3 rights, the same as STR.
   - **DEF**: history, for now (the owner finds it cliché; "defense" in every sense was offered and set aside). A right answer pushes forward 2, like STR, and places a **shield** on any lane you pick; it blocks the next wave there. Won at the tower like the other two (owner, Oct 23).
 - **DECIDED** (v0.5, owner Oct 23) No calls: CLUTCH, FEED and TILT are gone ("the action the player does is STR/INT/DEF, clutch/feed/tilt is too much on top"). A right answer pushes +2 (STR, DEF) or heals +1 (INT); a wrong answer costs 0 beyond the wave.
 - **DECIDED** No hero stats/weights for now ("just thinking about the systems themselves"). The stat words are the lanes, so the stat layer stays empty.
@@ -35,7 +35,7 @@ Trivia in three MOBA lanes, and the game SCATTER.EXE folds into ("two halves of 
 
 ## Open
 
-1. INT's heal: any lane you pick, +2 (v0.6). STR is the plainest spoke (DEF does the same push and also shields): the owner's idea, "STR can maybe kill turrets faster or something when we get there", is LEANING, not built (no turrets in the game yet).
+1. INT's right answer: push 1 and heal 1 in any lane you pick (v0.7). **Balance later** (owner, Oct 23: "leave it as is with a note to balance"): healing INT itself moves INT 2, as fast as STR, though the owner also said the game is "way too fast"; STR and DEF fill in 3 rights; STR is the plainest spoke (STR/turrets idea below). Simulations: 50/70/90% right, rounds to win STR 8.0/4.7/3.4, DEF 6.6/4.3/3.3, INT self 8.0/4.7/3.4. Game speed: "way too fast" (owner, Oct 23), not tuned beyond INT. STR is the plainest spoke (DEF does the same push and also shields): the owner's idea, "STR can maybe kill turrets faster or something when we get there", is LEANING, not built (no turrets in the game yet).
 2. Wave size.
 3. The trivia question bank and its daily pick. A public seed lets anyone work out the day's questions early; a secret seed (as in Pitch) or commit-reveal is probably needed for trivia (not decided).
 4. Hiding the crowd counts on the day's ledger entry (commit-reveal): left for now.
