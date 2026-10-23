@@ -1,4 +1,4 @@
-# NANO PITCH (nano-pitch) — Dev Changelog — v0.1–v0.11.2
+# NANO PITCH (nano-pitch) — Dev Changelog — v0.1–v0.12.5
 
 Detailed changelog for Daily Pitch (repo okayline/nano-pitch): one daily 4-point cutthroat Pitch game, the same deal for everyone, against bots. Its `pitch_` tables are in the moba-beat D1. The public repo keeps a short `CHANGELOG.md`; the design is `pitch/daily-pitch-design.md` in the project files. Newest first. Times are Hawaii time (HST), from the commit times.
 
@@ -8,7 +8,70 @@ v0.1–v0.6 were written after the fact (Oct 22) from the commit messages. v0.7�
 
 ---
 
-(v0.10 and v0.11 have no entry here yet; see the public `CHANGELOG.md`.)
+v0.10 and v0.11 below are copied from the public `CHANGELOG.md` (no commit hashes looked up, no owner quotes). v0.11.3–v0.12.5 are from the Oct 23 working session and the commit messages.
+
+## v0.12.5
+**Fri Oct 23, 2026 · 7:55 AM HST** (c8f4296)
+- **Owner:** "can you remove the shadow please" (picture of the rounds grid's left block).
+- **Cause:** `.rleft` in `public/style.css` had `box-shadow: 6px 0 6px -4px rgba(0,0,0,.6)` (the soft edge from when the rounds slid under sticky columns).
+- **Changed:** deleted that one `box-shadow`. Removed: the dark shadow on the right edge of the pic and total block.
+- **Checked:** 45 tests pass. **Not checked:** how it looks in the real app.
+
+## v0.12.4
+**Fri Oct 23, 2026 · 7:53 AM HST** (a1911ea, pushed with v0.12.1–v0.12.3)
+- **Owner:** sent a picture of the earlier lavender bar and said "make it look like this please".
+- **Changed:** `.rscroll` scroll bar is a slim lavender pill (`var(--dim)`, 10 px high, rounded) with a transparent track and no arrows. Chrome and Safari get it from `::-webkit-scrollbar` rules; Firefox gets `scrollbar-width: thin; scrollbar-color: var(--dim) transparent` through `@supports not selector(::-webkit-scrollbar)`. Removed: the browser's default thin bar look on this grid (white track, arrows). Firefox cannot make the rounded pill shape.
+- **Checked:** rendered with the real `style.css` in headless Chromium (scroll bars switched on); 45 tests pass. **Not checked:** Firefox; the live game on the owner's device (he later said "the scrollbar is good").
+
+## v0.12.3
+**Fri Oct 23, 2026 · 7:53 AM HST** (a1911ea)
+- **Owner:** "can you make it work in firefox please".
+- **Cause:** v0.12.2 moved the bar with `::-webkit-scrollbar-track { margin-left: 64px }`, which only Chrome and Safari read.
+- **Changed:** the rounds grid is split in two (`public/app.js`, `public/style.css`): `.rleft` holds the pic and total columns and does not scroll; `.rscroll` holds only the round columns, so its bar starts under round 1 in every browser. `fitGrid()` now measures the wrapper `.rwrap` and caps `.rscroll` at the whole rounds that fit. Rows are fixed at 16 px (header) and 30 px, so the two blocks line up. Removed: the sticky left columns (`.c0`/`.c1` positioned over the grid) and the Chrome-only 64 px track margin.
+- **Checked:** mock page with the real `style.css` in headless Chromium at 420 px wide with 8 rounds: six rounds fit, the scroller was capped at 264 px with 352 px of content, so it scrolls; rows lined up. 45 tests pass. **Not checked:** Firefox (not installed here); the real app.
+
+## v0.12.2
+**Fri Oct 23, 2026 · 7:53 AM HST** (a1911ea)
+- **Owner:** "can you please make the bottom scroll bar not go all the way ? it should stop under the round 1 column. also could you push the player scores a few pixels to the left pleas[e]". I read "stop under round 1" as the bar starting there, not ending there.
+- **Changed:** the bar starts under round 1 (a 64 px left margin on the scroll bar track, Chrome and Safari only; replaced in v0.12.3); the totals got `padding-right: 8px`, about 4 px further left. Removed: the bar's full-width track under the pic and total.
+- **Checked:** 45 tests pass. **Not checked:** the real app.
+
+## v0.12.1
+**Fri Oct 23, 2026 · 7:53 AM HST** (a1911ea)
+- **Owner:** "there's a bug when sometimes i click a card to play and it hangs a long time. then i click again and it plays", then "yes can you please investigate card click hang" and "fix it please".
+- **Cause (not reproduced in a browser; read from the code):** a browser click needs the button to go down and come up on the same element. `draw()` rebuilds every card (`$app.innerHTML`, `public/app.js` line 311) and the chat redraws every 1–4 s while the replay redraws after each move (`PACE.move` 1300 ms, line 80). A redraw between press and release removes the pressed card, so the click goes nowhere and the card looks stuck.
+- **Changed:** a `pointerdown` handler plays a playable card or an enabled bid on the press (left button only); the `click` that follows within 700 ms is ignored for cards and bids (`/^[bc]\d/`) so a move can't play twice. Removed: nothing (a click alone, such as from the keyboard, still plays).
+- **Checked:** 45 tests pass; `node --check`. **Not checked:** in a browser, so the hang is not confirmed gone. The tests don't cover the page.
+
+## v0.12
+**Fri Oct 23, 2026 · 7:43 AM HST** (03f83a6)
+- **Owner:** "can i get a way to see the hand history? maybe in the Ledger page?", then "trick summaries please" (each time the four seats play one card), "show me a mockup of what it looks like please", and "dont just put the newest entry on the top. order the whole list from newest to oldest starting from the top".
+- **Added:** `GET /api/hands?daily=0|1&n=N` (`src/worker.js`): rebuilds the player's own finished game from its saved moves and returns each round's bids, tricks (who played what, who took it), High/Low/Jack/Game and scores. 404 "You haven't finished that game." for a stranger, another player or an unfinished game (everyone who plays game N holds the same deal, so opening it early would give the cards away); 410 if the game can no longer be rebuilt. The ledger marks `mine` on the player's own result and daily entries. `public/ledger.js` adds a "Show hands" button per own game; rounds and tricks are newest first. Test: "your hands" in `test/worker.test.mjs`. Removed: nothing.
+- **Checked:** 45 tests pass; mockup rendered in headless Chromium and sent to the owner. **Not checked:** the live ledger page.
+
+## v0.11.6
+**Fri Oct 23, 2026 · 7:18 AM HST** (aaf218d, with v0.11.4 and v0.11.5)
+- **Owner:** screenshot and "there's also a bug where the card gets stuck in the up animation. maybe related??".
+- **Cause:** v0.11.2's `hot` class on the card under the mouse was only taken off at the next redraw.
+- **Changed:** `mouseover` removes `hot` from the card the mouse left at once; `mouseleave` clears `hotCard` and the class. Removed: the card staying up after the mouse has left.
+- **Checked:** not recorded. **Not checked:** whether the "click hangs" bug is the same cause (it was not; see v0.12.1).
+
+## v0.11.5
+**Fri Oct 23, 2026 · 7:18 AM HST** (aaf218d)
+- **Owner:** "have the chat say that stuff, to all the players on their turns too".
+- **Changed:** `moveLines()` adds one friendly turn line (`turnLine`) after each bot's bid or card, from the same `IDLE` pools, never the same words twice in a row. Removed: nothing.
+
+## v0.11.4
+**Fri Oct 23, 2026 · 7:18 AM HST** (aaf218d)
+- **Owner:** "when the player is sat out, and the turn goes to them dont have it highlight their cards, only their name for a second then move on", "i want the chat to run constantly, WITHOUT it sounding mean", "\"tick tock\" stuff like that. going against the tone completely", then "take out all the bad ones you suggested but keep the skull emoji and \"bruh\"".
+- **Changed:** seats get an `out` class; `.table:has(.seat.turn:not(.out)) .seat:not(.turn) .backs i` so the other seats' cards don't dim on a sat-out seat's turn. The `IDLE` chat pools are friendly ("you got this", "good luck", "take your time", "nice"...). Removed from the chat: "come on", "pass?", "go 4 coward", "bid bid bid", "tick tock", "waiting lol", "play it", "ur turn", "no pressure", and after tricks and rounds "rip", "ez", "L", "told u". Kept: "💀" and "bruh".
+- **Checked:** not recorded.
+
+## v0.11.3
+**Fri Oct 23, 2026 · 7:05 AM HST** (a1cc4d2)
+- **Owner:** "can you take out the Daily Pitch explanation text please !!", then "for the first one, can you do the suggestions".
+- **Removed:** the result-screen line "The table hasn't seen enough rounds like these yet."; the Account page paragraph about guests, "Logged in on N devices" and save codes (with its "No player here yet", "Guest" and "A save code or passkey brings your game to another device" sentences); the paragraph at the top of the ledger page explaining the chain. Added: nothing.
+- **Checked:** not recorded.
 
 ## v0.11.2
 **Fri Oct 23, 2026 · 2:45 AM HST** (23edea2)
@@ -25,6 +88,24 @@ v0.1–v0.6 were written after the fact (Oct 22) from the commit messages. v0.7�
 - **Added:** `.hand .pc.ok::after`, a 6 px invisible strip under each playable card that lifts with it. Removed: the flicker at the bottom edge.
 - **Checked:** stand-in page in headless Chromium, pointer 2 px above the bottom edge with half-pixel jitter: 66 position changes in about 2 s before, 2 after. 44 tests pass.
 - **Not checked:** the real app; the redraw cause (found and fixed in v0.11.2).
+
+## v0.11 (from the public CHANGELOG)
+**Fri Oct 23, 2026**
+- Result screen: more room under the rounds grid and a thinner scroll bar; the rounds grid shows whole rounds only (six fit on a 390 px phone).
+- Round card back to centred over the blurred table, chat keeps going behind it. Removed: the pinned card and the strip of four boxes.
+- Names: a visitor with no save code or passkey gets a random name from the start (server rolls and signs it), kept in the browser and sent only when they make a save code or passkey. Removed: "You" for new players, the server storing a guest's name on first move, and the second copy of the name-fetching code.
+- Chat never goes quiet: a viewer talks every few seconds while it's your turn and during the round card. Removed: the silence on your turn and the four-line limit.
+- You can bid or play the moment your name lights up. Removed: the pause before your cards were clickable.
+- Table: tiny cards for the High, Jack and Low trump and a Game-points number each seat holds so far this round. Removed: nothing.
+- Ledger: every hash shown whole; footer in Hawaii 24-hour time. Removed: the 12-character shortened hash and its hover text.
+
+## v0.10 (from the public CHANGELOG)
+**Fri Oct 23, 2026**
+- Daily game: once a UTC day after your game you play that day's Daily game (same cards, same bots for everyone; #1 is Oct 23, 2026), counted on its own, never interrupting a game in progress. Added: Daily games, their own field and results tally, a `daily` ledger entry and row.
+- Fixed: the arrow and "your bid" went blank when your turn came; now they stay from the last bot's move.
+- Table: finished-trick cards no longer dim. Scoreboard: score next to the emoji, name under. Chat: six made-up viewers comment on tricks, bids of 4 and how rounds end; spade and club cards are blue. Round card: chat continues, "This round" as a strip of four boxes.
+- Ledger: finished games show the player's name, the four totals with table names, the game's field so far and the Daily game's day. Registry checkpoints carry the game's public facts. Result screen: losers in black and white, bigger winner name, "Your score each round" as a four-seat grid.
+- Removed (each of the above replaced something): the three bots as trick commenters, the one-line "This round" row and Bid row on the round card, the fixed table names on ledger rows, the "... WINS" headline, the colour on losers' cards.
 
 ## v0.9.6
 **Thu Oct 22, 2026 · 11:06 PM HST** (76d8b0f)
