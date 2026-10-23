@@ -4,10 +4,10 @@ The full version, with every number, odd and hidden rule. NOT for the public rep
 The public one is `CHANGELOG.md` (vague on purpose: no odds, no hidden mechanics, no room names).
 
 Older entries are in the `archive/` folder, newest part first:
-- `archive/changelog-v1.02-to-v1.15.md` (v1.15 down to v1.02)
-- `archive/changelog-v0.75-to-v1.01.md` (v1.01 down to v0.75)
-- `archive/changelog-v0.36-to-v0.74.md` (v0.74 down to v0.36)
-- `archive/changelog-v0.1-to-v0.35.md` (v0.35 down to v0.1)
+- `archive/changelog-4dungeon-v1.02-to-v1.15.md` (v1.15 down to v1.02)
+- `archive/changelog-4dungeon-v0.75-to-v1.01.md` (v1.01 down to v0.75)
+- `archive/changelog-4dungeon-v0.36-to-v0.74.md` (v0.74 down to v0.36)
+- `archive/changelog-4dungeon-v0.1-to-v0.35.md` (v0.35 down to v0.1)
 
 ## v1.40 - Rolled Names - Oct 21 2026, 13:25 HST
 
