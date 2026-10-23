@@ -1,9 +1,40 @@
-# moba-beat — Dev Changelog — v0.1–v0.9.5
+# moba-beat — Dev Changelog — v0.1–v0.10
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
 The public repo keeps a short changelog. The design is in `design.md` here. Newest first. Times are Hawaii time (HST), from the commit times.
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
+
+---
+
+## v0.10 — "Duel"
+**Fri Oct 23, 2026 · 11:41 AM HST** (okayline/moba-beat, not committed yet; migration `003_duels.sql` not run on the live D1)
+
+### Decisions (the owner's)
+- Where it lives: "moba-beat i think". The go-ahead: "okay build what you gotta build!  do as much of 1-6 as possible".
+- Input, one button: "hold on beat 2-3, then tap 4 is an attack"; "hold 3-4 is guard"; "maybe retreat is tap on beat 3 and tap on 4?"; "super input is maybe hold 1-2-3- and tap 4?".
+- Timing is tight: "please make the attack have to hold through beat 3"; "if they hit guard perfectly on 3 they should get perfect guard or crit guard.  so "near beat 3 " is not good enough"; "beat 2 should be at least good, held through three.  then beat 4 should be perfect for a crit"; "if you miss the beat you should also miss the guard"; "yeah have retreat gated as well please"; "you could put "Late!" if its late".
+- Turns: "yeah take turns over time!", "yeah it should flip.", "one measure one player acts, one measure the next player acts?", "turns is based on the music", and "if they don't play their turn.  there is music constantly going, that is the timer."
+- Costs: "wasted turn costs life", "meter fills from successful attacks , guard costs meter".
+- Later or open: "feint - later", "with no ghosts i dont know.", "no show rule can we please set aside".
+- My picks, not the owner's (to confirm or change): advance is a single tap on beat 4; a guard is always allowed (it costs 1 meter but never below 0, so there is no meter-0 lock); a perfect guard blocks the whole hit and a good one lets half through; the numbers (10 life, meter 3, 7 spaces starting on 3 and 5, reach 2, damage 3/2 for an attack and 8/6 for a super); duels paired by an open link (the maker sends it, whoever opens it and joins is player 1); a "my duels" list; 10 new duels an hour per address; "Early!" shown for an early miss; a "Duels" link in the daily page's footer; duels not sealed on the ledger.
+
+### What was built
+- `public/moves.js` (new): `read(presses, msPerBeat)` and `readSong`: a measure of finger-down/up times (in beats) becomes a move (attack, super, guard, retreat, advance, none or unclear), the grade of each press with `score.js`'s fixed timing, `crit` (the key press was perfect) and `miss` (ms off, for "Late!"). A miss on the press that starts a move makes it unclear. v0.9.6 to v0.9.10 were this file growing, step by step, in the same session; none of them was pushed.
+- `public/duel.js` (new): the rules as pure functions (`start`, `resolve`, `outcome`, `play`). Replaces `public/fight.js` and `test/fight.test.mjs`, which are deleted (the three-hero Clutch/Feed/Tilt fight, never used by the page or the Worker).
+- `src/worker.js`: `POST /api/duel/new`, `POST /api/duel/join`, `GET /api/duel?id=`, `POST /api/duel/play`, `GET /api/duels`. The state is worked out from the stored recordings every time. The reactor gets the actor's recording (`replay`) only while it is their turn to answer; finished turns are open to anyone with the link. Presses are cleaned (at most 8, one finger at a time, inside the measure) and rounded to whole ms.
+- `migrations/003_duels.sql` and `schema.sql`: tables `duels` (day, p0, p1) and `duel_turns` (duel_id, turn, act, react).
+- `public/duel.html`, `public/duel-page.js`, `public/style.css`: the page. It records finger down and up on the button (pointer and Space), shows the other player's recording with a wind-up glow `WINDUP_SHOWS_AFTER` (0.25 beat) after their finger goes down, and says "Late!" or "Early!" at once from its own read.
+- `public/audio.js` (new): the drum bus, samples and tap delay moved out of `public/app.js`, shared by both pages.
+
+### Tests
+- 47 pass (`npm test`). New: the rules worked out by hand (damage, guard, retreat out of range, wasted turn, super, advance, a whole fight to a winner), the moves worked out by hand and their grades, and a Worker test that plays a whole duel from join to the last turn over HTTP (4 to 3 for player 0) with the refusals (own duel, third player, wrong turn, replayed turn, bad presses, over).
+- A headless Chromium run against the real Worker code on an in-memory database: player A started a duel, player B joined from the link, A played an attack in the page with the mouse (the page said "Attack, crit!"), B watched it (the opponent token showed its wind-up) and played a guard ("Guard, crit!"), the log said "blocked by a perfect guard", the list showed the duel; the daily page still loaded, showed v0.10 and played.
+
+### Not checked
+- The migration on the live D1, and any deploy. Touch: holds on a real phone (long-press menus, a finger sliding off the button), Bluetooth latency with holds.
+- Balance: all numbers are first guesses. A reactor can read the actor's recording from the network before playing, and a script could answer perfectly: the server grades the times the page reports, as it already does for taps.
+- `design.md` is not updated and still describes the three-hero fight. The no-show rule, finding an opponent when nobody is around, the feint and what a wasted turn should look like in the page.
 
 ---
 
