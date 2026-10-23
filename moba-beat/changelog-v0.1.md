@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10
+# moba-beat — Dev Changelog — v0.1–v0.10.1
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,16 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.1 — "Feed"
+**Fri Oct 23, 2026 · 12:05 PM HST**
+
+Kura asked for a scrolling feed on the daily page, chosen over duel-only and both-pages.
+
+- New `public/feed.js`: `drawFeed(canvas, day, at)` draws a canvas, `at` in beats from the song's first beat. Shows 2 beats behind and 6 ahead of a fixed blue line. Beat lines (gold at the first beat of a measure), drum dots on three rows (hat/open, snare/clap, kick), pink dots for wind-up cues, gold targets on the bottom row (filled = clap, ring = parry). Colours come from the page's CSS variables.
+- `public/app.js`: calls `drawFeed` once at load (count-in position) and every animation frame while playing. `index.html` has the `<canvas id="feed">`; `style.css` has `.feed`.
+- Not changed: scoring, the server, the tables, the duel page. The by-ear rule is gone from the daily page, because the notes are visible while you play. The reveal grid after a run is still there; it is now redundant and is listed for Kura's approval to delete.
+- Checked: `npm test` 47 pass; one browser run of the local stand-in (page loads, Play, feed scrolling mid-song, no console errors). Not checked: real phones, timing of the drawing against the audio clock.
 
 ## v0.10 — "Duel"
 **Fri Oct 23, 2026 · 11:41 AM HST** (okayline/moba-beat, not committed yet; migration `003_duels.sql` not run on the live D1)
