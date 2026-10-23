@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.1
+# moba-beat — Dev Changelog — v0.1–v0.10.2
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,14 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.2 — "Beat bars only"
+**Fri Oct 23, 2026 · 12:12 PM HST**
+
+Kura: "can you not put the notes on there? just have the beat bars for now".
+
+- `public/feed.js` now draws only the beat lines (gold at the first beat of a measure) and the blue line. Removed from it: the drum dots, the pink wind-up dots, the gold tap targets and the row table. The daily beat is by ear again.
+- Checked: `npm test` 47 pass; one local browser run (feed shows beat lines only, no console errors). Not checked: real phones. The reveal grid after a run is still there.
 
 ## v0.10.1 — "Feed"
 **Fri Oct 23, 2026 · 12:05 PM HST**
