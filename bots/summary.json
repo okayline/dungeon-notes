@@ -50,7 +50,7 @@
   "eco": ""
  },
  "BENDER-bot": {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "build": "latest",
   "crashed": "TypeError: R.setName is not a function |     at fresh (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:68:25) |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:73:16) |     at /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:190:21",
   "row": null,
@@ -60,7 +60,7 @@
   "eco": ""
  },
  "WALLE-bot": {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "build": "latest",
   "crashed": "TypeError: R.setName is not a function |     at fresh (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:68:25) |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:73:16) |     at /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:190:21",
   "row": null,
@@ -70,37 +70,14 @@
   "eco": ""
  },
  "ROSIE-bot": {
-  "date": "2026-10-21",
+  "date": "2026-10-23",
   "build": "latest",
-  "version": "v1.39",
-  "crashed": null,
-  "row": {
-   "level": "B3F",
-   "climbed": 0,
-   "day": 3,
-   "turns": 141,
-   "alive": true,
-   "party": "KURA, ELF, PIXIE, CU SITH",
-   "align": "CHAOS",
-   "last": "Not yet. KURA catches her breath."
-  },
-  "n": {
-   "searches": 22,
-   "blocked": 20,
-   "waited": 75,
-   "fights": 2,
-   "talks": 1,
-   "runs": 2,
-   "unlocks": 0,
-   "moves": 6,
-   "moon": 2,
-   "holds": 0,
-   "climbs": 0
-  },
+  "crashed": "TypeError: R.setName is not a function |     at fresh (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:68:25) |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:73:16) |     at /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:190:21",
+  "row": null,
+  "n": {},
   "posted": null,
-  "events": "1/1 sent: deep; here: ok",
-  "eco": "",
-  "skipped": "2026-10-22: did not show up"
+  "events": "none",
+  "eco": ""
  },
  "C3PO-bot": {
   "date": "2026-10-22",
