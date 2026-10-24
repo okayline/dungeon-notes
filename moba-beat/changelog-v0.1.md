@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.6
+# moba-beat — Dev Changelog — v0.1–v0.10.7
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,19 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.7 — "Fuller drums"
+**Sat Oct 24, 2026 · 12:16 AM HST**
+
+Kura: the patterns were too simple and the same the whole time; keep A A A B | A A A C; more fills and more beat patterns that follow each kit's rules. Then: push.
+
+- `public/beat.js`: patterns A, B, C are now the whole bytes 0, 1, 2 (B or C moves to the next number if equal to A). Kits: `boomBap` kicks from 8 places (`KICKS`: 0.25, 0.5, 0.75, 1.5, 1.75, 2, 2.5, 2.75; fewer than 2 gets 1.5 and 2); `house()` replaces `fourOnTheFloor`: kicks 1, 2, 3, snare 2, off-beat hats, 6 bits of sixteenth hats (`HOUSE_HATS`), 2 bits of one extra kick (`HOUSE_KICK`); `bounce` extra kicks from 6 places, open hat from the top 2 bits; `techHouse` syncopated hats from 6 places, open hat from the top 2 bits.
+- `FILLS(acc)`: 8 lead-ins for B (byte 1 mod 8) and 8 for C (byte 2 mod 8), acc = snare (hip-hop, house) or clap (bounce, tech house), all ending by the "a" of 3. `SPICE`: measures 2, 3, 6, 7 add one of 4 small changes (bytes 12, 13, 16, 17 mod 4). `LIFT`: measures 5 to 8 add hats on the "a" of 1 and of 2 (not from the hash). Hits already there are not doubled.
+- Deleted: `pattern()`, `PATTERNS` and their tests (no kit used them after house stopped reading their hats).
+- Tests: the pattern and kit tests rewritten with hand-worked values; new tests for the fills and changes, and for 256 patterns per kit (hip-hop 247: 0, 8, 32 become 40 and six one-bit patterns get the two classic kicks).
+- Past days rebuild with the new rules (ledger page), so they sound different; Kura said push after the by-date freeze was offered, so they are not frozen. Scores, targets and the ledger are unchanged (targets come from `CLAPS` and the wind-ups).
+- Tried first in a test copy and a private preview page (old vs new drums, real days Oct 21 to 23).
+- Checked: `npm test` pass. Not checked: the live page, `feed.js` with more hits, how it sounds.
 
 ## v0.10.6 — "No duel page"
 **Fri Oct 23, 2026 · 12:45 PM HST**
