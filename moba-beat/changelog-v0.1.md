@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.11
+# moba-beat — Dev Changelog — v0.1–v0.10.12
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,15 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.12 — "Calibrate"
+**Sat Oct 24, 2026 · 1:40 AM HST**
+
+Kura: tap calibration instead of the slider.
+
+- `public/app.js` `calibrate()`: CAL_BEATS 12 hats at the day's tempo (beat 1 of each measure louder), lamps lit; `press()` while calibrating records each tap's ms from its nearest beat, without the current offset; at 12.5 beats, taps after CAL_SKIP (4) are averaged and `offset = -average`, saved to localStorage "mb-offset" like the slider was. Fewer than 4 used taps or a spread over CAL_SPREAD (100 ms) says "Too uneven, try again". The Calibrate button turns into Stop while it runs; Start and Calibrate stop each other.
+- Removed: the range input and its handler; `.timing input` style. Added `.cal` style.
+- Checked: `npm test` 54 pass; headless calibration with taps 60 ms after each beat (plus a frame) set "Your timing: -70 ms". Not checked: a real device.
 
 ## v0.10.11 — "Late!"
 **Sat Oct 24, 2026 · 1:27 AM HST**
