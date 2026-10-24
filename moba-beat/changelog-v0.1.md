@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.10
+# moba-beat — Dev Changelog — v0.1–v0.10.11
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,17 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.11 — "Late!"
+**Sat Oct 24, 2026 · 1:27 AM HST**
+
+Kura: remove the wasted turn's -1 life; -1/2 pip instead.
+
+- `public/ghost.js`: `WASTED_PIPS = 0.5`. A player step that isn't an attack or a super (and isn't a lone tap on 4, which is a charge) skips `resolve`: the player loses half a pip (not below 0), no life; the ghost's reaction for that turn is used up but does nothing. `duel.js`'s `WASTED_COST` (1 life) is untouched and still used by the 2-player duel backend.
+- Fix found by the hand-worked test: when the last step was skipped like that, the fight never reached its outcome check and `over` stayed false (the page then said "A draw"). Now a fight with all its steps played always returns `over` and the winner.
+- `public/app.js`: the log says "a wasted turn: −½ pip".
+- Kura: a "Late!" when late on the hit, nothing for early; version to the bottom right; the move list under the main panel without "Moves"; tap timing to the right of the kit and BPM; the ledger link up by Account. `app.js` `press()`: the press's offset from the nearest whole beat in ms; above score.js's PERFECT (35) and not in the count-in, the press's beat goes in `lates` and `drawLane` writes a pink "Late!" under it (Kura: by the line where it happened). Kura: labels of what happened in the lane, a little behind the line: `label(e)` per log entry (charge Perfect!/Missed!; player Crit!/Hit!/Missed!; ghost Blocked!/Half!/Hit!/Missed!) over the step's last dot; the line moved from 20% to 40% of the width (6 beats ahead, 4 behind). `index.html`: `#version` moved to the footer, the ledger link to `.top .right`, `.moves` (no heading) after `.fight`, `.timing` inside `.controls`. Checked: a headless run with a press 150 ms after a beat: "Late!" under it, then Missed! and Hit! labels scrolling behind the line.
+- Tests: the do-nothing fight reworked by hand (ends 2 to 10, the ghost wins on life after 16 steps), plus the wasted entry. 54 pass. Not checked: the live page.
 
 ## v0.10.10 — "Beat Fighter II"
 **Sat Oct 24, 2026 · 1:18 AM HST**
