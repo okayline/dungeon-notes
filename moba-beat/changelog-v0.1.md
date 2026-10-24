@@ -119,7 +119,7 @@ Kura asked for a scrolling feed on the daily page, chosen over duel-only and bot
 
 ### Decisions (the owner's)
 - Owner: "all the different songs sound like using the exact same instruments", "can you use all the samples we have", then "one pack per kit, days seed picks which kit ... and the beat pattern".
-- Owner on the chord pad: "literally every song starts with the same synth tone ... please its driving me crazy", then "take that instrument out and never use it again", then "no browser oscillators ever, only samples". I first moved the pad to measure 2 instead of removing it; he caught that ("you just put it on the second measure"), and it was removed fully.
+- Owner on the chord pad: "literally every song starts with the same synth tone ... please its driving me crazy", then "take that instrument out and never use it again", then "no browser oscillators ever, only samples". I first moved the pad to measure 2 instead of removing it; she caught that ("you just put it on the second measure"), and it was removed fully.
 - Owner on the fight: turn-based, one measure per turn, three heroes a side on one shared bar, CLUTCH / FEED / TILT as the button you press on beat 4. The full decisions are in `design.md`.
 
 ### What was built
@@ -150,14 +150,14 @@ Kura asked for a scrolling feed on the daily page, chosen over duel-only and bot
 - Tests: 26 pass. The bass checks are gone; the tap-sound test accepts a made thump.
 
 ### Not checked
-- How the thump sounds beyond what the owner said in the Kit Lab (a copy of the song maker with a kit picker, https://claude.ai/artifact/YbE6VZVoYyJ883LzgoKnaC), the live deploy, and whether the double hits he heard were the off-beat kicks (the likely cause) or the kick and snare together on beat 2 (still there).
+- How the thump sounds beyond what the owner said in the Kit Lab (a copy of the song maker with a kit picker, https://claude.ai/artifact/YbE6VZVoYyJ883LzgoKnaC), the live deploy, and whether the double hits she heard were the off-beat kicks (the likely cause) or the kick and snare together on beat 2 (still there).
 
 ## v0.9.2 — "House, Tech House, Boom Bap and Bounce"
 **Wed Oct 21, 2026 · 5:43 PM HST** (merged as okayline/moba-beat PR #2; the public CHANGELOG.md says 5:55 PM, which is wrong, and was not fixed)
 
 ### Decisions (the owner's)
-- Owner: "house: kick on all 4 beats, snare on 2 and 4", "hip hop: snare on 2 and 4". Beat 4 is silent so the player can tap into it, so I put it to him on a card; he chose "Your tap makes the sound": beat 4 stays silent and the tap plays the kit's sound. Owner: "oh I wasn't thinking of the game! haha".
-- Owner on trap: "I don't like trap, it's too slow", then "make trap into hip-hop bpm", then "i decided against trap again HAHA ... hip hop bpm, but not boom bap". He chose West Coast bounce ("OMG MUSTARD"). Hip-hop became boom bap ("boom bap!!! yessss").
+- Owner: "house: kick on all 4 beats, snare on 2 and 4", "hip hop: snare on 2 and 4". Beat 4 is silent so the player can tap into it, so I put it to her on a card; she chose "Your tap makes the sound": beat 4 stays silent and the tap plays the kit's sound. Owner: "oh I wasn't thinking of the game! haha".
+- Owner on trap: "I don't like trap, it's too slow", then "make trap into hip-hop bpm", then "i decided against trap again HAHA ... hip hop bpm, but not boom bap". She chose West Coast bounce ("OMG MUSTARD"). Hip-hop became boom bap ("boom bap!!! yessss").
 - Owner: "can we have the daily seed randomize all this stuff every day?" The seed picks the kit, tempo, key, progression, bass, and each kit's drum variations. Owner asked if there were enough variations; I counted and suggested more hat and bass variety, not built.
 - Owner: "for house, do you know tech-house?", references Vintage Culture and Cassian, "its always 128 locked", "can we do both normal house, and tech house?". Four kits. Owner: "no need to rename" (the boom bap kit stays `hip-hop` in the code).
 - Sources read: Beats to Rapon (boom bap kicks at 1, 7, 9, 12 of 16 steps, snare 5 and 13), Violet Recording, Rappad (Mustard about 110 BPM, kick on 1 and the "and" of 3, snare on 2 and 4, open hats), EDMProd (tech house 125 to 128 BPM, clap on 2 and 4, hat on the off-beats), MusicRadar (kick on every quarter note). I could not open the Vintage Culture or Cassian pages, so tech house is built from the articles, not from those DJs.
@@ -184,7 +184,7 @@ Kura asked for a scrolling feed on the daily page, chosen over duel-only and bot
 **Wed Oct 21, 2026 · 5:23 PM HST** (merged as okayline/moba-beat PR #1)
 
 ### Decisions (the owner's)
-- Owner: "can we take the disco sound out?", then "it sounds too dorky", then "can we still do another genre with the samples we have?". I found the pack's unused 01 Hard Trap kit and made a trap kit; the download of four samples was blocked until he approved it ("yeah if you request it").
+- Owner: "can we take the disco sound out?", then "it sounds too dorky", then "can we still do another genre with the samples we have?". I found the pack's unused 01 Hard Trap kit and made a trap kit; the download of four samples was blocked until she approved it ("yeah if you request it").
 - Owner: "trap should be slower maybe, look up normal trap beats" and "hip hop is like 70-90 bpm?". Sources: trap is written at 130 to 160 but feels like 65 to 80 (half-time), hip-hop is mostly 85 to 95. Per-kit tempo ranges: hip-hop 80 to 100, trap 70 to 85, electro 128 ("it's the house tempo").
 
 ### What was built

@@ -21,7 +21,7 @@ v0.10 and v0.11 below are copied from the public `CHANGELOG.md` (no commit hashe
 **Fri Oct 23, 2026 · 7:53 AM HST** (a1911ea, pushed with v0.12.1–v0.12.3)
 - **Owner:** sent a picture of the earlier lavender bar and said "make it look like this please".
 - **Changed:** `.rscroll` scroll bar is a slim lavender pill (`var(--dim)`, 10 px high, rounded) with a transparent track and no arrows. Chrome and Safari get it from `::-webkit-scrollbar` rules; Firefox gets `scrollbar-width: thin; scrollbar-color: var(--dim) transparent` through `@supports not selector(::-webkit-scrollbar)`. Removed: the browser's default thin bar look on this grid (white track, arrows). Firefox cannot make the rounded pill shape.
-- **Checked:** rendered with the real `style.css` in headless Chromium (scroll bars switched on); 45 tests pass. **Not checked:** Firefox; the live game on the owner's device (he later said "the scrollbar is good").
+- **Checked:** rendered with the real `style.css` in headless Chromium (scroll bars switched on); 45 tests pass. **Not checked:** Firefox; the live game on the owner's device (she later said "the scrollbar is good").
 
 ## v0.12.3
 **Fri Oct 23, 2026 · 7:53 AM HST** (a1911ea)

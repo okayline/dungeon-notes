@@ -341,7 +341,7 @@ Owner: "add maybe like 20 more ? blocks" and "show a couple found buttons" on th
 ## v0.37.1 — "Five Mysteries"
 **Sat Oct 17, 2026 · 10:58 AM HST** (no migration)
 
-Owner, after trying v0.37: a Single given to himself opened fine; the logged-out Wall worked but "the huge blank wall seems intimidating".
+Owner, after trying v0.37: a Single given to herself opened fine; the logged-out Wall worked but "the huge blank wall seems intimidating".
 
 - **Logged-out Wall** (`renderWallGrid`, page only): the API still sends every design with the mysteries marked (v0.37's rule); with no `me` the grid keeps the known tiles and splices in 5 random mystery tiles at random places. The count line still says the full number.
 - **Packs unselectable**: `.pack-tile` and everything in it get `user-select: none` and `-webkit-touch-callout: none`.

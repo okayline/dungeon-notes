@@ -719,7 +719,7 @@ Tests at v0.37 (`5fb74d8`): `npm test` 18 pass, 0 fail, run for these notes with
   - `migrations/002_plans.sql` sets open and live duels to expired (they have no plan) and sets `taken_at` on the open
     ones, so their standing aura stops at the migration. It then adds `c_plan` and drops the three columns.
   - Tested on the v0.1 schema plus 001: the columns match schema.sql afterwards. Live had 2 open duels and 1 live one
-    (#3, ryan against himself), which will be cancelled with nothing paid.
+    (#3, ryan against herself), which will be cancelled with nothing paid.
 - **Page (`public/app.js`).**
   - The post screen has a "Your plan" picker: 3 rows of LOCK IN / FARM / DIP. Post needs 3 cards and 3 moves.
   - The taker's move buttons are always on. The caption shows the last round ("They 🗿 FARM · you 🔒 LOCK IN").
