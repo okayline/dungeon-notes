@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.9
+# moba-beat — Dev Changelog — v0.1–v0.10.10
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,15 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.10 — "Beat Fighter II"
+**Sat Oct 24, 2026 · 1:18 AM HST**
+
+Kura: remove the explainer text from the headline; rename the game Beat Fighter II: The New Challengers; "Ghost winds up..." and "Ghost charging a SUPER" for the ghost's headlines; the log lines stay.
+
+- `public/app.js`: start "Press Start!", charge "Charge!", ghost "Ghost winds up..." / "Ghost charging a SUPER". Log lines unchanged.
+- Renamed to Beat Fighter II: The New Challengers (Kura: rename, it's not a moba any more; a parody of the Street Fighter II subtitle): the subtitle as a small gold line under the name (`.mark .sub`); `<title>` and `.mark` in `index.html` and `ledger.html`, the save code text and file name in `account.js`. The repo, Worker, D1 and dungeon-notes folder stay `moba-beat`.
+- Checked: `npm test` 54 pass. Not checked: the live page.
 
 ## v0.10.9 — "Lane and timing"
 **Sat Oct 24, 2026 · 1:16 AM HST**
