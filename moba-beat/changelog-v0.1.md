@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.8
+# moba-beat — Dev Changelog — v0.1–v0.10.9
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,16 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.9 — "Lane and timing"
+**Sat Oct 24, 2026 · 1:16 AM HST**
+
+Kura: newest "What happened" first; a visual scrolling indicator like the old page; tune tap timing (always has to tap a little late) with a slider for now.
+
+- `public/app.js`: `drawLane(b)` draws a canvas `#lane`: 2 measures ahead, half behind a line at 20% width; each STEPS measure tinted (charge gold, dot on beat 4; ghost pink, ring on beat 3; player blue, dots on 3 and 4); beat ticks, taller on beat 1. Drawn every frame and at -4 on reset.
+- Tap timing: `offset` ms (range -150..150, step 5) from `localStorage` "mb-offset" (try/catch), added to every press's down and up (`pressAt`). The lamps and the reading of measures are not moved.
+- Log: `<ol reversed>` and `prepend`.
+- Checked: `npm test` 54 pass; one headless run against a stub `/api/today`: the lane scrolls with the right colours, the log reads 3, 2, 1, no errors. Not checked: the slider fixing a real device's delay, phones.
 
 ## v0.10.8 — "Fight the ghost"
 **Sat Oct 24, 2026 · 1:12 AM HST**
