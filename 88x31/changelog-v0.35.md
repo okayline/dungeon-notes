@@ -1,9 +1,18 @@
-# 88x31 cLuB — Dev Changelog — v0.35–v0.46.15
+# 88x31 cLuB — Dev Changelog — v0.35–v0.46.16
 
 Detailed changelog for the 88x31 game (public repo: okayline/88x31, live at 88x31.app).
 The public repo keeps a shorter, general changelog. Newest first. Times are Hawaii time (HST). Older: `changelog-v0.34.md`.
 
 ---
+
+## v0.46.16
+**Sat Oct 24, 2026 · 2:04 AM HST** (no migration)
+
+Decisions (ryan, Oct 24): the new games page at a.88x31.app (repo okayline/apps-list, copied from okayline.dev's page, button wall included) would only show the backup buttons (read from the code; the live page was not looked at). Asked: "can you make the new page show my 88x31 buttons like on dot-dev page?" Found the cause in `functions/api/collection.js`, then asked for the change to be made ("can you write changelogs for 88x31, both in 88x31 repo and dungeon-notes repo dev changelog ? and then push !"). Chosen: add the one address to the allow-list, the smallest change. A proxy was the only other way and means more code.
+- **`functions/api/collection.js`:** `SHOW_ON` was `["https://okayline.dev", "https://www.okayline.dev"]`, now also `"https://a.88x31.app"`. `access-control-allow-origin` is only sent when the request's `origin` header is in that list (line 31, and only with `?user=`), so a page on a.88x31.app gets no header and the browser blocks the answer. The page's script (`fetch("https://88x31.app/api/collection?user=kura")`, same as okayline.dev's) catches that and keeps its backup buttons. Removed: nothing.
+- `public/index.html` v0.46.16 tags (`style.css`, the version label, `app.js`); public `changelog-v0.35.md` v0.46.16.
+- **Checked:** `node --check functions/api/collection.js`; the diff is the allow-list line and its comment, the three version tags and the public changelog entry. No tests in this repo.
+- **Not checked:** the live site after the push (how it deploys, and the header coming back for `Origin: https://a.88x31.app`); whether a.88x31.app's own Worker has built from okayline/apps-list yet; the wall showing on that page.
 
 ## v0.46.15
 **Wed Oct 21, 2026 · 8:05 PM HST** (migration 034, run live before the push through the Cloudflare D1 API, 06:1x UTC Oct 22)
