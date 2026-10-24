@@ -30,7 +30,7 @@
   "eco": ""
  },
  "DATA-bot": {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "build": "latest",
   "crashed": "TypeError: R.setName is not a function |     at fresh (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:68:25) |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:73:16) |     at /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:190:21",
   "row": null,
@@ -40,7 +40,7 @@
   "eco": ""
  },
  "GORT-bot": {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "build": "latest",
   "crashed": "TypeError: R.setName is not a function |     at fresh (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:68:25) |     at play (/home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:73:16) |     at /home/runner/work/dungeon-notes/dungeon-notes/bots/bot.js:190:21",
   "row": null,
@@ -99,6 +99,6 @@
   "posted": null,
   "events": "none",
   "eco": "",
-  "skipped": "2026-10-22: did not show up"
+  "skipped": "2026-10-23: did not show up"
  }
 }
