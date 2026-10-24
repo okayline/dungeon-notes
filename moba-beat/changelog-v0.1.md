@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.12
+# moba-beat — Dev Changelog — v0.1–v0.10.13
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,15 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.13 — "Bold"
+**Sat Oct 24, 2026 · 1:40 AM HST**
+
+Kura: when Calibrate is pressed, the big button's text becomes "Tap to Calibrate!".
+
+- Kura: all normal-weight font bold, the top-left name a little bigger: `style.css` `html { font-weight: 700 }` (every page sharing style.css: daily, ledger, account panel; text with its own weight keeps it), `.mark` 1.25rem to 1.6rem with `white-space: nowrap`, and `.top` wraps (at phone width the bigger name pushed the date onto two lines, so the date and links now drop below it). Checked: a phone-width screenshot.
+- `public/app.js`: `calibrate()` sets `#pad` text to "Tap to Calibrate!"; `stop()` sets it back to "Press / hold".
+- Checked: `npm test` 54 pass; headless: the button read "Tap to Calibrate!" during calibration and "Press / hold" after. Not checked: the live page.
 
 ## v0.10.12 — "Calibrate"
 **Sat Oct 24, 2026 · 1:40 AM HST**
