@@ -1,4 +1,4 @@
-# moba-beat — Dev Changelog — v0.1–v0.10.7
+# moba-beat — Dev Changelog — v0.1–v0.10.8
 
 Detailed changelog for moba-beat (public repo: okayline/moba-beat): a rhythm micro-MOBA auto-battler, daily and async.
 Worker `moba-beat` (connected to the repo: a push to `main` deploys it) + D1 `moba-beat` (id 8ced4f17-0ae0-4852-b02c-5003d7f08c5d).
@@ -6,6 +6,17 @@ The public repo keeps a short changelog. The design is in `design.md` here. Newe
 Nothing of the game itself is built yet: so far it is the ledger, the day's seal and the beat.
 
 ---
+
+## v0.10.8 — "Fight the ghost"
+**Sat Oct 24, 2026 · 1:12 AM HST**
+
+Kura: solo fight against a ghost, the hash ghost for the daily (everyone fights the same one); take turns; rest/act rhythm tried and found too slow; ghost on measures 2 and 6, player on 4 and 8 so a run ends on the player's hit; charging on beat 4 (1, 2, 3, 5, 6, 7), half a pip per perfect tap, both start at 1 pip; a lone tap on 4 is a charge with no life lost; no advance or retreat; attack = tap 3 and 4; a visual move list on one line that lights up what you can do; result under "Fight over."; replace the daily game, don't save yet. Then: push to the main page.
+
+- `public/ghost.js` (new): `plan(hash)` from bytes 29, 30 (moves: 0-11 attack, 12-15 super), 31, 11 (grades: 0-5 perfect, 6-13 good, 14-15 miss), 14, 15 (reactions: 0-9 none, 10-15 good guard); `STEPS` per half run: charge (measure 1), ghost (2), charge (3), player (4), LOOPS = 2; `fight(hash, reads)` runs duel.js's `resolve` with the player as 0 and the ghost as 1, CHARGE 0.5 per perfect beat-4 tap (charge steps and ghost steps; a guard can't), START_METER 1 each; the ghost's super with less than 3 becomes an attack.
+- `public/moves.js`: attack is now tap 3 then tap 4 (`TARGETS.attack = [2, 3]`), the old hold-2-tap-4 attack and retreat are gone. The duel backend (routes, tables, duel.js) is untouched but its route test uses the new attack presses.
+- `public/index.html`, `app.js`, `style.css`: the fight replaces the daily game (count-in measure, wind-up cue on beat 2 of the ghost's measure, each step read half a beat after its measure). Deleted `public/feed.js` and the squad, grid, feed, tap-button and results styles. The page no longer posts to `/api/run`; the route stays.
+- Tests: `test/ghost.test.mjs` (plan, steps, charging, a whole fight by hand), moves and duel route tests updated. 54 pass.
+- Checked: one headless run against a stub `/api/today` (count-in, charge, the ghost's crit attack, the lit moves, no errors); a test page fight played by Kura (won 4 to 0). Not checked: the live site, phones, a full fight on the main page.
 
 ## v0.10.7 — "Fuller drums"
 **Sat Oct 24, 2026 · 12:16 AM HST**
